@@ -1,5 +1,7 @@
 # VIP-Coding-Standards
-This project maintains ruleset of PHP_CodeSniffer rules (sniffs) to validate code developed for WordPress.com VIP. The ruleset contains only the rules which are considered being a blocker according to the [WordPress.com VIP documentation](https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/)
+This project maintains ruleset of PHP_CodeSniffer rules (sniffs) to validate code developed for [WordPress.com VIP](https://vip.wordpress.com/).
+
+The ruleset contains only the rules which are considered being a blocker according to the [WordPress.com VIP documentation](https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/)
 
 # Installation
 
