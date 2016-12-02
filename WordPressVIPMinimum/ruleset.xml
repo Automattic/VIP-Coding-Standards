@@ -2,7 +2,9 @@
 <ruleset name="WordPress VIP Minimum">
 	<description>WordPress VIP Minimum Coding Standards</description>
 
-	<rule ref="WordPress.VIP"/>
+	<rule ref="WordPress.VIP">
+		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+	</rule>
 
 	<rule ref="WordPress.XSS.EscapeOutput"/>
 	<rule ref="WordPress.CSRF.NonceVerification" />
@@ -11,5 +13,8 @@
 	<rule ref="WordPress.WP.PreparedSQL"/>
 	<rule ref="WordPress.Variables.GlobalVariables"/>
 	<rule ref="WordPress.PHP.StrictComparisons" />
+	<rule ref="WordPress.PHP.YodaConditions" />
+
+	<rule ref="Generic.NamingConventions.ConstructorName" />
 
 </ruleset>
