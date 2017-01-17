@@ -33,7 +33,7 @@ class WordPressVIPMinimum_Sniffs_VIP_ErrorControlSniff implements PHP_CodeSniffe
 
 		$tokens = $phpcsFile->getTokens();
 
-		$phpcsFile->addError( sprintf( "Don't use error control operators (%s) in your code. Wrap the call into appropriate checks.", $tokens[$stackPtr]['content'] ), $stackPtr );
+		$phpcsFile->addError( sprintf( "The code shouldn't use error control operators (%s). The call should be wrapped in appropriate checks.", $tokens[$stackPtr]['content'] ), $stackPtr );
 	}
 
 }
