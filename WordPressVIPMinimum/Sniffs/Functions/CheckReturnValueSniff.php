@@ -7,7 +7,6 @@
  * <code>
  * echo esc_url( wpcom_vip_get_term_link( $term ) );
  * </code>
- * 
  */
 class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_CodeSniffer_Sniff {
 
@@ -25,6 +24,8 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		'foreach' => array(
 			'get_post_meta',
 			'get_term_meta',
+			'get_the_terms',
+			'get_the_tags',
 		),
 	);
 
@@ -157,10 +158,13 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		$functionName = $tokens[$stackPtr]['content'];
 
 		$isFunctionWeLookFor = false;
+
+		$callees = array();
+
 		foreach( $this->catch as $callee => $checkReturnArray ) {
 			if ( true === in_array( $functionName, $checkReturnArray ) ) {
 				$isFunctionWeLookFor = true;
-				break;
+				$callees[] = $callee;
 			}
 		}
 
@@ -228,23 +232,25 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		$search[] = T_OPEN_PARENTHESIS;
 		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ($nextVariableOccurrence - 1), null, true);
 
-		$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[$callee] : array();
-		if ( true === in_array( $tokens[$nextFunctionCallWithVariable]['code'], array_merge( PHP_CodeSniffer_Tokens::$functionNameTokens, $notFunctionsCallee ), true )
-			 && $tokens[$nextFunctionCallWithVariable]['content'] === $callee
-		) {
-			$phpcsFile->addError( sprintf( "Type of %s must be checked before calling %s using that variable", $variableName, $callee ), $nextFunctionCallWithVariable );
-			return;
+		foreach( $callees as $callee ) {
+			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[$callee] : array();
+			if ( true === in_array( $tokens[$nextFunctionCallWithVariable]['code'], array_merge( PHP_CodeSniffer_Tokens::$functionNameTokens, $notFunctionsCallee ), true )
+				 && $tokens[$nextFunctionCallWithVariable]['content'] === $callee
+			) {
+				$phpcsFile->addError( sprintf( "Type of %s must be checked before calling %s using that variable", $variableName, $callee ), $nextFunctionCallWithVariable );
+				return;
 			
-		}
+			}
 
-		$search = array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_EQUAL ) );
-        $next = $phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true, null, false );
-        if ( true === in_array( $tokens[$next]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true )
-             && $tokens[$next]['content'] === $callee
-        ) {
-            $phpcsFile->addError( sprintf( "Type of %s must be checked before calling %s using that variable", $variableName, $callee ), $next );
-			return;
-        }
+			$search = array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_EQUAL ) );
+        	$next = $phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true, null, false );
+        	if ( true === in_array( $tokens[$next]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true )
+            	 && $tokens[$next]['content'] === $callee
+        	) {
+            	$phpcsFile->addError( sprintf( "Type of %s must be checked before calling %s using that variable", $variableName, $callee ), $next );
+				return;
+        	}
+		}
 	}
 
 }//end class
