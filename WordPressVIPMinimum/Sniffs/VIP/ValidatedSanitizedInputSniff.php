@@ -77,6 +77,8 @@ class WordPressVIPMinimum_Sniffs_VIP_ValidatedSanitizedInputSniff extends WordPr
 	 */
 	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
 
+		$notValidated = $notSanitized = false;
+
 		// Merge any custom functions with the defaults, if we haven't already.
 		if ( ! self::$addedCustomFunctions ) {
 
@@ -134,8 +136,7 @@ class WordPressVIPMinimum_Sniffs_VIP_ValidatedSanitizedInputSniff extends WordPr
 
 		// Check for validation first.
 		if ( ! $this->is_validated( $stackPtr, $array_key, $this->check_validation_in_scope_only ) ) {
-			$phpcsFile->addError( 'Detected usage of a non-validated input variable: %s', $stackPtr, 'InputNotValidated', $error_data );
-			// return; // Should we just return and not look for sanitizing functions ?
+			$notValidated = true;
 		}
 
 		if ( $this->has_whitelist_comment( 'sanitization', $stackPtr ) ) {
@@ -149,6 +150,14 @@ class WordPressVIPMinimum_Sniffs_VIP_ValidatedSanitizedInputSniff extends WordPr
 
 		// Now look for sanitizing functions.
 		if ( ! $this->is_sanitized( $stackPtr, false ) ) { //VIP: don't report not calling wp_unslash
+			$notSanitized = true;
+		}
+
+		if ( true === $notValidated && true === $notSanitized  ) {
+			$phpcsFile->addError( 'Detected usage of a non-validated nor non-sanitized input variable: %s', $stackPtr, 'InputNotValidatedNotSanitized', $error_data );
+		} else if ( true === $notValidated ) {
+			$phpcsFile->addError( 'Detected usage of a non-validated input variable: %s', $stackPtr, 'InputNotValidated', $error_data );
+		} else if ( true === $notSanitized ) {
 			$phpcsFile->addError( 'Detected usage of a non-sanitized input variable: %s', $stackPtr, 'InputNotSanitized', $error_data );
 		}
 
