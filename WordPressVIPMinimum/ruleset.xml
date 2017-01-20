@@ -8,7 +8,6 @@
 
 	<rule ref="WordPress.XSS.EscapeOutput"/>
 	<rule ref="WordPress.CSRF.NonceVerification" />
-	<rule ref="WordPress.PHP.DiscouragedFunctions"/>
 	<rule ref="WordPress.WP.EnqueuedResources"/>
 	<rule ref="WordPress.WP.PreparedSQL"/>
 	<rule ref="WordPress.Variables.GlobalVariables"/>
