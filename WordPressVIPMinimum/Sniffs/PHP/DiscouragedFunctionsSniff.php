@@ -125,9 +125,6 @@ class WordPressVIPMinimum_Sniffs_PHP_DiscouragedFunctionsSniff extends  WordPres
 		
 		$this->forbiddenFunctionNames = array_filter( $this->forbiddenFunctionNames, array( $this, 'filterFunctionNames' ) );
 
-		var_dump( $this->forbiddenFunctions );
-		var_dump( $this->forbiddenFunctionNames );
-
 		return $register;
 	}
 
