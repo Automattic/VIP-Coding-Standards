@@ -4,6 +4,7 @@
 
 	<rule ref="WordPress.VIP">
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+		<exclude name="WordPress.VIP.RestrictedFunctions"/>
 	</rule>
 
 	<rule ref="WordPress.XSS.EscapeOutput"/>
