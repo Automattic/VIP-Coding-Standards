@@ -32,12 +32,16 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 			),
 			'get_children' => array(
 				'type' => 'error',
-				'message' => '%s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %s() will do a -1 query by default, a maximum of 100 should be used.',
+				'message' => '%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.',
 				'functions' => array(
 					'get_children',
 				),
 			),
 		);
+
+		$original_groups['get_posts']['functions'] = array_filter( $original_groups['get_posts']['functions'], function( $v, $k ) {
+			return ! in_array( $v, array( 'get_children' ), true );
+		} );
 
 		return array_merge( $original_groups, $new_groups );
 
