@@ -46,6 +46,5 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 		return array_merge( $original_groups, $new_groups );
 
 	} // end getGroups().
-
 }
 
