@@ -39,7 +39,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 			),
 		);
 
-		$original_groups['get_posts']['functions'] = array_filter( $original_groups['get_posts']['functions'], function( $v, $k ) {
+		$original_groups['get_posts']['functions'] = array_filter( $original_groups['get_posts']['functions'], function( $v ) {
 			return ! in_array( $v, array( 'get_children' ), true );
 		} );
 
