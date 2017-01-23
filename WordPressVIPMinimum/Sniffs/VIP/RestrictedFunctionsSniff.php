@@ -32,7 +32,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 			),
 			'get_children' => array(
 				'type' => 'error',
-				'message' => '%s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %s() will do a -1 query by default, a maximum of 100 should be used.'
+				'message' => '%s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %s() will do a -1 query by default, a maximum of 100 should be used.',
 				'functions' => array(
 					'get_children',
 				),
