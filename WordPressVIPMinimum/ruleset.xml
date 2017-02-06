@@ -15,6 +15,7 @@
 	<rule ref="WordPress.PHP.StrictComparisons" />
 	<rule ref="WordPress.PHP.YodaConditions" />
 	<rule ref="WordPress.PHP.StrictInArray" />
+	<rule ref="WordPress.Functions.DontExtract" />
 
 	<rule ref="Generic.NamingConventions.ConstructorName" />
 
