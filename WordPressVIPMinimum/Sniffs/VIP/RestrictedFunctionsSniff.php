@@ -44,6 +44,13 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 					),
 				),
 			),
+			'strip_tags' => array(
+				'type' => 'error',
+				'message' => '%s does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags` should be used instead.',
+				'functions' => array(
+					'strip_tags'
+				),
+			),
 		);
 
 		$original_groups['get_posts']['functions'] = array_filter( $original_groups['get_posts']['functions'], function( $v ) {
