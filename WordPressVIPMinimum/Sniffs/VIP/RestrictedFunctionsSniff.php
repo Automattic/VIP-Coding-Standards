@@ -41,7 +41,6 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 					'message' => '%1$s() is for internal use only.',
 					'functions' => array(
 						'wpcom_vip_irc',
-						'wpcom_vip_irc_color',
 					),
 				),
 			),
