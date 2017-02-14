@@ -44,6 +44,13 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 					),
 				),
 			),
+			'rewrite_rules' => array(
+				'type' => 'error',
+				'message' => '%s should not be used in any normal circumstances in the theme code.',
+				'functions' => array(
+					'flush_rewrite_rules',
+				)
+			),
 		);
 
 		$original_groups['get_posts']['functions'] = array_filter( $original_groups['get_posts']['functions'], function( $v ) {
