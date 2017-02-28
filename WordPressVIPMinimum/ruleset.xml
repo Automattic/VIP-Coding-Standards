@@ -18,5 +18,6 @@
 	<rule ref="WordPress.Functions.DontExtract" />
 
 	<rule ref="Generic.NamingConventions.ConstructorName" />
+	<rule ref="Generic.PHP.DisallowShortOpenTag" />
 
 </ruleset>
