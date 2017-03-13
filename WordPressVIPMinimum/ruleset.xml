@@ -20,4 +20,9 @@
 	<rule ref="Generic.NamingConventions.ConstructorName" />
 	<rule ref="Generic.PHP.DisallowShortOpenTag" />
 
+	<!-- Lower Yoda Conditions Error to Warning -->
+	<rule ref="WordPress.PHP.YodaConditions.NotYoda">
+		<type>warning</type>
+	</rule>
+
 </ruleset>
