@@ -27,6 +27,9 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 			'get_the_terms',
 			'get_the_tags',
 		),
+		'array_key_exists' => array(
+			'get_option',
+		)
 	);
 
 	public $notFunctions = array(
@@ -118,6 +121,9 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 
 	}
 
+	/**
+	 * Find instances in which a function call is directly passed to another one w/o checking the return type
+	 */
 	public function findDirectFunctionCalls( $stackPtr ) {
 		$tokens = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
@@ -150,6 +156,12 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 
 	}//end findDirectFunctionCalls()
 
+	/**
+	 * Deals with situations in which the variable is being used later in the code along with a function which is known for causing issues.
+	 *
+	 * This only catches situations in which the variable is not being used with some other function before it's interacting with function we look for.
+	 * That's currently necessary in order to prevent false positives.
+	 */
 	public function findNonCheckedVariables( $stackPtr ) {
 
 		$tokens = $this->_tokens;
@@ -228,12 +240,17 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		
 		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ($closeBracket + 1), null, false, $variableName, false );
 
+		// Find previous non-empty token, which is not an open parenthesis, comma nor variable.
 		$search = PHP_CodeSniffer_Tokens::$emptyTokens;
 		$search[] = T_OPEN_PARENTHESIS;
+		// This allows us to check for variables which are passed as second paramt of a function. Eg.: array_key_exists.
+		$search[] = T_COMMA;
+		$search[] = T_VARIABLE; 
 		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ($nextVariableOccurrence - 1), null, true);
 
 		foreach( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[$callee] : array();
+			// Check whether the found token is one of the function calls (or foreach call) we are interested in.
 			if ( true === in_array( $tokens[$nextFunctionCallWithVariable]['code'], array_merge( PHP_CodeSniffer_Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				 && $tokens[$nextFunctionCallWithVariable]['content'] === $callee
 			) {
