@@ -246,6 +246,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		// This allows us to check for variables which are passed as second paramt of a function. Eg.: array_key_exists.
 		$search[] = T_COMMA;
 		$search[] = T_VARIABLE; 
+		$search[] = T_CONSTANT_ENCAPSED_STRING;
 		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ($nextVariableOccurrence - 1), null, true);
 
 		foreach( $callees as $callee ) {
