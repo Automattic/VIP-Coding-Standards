@@ -27,6 +27,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RegexpCompareSniff extends WordPress_Abstra
 				'type' => 'error',
 				'keys' => array(
 					'compare',
+					'meta_compare',
 				),
 			),
 		);
