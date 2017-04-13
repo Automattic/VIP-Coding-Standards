@@ -171,9 +171,9 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 
 		if ( false === array_key_exists( $parentClassName, $this->checkClasses ) ) {
 			//This class does not extend a class we are interested in.
-			foreach ( $this->checkClassesGroups as $parent => $childs ) {
+			foreach ( $this->checkClassesGroups as $parent => $children ) {
 				//But it might be one of the grouped classes.
-				foreach ( $childs as $child ) {
+				foreach ( $children as $child ) {
 					if ( $child === $parentClassName ) {
 						$parentClassName = $parent;
 						break 2;
