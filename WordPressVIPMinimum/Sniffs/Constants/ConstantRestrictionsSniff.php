@@ -22,6 +22,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 	public function register() {
 		return array(
 			T_CONSTANT_ENCAPSED_STRING,
+			T_STRING,
 		);
 	}// end register()
 
@@ -37,10 +38,19 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 
 		$tokens = $phpcsFile->getTokens();
 
-		$constantName = trim( $tokens[$stackPtr]['content'], "\"'" );
+		if ( T_STRING === $tokens[$stackPtr]['code'] ) {
+			$constantName = $tokens[$stackPtr]['content'];
+		} else {
+			$constantName = trim( $tokens[ $stackPtr ]['content'], "\"'" );
+		}
 
 		if ( false === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
 			// Not the constant we are looking for
+			return;
+		}
+
+		if ( T_STRING === $tokens[$stackPtr]['code'] ) {
+			$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately", $constantName ), $stackPtr );
 			return;
 		}
 
