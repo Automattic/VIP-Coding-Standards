@@ -50,7 +50,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 		}
 
 		if ( T_STRING === $tokens[$stackPtr]['code'] ) {
-			$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately", $constantName ), $stackPtr );
+			$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately.", $constantName ), $stackPtr );
 			return;
 		}
 
@@ -80,7 +80,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 			if ( 'define' === $tokens[$previous]['content'] ) {
 				$phpcsFile->addError( sprintf( "The definition of %s constant is prohibied. Please use a different name.", $constantName ), $previous );
 			} else {
-				$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately", $constantName ), $previous );
+				$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately.", $constantName ), $previous );
 			}
 		}
 	}
