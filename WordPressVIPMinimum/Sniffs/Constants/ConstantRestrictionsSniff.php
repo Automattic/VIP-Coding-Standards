@@ -54,7 +54,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 			return;
 		}
 
-		// Find the previou non-empty token.
+		// Find the previous non-empty token.
 		$openBracket = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true);
 
 		if ($tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
