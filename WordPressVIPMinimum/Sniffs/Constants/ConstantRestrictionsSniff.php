@@ -22,6 +22,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 	public function register() {
 		return array(
 			T_CONSTANT_ENCAPSED_STRING,
+			T_STRING,
 		);
 	}// end register()
 
@@ -37,14 +38,23 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 
 		$tokens = $phpcsFile->getTokens();
 
-		$constantName = trim( $tokens[$stackPtr]['content'], "\"'" );
+		if ( T_STRING === $tokens[$stackPtr]['code'] ) {
+			$constantName = $tokens[$stackPtr]['content'];
+		} else {
+			$constantName = trim( $tokens[ $stackPtr ]['content'], "\"'" );
+		}
 
 		if ( false === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
 			// Not the constant we are looking for
 			return;
 		}
 
-		// Find the previou non-empty token.
+		if ( T_STRING === $tokens[$stackPtr]['code'] ) {
+			$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately.", $constantName ), $stackPtr );
+			return;
+		}
+
+		// Find the previous non-empty token.
 		$openBracket = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true);
 
 		if ($tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
@@ -70,7 +80,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 			if ( 'define' === $tokens[$previous]['content'] ) {
 				$phpcsFile->addError( sprintf( "The definition of %s constant is prohibied. Please use a different name.", $constantName ), $previous );
 			} else {
-				$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately", $constantName ), $previous );
+				$phpcsFile->addWarning( sprintf( "Code is touching the %s constant. Make sure it's used appropriately.", $constantName ), $previous );
 			}
 		}
 	}
