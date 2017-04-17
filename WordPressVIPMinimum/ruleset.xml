@@ -3,7 +3,7 @@
 	<description>WordPress VIP Minimum Coding Standards</description>
 
 	<rule ref="WordPress.VIP">
-		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+		<exclude name="WordPress.VIP.ValidatedSanitizedInput.MissingUnslash"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions"/>
 	</rule>
 
