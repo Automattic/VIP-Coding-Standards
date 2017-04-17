@@ -171,9 +171,9 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 
 		if ( false === array_key_exists( $parentClassName, $this->checkClasses ) ) {
 			//This class does not extend a class we are interested in.
-			foreach ( $this->checkClassesGroups as $parent => $childs ) {
+			foreach ( $this->checkClassesGroups as $parent => $children ) {
 				//But it might be one of the grouped classes.
-				foreach ( $childs as $child ) {
+				foreach ( $children as $child ) {
 					if ( $child === $parentClassName ) {
 						$parentClassName = $parent;
 						break 2;
@@ -196,6 +196,19 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 		$signatureParams = $phpcsFile->getMethodParameters($stackPtr);
 
 		$parentSignature = $this->checkClasses[$parentClassName][$methodName];
+
+	    if ( count( $signatureParams ) > count( $parentSignature ) ) {
+		    $extra_params = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
+		    $all_extra_params_have_default = true;
+			foreach( $extra_params as $extra_param ) {
+				if ( false === array_key_exists( 'default', $extra_param ) || 'true' !== $extra_param['default'] ) {
+					$all_extra_params_have_default = false;
+				}
+			}
+		    if ( true === $all_extra_params_have_default ) {
+			    return; // We're good.
+		    }
+	    }
 
 		if ( count( $signatureParams ) !== count( $parentSignature ) ) {
 			$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
