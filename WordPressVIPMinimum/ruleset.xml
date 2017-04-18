@@ -16,7 +16,6 @@
 	<rule ref="WordPress.PHP.YodaConditions" />
 	<rule ref="WordPress.PHP.StrictInArray" />
 	<rule ref="WordPress.Functions.DontExtract" />
-	<rule ref="WordPress.PHP.DevelopmentFunctions" />
 
 	<rule ref="Generic.NamingConventions.ConstructorName" />
 	<rule ref="Generic.PHP.DisallowShortOpenTag" />
@@ -24,6 +23,70 @@
 	<!-- Lower Yoda Conditions Error to Warning -->
 	<rule ref="WordPress.PHP.YodaConditions.NotYoda">
 		<type>warning</type>
+	</rule>
+
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#eval-and-create_function -->
+	<rule ref="Squiz.PHP.Eval"/>
+	<rule ref="Squiz.PHP.Eval.Discouraged">
+		<type>error</type>
+		<message>eval() is a security risk so not allowed.</message>
+	</rule>
+
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#settings-alteration -->
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
+		<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/pull/633#issuecomment-266634811 -->
+		<properties>
+			<property name="exclude" value="obfuscation"/>
+		</properties>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_alter">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_restore">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_apache_setenv">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_restore_include_path">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_magic_quotes_runtime">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_magic_quotes_runtime">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_dl">
+		<type>error</type>
+	</rule>
+
+	<!-- https://vip.wordpress.com/documentation/code-review-what-we-look-for/#commented-out-code-debug-code-or-output -->
+	<rule ref="WordPress.PHP.DevelopmentFunctions">
+		<!-- this is being covered in terms of WordPress.PHP.DiscouragedPHPFunctions sniff -->
+		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting"/>
+	</rule>
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#settings-alteration -->
+	<rule ref="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_error_log">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_dump">
+		<type>error</type>
 	</rule>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_parse_url-instead-of-parse_url -->
@@ -38,5 +101,4 @@
 	<rule ref="WordPress.WP.AlternativeFunctions.file_get_contents">
 		<message>%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.</message>
 	</rule>
-
 </ruleset>
