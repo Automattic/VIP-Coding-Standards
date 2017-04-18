@@ -62,8 +62,13 @@ $expected = array(
 $errors = $warnings = array();
 $total_issues = 0;
 
-// Collect the PHPCS result
-$output = shell_exec( 'phpcs --standard=WordPressVIPMinimum --report=json ./ruleset_test.inc' );
+// Travis support.
+if ( false === getenv( 'PHPCS_BIN' ) ) {
+	putenv( "PHPCS_BIN=phpcs" );
+}
+
+// Collect the PHPCS result.
+$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./ruleset_test.inc' );
 
 $output = json_decode( $output, true );
 
@@ -128,4 +133,7 @@ foreach( $warnings as $line => $number ) {
 
 if ( 0 === $total_issues ) {
 	printf( 'No issues found. All tests passed!' . PHP_EOL );
+	exit( 0 );
+} else {
+	exit( 1 );
 }

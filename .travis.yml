@@ -1,0 +1,80 @@
+sudo: false
+
+language:
+    - php
+
+php:
+    - 5.2
+    - 5.3
+    - 5.4
+    - 5.5
+    - 5.6
+    - 7.0
+    - 7.1
+
+env:
+    - PHPCS_BRANCH=master
+    - PHPCS_BRANCH=2.8.1
+
+matrix:
+  fast_finish: true
+  include:
+    # Run PHPCS against WPCS. I just picked to run it against 5.5.
+    - php: 5.5
+      env: PHPCS_BRANCH=master SNIFF=1
+    # Run against PHPCS 3.0. I just picked to run it against 5.6.
+    - php: 5.6
+      env: PHPCS_BRANCH=3.0
+    # Run against HHVM and PHP nightly.
+    - php: hhvm
+      sudo: required
+      dist: trusty
+      group: edge
+      env: PHPCS_BRANCH=master
+    - php: nightly
+      env: PHPCS_BRANCH=master
+    # Run custom integration test. I just picked to run it against 7.0.
+    - php: 7.0
+      env: PHPCS_BRANCH=master INTEGRATION_TEST=1
+  allow_failures:
+    # Allow failures for unstable builds.
+    - php: nightly
+    - php: hhvm
+    - env: PHPCS_BRANCH=3.0
+
+
+before_script:
+    - export PATH="$HOME/.composer/vendor/bin:$PATH"
+    - export PHPCS_DIR=/tmp/phpcs
+    - export WPCS_DIR=/tmp/wpcs
+    - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == 3.0 ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
+    - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
+    - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
+    - ln -s $WPCS_DIR/WordPress $PHPCS_DIR/CodeSniffer/Standards/WordPress
+    - ln -s $WPCS_DIR/WordPress-Core $PHPCS_DIR/CodeSniffer/Standards/WordPress-Core
+    - ln -s $WPCS_DIR/WordPress-Docs $PHPCS_DIR/CodeSniffer/Standards/WordPress-Docs
+    - ln -s $WPCS_DIR/WordPress-Extra $PHPCS_DIR/CodeSniffer/Standards/WordPress-Extra
+    - ln -s $WPCS_DIR/WordPress-VIP $PHPCS_DIR/CodeSniffer/Standards/WordPress-VIP
+    - $PHPCS_BIN --config-set installed_paths $(pwd)
+    - |
+      if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
+        composer global require "phpunit/phpunit=5.7.*"
+      elif [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then
+        composer global require "phpunit/phpunit=4.8.*"
+      fi;
+    - phpunit --version
+
+script:
+    - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
+    - phpunit --filter WordPressVIPMinimum /tmp/phpcs/tests/AllTests.php
+    # WordPress Coding Standards.
+    # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+    # @link http://pear.php.net/package/PHP_CodeSniffer/
+    # -p flag: Show progress of the run.
+    # -s flag: Show sniff codes in all reports.
+    # -v flag: Print verbose output.
+    # -n flag: Do not print warnings. (shortcut for --warning-severity=0)
+    # --standard: Use WordPress as the standard.
+    # --extensions: Only sniff PHP files.
+    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p -s -n . --standard=./bin/phpcs.xml --extensions=php; fi
+    - if [[ "$INTEGRATION_TEST" == "1" ]]; then php ./ruleset_test.php; fi
