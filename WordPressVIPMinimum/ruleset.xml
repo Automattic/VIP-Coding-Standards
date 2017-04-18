@@ -26,4 +26,17 @@
 		<type>warning</type>
 	</rule>
 
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_parse_url-instead-of-parse_url -->
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_json_encode-over-json_encode -->
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#filesystem-writes -->
+	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#remote-calls -->
+	<rule ref="WordPress.WP.AlternativeFunctions"/>
+	<!-- VIP recommends other functions -->
+	<rule ref="WordPress.WP.AlternativeFunctions.curl">
+		<message>Using cURL functions is highly discouraged within VIP context. Check (Fetching Remote Data) on VIP Documentation.</message>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_get_contents">
+		<message>%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.</message>
+	</rule>
+
 </ruleset>
