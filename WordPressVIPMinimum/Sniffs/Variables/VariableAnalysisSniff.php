@@ -1316,10 +1316,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $token  = $tokens[$stackPtr];
 
         foreach ($arguments as $argumentPtrs) {
-            $argumentPtrs = array_values(array_filter($argumentPtrs,
-                function ($argumentPtr) use ($tokens) {
-                    return $tokens[$argumentPtr]['code'] !== T_WHITESPACE;
-                }));
+            $argumentPtrs = array_values(array_filter($argumentPtrs, array( $this, 'filter_non_whitespace_tokens' ) ));
             if (empty($argumentPtrs)) {
                 continue;
             }
@@ -1442,6 +1439,11 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
                     );
             }
         }
+    }
+
+    function filter_non_whitespace_tokens($argumentPtr) {
+        $tokens = $phpcsFile->getTokens();
+        return $tokens[$argumentPtr]['code'] !== T_WHITESPACE;
     }
 }//end class
 
