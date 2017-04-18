@@ -21,7 +21,6 @@ class WordPressVIPMinimum_Tests_Functions_CheckReturnValueUnitTest extends Abstr
 			16 => 1,
 			19 => 1,
 			23 => 1,
-			29 => 1,
 		);
 	}
 
