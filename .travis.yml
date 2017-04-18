@@ -20,6 +20,7 @@ matrix:
       env: SNIFF=1
 
 before_script:
+    - export PATH="$HOME/.composer/vendor/bin:$PATH"
     - export PHPCS_DIR=/tmp/phpcs
     - export WPCS_DIR=/tmp/wpcs
     - export PHPCS_BIN=$PHPCS_DIR/scripts/phpcs
@@ -31,6 +32,13 @@ before_script:
     - ln -s $WPCS_DIR/WordPress-Extra $PHPCS_DIR/CodeSniffer/Standards/WordPress-Extra
     - ln -s $WPCS_DIR/WordPress-VIP $PHPCS_DIR/CodeSniffer/Standards/WordPress-VIP
     - $PHPCS_BIN --config-set installed_paths $(pwd)
+    - |
+      if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
+        composer global require "phpunit/phpunit=5.7.*"
+      else
+        composer global require "phpunit/phpunit=4.8.*"
+      fi;
+    - phpunit --version
 
 script:
     - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
