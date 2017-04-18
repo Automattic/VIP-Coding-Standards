@@ -127,4 +127,7 @@ foreach( $warnings as $line => $number ) {
 
 if ( 0 === $total_issues ) {
 	printf( 'No issues found. All tests passed!' . PHP_EOL );
+	exit( 0 );
+} else {
+	exit( 1 );
 }
