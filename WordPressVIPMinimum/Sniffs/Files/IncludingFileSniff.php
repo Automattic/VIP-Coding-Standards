@@ -65,7 +65,7 @@ class WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff implements PHP_CodeSni
 			$nextToken = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$emptyTokens, ($nextToken + 1), null, true, null, true );
 		}
 
-		if ( $tokens[$nextToken]['code'] === T_DIR ) {
+		if ( $tokens[$nextToken]['code'] === T_DIR || '__DIR__' === $tokens[$nextToken]['content'] ) {
 			// The construct is using __DIR__ which is fine
 			return;
 		}

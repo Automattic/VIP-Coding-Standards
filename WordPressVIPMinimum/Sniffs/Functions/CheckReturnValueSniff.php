@@ -220,12 +220,12 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 				}
 
 				if ( T_COMMA === $tokens[$i]['code'] ) {
-					$params[$paramNo++] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), function ( $carry, $item ) { return $carry .= $item['content']; }  ) );
+					$params[$paramNo++] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), array( $this, 'reduce_array' )  ) );
 					$prevCommaPos = $i + 1;
 				}
 
 				if ( $i === $closeBracket ) {
-					$params[$paramNo] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), function ( $carry, $item ) { return $carry .= $item['content']; } ) );
+					$params[$paramNo] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), array( $this, 'reduce_array' ) ) );
 					break;
 				}
 			
@@ -269,6 +269,10 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 				return;
         	}
 		}
+	}
+
+	public function reduce_array( $carry, $item ) {
+		return $carry .= $item['content'];
 	}
 
 }//end class
