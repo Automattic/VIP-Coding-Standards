@@ -41,8 +41,15 @@ matrix:
 
 before_script:
     - export PHPCS_DIR=/tmp/phpcs
+    - export WPCS_DIR=/tmp/wpcs
     - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == 3.0 ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
+    - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
+    - ln -s $WPCS_DIR/WordPress $PHPCS_DIR/CodeSniffer/Standards/WordPress
+    - ln -s $WPCS_DIR/WordPress-Core $PHPCS_DIR/CodeSniffer/Standards/WordPress-Core
+    - ln -s $WPCS_DIR/WordPress-Docs $PHPCS_DIR/CodeSniffer/Standards/WordPress-Docs
+    - ln -s $WPCS_DIR/WordPress-Extra $PHPCS_DIR/CodeSniffer/Standards/WordPress-Extra
+    - ln -s $WPCS_DIR/WordPress-VIP $PHPCS_DIR/CodeSniffer/Standards/WordPress-VIP
     - $PHPCS_BIN --config-set installed_paths $(pwd)
 
 script:
