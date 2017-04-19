@@ -14,6 +14,7 @@
  * ```
  */
 
+// Expected values.
 $expected = array(
 	'errors' => array(
 		4 => 1,
@@ -40,6 +41,7 @@ $expected = array(
 		116 => 1,
 		124 => 1,
 		127 => 1,
+		129 => 1,
 	),
 	'warnings' => array(
 		9 => 1,
@@ -57,81 +59,130 @@ $expected = array(
 		108 => 1,
 		109 => 1,
 	),
+	'messages' => array(
+		129 => array(
+			'get_children() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. get_children() will do a -1 query by default, a maximum of 100 should be used.',
+		)
+	),
 );
 
-$errors = $warnings = array();
-$total_issues = 0;
+class PHPCS_Ruleset_Test {
 
-// Travis support.
-if ( false === getenv( 'PHPCS_BIN' ) ) {
-	putenv( "PHPCS_BIN=phpcs" );
-}
+	private $errors = array();
 
-// Collect the PHPCS result.
-$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./ruleset_test.inc' );
+	private $warnings = array();
 
-$output = json_decode( $output, true );
+	private $messages = array();
 
-foreach( $output['files'] as $file => $issues ) {
-	foreach( $issues['messages'] as $issue ) {
-		if ( 'ERROR' === $issue['type'] ) {
-			$errors[$issue['line']] = ( isset( $errors[$issue['line']] ) ) ? $errors[$issue['line']]++ : 1;
-		} else {
-			$warnings[$issue['line']] = ( isset( $warnings[$issue['line']] ) ) ? $warnings[$issue['line']]++ : 1;
+	private $total_issues = 0;
+
+	public $expected = array();
+
+	public function __construct( $expected = array() ) {
+		$this->expected = $expected;
+
+		// Travis support.
+		if ( false === getenv( 'PHPCS_BIN' ) ) {
+			putenv( "PHPCS_BIN=phpcs" );
 		}
-	}
-}
 
-// Check for missing expected values
-foreach ( $expected as $type => $lines ) {
-	if ( 'errors' === $type ) {
-		foreach( $lines as $line => $number ) {
-			if ( false === isset( $errors[$line] ) ) {
-				printf( 'Expected %d errors, found %d on line %d' . PHP_EOL, $number, 0, $line );
-				$total_issues++;
-			} else if ( $errors[$line] !== $number ) {
-				printf( 'Expected %d errors, found %d on line %d' . PHP_EOL, $number, $errors[$line], $line );
-				$total_issues++;
+		// Collect the PHPCS result.
+		$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./ruleset_test.inc' );
+
+		$output = json_decode( $output, true );
+
+		if ( false === is_array( $output ) || true === empty( $output ) ) {
+			printf( 'The PHPCS command checking the ruleset haven\'t returned any issues. Bailing ...' . PHP_EOL );
+			exit( 1 ); // Die early, if we don't have any output.
+		}
+
+		foreach( $output['files'] as $file => $issues ) {
+			foreach( $issues['messages'] as $issue ) {
+				if ( 'ERROR' === $issue['type'] ) {
+					$this->errors[$issue['line']] = ( isset( $this->errors[$issue['line']] ) ) ? $this->errors[$issue['line']]++ : 1;
+				} else {
+					$this->warnings[$issue['line']] = ( isset( $this->warnings[$issue['line']] ) ) ? $this->warnings[$issue['line']]++ : 1;
+				}
+				$this->messages[$issue['line']] = ( false === isset( $this->messages[$issue['line']] ) || false === is_array( $this->messages[$issue['line']] ) ) ? array( $issue['message'] ) : array_merge( $this->messages[$issue['line']], array( $issue['message'] ) );
 			}
-			unset( $errors[$line] );
 		}
-	} else {
-		foreach( $lines as $line => $number ) {
-			if ( false === isset( $warnings[$line] ) ) {
-				printf( 'Expected %d warnings, found %d on line %d' . PHP_EOL, $number, 0, $line );
-				$total_issues++;
-			} else if ( $warnings[$line] !== $number ) {
-				printf( 'Expected %d warnings, found %d on line %d' . PHP_EOL, $number, $warnings[$line], $line );
-				$total_issues++;
+	}
+
+	public function run() {
+		// Check for missing expected values
+		$this->check_missing_expected_values();
+		// Check for extra values which were not expected
+		$this->check_unexpected_values();
+		// Check for expected messages
+		$this->check_messages();
+
+		return $this->total_issues;
+	}
+
+	private function check_missing_expected_values() {
+		foreach( $this->expected as $type => $lines ) {
+			if ( 'messages' === $type ) {
+				continue;
 			}
-			unset( $warnings[$line] );
-			
+			foreach ( $lines as $line => $number ) {
+				if ( false === isset( $this->$type[ $line ] ) ) {
+					$this->error_warning_message( $number, $type, 0, $line );
+					$this->total_issues ++;
+				} else if ( $this->$type[ $line ] !== $number ) {
+					$this->error_warning_message( $number, $type, $this->$type[ $line ], $line );
+					$this->total_issues ++;
+				}
+				unset( $this->$type[ $line ] );
+			}
 		}
 	}
-}
 
-// Check for extra values which were not expected
-foreach( $errors as $line => $number ) {
-	if ( false === isset( $expected['errors'][$line] ) ) {
-		printf( 'Expected %d errors, found %d on line %d' . PHP_EOL, 0, $number, $line );
-		$total_issues++;
-	} else if ( $number !== $expected['errors'][$line] ) {
-		printf( 'Expected %d errors, found %d on line %d' . PHP_EOL, $expected['errors'][$line], $number, $line );
-		$total_issues++;
+	private function check_unexpected_values() {
+		foreach( array( 'errors', 'warnings' ) as $type ) {
+			foreach ( $this->$type as $line => $number ) {
+				if ( false === isset( $expected[ $type ][ $line ] ) ) {
+					$this->error_warning_message( 0, $type, $number, $line );
+					$this->total_issues ++;
+				} else if ( $number !== $expected[ $type ][ $line ] ) {
+					$this->error_warning_message( $expected[ $type ][ $line ], $type, $number, $line );
+					$this->total_issues ++;
+				}
+			}
+		}
+	}
+
+	private function check_messages() {
+		foreach( $this->expected['messages'] as $line => $messages ) {
+			foreach( $messages as $message ) {
+				if ( false === isset( $this->messages[ $line ] ) ) {
+					printf( 'Expected "%s" but found no message for line %d' . PHP_EOL, $message, $line );
+					$this->total_issues ++;
+				} else if ( false === in_array( $message, $this->messages[$line] ) ) {
+					printf( 'Expected message "%s" was not found for line %d' . PHP_EOL, $message, $line );
+					$this->total_issues ++;
+				}
+			}
+		}
+		foreach( $this->messages as $line => $messages ) {
+			foreach( $messages as $message ) {
+				if ( true === isset( $this->expected['messages'][$line] ) ) {
+					if ( false === in_array( $message, $this->expected['messages'][$line] ) ) {
+						printf( 'Unexpected message "%s" was found for line %d' . PHP_EOL, $message, $line );
+						$this->total_issues ++;
+					}
+				}
+			}
+		}
+	}
+
+	private function error_warning_message( $expected, $type, $number, $line ) {
+		printf( 'Expected %d %s, found %d on line %d' . PHP_EOL, $expected, $type, $number, $line );
 	}
 }
 
-foreach( $warnings as $line => $number ) {
-	if ( false === isset( $expected['warnings'][$line] ) ) {
-		printf( 'Expected %d warnings, found %d on line %d' . PHP_EOL, 0, $number, $line );
-		$total_issues++;
-	} else if ( $number !== $expected['warnings'][$line] ) {
-		printf( 'Expected %d warnings, found %d on line %d' . PHP_EOL, $expected['warnings'][$line], $number, $line );
-		$total_issues++;
-	}
-}
-
-if ( 0 === $total_issues ) {
+// Run the tests!
+$test = new PHPCS_Ruleset_Test( $expected );
+if ( 0 === $test->run() ) {
 	printf( 'No issues found. All tests passed!' . PHP_EOL );
 	exit( 0 );
 } else {
