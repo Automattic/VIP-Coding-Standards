@@ -101,4 +101,9 @@
 	<rule ref="WordPress.WP.AlternativeFunctions.file_get_contents">
 		<message>%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.</message>
 	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
+		<type>error</type>
+		<message>%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.</message>
+	</rule>
 </ruleset>

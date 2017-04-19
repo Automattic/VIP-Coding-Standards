@@ -30,13 +30,6 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 				'message' => '%s is prohibited on the WordPress.com VIP platform',
 				'functions' => array( 'get_super_admins' ),
 			),
-			'get_children' => array(
-				'type' => 'error',
-				'message' => '%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.',
-				'functions' => array(
-					'get_children',
-				),
-			),
 			'internal' => array(
 				'type' => 'error',
 				'message' => '%1$s() is for internal use only.',
@@ -53,13 +46,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 			),
 		);
 
-		$original_groups['get_posts']['functions'] = array_filter( $original_groups['get_posts']['functions'], array( $this, 'filter_out_get_children' ) );
-
 		return array_merge( $original_groups, $new_groups );
 
 	} // end getGroups().
-
-	public function filter_out_get_children( $v ) {
-		return ! in_array( $v, array( 'get_children' ), true );
-	}
 }

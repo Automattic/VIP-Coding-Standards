@@ -2,7 +2,7 @@
 
 wpcom_vip_irc(); // Bad.
 
-get_children(); // Bad.
+get_children(); // Bad. Warning.
 
 wp_cache_get_multi(); // Bad.
 

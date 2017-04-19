@@ -125,3 +125,5 @@ eval(); // Bad. Error.
 
 // WordPressVIPMinimum.VIP.RestrictedFunctions
 wpcom_vip_irc(); // Bad. Error.
+
+get_children(); // Bad. Warning. Message.
