@@ -36,12 +36,12 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 				'functions' => array(
 					'get_children',
 				),
-				'internal' => array(
-					'type' => 'error',
-					'message' => '%1$s() is for internal use only.',
-					'functions' => array(
-						'wpcom_vip_irc',
-					),
+			),
+			'internal' => array(
+				'type' => 'error',
+				'message' => '%1$s() is for internal use only.',
+				'functions' => array(
+					'wpcom_vip_irc',
 				),
 			),
 			'rewrite_rules' => array(

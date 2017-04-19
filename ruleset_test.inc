@@ -122,3 +122,6 @@ wp_remote_post( $this->endpoint, array(
 
 // Squiz.PHP.Eval
 eval(); // Bad. Error.
+
+// WordPressVIPMinimum.VIP.RestrictedFunctions
+wpcom_vip_irc(); // Bad. Error.
