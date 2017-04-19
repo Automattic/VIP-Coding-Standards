@@ -43,6 +43,7 @@ $expected = array(
 		124 => 1,
 		127 => 1,
 		129 => 1,
+		131 => 1,
 	),
 	'warnings' => array(
 		9 => 1,

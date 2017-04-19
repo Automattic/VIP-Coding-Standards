@@ -46,6 +46,13 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 					'flush_rewrite_rules',
 				),
 			),
+			'attachment_url_to_postid' => array(
+				'type' => 'error',
+				'message' => '%s() is prohibited, please use wpcom_vip_attachment_url_to_postid() instead.',
+				'functions' => array(
+					'attachment_url_to_postid'
+				)
+			),
 		);
 
 		return array_merge( $original_groups, $new_groups );
