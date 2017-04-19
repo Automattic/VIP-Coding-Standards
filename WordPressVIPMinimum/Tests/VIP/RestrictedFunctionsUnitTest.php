@@ -1,10 +1,14 @@
 <?php
 /**
  * Unit test class for WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 
 /**
- * Unit test class for the high remote request timeout sniff.
+ * Unit test class for the RestrictedFunctions sniff.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Tests_VIP_RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 

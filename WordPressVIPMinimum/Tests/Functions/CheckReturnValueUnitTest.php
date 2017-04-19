@@ -1,10 +1,14 @@
 <?php
 /**
  * Unit test class for WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 
 /**
- * Unit test class for the AdminBarRemoval sniff.
+ * Unit test class for the CheckReturnValue sniff.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Tests_Functions_CheckReturnValueUnitTest extends AbstractSniffUnitTest {
 

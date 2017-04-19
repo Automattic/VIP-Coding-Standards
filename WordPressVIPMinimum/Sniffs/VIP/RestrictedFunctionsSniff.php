@@ -2,11 +2,13 @@
 /**
  * WordPressVIPMinimum Coding Standard.
  *
+ * @package VIPCS\WordPressVIPMinimum
  */
 
 /**
  * Restricts usage of some functions in VIP context.
  *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_Sniffs_VIP_RestrictedFunctionsSniff {
 
@@ -42,7 +44,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 				'message' => '%s should not be used in any normal circumstances in the theme code.',
 				'functions' => array(
 					'flush_rewrite_rules',
-				)
+				),
 			),
 		);
 

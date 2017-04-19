@@ -1,10 +1,20 @@
 <?php
+/**
+ * WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ */
 
-if (class_exists('PHP_CodeSniffer_Standards_AbstractScopeSniff', true) === false) {
+if ( false === class_exists( 'PHP_CodeSniffer_Standards_AbstractScopeSniff', true ) ) {
 	$error = 'Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found';
-	throw new PHP_CodeSniffer_Exception($error);
+	throw new PHP_CodeSniffer_Exception( $error );
 }
 
+/**
+ * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ */
 class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff {
 
 	/**
@@ -18,7 +28,7 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	 * A list of functions in the current class.
 	 *
 	 * @var string[]
-	 */ 
+	 */
 	private $_functionList = array();
 
 	/**
@@ -34,8 +44,12 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 			'WP_Widget' => array(
 				'id_base',
 				'name',
-				'widget_options' => array( 'default' => 'array()' ),
-				'constol_options' => array( 'default' => 'array()' ),
+				'widget_options' => array(
+					'default' => 'array()',
+				),
+				'constol_options' => array(
+					'default' => 'array()',
+				),
 			),
 			'get_field_name' => array( 'field_name' ),
 			'get_field_id' => array( 'field_name' ),
@@ -47,51 +61,89 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 			'is_preview' => array(),
 			'display_callback' => array(
 				'args',
-				'widget_args' => array( 'default' => '1' ),
+				'widget_args' => array(
+					'default' => '1',
+				),
 			),
 			'update_callback' => array(
-				'deprecated' => array( 'default' => '1' ),
+				'deprecated' => array(
+					'default' => '1',
+				),
 			),
 			'form_callback' => array(
-				'widget_args' => array( 'default' => '1' ),
+				'widget_args' => array(
+					'default' => '1',
+				),
 			),
 			'register_one' => array(
-				'number' => array( 'default' => '-1' ),
+				'number' => array(
+					'default' => '-1',
+				),
 			),
 			'save_settings' => array( 'settings' ),
 			'get_settings' => array(),
 		),
 		'Walker' => array(
 			'start_lvl' => array(
-				'output' => array( 'pass_by_reference' => true ),
-				'depth' => array( 'default' => '0' ),
-				'args' => array( 'default' => 'array()' ),
+				'output' => array(
+					'pass_by_reference' => true,
+				),
+				'depth' => array(
+					'default' => '0',
+				),
+				'args' => array(
+					'default' => 'array()',
+				),
 			),
 			'end_lvl' => array(
-				'output' => array( 'pass_by_reference' => true ),
-				'depth' => array( 'default' => '0' ),
-				'args' => array( 'default' => 'array()' ),
+				'output' => array(
+					'pass_by_reference' => true,
+				),
+				'depth' => array(
+					'default' => '0',
+				),
+				'args' => array(
+					'default' => 'array()',
+					),
 			),
 			'start_el' => array(
-				'output' => array( 'pass_by_reference' => true ),
+				'output' => array(
+					'pass_by_reference' => true,
+				),
 				'object',
-				'depth' => array( 'default' => '0' ),
-				'args' => array( 'default' => 'array()' ),
-				'current_object_id' => array( 'default' => '0' ),
+				'depth' => array(
+					'default' => '0',
+				),
+				'args' => array(
+					'default' => 'array()',
+				),
+				'current_object_id' => array(
+					'default' => '0',
+				),
 			),
 			'end_el' => array(
-				'output' => array( 'pass_by_reference' => true ),
+				'output' => array(
+					'pass_by_reference' => true,
+				),
 				'object',
-				'depth' => array( 'default' => '0' ),
-				'args' => array( 'default' => 'array()' ),
+				'depth' => array(
+					'default' => '0',
+				),
+				'args' => array(
+					'default' => 'array()',
+				),
 			),
 			'display_element' => array(
 				'element',
-				'children_elements' => array( 'pass_by_reference' => true ),
+				'children_elements' => array(
+					'pass_by_reference' => true,
+				),
 				'max_depth',
 				'depth',
 				'args',
-				'output' => array( 'pass_by_reference' => true )
+				'output' => array(
+					'pass_by_reference' => true,
+				),
 			),
 			'walk' => array(
 				'elements',
@@ -108,7 +160,9 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 			),
 			'unset_children' => array(
 				'el',
-				'children_elements' => array( 'pass_by_reference' => true )
+				'children_elements' => array(
+					'pass_by_reference' => true,
+				),
 			),
 		),
 	);
@@ -135,44 +189,42 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	 */
 	public function __construct() {
 		parent::__construct( array( T_CLASS ), array( T_FUNCTION ), true );
-	}// end __construct()
+	}//end __construct()
 
-   /**
-     * Processes this test when one of its tokens is encountered.
-     *
-     * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
-     * @param int                  $currScope A pointer to the start of the scope.
-     *
-     * @return void
-     */
-    protected function processTokenWithinScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope ) {
+	/**
+	 * Processes this test when one of its tokens is encountered.
+	 *
+	 * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
+	 * @param int                  $stackPtr  The position of the current token
+	 *                                        in the stack passed in $tokens.
+	 * @param int                  $currScope A pointer to the start of the scope.
+	 *
+	 * @return void
+	 */
+	protected function processTokenWithinScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope ) {
 
-		$className = $phpcsFile->getDeclarationName($currScope);
+		$className = $phpcsFile->getDeclarationName( $currScope );
 
-		if ($className !== $this->_currentClass) {
-			$this->loadFunctionNamesInScope($phpcsFile, $currScope);
+		if ( $className !== $this->_currentClass ) {
+			$this->loadFunctionNamesInScope( $phpcsFile, $currScope );
 			$this->_currentClass = $className;
 		}
 
-		$methodName = $phpcsFile->getDeclarationName($stackPtr);
-		
-		$tokens = $phpcsFile->getTokens();
+		$methodName = $phpcsFile->getDeclarationName( $stackPtr );
 
-		$parentClassName = $phpcsFile->findExtendedClassName($currScope);
-		if ($parentClassName === false) {
-			//This class does not extend any other class.
+		$parentClassName = $phpcsFile->findExtendedClassName( $currScope );
+		if ( false === $parentClassName ) {
+			// This class does not extend any other class.
 			return;
 		}
 
-		//need to define the originalParentClassName since we might override the parentClassName due to signature notations groupping
+		// Meed to define the originalParentClassName since we might override the parentClassName due to signature notations grouping.
 		$originalParentClassName = $parentClassName;
 
 		if ( false === array_key_exists( $parentClassName, $this->checkClasses ) ) {
-			//This class does not extend a class we are interested in.
+			// This class does not extend a class we are interested in.
 			foreach ( $this->checkClassesGroups as $parent => $children ) {
-				//But it might be one of the grouped classes.
+				// But it might be one of the grouped classes.
 				foreach ( $children as $child ) {
 					if ( $child === $parentClassName ) {
 						$parentClassName = $parent;
@@ -181,34 +233,34 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 				}
 			}
 			if ( false === array_key_exists( $parentClassName, $this->checkClasses ) ) {
-				//This class really does not extend a class we are interested in.
+				// This class really does not extend a class we are interested in.
 				return;
 			}
 		}
 
-		if ( false === array_key_exists( $methodName, $this->checkClasses[$parentClassName] ) &&
-			false === in_array( $methodName, $this->checkClasses[$parentClassName], true )
+		if ( false === array_key_exists( $methodName, $this->checkClasses[ $parentClassName ] ) &&
+			false === in_array( $methodName, $this->checkClasses[ $parentClassName ], true )
 		) {
-			//This method is not a one we are interested in.
+			// This method is not a one we are interested in.
 			return;
 		}
 
-		$signatureParams = $phpcsFile->getMethodParameters($stackPtr);
+		$signatureParams = $phpcsFile->getMethodParameters( $stackPtr );
 
-		$parentSignature = $this->checkClasses[$parentClassName][$methodName];
+		$parentSignature = $this->checkClasses[ $parentClassName ][ $methodName ];
 
-	    if ( count( $signatureParams ) > count( $parentSignature ) ) {
-		    $extra_params = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
-		    $all_extra_params_have_default = true;
-			foreach( $extra_params as $extra_param ) {
+		if ( count( $signatureParams ) > count( $parentSignature ) ) {
+			$extra_params = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
+			$all_extra_params_have_default = true;
+			foreach ( $extra_params as $extra_param ) {
 				if ( false === array_key_exists( 'default', $extra_param ) || 'true' !== $extra_param['default'] ) {
 					$all_extra_params_have_default = false;
 				}
 			}
-		    if ( true === $all_extra_params_have_default ) {
-			    return; // We're good.
-		    }
-	    }
+			if ( true === $all_extra_params_have_default ) {
+				return; // We're good.
+			}
+		}
 
 		if ( count( $signatureParams ) !== count( $parentSignature ) ) {
 			$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
@@ -216,10 +268,10 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 		}
 
 		$i = 0;
-		foreach( $parentSignature as $key => $param ) {
+		foreach ( $parentSignature as $key => $param ) {
 			if ( true === is_array( $param ) ) {
-				if ( true === array_key_exists( 'default', $param ) && false === array_key_exists( 'default', $signatureParams[$i] ) ||
-					 true === array_key_exists( 'pass_by_reference', $param ) && $param['pass_by_reference'] !== $signatureParams[$i]['pass_by_reference']
+				if ( true === array_key_exists( 'default', $param ) && false === array_key_exists( 'default', $signatureParams[ $i ] ) ||
+					 true === array_key_exists( 'pass_by_reference', $param ) && $param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
 				) {
 					$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
 					return;
@@ -227,19 +279,17 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 			}
 			$i++;
 		}
-
-
-	}// end processTokenWithinScope()
+	}//end processTokenWithinScope()
 
 	/**
 	 * Generates an error with nice current and parent class method notations
 	 *
-	 * @param string 				$parentClassName 		The name of the extended (parent) class
-	 * @param string 				$methodName 			The name of the method currently being examined
-	 * @param array 				$currentMethodSignature	The list of params and their options of the method which is being examined
-	 * @param array 				$parentMethodSignature	The list of params and their options of the parent class method
-	 * @param PHP_CodeSniffer_File 	$phpcsFile 				The file being scanned.
-	 * @param int					$stackPtr				The position of the current token in the stack
+	 * @param string 			   $parentClassName 		The name of the extended (parent) class.
+	 * @param string 			   $methodName 			The name of the method currently being examined.
+	 * @param array 			   $currentMethodSignature	The list of params and their options of the method which is being examined.
+	 * @param array 			   $parentMethodSignature	The list of params and their options of the parent class method.
+	 * @param PHP_CodeSniffer_File $phpcsFile 				The file being scanned.
+	 * @param int				   $stackPtr			    The position of the current token in the stack.
 	 *
 	 * @return void
 	 */
@@ -249,13 +299,13 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 
 		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
 
-		$phpcsFile->addError( sprintf( "Declaration of %s should be compatible with %s", $currentSignature, $parentSignature ), $stackPtr );
-	}// end adderror()
+		$phpcsFile->addError( sprintf( 'Declaration of %s should be compatible with %s', $currentSignature, $parentSignature ), $stackPtr );
+	}//end addError()
 
 	/**
 	 * Generates an array of params as they appear in the signature.
 	 *
-	 * @param array $methodSignature
+	 * @param array $methodSignature Signature of a method.
 	 *
 	 * @return array
 	 */
@@ -275,40 +325,40 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 			}
 
 			if ( true === array_key_exists( 'pass_by_reference', $options ) && true === $options['pass_by_reference'] ) {
-				$paramName = '&'.$paramName;
+				$paramName = '&' . $paramName;
 			}
-			
+
 			if ( true === array_key_exists( 'default', $options ) && false === empty( $options['default'] ) ) {
 				$paramName .= ' = ' . trim( $options['default'] );
 			}
-			
+
 			$paramList[] = $paramName;
 		}
-		
+
 		return $paramList;
-	}// end generateParamList()
+	}//end generateParamList()
 
-    /**
-     * Extracts all the function names found in the given scope.
-     *
-     * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
-     * @param int                  $currScope A pointer to the start of the scope.
-     *
-     * @return void
-     */
-    protected function loadFunctionNamesInScope(PHP_CodeSniffer_File $phpcsFile, $currScope) {
-        $this->_functionList = array();
-        $tokens = $phpcsFile->getTokens();
+	/**
+	 * Extracts all the function names found in the given scope.
+	 *
+	 * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
+	 * @param int                  $currScope A pointer to the start of the scope.
+	 *
+	 * @return void
+	 */
+	protected function loadFunctionNamesInScope( PHP_CodeSniffer_File $phpcsFile, $currScope ) {
+		$this->_functionList = array();
+		$tokens = $phpcsFile->getTokens();
 
-        for ($i = ($tokens[$currScope]['scope_opener'] + 1); $i < $tokens[$currScope]['scope_closer']; $i++) {
-            if ($tokens[$i]['code'] !== T_FUNCTION) {
-                continue;
-            }
+		for ( $i = ($tokens[ $currScope ]['scope_opener'] + 1); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
+			if ( T_FUNCTION !== $tokens[ $i ]['code'] ) {
+				continue;
+			}
 
-            $next = $phpcsFile->findNext(T_STRING, $i);
-            $this->_functionList[] = trim($tokens[$next]['content']);
-        }
+			$next = $phpcsFile->findNext( T_STRING, $i );
+			$this->_functionList[] = trim( $tokens[ $next ]['content'] );
+		}
 
-    }// end loadFunctionNamesInScope()
+	}//end loadFunctionNamesInScope()
 
 }

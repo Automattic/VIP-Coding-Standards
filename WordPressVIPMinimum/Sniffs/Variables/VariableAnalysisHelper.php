@@ -1,5 +1,5 @@
 <?php
-
+// @codingStandardsIgnoreStart
 /**
  * This file is part of the VariableAnalysis addon for PHP_CodeSniffer.
  *
@@ -68,3 +68,4 @@ class VariableInfo {
         $this->name = $varName;
     }
 }
+// @codingStandardsIgnoreEnd

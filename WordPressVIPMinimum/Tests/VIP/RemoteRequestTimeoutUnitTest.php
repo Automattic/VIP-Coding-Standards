@@ -1,10 +1,14 @@
 <?php
 /**
  * Unit test class for WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 
 /**
- * Unit test class for the high remote request timeout sniff.
+ * Unit test class for the RemoteRequestTimeout sniff.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Tests_VIP_RemoteRequestTimeoutUnitTest extends AbstractSniffUnitTest {
 
@@ -15,7 +19,7 @@ class WordPressVIPMinimum_Tests_VIP_RemoteRequestTimeoutUnitTest extends Abstrac
 	 */
 	public function getErrorList() {
 		return array(
-			5 => 1,		
+			5 => 1,
 		);
 	}
 

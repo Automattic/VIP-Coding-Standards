@@ -1,10 +1,14 @@
 <?php
 /**
  * Unit test class for WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 
 /**
- * Unit test class for the AdminBarRemoval sniff.
+ * Unit test class for the PreGetPosts sniff.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Tests_Actions_PreGetPostsUnitTest extends AbstractSniffUnitTest {
 
