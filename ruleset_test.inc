@@ -129,3 +129,5 @@ wpcom_vip_irc(); // Bad. Error.
 get_children(); // Bad. Warning. Message.
 
 attachment_url_to_postid(); // Bad. Error.
+
+str_replace( 'foo', 'bar', 'foobar' ); // Bad. Error.
