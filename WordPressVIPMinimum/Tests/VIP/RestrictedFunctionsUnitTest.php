@@ -16,7 +16,6 @@ class WordPressVIPMinimum_Tests_VIP_RestrictedFunctionsUnitTest extends Abstract
 	public function getErrorList() {
 		return array(
 			3 => 1,
-			5 => 1,
 			7 => 1,
 			9 => 1,
 			11 => 1,
@@ -29,7 +28,9 @@ class WordPressVIPMinimum_Tests_VIP_RestrictedFunctionsUnitTest extends Abstract
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return array(
+			5 => 1,
+		);
 
 	}
 
