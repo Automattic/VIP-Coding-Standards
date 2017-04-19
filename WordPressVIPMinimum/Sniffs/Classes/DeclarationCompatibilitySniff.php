@@ -249,18 +249,18 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 
 		$parentSignature = $this->checkClasses[ $parentClassName ][ $methodName ];
 
-	    if ( count( $signatureParams ) > count( $parentSignature ) ) {
-		    $extra_params = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
-		    $all_extra_params_have_default = true;
+		if ( count( $signatureParams ) > count( $parentSignature ) ) {
+			$extra_params = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
+			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
 				if ( false === array_key_exists( 'default', $extra_param ) || 'true' !== $extra_param['default'] ) {
 					$all_extra_params_have_default = false;
 				}
 			}
-		    if ( true === $all_extra_params_have_default ) {
-			    return; // We're good.
-		    }
-	    }
+			if ( true === $all_extra_params_have_default ) {
+				return; // We're good.
+			}
+		}
 
 		if ( count( $signatureParams ) !== count( $parentSignature ) ) {
 			$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
@@ -351,7 +351,7 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 		$tokens = $phpcsFile->getTokens();
 
 		for ( $i = ($tokens[ $currScope ]['scope_opener'] + 1); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
-	        if ( T_FUNCTION !== $tokens[ $i ]['code'] ) {
+			if ( T_FUNCTION !== $tokens[ $i ]['code'] ) {
 				continue;
 			}
 

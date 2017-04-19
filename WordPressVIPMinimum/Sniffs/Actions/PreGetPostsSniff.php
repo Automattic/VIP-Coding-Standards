@@ -263,8 +263,8 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 	private function isParentConditionalCheckingMainQuery( $stackPtr ) {
 
 		if ( false === array_key_exists( 'conditions', $this->_tokens[ $stackPtr ] ) ||
-		     false === is_array( $this->_tokens[ $stackPtr ]['conditions'] ) ||
-		     true === empty( $this->_tokens[ $stackPtr ]['conditions'] )
+			 false === is_array( $this->_tokens[ $stackPtr ]['conditions'] ) ||
+			 true === empty( $this->_tokens[ $stackPtr ]['conditions'] )
 		) {
 			return false;
 		}
@@ -372,8 +372,8 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		);
 
 		if ( $next &&
-		     true === in_array( $this->_tokens[ $next ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) &&
-		     $method === $this->_tokens[ $next ]['content']
+			 true === in_array( $this->_tokens[ $next ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) &&
+			 $method === $this->_tokens[ $next ]['content']
 		) {
 			return true;
 		} else {
@@ -392,7 +392,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 	private function isPartofIfConditional( $stackPtr ) {
 
 		if ( true === array_key_exists( 'nested_parenthesis', $this->_tokens[ $stackPtr ] ) &&
-		     true === is_array( $this->_tokens[ $stackPtr ]['nested_parenthesis'] ) &&
+			 true === is_array( $this->_tokens[ $stackPtr ]['nested_parenthesis'] ) &&
 			 false === empty( $this->_tokens[ $stackPtr ]['nested_parenthesis'] )
 		) {
 			$previousLocalIf = $this->_phpcsFile->findPrevious(
@@ -404,7 +404,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 				true // local.
 			);
 			if ( false !== $previousLocalIf &&
-			     $this->_tokens[ $previousLocalIf ]['parenthesis_opener'] < $stackPtr &&
+				 $this->_tokens[ $previousLocalIf ]['parenthesis_opener'] < $stackPtr &&
 				 $this->_tokens[ $previousLocalIf ]['parenthesis_closer'] > $stackPtr
 			) {
 				return true;
@@ -424,7 +424,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 
 		if ( true === array_key_exists( 'conditions', $this->_tokens[ $stackPtr ] ) &&
 			 true === is_array( $this->_tokens[ $stackPtr ]['conditions'] ) &&
-		     false === empty( $this->_tokens[ $stackPtr ]['conditions'] )
+			 false === empty( $this->_tokens[ $stackPtr ]['conditions'] )
 		) {
 			$conditionStackPtrs = array_keys( $this->_tokens[ $stackPtr ]['conditions'] );
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
