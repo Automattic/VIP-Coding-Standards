@@ -50,8 +50,8 @@ class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_
 				'type' => 'error',
 				'message' => '%s() is prohibited, please use wpcom_vip_attachment_url_to_postid() instead.',
 				'functions' => array(
-					'attachment_url_to_postid'
-				)
+					'attachment_url_to_postid',
+				),
 			),
 		);
 
