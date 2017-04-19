@@ -1,10 +1,14 @@
 <?php
 /**
  * Unit test class for WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 
 /**
- * Unit test class for the AdminBarRemoval sniff.
+ * Unit test class for the ErrorControl sniff.
+ *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Tests_VIP_ErrorControlUnitTest extends AbstractSniffUnitTest {
 
@@ -25,8 +29,7 @@ class WordPressVIPMinimum_Tests_VIP_ErrorControlUnitTest extends AbstractSniffUn
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
-		);
+		return array();
 
 	}
 

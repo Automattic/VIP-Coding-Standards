@@ -1,7 +1,14 @@
 <?php
 /**
+ * WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ */
+
+/**
  * Flag REGEXP and NOT REGEXP in meta compare
  *
+ * @package VIPCS\WordPressVIPMinimum
  */
 class WordPressVIPMinimum_Sniffs_VIP_RemoteRequestTimeoutSniff extends WordPress_AbstractArrayAssignmentRestrictionsSniff {
 

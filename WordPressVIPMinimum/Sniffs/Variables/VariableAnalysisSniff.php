@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreStart
 /**
  * This file is part of the VariableAnalysis addon for PHP_CodeSniffer.
  *
@@ -26,7 +27,7 @@
  */
 class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_CodeSniffer_Sniff
 {
-    /**
+	/**
      * The current phpcsFile being checked.
      *
      * @var phpcsFile
@@ -1446,5 +1447,4 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         return $tokens[$argumentPtr]['code'] !== T_WHITESPACE;
     }
 }//end class
-
-?>
+// @codingStandardsIgnoreEnd
