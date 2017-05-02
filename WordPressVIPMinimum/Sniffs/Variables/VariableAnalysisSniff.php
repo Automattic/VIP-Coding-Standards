@@ -1443,7 +1443,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function filter_non_whitespace_tokens($argumentPtr) {
-        $tokens = $phpcsFile->getTokens();
+        $tokens = $this->currentFile->getTokens();
         return $tokens[$argumentPtr]['code'] !== T_WHITESPACE;
     }
 }//end class
