@@ -379,7 +379,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
 
     //  Warning: this is an autovivifying get
     function getScopeInfo($currScope, $autoCreate = true) {
-		require_once( __DIR__ . '/VariableAnalysisHelper.php' );
+		require_once( dirname(__FILE__) . '/VariableAnalysisHelper.php' );
         $scopeKey = $this->scopeKey($currScope);
         if (!isset($this->_scopes[$scopeKey])) {
             if (!$autoCreate) {
@@ -391,7 +391,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function getVariableInfo($varName, $currScope, $autoCreate = true) {
-		require_once( __DIR__ . '/VariableAnalysisHelper.php' );
+		require_once( dirname(__FILE__) . '/VariableAnalysisHelper.php' );
         $scopeInfo = $this->getScopeInfo($currScope, $autoCreate);
         if (!isset($scopeInfo->variables[$varName])) {
             if (!$autoCreate) {
