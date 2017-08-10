@@ -75,5 +75,5 @@ script:
     # -n flag: Do not print warnings. (shortcut for --warning-severity=0)
     # --standard: Use WordPress as the standard.
     # --extensions: Only sniff PHP files.
-    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p -s -n . --standard=./bin/phpcs.xml --extensions=php; fi
+    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/$( if [[ ${PHPCS_BRANCH:0:2} == "2." ]]; then echo "scripts"; else echo "bin"; fi; )/phpcs -p -s -n . --standard=./bin/phpcs.xml --extensions=php; fi
     - if [[ "$INTEGRATION_TEST" == "1" ]]; then php ./ruleset_test.php; fi
