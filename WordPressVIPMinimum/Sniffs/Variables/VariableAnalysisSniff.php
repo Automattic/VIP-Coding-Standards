@@ -679,7 +679,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a function or closure parameter?
         // It would be nice to get the list of function parameters from watching for
@@ -744,7 +743,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a catch block parameter?
         if (($openPtr = $this->findContainingBrackets($phpcsFile, $stackPtr)) === false) {
@@ -807,7 +805,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a superglobal variable?
         if (in_array($varName, array(
@@ -892,7 +889,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Is the next non-whitespace an assignment?
         if (($assignPtr = $this->isNextThingAnAssign($phpcsFile, $stackPtr)) === false) {
@@ -914,7 +910,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // OK, are we within a list (...) construct?
         if (($openPtr = $this->findContainingBrackets($phpcsFile, $stackPtr)) === false) {
@@ -945,7 +940,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a global declaration?
         // Search backwards for first token that isn't whitespace, comma or variable.
@@ -968,7 +962,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a static declaration?
         // Static declarations are a bit more complicated than globals, since they
@@ -1032,7 +1025,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a foreach loopvar?
         if (($openPtr = $this->findContainingBrackets($phpcsFile, $stackPtr)) === false) {
@@ -1055,7 +1047,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we pass-by-reference to known pass-by-reference function?
         if (($functionPtr = $this->findFunctionCall($phpcsFile, $stackPtr)) === false) {
@@ -1148,8 +1139,6 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
         PHP_CodeSniffer_File $phpcsFile,
         $stackPtr
     ) {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
         // TODO: don't care for now
     }
 
@@ -1307,14 +1296,13 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function processCompactArguments(
-        PHP_CodeSniffer_File
-        $phpcsFile,
+        PHP_CodeSniffer_File $phpcsFile,
         $stackPtr,
         $arguments,
         $currScope
     ) {
+        $this->phpcsFile = $phpcsFile;
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         foreach ($arguments as $argumentPtrs) {
             $argumentPtrs = array_values(array_filter($argumentPtrs, array( $this, 'filter_non_whitespace_tokens' ) ));
@@ -1368,12 +1356,10 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
      * @return void
      */
     protected function processCompact(
-        PHP_CodeSniffer_File
-        $phpcsFile,
+        PHP_CodeSniffer_File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         $currScope = $this->findVariableScope($phpcsFile, $stackPtr);
 
@@ -1395,8 +1381,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
      * @return void
      */
     protected function processScopeClose(
-        PHP_CodeSniffer_File
-        $phpcsFile,
+        PHP_CodeSniffer_File $phpcsFile,
         $stackPtr
     ) {
         $scopeInfo = $this->getScopeInfo($stackPtr, false);
@@ -1443,7 +1428,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function filter_non_whitespace_tokens($argumentPtr) {
-        $tokens = $phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         return $tokens[$argumentPtr]['code'] !== T_WHITESPACE;
     }
 }//end class

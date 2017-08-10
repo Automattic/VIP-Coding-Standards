@@ -5,11 +5,6 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-if ( false === class_exists( 'PHP_CodeSniffer_Standards_AbstractScopeSniff', true ) ) {
-	$error = 'Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found';
-	throw new PHP_CodeSniffer_Exception( $error );
-}
-
 /**
  * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
  *
@@ -361,4 +356,11 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 
 	}//end loadFunctionNamesInScope()
 
+	/**
+	 * Do nothing outside the scope. Has to be implemented accordingly to parent abstract class.
+	 *
+	 * @param File $phpcsFile
+	 * @param $stackPtr
+	 */
+	public function processTokenOutsideScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr) {}
 }

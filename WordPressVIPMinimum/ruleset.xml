@@ -2,6 +2,8 @@
 <ruleset name="WordPress VIP Minimum">
 	<description>WordPress VIP Minimum Coding Standards</description>
 
+	<autoload>./autoload.php</autoload>
+
 	<rule ref="WordPress.VIP">
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput.MissingUnslash"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions"/>
