@@ -45,7 +45,7 @@ before_script:
     - export PATH="$HOME/.composer/vendor/bin:$PATH"
     - export PHPCS_DIR=/tmp/phpcs
     - export WPCS_DIR=/tmp/wpcs
-    - export PHPCS_STANDARDS_DIR=$(if [[ ${PHPCS_BRANCH:0:2} == "2." ]]; then echo "src"; else echo "CodeSniffer"; fi)
+    - export PHPCS_STANDARDS_DIR=$(if [[ ${PHPCS_BRANCH:0:2} == "2." ]]; then echo "CodeSniffer"; else echo "src"; fi)
     - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == 3.0 ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
