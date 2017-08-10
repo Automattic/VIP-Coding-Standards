@@ -99,7 +99,7 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 				),
 				'args' => array(
 					'default' => 'array()',
-					),
+				),
 			),
 			'start_el' => array(
 				'output' => array(
@@ -279,12 +279,12 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	/**
 	 * Generates an error with nice current and parent class method notations
 	 *
-	 * @param string 			   $parentClassName 		The name of the extended (parent) class.
-	 * @param string 			   $methodName 			The name of the method currently being examined.
-	 * @param array 			   $currentMethodSignature	The list of params and their options of the method which is being examined.
-	 * @param array 			   $parentMethodSignature	The list of params and their options of the parent class method.
-	 * @param PHP_CodeSniffer_File $phpcsFile 				The file being scanned.
-	 * @param int				   $stackPtr			    The position of the current token in the stack.
+	 * @param string               $parentClassName        The name of the extended (parent) class.
+	 * @param string               $methodName             The name of the method currently being examined.
+	 * @param array                $currentMethodSignature The list of params and their options of the method which is being examined.
+	 * @param array                $parentMethodSignature  The list of params and their options of the parent class method.
+	 * @param PHP_CodeSniffer_File $phpcsFile              The file being scanned.
+	 * @param int                  $stackPtr               The position of the current token in the stack.
 	 *
 	 * @return void
 	 */
@@ -359,8 +359,8 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	/**
 	 * Do nothing outside the scope. Has to be implemented accordingly to parent abstract class.
 	 *
-	 * @param File $phpcsFile
-	 * @param $stackPtr
+	 * @param PHP_CodeSniffer_File $phpcsFile PHPCS File.
+	 * @param int                  $stackPtr  Stack position.
 	 */
-	public function processTokenOutsideScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr) {}
+	public function processTokenOutsideScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {}
 }

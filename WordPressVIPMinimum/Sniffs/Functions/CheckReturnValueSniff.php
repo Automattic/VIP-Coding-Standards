@@ -73,7 +73,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 	 *
 	 * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
 	 * @param int                  $stackPtr  The position in the stack where
-	 *										the token was found.
+	 *                                        the token was found.
 	 *
 	 * @return void
 	 */
