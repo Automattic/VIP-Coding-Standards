@@ -5,6 +5,10 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+if ( false === class_exists( '\WordPress_AbstractArrayAssignmentRestrictionsSniff' ) ) {
+	class_alias( '\WordPress\AbstractArrayAssignmentRestrictionsSniff', '\WordPress_AbstractArrayAssignmentRestrictionsSniff' );
+}
+
 /**
  * Flag REGEXP and NOT REGEXP in meta compare
  *
