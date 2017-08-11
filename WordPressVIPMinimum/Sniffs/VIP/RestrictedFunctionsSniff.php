@@ -5,17 +5,12 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-// WPCS pre 0.1.3 backwardcompatibility.
-if ( ! class_exists( '\WordPress_Sniffs_VIP_RestrictedFunctionsSniff' ) ) {
-	class_alias( '\WordPress\Sniffs\VIP\RestrictedFunctionsSniff', '\WordPress_Sniffs_VIP_RestrictedFunctionsSniff' );
-}
-
 /**
  * Restricts usage of some functions in VIP context.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_Sniffs_VIP_RestrictedFunctionsSniff {
+class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress\Sniffs\VIP\RestrictedFunctionsSniff {
 
 	/**
 	 * Groups of functions to restrict.

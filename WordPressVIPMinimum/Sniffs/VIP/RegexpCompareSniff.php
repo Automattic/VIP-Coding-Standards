@@ -5,17 +5,12 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-// WPCS pre 0.1.3 backwardcompatibility.
-if ( false === class_exists( '\WordPress_AbstractArrayAssignmentRestrictionsSniff' ) ) {
-	class_alias( '\WordPress\AbstractArrayAssignmentRestrictionsSniff', '\WordPress_AbstractArrayAssignmentRestrictionsSniff' );
-}
-
 /**
  * Flag REGEXP and NOT REGEXP in meta compare
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_VIP_RegexpCompareSniff extends WordPress_AbstractArrayAssignmentRestrictionsSniff {
+class WordPressVIPMinimum_Sniffs_VIP_RegexpCompareSniff extends WordPress\AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Groups of variables to restrict.
