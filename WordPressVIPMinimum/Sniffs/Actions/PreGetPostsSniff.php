@@ -96,9 +96,9 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 
 		if ( 'PHPCS_T_CLOSURE' === $this->_tokens[ $callbackPtr ]['code'] ) {
 			$this->processClosure( $callbackPtr );
-		} else if ( 'T_ARRAY' === $this->_tokens[ $callbackPtr ]['type'] ) {
+		} elseif ( 'T_ARRAY' === $this->_tokens[ $callbackPtr ]['type'] ) {
 			$this->processArray( $callbackPtr );
-		} else if ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], PHP_CodeSniffer_Tokens::$stringTokens ) ) {
+		} elseif ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], PHP_CodeSniffer_Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
 		}
 
@@ -242,11 +242,11 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 				if ( $this->isEarlyMainQueryCheck( $wpQueryVarUsed ) ) {
 					return;
 				}
-			} else if ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
+			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
 				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
 					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed );
 				}
-			} else if ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
+			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
 				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed );
 			}
 			$findStart = $wpQueryVarUsed + 1;
@@ -316,7 +316,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		}
 
 		$nestedParenthesisEnd = array_shift( $this->_tokens[ $stackPtr ]['nested_parenthesis'] );
-		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->_tokens[ $stackPtr ]['conditions'] ) ) {
+		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->_tokens[ $stackPtr ]['conditions'], true ) ) {
 			$nestedParenthesisEnd = array_shift( $this->_tokens[ $stackPtr ]['nested_parenthesis'] );
 		}
 
