@@ -48,6 +48,9 @@ matrix:
     - php: 5.3
       env: PHPCS_BRANCH=2.9.0 SHORT_OPEN_TAGS=true
       dist: precise
+    # Run custom integration test. I just picked to it agains PHP 7.0.
+    - php: 7.0
+      env: PHPCS_BRANCH=master INTEGRATION_TEST=1
 
   allow_failures:
     # Allow failures for unstable builds.
@@ -92,4 +95,4 @@ script:
     - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./*/ruleset.xml; fi
     # Check the code-style consistency of the xml files.
     - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml"); fi
-
+    - if [[ "$INTEGRATION_TEST" == "1" ]]; then php ./ruleset_test.php; fi
