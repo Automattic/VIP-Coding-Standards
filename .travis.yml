@@ -77,10 +77,10 @@ script:
     # Lint the PHP files against parse errors.
     - if [[ "$LINT" == "1" ]]; then if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
     # Run the unit tests.
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then phpunit --botstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $WPCS_DIR/Test/AllTests.php; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} != "2." ]]; then phpunit --botstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $PHPCS_DIR/tests/AllTests.php; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --botstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $WPCS_DIR/Test/AllTests.php; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} != "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --botstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinumum $PHPCS_DIR/tests/AllTests.php; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then phpunit --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $WPCS_DIR/Test/AllTests.php; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} != "2." ]]; then phpunit --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $PHPCS_DIR/tests/AllTests.php; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $WPCS_DIR/Test/AllTests.php; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} != "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinumum $PHPCS_DIR/tests/AllTests.php; fi
     # WordPress Coding Standards.
     # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
     # @link http://pear.php.net/package/PHP_CodeSniffer/
