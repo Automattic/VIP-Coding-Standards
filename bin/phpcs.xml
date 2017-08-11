@@ -20,6 +20,6 @@
 	<rule ref="WordPress-Docs" />
 
 	<!-- Enforce PSR1 compatible namespaces. -->
-	<rule ref="PSR1.Classes.ClassDeclaration"/>
+	<!--rule ref="PSR1.Classes.ClassDeclaration"/-->
 
 </ruleset>
