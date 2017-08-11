@@ -60,6 +60,7 @@ matrix:
 before_install:
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=/tmp/phpcs
+    - export WPCS_DIR=/tmp/wpcs
     - export PHPUNIT_DIR=/tmp/phpunit
     - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == master ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
