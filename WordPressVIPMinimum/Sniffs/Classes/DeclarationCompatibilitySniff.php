@@ -5,6 +5,11 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+// WPCS pre 0.1.3 backwardcompatibility.
+if ( ! class_exists( '\PHP_CodeSniffer_Standards_AbstractScopeSniff' ) ) {
+	class_alias( 'PHP_CodeSniffer\Sniffs\AbstractScopeSniff', '\PHP_CodeSniffer_Standards_AbstractScopeSniff' );
+}
+
 /**
  * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
  *

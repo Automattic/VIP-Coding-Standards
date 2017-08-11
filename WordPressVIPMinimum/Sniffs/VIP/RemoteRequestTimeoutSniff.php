@@ -5,6 +5,7 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+// WPCS pre 0.1.3 backwardcompatibility.
 if ( false === class_exists( '\WordPress_AbstractArrayAssignmentRestrictionsSniff' ) ) {
 	class_alias( '\WordPress\AbstractArrayAssignmentRestrictionsSniff', '\WordPress_AbstractArrayAssignmentRestrictionsSniff' );
 }
