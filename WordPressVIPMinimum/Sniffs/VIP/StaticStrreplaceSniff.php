@@ -69,7 +69,7 @@ class WordPressVIPMinimum_Sniffs_VIP_StaticStrreplaceSniff implements PHP_CodeSn
 				$next_start_ptr = $closeBracket + 1;
 				continue;
 
-			} else if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $param_ptr ]['code'] ) {
+			} elseif ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $param_ptr ]['code'] ) {
 				return;
 			}
 

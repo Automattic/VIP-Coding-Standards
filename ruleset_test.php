@@ -119,10 +119,12 @@ class PHPCS_Ruleset_Test {
 
 		// Travis support.
 		if ( false === getenv( 'PHPCS_BIN' ) ) {
+			// @codingStandardsIgnoreLine
 			putenv( 'PHPCS_BIN=phpcs' );
 		}
 
 		// Collect the PHPCS result.
+		// @codingStandardsIgnoreLine
 		$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./ruleset_test.inc' );
 
 		$output = json_decode( $output, true );
@@ -172,7 +174,7 @@ class PHPCS_Ruleset_Test {
 				if ( false === isset( $this->$type[ $line ] ) ) {
 					$this->error_warning_message( $number, $type, 0, $line );
 					$this->total_issues ++;
-				} else if ( $this->$type[ $line ] !== $number ) {
+				} elseif ( $this->$type[ $line ] !== $number ) {
 					$this->error_warning_message( $number, $type, $this->$type[ $line ], $line );
 					$this->total_issues ++;
 				}
@@ -190,7 +192,7 @@ class PHPCS_Ruleset_Test {
 				if ( false === isset( $expected[ $type ][ $line ] ) ) {
 					$this->error_warning_message( 0, $type, $number, $line );
 					$this->total_issues ++;
-				} else if ( $number !== $expected[ $type ][ $line ] ) {
+				} elseif ( $number !== $expected[ $type ][ $line ] ) {
 					$this->error_warning_message( $expected[ $type ][ $line ], $type, $number, $line );
 					$this->total_issues ++;
 				}
@@ -209,7 +211,7 @@ class PHPCS_Ruleset_Test {
 				if ( false === isset( $this->messages[ $line ] ) ) {
 					printf( 'Expected "%s" but found no message for line %d' . PHP_EOL, $message, $line ); // XSS OK.
 					$this->total_issues ++;
-				} else if ( false === in_array( $message, $this->messages[ $line ] ) ) {
+				} elseif ( false === in_array( $message, $this->messages[ $line ], true ) ) {
 					printf( 'Expected message "%s" was not found for line %d' . PHP_EOL, $message, $line ); // XSS OK.
 					$this->total_issues ++;
 				}
@@ -218,7 +220,7 @@ class PHPCS_Ruleset_Test {
 		foreach ( $this->messages as $line => $messages ) {
 			foreach ( $messages as $message ) {
 				if ( true === isset( $this->expected['messages'][ $line ] ) ) {
-					if ( false === in_array( $message, $this->expected['messages'][ $line ] ) ) {
+					if ( false === in_array( $message, $this->expected['messages'][ $line ], true ) ) {
 						printf( 'Unexpected message "%s" was found for line %d' . PHP_EOL, $message, $line ); // XSS OK.
 						$this->total_issues ++;
 					}

@@ -108,7 +108,7 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 		$tokens = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
-		if ( false === in_array( $tokens[ $stackPtr ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens ) ) {
+		if ( false === in_array( $tokens[ $stackPtr ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) ) {
 			return false;
 		}
 

@@ -98,7 +98,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		$tokens = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
-		if ( false === in_array( $tokens[ $stackPtr ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens ) ) {
+		if ( false === in_array( $tokens[ $stackPtr ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) ) {
 			return false;
 		}
 
@@ -214,7 +214,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		$callees = array();
 
 		foreach ( $this->catch as $callee => $checkReturnArray ) {
-			if ( true === in_array( $functionName, $checkReturnArray ) ) {
+			if ( true === in_array( $functionName, $checkReturnArray, true ) ) {
 				$isFunctionWeLookFor = true;
 				$callees[] = $callee;
 			}
