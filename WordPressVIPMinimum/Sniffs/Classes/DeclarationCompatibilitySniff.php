@@ -299,7 +299,7 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 
 		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
 
-		$phpcsFile->addError( sprintf( 'Declaration of %s should be compatible with %s', $currentSignature, $parentSignature ), $stackPtr );
+		$phpcsFile->addError( sprintf( 'Declaration of %s should be compatible with %s', $currentSignature, $parentSignature ), $stackPtr, 'WordPressVIPMinimum.Classes.DeclarationCompatibility' );
 	}//end addError()
 
 	/**

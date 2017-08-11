@@ -185,7 +185,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 		$startNext = $openBracket + 1;
 		while ( $next = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true ) ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
-				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next );
+				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'WordPressVIPMinimum.Functions.CheckReturnValue' );
 			}
 			$startNext = $next + 1;
 		}
@@ -293,7 +293,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( PHP_CodeSniffer_Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				 && $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable );
+				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'WordPressVIPMinimum.Functions.CheckReturnValue' );
 				return;
 			}
 
@@ -302,7 +302,7 @@ class WordPressVIPminimum_Sniffs_Functions_CheckReturnValueSniff implements PHP_
 			if ( true === in_array( $tokens[ $next ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $next );
+				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $next, 'WordPressVIPMinimum.Functions.CheckReturnValue' );
 				return;
 			}
 		}

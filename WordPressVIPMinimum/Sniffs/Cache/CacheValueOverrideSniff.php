@@ -91,7 +91,7 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 		$valueAfterEqualSign = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$emptyTokens, ($rightAfterNextVariableOccurence + 1), null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence );
+			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'WordPressVIPMinimum.Cache.CacheValueOverride' );
 		}
 
 	} //end Process()

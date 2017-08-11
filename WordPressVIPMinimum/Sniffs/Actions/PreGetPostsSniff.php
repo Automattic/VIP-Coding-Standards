@@ -244,10 +244,10 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 				}
 			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
 				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
-					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed );
+					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'WordPressVIPMinimum.Actions.PreGetPosts' );
 				}
 			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
-				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed );
+				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'WordPressVIPMinimum.Actions.PreGetPosts' );
 			}
 			$findStart = $wpQueryVarUsed + 1;
 		}

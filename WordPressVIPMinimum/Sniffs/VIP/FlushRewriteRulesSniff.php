@@ -84,7 +84,7 @@ class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeS
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( '%s should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr );
+		$phpcsFile->addError( sprintf( '%s should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'WordPressVIPMinimum.VIP.FlushRewriteRules' );
 	}
 
 }

@@ -77,6 +77,6 @@ class WordPressVIPMinimum_Sniffs_VIP_StaticStrreplaceSniff implements PHP_CodeSn
 
 		}
 
-		$phpcsFile->addError( sprintf( 'This code pattern is often used to run a very dangerous shell programs on your server. The code in these files needs to be reviewed, and possibly cleaned.', $tokens[ $stackPtr ]['content'] ), $stackPtr );
+		$phpcsFile->addError( sprintf( 'This code pattern is often used to run a very dangerous shell programs on your server. The code in these files needs to be reviewed, and possibly cleaned.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'WordPressVIPMinimum.VIP.StaticStrreplace' );
 	}//end process()
 }
