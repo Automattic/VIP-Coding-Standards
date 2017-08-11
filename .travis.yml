@@ -65,7 +65,7 @@ before_install:
     - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == master ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
-    - $PHPCS_BIN --config-set installed_paths $(pwd),$(WPCS_DIR)
+    - $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR
     # Download PHPUnit 5.x for builds on PHP 7, nightly and HHVM as the PHPCS
     # test suite is currently not compatible with PHPUnit 6.x.
     # Fixed at a very specific PHPUnit version which is also compatible with HHVM.
@@ -77,9 +77,9 @@ script:
     # Lint the PHP files against parse errors.
     - if [[ "$LINT" == "1" ]]; then if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
     # Run the unit tests.
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then phpunit --filter WordPressVIPMinimum $(WPCS_DIR)/Test/AllTests.php; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then phpunit --filter WordPressVIPMinimum $WPCS_DIR/Test/AllTests.php; fi
     - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." && ${PHPCS_BRANCH:0:2} != "2." ]]; then phpunit --filter WordPressVIPMinimum $PHPCS_DIR/tests/AllTests.php; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --filter WordPressVIPMinimum $(pwd)/Test/AllTests.php; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} == "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --filter WordPressVIPMinimum $WPCS_DIR/Test/AllTests.php; fi
     - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." && ${PHPCS_BRANCH:0:2} != "2." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar  --filter WordPressVIPMinumum $PHPCS_DIR/tests/AllTests.php; fi
     # WordPress Coding Standards.
     # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
