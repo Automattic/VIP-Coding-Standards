@@ -481,7 +481,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function markVariableReadAndWarnIfUndefined($phpcsFile, $varName, $stackPtr, $currScope) {
-        echo $varName . "\n";
+
         $this->markVariableRead($varName, $stackPtr, $currScope);
 
         if ($this->isVariableUndefined($varName, $stackPtr, $currScope) === true) {
