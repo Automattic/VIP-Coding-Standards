@@ -9,17 +9,12 @@ namespace WordPressVIPMinimum\Tests\Actions;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
-// Cross version compatibility for PHPCS 2.x and 3.x.
-if ( ! class_exists( '\AbstractSniffUnitTest' ) ) {
-	class_alias( '\PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest', '\AbstractSniffUnitTest' );
-}
-
 /**
  * Unit test class for the PreGetPosts sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Tests_Actions_PreGetPostsUnitTest extends AbstractSniffUnitTest {
+class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

@@ -190,7 +190,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$startNext = $openBracket + 1;
 		while ( $next = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true ) ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
-				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'WordPressVIPMinimum.Functions.CheckReturnValue' );
+				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
 			}
 			$startNext = $next + 1;
 		}
@@ -298,7 +298,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				 && $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'WordPressVIPMinimum.Functions.CheckReturnValue' );
+				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'CheckReturnValue' );
 				return;
 			}
 
@@ -307,7 +307,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $next, 'WordPressVIPMinimum.Functions.CheckReturnValue' );
+				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $next, 'CheckReturnValue' );
 				return;
 			}
 		}

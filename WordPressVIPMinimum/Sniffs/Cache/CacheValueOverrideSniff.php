@@ -97,7 +97,7 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ($rightAfterNextVariableOccurence + 1), null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'WordPressVIPMinimum.Cache.CacheValueOverride' );
+			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'CacheValueOverride' );
 		}
 
 	} //end Process()

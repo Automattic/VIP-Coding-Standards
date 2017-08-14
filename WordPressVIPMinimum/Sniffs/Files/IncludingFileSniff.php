@@ -100,7 +100,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( T_VARIABLE === $tokens[ $nextToken ]['code'] ) {
-			$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'WordPressVIPMinimum.Files.IncludingFile' );
+			$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 			return;
 		}
 
@@ -124,12 +124,12 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 
 			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) ) {
 				// The construct is using custom constant, which needs manula inspection.
-				$phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'WordPressVIPMinimum.Files.IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
 			if ( 0 === strpos( $tokens[ $nextToken ]['content'], '$' ) ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken,  'WordPressVIPMinimum.Files.IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken,  'IncludingFile' );
 				return;
 			}
 
@@ -140,14 +140,14 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 
 			$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ($nextToken + 1), null, true, null, true );
 			if ( T_OPEN_PARENTHESIS === $tokens[ $nextNextToken ]['code'] ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( %s() ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken,  'WordPressVIPMinimum.Files.IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( %s() ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken,  'IncludingFile' );
 				return;
 			}
 
-			$phpcsFile->addError( 'Absolute include path must be used. Use get_template_directory, get_stylesheet_directory or plugin_dir_path.', $nextToken, 'WordPressVIPMinimum.Files.IncludingFile' );
+			$phpcsFile->addError( 'Absolute include path must be used. Use get_template_directory, get_stylesheet_directory or plugin_dir_path.', $nextToken, 'IncludingFile' );
 			return;
 		} else {
-			$phpcsFile->addError( 'Absolute include path must be used. Use get_template_directory, get_stylesheet_directory or plugin_dir_path.', $nextToken, 'WordPressVIPMinimum.Files.IncludingFile' );
+			$phpcsFile->addError( 'Absolute include path must be used. Use get_template_directory, get_stylesheet_directory or plugin_dir_path.', $nextToken, 'IncludingFile' );
 			return;
 		}// End if().
 

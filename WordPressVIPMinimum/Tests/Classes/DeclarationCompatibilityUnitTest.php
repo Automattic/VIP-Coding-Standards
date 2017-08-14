@@ -9,11 +9,6 @@ namespace WordPressVIPMinimum\Tests\Classes;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
-// Cross version compatibility for PHPCS 2.x and 3.x.
-if ( ! class_exists( '\AbstractSniffUnitTest' ) ) {
-	class_alias( '\PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest', '\AbstractSniffUnitTest' );
-}
-
 /**
  * Unit test class for the DeclarationCompatibility sniff.
  *
