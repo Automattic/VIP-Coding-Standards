@@ -17,7 +17,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class Actions_PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
+class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * The tokens of the phpcsFile.
