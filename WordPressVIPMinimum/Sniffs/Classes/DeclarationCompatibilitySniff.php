@@ -288,12 +288,12 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 	/**
 	 * Generates an error with nice current and parent class method notations
 	 *
-	 * @param string               $parentClassName        The name of the extended (parent) class.
-	 * @param string               $methodName             The name of the method currently being examined.
-	 * @param array                $currentMethodSignature The list of params and their options of the method which is being examined.
-	 * @param array                $parentMethodSignature  The list of params and their options of the parent class method.
-	 * @param File                 $phpcsFile              The file being scanned.
-	 * @param int                  $stackPtr               The position of the current token in the stack.
+	 * @param string                      $parentClassName        The name of the extended (parent) class.
+	 * @param string                      $methodName             The name of the method currently being examined.
+	 * @param array                       $currentMethodSignature The list of params and their options of the method which is being examined.
+	 * @param array                       $parentMethodSignature  The list of params and their options of the parent class method.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile              The file being scanned.
+	 * @param int                         $stackPtr               The position of the current token in the stack.
 	 *
 	 * @return void
 	 */

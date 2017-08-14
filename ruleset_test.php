@@ -15,6 +15,8 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum;
+
 // Expected values.
 $expected = array(
 	'errors' => array(

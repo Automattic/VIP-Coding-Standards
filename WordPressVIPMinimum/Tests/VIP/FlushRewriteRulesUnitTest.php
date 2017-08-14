@@ -5,6 +5,10 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Tests\VIP;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 // Cross version compatibility for PHPCS 2.x and 3.x.
 if ( ! class_exists( '\AbstractSniffUnitTest' ) ) {
 	class_alias( '\PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest', '\AbstractSniffUnitTest' );
@@ -15,7 +19,7 @@ if ( ! class_exists( '\AbstractSniffUnitTest' ) ) {
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Tests_VIP_FlushRewriteRulesUnitTest extends AbstractSniffUnitTest {
+class FlushRewriteRulesUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
