@@ -6,12 +6,16 @@
  * @link https://github.com/Automattic/VIP-Coding-Standards
  */
 
+namespace WordPressVIPMinimum\Sniffs\VIP;
+
+use PHP_CodeSniffer_File as File;
+
 /**
  * Restricts usage of error control operators. Currently only the at sign.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_VIP_ErrorControlSniff implements PHP_CodeSniffer_Sniff {
+class ErrorControlSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -27,12 +31,12 @@ class WordPressVIPMinimum_Sniffs_VIP_ErrorControlSniff implements PHP_CodeSniffe
 	/**
 	 * Process this test when one of its tokens is encoutered
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-	 * @param int                  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		$tokens = $phpcsFile->getTokens();
 

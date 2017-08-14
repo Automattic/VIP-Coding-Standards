@@ -5,6 +5,11 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Sniffs\Cache;
+
+use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer_Tokens as Tokens;
+
 /**
  * This sniff enforces checking the return value of a function before passing it to anoher one.
  *
@@ -16,7 +21,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_CodeSniffer_Sniff {
+class CacheValueOverrideSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * Tokens of the file.
@@ -31,7 +36,7 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 	 * @return array(int)
 	 */
 	public function register() {
-		return PHP_CodeSniffer_Tokens::$functionNameTokens;
+		return Tokens::$functionNameTokens;
 
 	}//end register()
 
@@ -39,13 +44,13 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-	 * @param int                  $stackPtr  The position in the stack where
-	 *                                        the token was found.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
 	 *
 	 * @return void
 	 */
-	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		$this->_tokens = $phpcsFile->getTokens();
 		$tokens = $phpcsFile->getTokens();
@@ -74,21 +79,21 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 		$variableName = $variableToken['content'];
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
 		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ($closeBracket + 1), null, false, $variableName, false );
 
-		$rightAfterNextVariableOccurence = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$emptyTokens, ($nextVariableOccurrence + 1), null, true, null, true );
+		$rightAfterNextVariableOccurence = $phpcsFile->findNext( Tokens::$emptyTokens, ($nextVariableOccurrence + 1), null, true, null, true );
 
 		if ( T_EQUAL !== $tokens[ $rightAfterNextVariableOccurence ]['code'] ) {
 			// Not a value override.
 			return;
 		}
 
-		$valueAfterEqualSign = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$emptyTokens, ($rightAfterNextVariableOccurence + 1), null, true, null, true );
+		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ($rightAfterNextVariableOccurence + 1), null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
 			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'WordPressVIPMinimum.Cache.CacheValueOverride' );
@@ -108,12 +113,12 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 		$tokens = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
-		if ( false === in_array( $tokens[ $stackPtr ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) ) {
+		if ( false === in_array( $tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) ) {
 			return false;
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -121,7 +126,7 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 		}
 
 		// Find the previous non-empty token.
-		$search   = PHP_CodeSniffer_Tokens::$emptyTokens;
+		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
 		$previous = $phpcsFile->findPrevious( $search, ($stackPtr - 1), null, true );
 		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
@@ -145,7 +150,7 @@ class WordPressVIPminimum_Sniffs_Cache_CacheValueOverrideSniff implements PHP_Co
 		$phpcsFile = $this->_phpcsFile;
 
 		// Find the previous non-empty token.
-		$search   = PHP_CodeSniffer_Tokens::$emptyTokens;
+		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
 		$previous = $phpcsFile->findPrevious( $search, ($stackPtr - 1), null, true );
 

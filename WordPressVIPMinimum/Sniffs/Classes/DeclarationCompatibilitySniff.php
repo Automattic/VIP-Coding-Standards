@@ -5,6 +5,10 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Sniffs\Classes;
+
+use PHP_CodeSniffer_File as File;
+
 // WPCS pre 0.1.3 backwardcompatibility.
 if ( ! class_exists( '\PHP_CodeSniffer_Standards_AbstractScopeSniff' ) ) {
 	class_alias( 'PHP_CodeSniffer\Sniffs\AbstractScopeSniff', '\PHP_CodeSniffer_Standards_AbstractScopeSniff' );
@@ -15,7 +19,7 @@ if ( ! class_exists( '\PHP_CodeSniffer_Standards_AbstractScopeSniff' ) ) {
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff {
+class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractScopeSniff {
 
 	/**
 	 * The name of the class we are currently checking.
@@ -194,14 +198,14 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	/**
 	 * Processes this test when one of its tokens is encountered.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
-	 * @param int                  $stackPtr  The position of the current token
-	 *                                        in the stack passed in $tokens.
-	 * @param int                  $currScope A pointer to the start of the scope.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 * @param int                         $currScope A pointer to the start of the scope.
 	 *
 	 * @return void
 	 */
-	protected function processTokenWithinScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope ) {
+	protected function processTokenWithinScope( File $phpcsFile, $stackPtr, $currScope ) {
 
 		$className = $phpcsFile->getDeclarationName( $currScope );
 
@@ -288,7 +292,7 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	 * @param string               $methodName             The name of the method currently being examined.
 	 * @param array                $currentMethodSignature The list of params and their options of the method which is being examined.
 	 * @param array                $parentMethodSignature  The list of params and their options of the parent class method.
-	 * @param PHP_CodeSniffer_File $phpcsFile              The file being scanned.
+	 * @param File                 $phpcsFile              The file being scanned.
 	 * @param int                  $stackPtr               The position of the current token in the stack.
 	 *
 	 * @return void
@@ -341,12 +345,12 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	/**
 	 * Extracts all the function names found in the given scope.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
-	 * @param int                  $currScope A pointer to the start of the scope.
+	 * @param File $phpcsFile The current file being scanned.
+	 * @param int  $currScope A pointer to the start of the scope.
 	 *
 	 * @return void
 	 */
-	protected function loadFunctionNamesInScope( PHP_CodeSniffer_File $phpcsFile, $currScope ) {
+	protected function loadFunctionNamesInScope( File $phpcsFile, $currScope ) {
 		$this->_functionList = array();
 		$tokens = $phpcsFile->getTokens();
 
@@ -364,8 +368,8 @@ class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff extends P
 	/**
 	 * Do nothing outside the scope. Has to be implemented accordingly to parent abstract class.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile PHPCS File.
-	 * @param int                  $stackPtr  Stack position.
+	 * @param File $phpcsFile PHPCS File.
+	 * @param int  $stackPtr  Stack position.
 	 */
-	public function processTokenOutsideScope( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {}
+	public function processTokenOutsideScope( File $phpcsFile, $stackPtr ) {}
 }

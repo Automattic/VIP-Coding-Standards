@@ -5,12 +5,14 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Sniffs\VIP;
+
 /**
  * Flag REGEXP and NOT REGEXP in meta compare
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_VIP_RegexpCompareSniff extends WordPress\AbstractArrayAssignmentRestrictionsSniff {
+class RegexpCompareSniff extends \WordPress\AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Groups of variables to restrict.
