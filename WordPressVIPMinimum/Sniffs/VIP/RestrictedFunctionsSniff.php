@@ -55,6 +55,13 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 					'attachment_url_to_postid',
 				),
 			),
+			'strip_tags' => array(
+				'type' => 'error',
+				'message' => '%s does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags` should be used instead.',
+				'functions' => array(
+					'strip_tags'
+				),
+			),
 		);
 
 		return array_merge( $original_groups, $new_groups );
