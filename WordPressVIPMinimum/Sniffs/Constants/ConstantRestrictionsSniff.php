@@ -6,12 +6,17 @@
  * @link https://github.com/Automattic/VIP-Coding-Standards
  */
 
+namespace WordPressVIPMinimum\Sniffs\Constants;
+
+use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer_Tokens as Tokens;
+
 /**
  * Restricts usage of some constants.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements PHP_CodeSniffer_Sniff {
+class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * List of restricted constant names.
@@ -37,12 +42,12 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 	/**
 	 * Process this test when one of its tokens is encoutnered
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-	 * @param int				   $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		$tokens = $phpcsFile->getTokens();
 
@@ -58,12 +63,12 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 		}
 
 		if ( T_STRING === $tokens[ $stackPtr ]['code'] ) {
-			$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr );
+			$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr, 'ConstantRestrictions' );
 			return;
 		}
 
 		// Find the previous non-empty token.
-		$openBracket = $phpcsFile->findPrevious( PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true );
+		$openBracket = $phpcsFile->findPrevious( Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -76,7 +81,7 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 		}
 
 		// Find the previous non-empty token.
-		$search   = PHP_CodeSniffer_Tokens::$emptyTokens;
+		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
 		$previous = $phpcsFile->findPrevious( $search, ($openBracket - 1), null, true );
 		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
@@ -84,11 +89,11 @@ class WordPressVIPMinimum_Sniffs_Constants_ConstantRestrictionsSniff implements 
 			return;
 		}
 
-		if ( true === in_array( $tokens[ $previous ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) ) {
+		if ( true === in_array( $tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) ) {
 			if ( 'define' === $tokens[ $previous ]['content'] ) {
-				$phpcsFile->addError( sprintf( 'The definition of %s constant is prohibited. Please use a different name.', $constantName ), $previous );
+				$phpcsFile->addError( sprintf( 'The definition of %s constant is prohibited. Please use a different name.', $constantName ), $previous, 'ConstantRestrictions' );
 			} else {
-				$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $previous );
+				$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $previous, 'ConstantRestrictions' );
 			}
 		}
 	}

@@ -5,6 +5,11 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Sniffs\Actions;
+
+use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer_Tokens as Tokens;
+
 /**
  * This sniff validates a propper usage of pre_get_posts action callback
  *
@@ -12,7 +17,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSniffer_Sniff {
+class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * The tokens of the phpcsFile.
@@ -34,7 +39,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 	 * @return array(int)
 	 */
 	public function register() {
-		return PHP_CodeSniffer_Tokens::$functionNameTokens;
+		return Tokens::$functionNameTokens;
 
 	}//end register()
 
@@ -42,13 +47,13 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-	 * @param int				   $stackPtr  The position in the stack where
-	 *										the token was found.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
 	 *
 	 * @return void
 	 */
-	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		$this->_tokens = $phpcsFile->getTokens();
 
@@ -62,7 +67,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		}
 
 		$actionNamePtr = $this->_phpcsFile->findNext(
-			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
+			array_merge( Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -81,7 +86,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		}
 
 		$callbackPtr = $this->_phpcsFile->findNext(
-			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_COMMA ) ), // types.
+			array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), // types.
 			$actionNamePtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -96,9 +101,9 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 
 		if ( 'PHPCS_T_CLOSURE' === $this->_tokens[ $callbackPtr ]['code'] ) {
 			$this->processClosure( $callbackPtr );
-		} else if ( 'T_ARRAY' === $this->_tokens[ $callbackPtr ]['type'] ) {
+		} elseif ( 'T_ARRAY' === $this->_tokens[ $callbackPtr ]['type'] ) {
 			$this->processArray( $callbackPtr );
-		} else if ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], PHP_CodeSniffer_Tokens::$stringTokens ) ) {
+		} elseif ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
 		}
 
@@ -112,7 +117,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 	private function processArray( $stackPtr ) {
 
 		$previous = $this->_phpcsFile->findPrevious(
-			PHP_CodeSniffer_Tokens::$emptyTokens, // types
+			Tokens::$emptyTokens, // types
 			$this->_tokens[ $stackPtr ]['parenthesis_closer'] - 1, // start.
 			null, // end.
 			true, // exclude.
@@ -134,7 +139,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		$callbackFunctionName = substr( $this->_tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->_phpcsFile->findNext(
-			PHP_CodeSniffer_Tokens::$functionNameTokens, // types.
+			Tokens::$functionNameTokens, // types.
 			0, // start.
 			null, // end.
 			false, // exclude.
@@ -242,12 +247,12 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 				if ( $this->isEarlyMainQueryCheck( $wpQueryVarUsed ) ) {
 					return;
 				}
-			} else if ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
+			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
 				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
-					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed );
+					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 				}
-			} else if ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
-				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed );
+			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
+				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 			}
 			$findStart = $wpQueryVarUsed + 1;
 		}
@@ -316,7 +321,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		}
 
 		$nestedParenthesisEnd = array_shift( $this->_tokens[ $stackPtr ]['nested_parenthesis'] );
-		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->_tokens[ $stackPtr ]['conditions'] ) ) {
+		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->_tokens[ $stackPtr ]['conditions'], true ) ) {
 			$nestedParenthesisEnd = array_shift( $this->_tokens[ $stackPtr ]['nested_parenthesis'] );
 		}
 
@@ -346,7 +351,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 	 */
 	private function isWPQueryMethodCall( $stackPtr, $method = null ) {
 		$next = $this->_phpcsFile->findNext(
-			PHP_CodeSniffer_Tokens::$emptyTokens, // types.
+			Tokens::$emptyTokens, // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -363,7 +368,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		}
 
 		$next = $this->_phpcsFile->findNext(
-			PHP_CodeSniffer_Tokens::$emptyTokens, // types.
+			Tokens::$emptyTokens, // types.
 			$next + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -372,7 +377,7 @@ class WordPressVIPminimum_Sniffs_Actions_PreGetPostsSniff implements PHP_CodeSni
 		);
 
 		if ( $next &&
-			 true === in_array( $this->_tokens[ $next ]['code'], PHP_CodeSniffer_Tokens::$functionNameTokens, true ) &&
+			 true === in_array( $this->_tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) &&
 			 $method === $this->_tokens[ $next ]['content']
 		) {
 			return true;

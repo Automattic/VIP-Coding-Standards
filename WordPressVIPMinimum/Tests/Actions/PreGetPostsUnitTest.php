@@ -5,12 +5,16 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Tests\Actions;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
  * Unit test class for the PreGetPosts sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Tests_Actions_PreGetPostsUnitTest extends AbstractSniffUnitTest {
+class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

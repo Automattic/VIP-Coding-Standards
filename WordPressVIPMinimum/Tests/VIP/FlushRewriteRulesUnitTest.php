@@ -5,12 +5,16 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Tests\VIP;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
  * Unit test class for the FlushRewriteRules sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Tests_VIP_FlushRewriteRulesUnitTest extends AbstractSniffUnitTest {
+class FlushRewriteRulesUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

@@ -5,12 +5,16 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Tests\Classes;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
  * Unit test class for the DeclarationCompatibility sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Tests_Classes_DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
+class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

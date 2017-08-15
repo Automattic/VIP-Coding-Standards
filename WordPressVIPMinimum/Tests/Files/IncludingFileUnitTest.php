@@ -5,12 +5,15 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Tests\Files;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the IncludingFile sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Tests_Files_IncludingFileUnitTest extends AbstractSniffUnitTest {
+class IncludingFileUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

@@ -13,6 +13,10 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
+namespace WordPressVIPMinimum\Sniffs\Variables;
+
+use PHP_CodeSniffer_File as File;
+
 /**
  * Checks the for undefined function variables.
  *
@@ -25,7 +29,7 @@
  * @copyright 2011 Sam Graham <php-codesniffer-variableanalysis BLAHBLAH illusori.co.uk>
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_CodeSniffer_Sniff
+class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
 {
 	/**
      * The current phpcsFile being checked.
@@ -330,13 +334,13 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token
+     *                                               in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr) {
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
@@ -481,19 +485,23 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function markVariableReadAndWarnIfUndefined($phpcsFile, $varName, $stackPtr, $currScope) {
+
         $this->markVariableRead($varName, $stackPtr, $currScope);
 
         if ($this->isVariableUndefined($varName, $stackPtr, $currScope) === true) {
             // We haven't been defined by this point.
-            $phpcsFile->addWarning("Variable %s is undefined.", $stackPtr,
+            $phpcsFile->addWarning(
+                "Variable %s is undefined.",
+                $stackPtr,
                 'UndefinedVariable',
-                array("\${$varName}"));
+                array("\${$varName}")
+            );
         }
         return true;
     }
 
     function findFunctionPrototype(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -516,7 +524,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function findVariableScope(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -548,7 +556,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function isNextThingAnAssign(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -564,7 +572,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function findWhereAssignExecuted(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -599,7 +607,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function findContainingBrackets(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -613,7 +621,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
 
 
     function findFunctionCall(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -630,7 +638,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     function findFunctionCallArguments(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -673,13 +681,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForFunctionPrototype(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a function or closure parameter?
         // It would be nice to get the list of function parameters from watching for
@@ -721,7 +728,9 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
                 // We haven't been defined by this point.
                 $phpcsFile->addWarning("Variable %s is undefined.", $stackPtr,
                     'UndefinedVariable',
-                    array("\${$varName}"));
+                    array("\${$varName}"),
+                    'WordPressVIPMinimum.Variables.VariableAnalysis'
+                );
                 return true;
             }
             // $functionPtr is at the use, we need the function keyword for start of scope.
@@ -738,13 +747,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForCatchBlock(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a catch block parameter?
         if (($openPtr = $this->findContainingBrackets($phpcsFile, $stackPtr)) === false) {
@@ -773,7 +781,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForThisWithinClass(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
@@ -801,13 +809,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForSuperGlobal(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a superglobal variable?
         if (in_array($varName, array(
@@ -830,7 +837,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForStaticMember(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
@@ -868,7 +875,9 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
                     if ($tokens[$scopePtr]['code'] === T_CLOSURE) {
                         $phpcsFile->addError("Use of {$err_desc}%s inside closure.", $stackPtr,
                             $err_class,
-                            array("\${$varName}"));
+                            array("\${$varName}"),
+                            'WordPressVIPMinimum.Variables.VariableAnalysis'
+                            );
                         return true;
                     }
                     if ($scopeCode === T_CLASS) {
@@ -878,7 +887,9 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
             }
             $phpcsFile->addError("Use of {$err_desc}%s outside class definition.", $stackPtr,
                 $err_class,
-                array("\${$varName}"));
+                array("\${$varName}"),
+                'WordPressVIPMinimum.Variables.VariableAnalysis'
+                );
             return true;
         }
 
@@ -886,13 +897,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForAssignment(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Is the next non-whitespace an assignment?
         if (($assignPtr = $this->isNextThingAnAssign($phpcsFile, $stackPtr)) === false) {
@@ -908,13 +918,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForListAssignment(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // OK, are we within a list (...) construct?
         if (($openPtr = $this->findContainingBrackets($phpcsFile, $stackPtr)) === false) {
@@ -939,13 +948,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForGlobalDeclaration(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a global declaration?
         // Search backwards for first token that isn't whitespace, comma or variable.
@@ -962,13 +970,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForStaticDeclaration(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a static declaration?
         // Static declarations are a bit more complicated than globals, since they
@@ -1026,13 +1033,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForForeachLoopVar(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we a foreach loopvar?
         if (($openPtr = $this->findContainingBrackets($phpcsFile, $stackPtr)) === false) {
@@ -1049,13 +1055,12 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForPassByReferenceFunctionCall(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         // Are we pass-by-reference to known pass-by-reference function?
         if (($functionPtr = $this->findFunctionCall($phpcsFile, $stackPtr)) === false) {
@@ -1114,7 +1119,7 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function checkForSymbolicObjectProperty(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $varName,
         $currScope
@@ -1138,32 +1143,30 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     /**
      * Called to process class member vars.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where this
-     *                                        token was found.
-     * @param int                  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     *                                               token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */
     protected function processMemberVar(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
         // TODO: don't care for now
     }
 
     /**
      * Called to process normal member vars.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where this
-     *                                        token was found.
-     * @param int                  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     *                                               token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */
     protected function processVariable(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
@@ -1273,15 +1276,15 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
      * Note that there may be more than one variable in the string, which will
      * result only in one call for the string.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where this
-     *                                        token was found.
-     * @param int                  $stackPtr  The position where the double quoted
-     *                                        string was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     *                                               token was found.
+     * @param int                          $stackPtr  The position where the double quoted
+     *                                                string was found.
      *
      * @return void
      */
     protected function processVariableInString(
-        PHP_CodeSniffer_File
+        File
         $phpcsFile,
         $stackPtr
     ) {
@@ -1307,14 +1310,13 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     }
 
     protected function processCompactArguments(
-        PHP_CodeSniffer_File
-        $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $arguments,
         $currScope
     ) {
+        $this->phpcsFile = $phpcsFile;
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         foreach ($arguments as $argumentPtrs) {
             $argumentPtrs = array_values(array_filter($argumentPtrs, array( $this, 'filter_non_whitespace_tokens' ) ));
@@ -1360,20 +1362,18 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
     /**
      * Called to process variables named in a call to compact().
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where this
-     *                                        token was found.
-     * @param int                  $stackPtr  The position where the call to compact()
-     *                                        was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     *                                               token was found.
+     * @param int                         $stackPtr  The position where the call to compact()
+     *                                               was found.
      *
      * @return void
      */
     protected function processCompact(
-        PHP_CodeSniffer_File
-        $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         $currScope = $this->findVariableScope($phpcsFile, $stackPtr);
 
@@ -1388,15 +1388,14 @@ class WordPressVIPMinimum_Sniffs_Variables_VariableAnalysisSniff implements PHP_
      * Note that although triggered by the closing curly brace of the scope, $stackPtr is
      * the scope conditional, not the closing curly brace.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where this
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
      *                                        token was found.
-     * @param int                  $stackPtr  The position of the scope conditional.
+     * @param int                         $stackPtr  The position of the scope conditional.
      *
      * @return void
      */
     protected function processScopeClose(
-        PHP_CodeSniffer_File
-        $phpcsFile,
+        File $phpcsFile,
         $stackPtr
     ) {
         $scopeInfo = $this->getScopeInfo($stackPtr, false);

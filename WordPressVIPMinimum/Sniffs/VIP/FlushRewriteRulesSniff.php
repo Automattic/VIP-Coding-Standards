@@ -6,12 +6,17 @@
  * @link https://github.com/Automattic/VIP-Coding-Standards
  */
 
+namespace WordPressVIPMinimum\Sniffs\VIP;
+
+use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer_Tokens as Tokens;
+
 /**
  * Restricts usage of rewrite rules flushing
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeSniffer_Sniff {
+class FlushRewriteRulesSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -19,18 +24,18 @@ class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeS
 	 * @return array
 	 */
 	public function register() {
-		return PHP_CodeSniffer_Tokens::$functionNameTokens;
+		return Tokens::$functionNameTokens;
 	}
 
 	/**
 	 * Process this test when one of its tokens is encountered.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile  The file being scanned.
-	 * @param int				   $stackPtr   The position of the current token in the stack passed in $tokens.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile  The file being scanned.
+	 * @param int                         $stackPtr   The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		$tokens = $phpcsFile->getTokens();
 
@@ -41,7 +46,7 @@ class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeS
 		}
 
 		$previousPtr = $phpcsFile->findPrevious(
-			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens ), // types.
+			array_merge( Tokens::$emptyTokens ), // types.
 			$stackPtr - 1, // start.
 			null, // end.
 			true, // exclude.
@@ -54,7 +59,7 @@ class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeS
 		}
 
 		$previousPtr = $phpcsFile->findPrevious(
-			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens ), // types.
+			array_merge( Tokens::$emptyTokens ), // types.
 			$previousPtr - 1, // start.
 			null, // end.
 			true, // exclude.
@@ -68,7 +73,7 @@ class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeS
 
 		if ( 'PHPCS_T_CLOSE_SQUARE_BRACKET' === $tokens[ $previousPtr ]['code'] ) {
 			$previousPtr = $phpcsFile->findPrevious(
-				array_merge( PHP_CodeSniffer_Tokens::$emptyTokens ), // types.
+				array_merge( Tokens::$emptyTokens ), // types.
 				$previousPtr - 1, // start.
 				null, // end.
 				true, // exclude.
@@ -84,7 +89,7 @@ class WordPressVIPMinimum_Sniffs_VIP_FlushRewriteRulesSniff implements PHP_CodeS
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( '%s should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr );
+		$phpcsFile->addError( sprintf( '%s should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'FlushRewriteRules' );
 	}
 
 }

@@ -13,6 +13,8 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
+namespace WordPressVIPMinimum\Sniffs\Variables;
+
 /**
  * Holds details of a scope.
  *

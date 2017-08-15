@@ -5,12 +5,14 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
+namespace WordPressVIPMinimum\Sniffs\VIP;
+
 /**
  * Restricts usage of some functions in VIP context.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WordPressVIPMinimum_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_Sniffs_VIP_RestrictedFunctionsSniff {
+class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctionsSniff {
 
 	/**
 	 * Groups of functions to restrict.
