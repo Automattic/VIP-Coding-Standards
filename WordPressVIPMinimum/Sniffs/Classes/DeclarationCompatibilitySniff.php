@@ -9,7 +9,7 @@ namespace WordPressVIPMinimum\Sniffs\Classes;
 
 use PHP_CodeSniffer_File as File;
 
-// WPCS pre 0.1.3 backwardcompatibility.
+// WPCS pre 0.13.1 backwardcompatibility.
 if ( ! class_exists( '\PHP_CodeSniffer_Standards_AbstractScopeSniff' ) ) {
 	class_alias( 'PHP_CodeSniffer\Sniffs\AbstractScopeSniff', '\PHP_CodeSniffer_Standards_AbstractScopeSniff' );
 }
