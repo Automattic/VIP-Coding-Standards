@@ -28,6 +28,16 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 	);
 
 	/**
+	 * List of restricted constant declarations.
+	 *
+	 * @var array
+	 */
+	public $restrictedConstantDeclaration = array(
+		'JETPACK_DEV_DEBUG',
+		'WP_CRON_CONTROL_SECRET',
+	);
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -57,12 +67,14 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 			$constantName = trim( $tokens[ $stackPtr ]['content'], "\"'" );
 		}
 
-		if ( false === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
+		if ( false === in_array( $constantName, $this->restrictedConstantNames, true )
+		     && false == in_array( $constantName, $this->restrictedConstantDeclaration, true )
+		) {
 			// Not the constant we are looking for.
 			return;
 		}
 
-		if ( T_STRING === $tokens[ $stackPtr ]['code'] ) {
+		if ( T_STRING === $tokens[ $stackPtr ]['code'] && true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
 			$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr, 'ConstantRestrictions' );
 			return;
 		}
@@ -92,7 +104,7 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 		if ( true === in_array( $tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) ) {
 			if ( 'define' === $tokens[ $previous ]['content'] ) {
 				$phpcsFile->addError( sprintf( 'The definition of %s constant is prohibited. Please use a different name.', $constantName ), $previous, 'ConstantRestrictions' );
-			} else {
+			} elseif ( true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
 				$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $previous, 'ConstantRestrictions' );
 			}
 		}

@@ -8,4 +8,16 @@ if ( defined( 'A8C_PROXIED_REQUEST' ) && true === constant( 'A8C_PROXIED_REQUEST
 
 }
 
-define( 'A8C_PROXIED_REQUEST', false ); // Bad. Should never try to define this.
+define( 'A8C_PROXIED_REQUEST', false ); // Bad. Should never attempt to define this.
+
+define( 'JETPACK_DEV_DEBUG', true ); // Bad. Should never attempt to define this.
+
+define( 'WP_CRON_CONTROL_SECRET', true ); // Bad. Should never attempt to define this.
+
+if ( defined( 'JETPACK_DEV_DEBUG' ) ) { // Okay. Can touch.
+
+}
+
+if ( constant( 'WP_CRON_CONTROL_SECRET' ) ) { // Okay. Can touch.
+
+}
