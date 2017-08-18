@@ -59,7 +59,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 				'type' => 'error',
 				'message' => '%s does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags` should be used instead.',
 				'functions' => array(
-					'strip_tags'
+					'strip_tags',
 				),
 			),
 		);
