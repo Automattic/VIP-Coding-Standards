@@ -9,6 +9,11 @@ The ruleset takes advantage of existing rules in the [WordPress-Coding-Standards
 
 Please refer to the [installation instructions of WordPress Coding Standards for PHP_CodeSniffer project](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards#installation).
 
+## Minimal requirements
+
+* [PHPCS v2.9.1](https://github.com/squizlabs/PHP_CodeSniffer/releases/tag/2.9.1)
+* [WPCS v0.13.1](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases/tag/0.13.1)
+
 # Setup note
 
 Should you wish to run both standards (WordPress.com VIP minimum standard & WordPress.com VIP coding standard), you can add both to PHPCS by running the following configuration command:
