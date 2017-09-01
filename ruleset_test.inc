@@ -131,3 +131,21 @@ get_children(); // Bad. Warning. Message.
 attachment_url_to_postid(); // Bad. Error.
 
 str_replace( 'foo', 'bar', 'foobar' ); // Bad. Error.
+
+wpcom_vip_get_term_link(); // Bad. Error.
+
+wpcom_vip_get_term_by(); // Bad. Error.
+
+wpcom_vip_get_category_by_slug(); // Bad. Error.
+
+get_cat_ID(); // Ok.
+
+get_category_link(); // Ok.
+
+get_tag_link(); // Ok.
+
+get_category_by_slug(); // Ok.
+
+get_term_by(); // Ok.
+
+get_term_link(); // Ok.
