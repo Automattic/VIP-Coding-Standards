@@ -69,7 +69,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 			'get_term_by' => 'wpcom_vip_get_term_by',
 			'get_category_by_slug' => 'wpcom_vip_get_category_by_slug',
 		);
-		foreach( $deprecated_vip_helpers as $restricted => $helper ) {
+		foreach ( $deprecated_vip_helpers as $restricted => $helper ) {
 			$new_groups[ $helper ] = array(
 				'type' => 'error',
 				'message' => '%s() is prohibited, please use ' . $this->get_alternatives( $original_groups[ $restricted ]['functions'] ) . ' instead.',
@@ -87,9 +87,9 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 	/**
 	 * Return formatted list of alternative functions.
 	 *
-	 * @param array $function_list
+	 * @param array $function_list List of alternative functions.
 	 *
-	 * @return string
+	 * @return string Formatted list of alternative functions.
 	 */
 	private function get_alternatives( $function_list ) {
 		$function_list = array_map( array( $this, 'append_brackets' ), $function_list );
@@ -99,9 +99,9 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 	/**
 	 * Append brackets "()" to the function name.
 	 *
-	 * @param $item
+	 * @param $item A function name w/o trailing brackets.
 	 *
-	 * @return string
+	 * @return string Function name with trailing brackets().
 	 */
 	private function append_brackets( $item ) {
 		return $item . '()';
@@ -112,9 +112,9 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 	 *
 	 * The method accepts an array and joins the items with comma with "or" after the last one.
 	 *
-	 * @param array $function_list
+	 * @param array $function_list List of alternative functions.
 	 *
-	 * @return string
+	 * @return string Formatted list of alternative functions.
 	 */
 	private function join_with_comma_and_or( $function_list ) {
 		if ( 1 === count( $function_list ) ) {
