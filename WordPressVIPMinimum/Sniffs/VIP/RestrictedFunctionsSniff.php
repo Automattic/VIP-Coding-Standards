@@ -99,7 +99,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 	/**
 	 * Append brackets "()" to the function name.
 	 *
-	 * @param $item A function name w/o trailing brackets.
+	 * @param string $item A function name w/o trailing brackets.
 	 *
 	 * @return string Function name with trailing brackets().
 	 */
