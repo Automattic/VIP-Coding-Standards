@@ -132,11 +132,11 @@ attachment_url_to_postid(); // Bad. Error.
 
 str_replace( 'foo', 'bar', 'foobar' ); // Bad. Error.
 
-wpcom_vip_get_term_link(); // Bad. Error.
+wpcom_vip_get_term_link(); // Bad. Warning.
 
-wpcom_vip_get_term_by(); // Bad. Error.
+wpcom_vip_get_term_by(); // Bad. Warning.
 
-wpcom_vip_get_category_by_slug(); // Bad. Error.
+wpcom_vip_get_category_by_slug(); // Bad. Warning.
 
 get_cat_ID(); // Ok.
 

@@ -71,7 +71,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 		);
 		foreach ( $deprecated_vip_helpers as $restricted => $helper ) {
 			$new_groups[ $helper ] = array(
-				'type' => 'error',
+				'type' => 'warning',
 				'message' => '%s() is deprecated, please use ' . $this->get_alternatives( $original_groups[ $restricted ]['functions'] ) . ' instead.',
 				'functions' => array(
 					$helper,
