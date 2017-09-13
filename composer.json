@@ -1,0 +1,30 @@
+{
+	"name"       : "automattic/vipwpcs",
+	"description": "PHP_CodeSniffer rules (sniffs) to enforce WordPress VIP minimum coding conventions",
+	"keywords"   : ["phpcs", "standards", "WordPress"],
+	"license"    : "MIT",
+	"authors"    : [
+		{
+			"name"    : "Contributors",
+			"homepage": "https://github.com/Automattic/VIP-Coding-Standards/graphs/contributors"
+		}
+	],
+	"require"    : {
+		"php" : ">=5.3",
+		"squizlabs/php_codesniffer": "^2.9.0 || ^3.0.2",
+    "wp-coding-standards/wpcs": "*"
+	},
+	"suggest" : {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.1"
+	},
+	"minimum-stability" : "RC",
+	"support"    : {
+		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
+		"source": "https://github.com/Automattic/VIP-Coding-Standards"
+	},
+	"type"       : "phpcodesniffer-standard",
+	"scripts"    : {
+		"post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..",
+		"post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths ../../.."
+	}
+}
