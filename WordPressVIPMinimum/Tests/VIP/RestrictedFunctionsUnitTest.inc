@@ -35,3 +35,5 @@ wpcom_vip_get_term_link(); // Bad. Deprecated.
 wp_mail(); // Bad. Warning.
 
 mail(); // Bad. Warning.
+
+dbDelta();
