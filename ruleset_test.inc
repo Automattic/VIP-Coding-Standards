@@ -153,3 +153,5 @@ get_term_link(); // Ok.
 wp_mail(); // Bad. Warning.
 
 mail(); // Bad. Warning.
+
+dbDelta(); // Bad. Error.

@@ -70,6 +70,13 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 					'mail',
 				),
 			),
+			'dbDelta'                  => array(
+				'type'      => 'error',
+				'message'   => 'All database modifications have to approved by the WordPress.com VIP team.',
+				'functions' => array(
+					'dbDelta',
+				),
+			),
 		);
 
 		$deprecated_vip_helpers = array(
