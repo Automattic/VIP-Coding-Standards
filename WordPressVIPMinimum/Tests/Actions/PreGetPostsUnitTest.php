@@ -32,7 +32,7 @@ class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			8 => 1,
+			8  => 1,
 			11 => 1,
 			29 => 1,
 			32 => 1,

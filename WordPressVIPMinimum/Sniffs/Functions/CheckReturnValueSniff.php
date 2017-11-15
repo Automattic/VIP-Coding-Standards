@@ -34,15 +34,15 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 * @var array
 	 */
 	public $catch = array(
-		'esc_url' => array(
+		'esc_url'          => array(
 			'wpcom_vip_get_term_link',
 			'get_term_link',
 		),
-		'wp_list_pluck' => array(
+		'wp_list_pluck'    => array(
 			'get_the_tags',
 			'get_the_terms',
 		),
-		'foreach' => array(
+		'foreach'          => array(
 			'get_post_meta',
 			'get_term_meta',
 			'get_the_terms',
@@ -84,7 +84,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		$this->_tokens = $phpcsFile->getTokens();
+		$this->_tokens    = $phpcsFile->getTokens();
 		$this->_phpcsFile = $phpcsFile;
 
 		$this->findDirectFunctionCalls( $stackPtr );
@@ -100,7 +100,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	private function isFunctionCall( $stackPtr ) {
 
-		$tokens = $this->_tokens;
+		$tokens    = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
 		if ( false === in_array( $tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) ) {
@@ -108,7 +108,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -136,20 +136,20 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
-		$tokens = $this->_tokens;
+		$tokens    = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ($stackPtr - 1), null, true );
+		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
 
 		if ( T_EQUAL !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
 			return false;
 		}
 
-		$previous = $phpcsFile->findPrevious( $search, ($previous - 1), null, true );
+		$previous = $phpcsFile->findPrevious( $search, ( $previous - 1 ), null, true );
 
 		if ( T_VARIABLE !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
@@ -166,7 +166,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 */
 	public function findDirectFunctionCalls( $stackPtr ) {
-		$tokens = $this->_tokens;
+		$tokens    = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
 		$functionName = $tokens[ $stackPtr ]['content'];
@@ -182,7 +182,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
@@ -209,7 +209,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function findNonCheckedVariables( $stackPtr ) {
 
-		$tokens = $this->_tokens;
+		$tokens    = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
 		$functionName = $tokens[ $stackPtr ]['content'];
@@ -221,7 +221,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		foreach ( $this->catch as $callee => $checkReturnArray ) {
 			if ( true === in_array( $functionName, $checkReturnArray, true ) ) {
 				$isFunctionWeLookFor = true;
-				$callees[] = $callee;
+				$callees[]           = $callee;
 			}
 		}
 
@@ -243,18 +243,18 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$variableToken = $tokens[ $variablePos ];
-		$variableName = $variableToken['content'];
+		$variableName  = $variableToken['content'];
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
 		if ( true === in_array( $functionName, array( 'get_post_meta', 'get_term_meta' ), true ) ) {
 			// Since the get_post_meta and get_term_meta always returns an array if $single is set to `true` we need to check for the value of it's third param before proceeding.
-			$params = array();
-			$paramNo = 1;
+			$params       = array();
+			$paramNo      = 1;
 			$prevCommaPos = $openBracket + 1;
 
 			for ( $i = $openBracket + 1; $i <= $closeBracket; $i++ ) {
@@ -281,29 +281,30 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			}
 		}
 
-		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ($closeBracket + 1), null, false, $variableName, false );
+		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ( $closeBracket + 1 ), null, false, $variableName, false );
 
 		// Find previous non-empty token, which is not an open parenthesis, comma nor variable.
-		$search = Tokens::$emptyTokens;
+		$search   = Tokens::$emptyTokens;
 		$search[] = T_OPEN_PARENTHESIS;
 		// This allows us to check for variables which are passed as second paramt of a function. Eg.: array_key_exists.
 		$search[] = T_COMMA;
 		$search[] = T_VARIABLE;
 		$search[] = T_CONSTANT_ENCAPSED_STRING;
+
 		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ($nextVariableOccurrence - 1 ), null, true );
 
 		foreach ( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : array();
 			// Check whether the found token is one of the function calls (or foreach call) we are interested in.
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
-				 && $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
+				&& $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
 				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'CheckReturnValue' );
 				return;
 			}
 
 			$search = array_merge( Tokens::$emptyTokens, array( T_EQUAL ) );
-			$next = $phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true, null, false );
+			$next  = $phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true, null, false );
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {

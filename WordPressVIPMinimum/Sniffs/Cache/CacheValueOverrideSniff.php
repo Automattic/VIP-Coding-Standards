@@ -53,8 +53,8 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		$this->_tokens = $phpcsFile->getTokens();
-		$tokens = $phpcsFile->getTokens();
+		$this->_tokens    = $phpcsFile->getTokens();
+		$tokens           = $phpcsFile->getTokens();
 		$this->_phpcsFile = $phpcsFile;
 
 		$functionName = $tokens[ $stackPtr ]['content'];
@@ -80,21 +80,21 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		$variableName = $variableToken['content'];
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
-		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ($closeBracket + 1), null, false, $variableName, false );
+		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ( $closeBracket + 1 ), null, false, $variableName, false );
 
-		$rightAfterNextVariableOccurence = $phpcsFile->findNext( Tokens::$emptyTokens, ($nextVariableOccurrence + 1), null, true, null, true );
+		$rightAfterNextVariableOccurence = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextVariableOccurrence + 1 ), null, true, null, true );
 
 		if ( T_EQUAL !== $tokens[ $rightAfterNextVariableOccurence ]['code'] ) {
 			// Not a value override.
 			return;
 		}
 
-		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ($rightAfterNextVariableOccurence + 1), null, true, null, true );
+		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ( $rightAfterNextVariableOccurence + 1 ), null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
 			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'CacheValueOverride' );

@@ -43,7 +43,7 @@ class StaticStrreplaceSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			return;
@@ -54,7 +54,7 @@ class StaticStrreplaceSniff implements \PHP_CodeSniffer_Sniff {
 			$param_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), $next_start_ptr, null, true );
 
 			if ( T_ARRAY === $tokens[ $param_ptr ]['code'] ) {
-				$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($param_ptr + 1), null, true );
+				$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $param_ptr + 1 ), null, true );
 				if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 					return;
 				}
