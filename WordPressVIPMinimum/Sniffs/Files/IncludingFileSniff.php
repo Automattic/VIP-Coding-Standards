@@ -38,7 +38,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 	 * @var array
 	 */
 	public $restrictedConstants = array(
-		'TEMPLATEPATH' => 'get_template_directory',
+		'TEMPLATEPATH'   => 'get_template_directory',
 		'STYLESHEETPATH' => 'get_stylesheet_directory',
 	);
 
@@ -87,11 +87,11 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS === $tokens[ $nextToken ]['code'] ) {
 			// The construct is using parenthesis, grab the next non empty token.
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ($nextToken + 1), null, true, null, true );
+			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 		}
 
 		if ( T_DIR === $tokens[ $nextToken ]['code'] || '__DIR__' === $tokens[ $nextToken ]['content'] ) {
@@ -129,7 +129,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 			}
 
 			if ( 0 === strpos( $tokens[ $nextToken ]['content'], '$' ) ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken,  'IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
@@ -138,9 +138,9 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 				return;
 			}
 
-			$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ($nextToken + 1), null, true, null, true );
+			$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 			if ( T_OPEN_PARENTHESIS === $tokens[ $nextNextToken ]['code'] ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( %s() ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken,  'IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( %s() ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 

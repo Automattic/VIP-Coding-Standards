@@ -55,8 +55,9 @@ class RegexpCompareSniff extends \WordPress\AbstractArrayAssignmentRestrictionsS
 	 */
 	public function callback( $key, $val, $line, $group ) {
 		if ( 0 === strpos( $val, 'NOT REGEXP' )
-			 || 0 === strpos( $val, 'REGEXP' )
-			 || true === in_array( $val, array( 'REGEXP', 'NOT REGEXP' ), true ) ) {
+			|| 0 === strpos( $val, 'REGEXP' )
+			|| true === in_array( $val, array( 'REGEXP', 'NOT REGEXP' ), true )
+		) {
 			return 'Detected regular expression comparison. `%s` is set to `%s`.';
 		}
 	}

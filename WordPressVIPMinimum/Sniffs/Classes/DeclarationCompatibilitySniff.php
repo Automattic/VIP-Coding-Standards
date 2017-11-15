@@ -42,102 +42,102 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 	 */
 	public $checkClasses = array(
 		'WP_Widget' => array(
-			'widget' => array( 'args', 'instance' ),
-			'update' => array( 'new_instance', 'old_instance' ),
-			'form' => array( 'instance' ),
-			'WP_Widget' => array(
+			'widget'                => array( 'args', 'instance' ),
+			'update'                => array( 'new_instance', 'old_instance' ),
+			'form'                  => array( 'instance' ),
+			'WP_Widget'             => array(
 				'id_base',
 				'name',
-				'widget_options' => array(
+				'widget_options'  => array(
 					'default' => 'array()',
 				),
 				'constol_options' => array(
 					'default' => 'array()',
 				),
 			),
-			'get_field_name' => array( 'field_name' ),
-			'get_field_id' => array( 'field_name' ),
-			'_register' => array(),
-			'_set' => array( 'number' ),
+			'get_field_name'        => array( 'field_name' ),
+			'get_field_id'          => array( 'field_name' ),
+			'_register'             => array(),
+			'_set'                  => array( 'number' ),
 			'_get_display_callback' => array(),
-			'_get_update_callback' => array(),
-			'_get_form_callback' => array(),
-			'is_preview' => array(),
-			'display_callback' => array(
+			'_get_update_callback'  => array(),
+			'_get_form_callback'    => array(),
+			'is_preview'            => array(),
+			'display_callback'      => array(
 				'args',
 				'widget_args' => array(
 					'default' => '1',
 				),
 			),
-			'update_callback' => array(
+			'update_callback'       => array(
 				'deprecated' => array(
 					'default' => '1',
 				),
 			),
-			'form_callback' => array(
+			'form_callback'         => array(
 				'widget_args' => array(
 					'default' => '1',
 				),
 			),
-			'register_one' => array(
+			'register_one'          => array(
 				'number' => array(
 					'default' => '-1',
 				),
 			),
-			'save_settings' => array( 'settings' ),
-			'get_settings' => array(),
+			'save_settings'         => array( 'settings' ),
+			'get_settings'          => array(),
 		),
-		'Walker' => array(
-			'start_lvl' => array(
+		'Walker'    => array(
+			'start_lvl'                   => array(
 				'output' => array(
 					'pass_by_reference' => true,
 				),
-				'depth' => array(
+				'depth'  => array(
 					'default' => '0',
 				),
-				'args' => array(
+				'args'   => array(
 					'default' => 'array()',
 				),
 			),
-			'end_lvl' => array(
+			'end_lvl'                     => array(
 				'output' => array(
 					'pass_by_reference' => true,
 				),
-				'depth' => array(
+				'depth'  => array(
 					'default' => '0',
 				),
-				'args' => array(
+				'args'   => array(
 					'default' => 'array()',
 				),
 			),
-			'start_el' => array(
-				'output' => array(
+			'start_el'                    => array(
+				'output'            => array(
 					'pass_by_reference' => true,
 				),
 				'object',
-				'depth' => array(
+				'depth'             => array(
 					'default' => '0',
 				),
-				'args' => array(
+				'args'              => array(
 					'default' => 'array()',
 				),
 				'current_object_id' => array(
 					'default' => '0',
 				),
 			),
-			'end_el' => array(
+			'end_el'                      => array(
 				'output' => array(
 					'pass_by_reference' => true,
 				),
 				'object',
-				'depth' => array(
+				'depth'  => array(
 					'default' => '0',
 				),
-				'args' => array(
+				'args'   => array(
 					'default' => 'array()',
 				),
 			),
-			'display_element' => array(
+			'display_element'             => array(
 				'element',
 				'children_elements' => array(
 					'pass_by_reference' => true,
@@ -145,15 +145,15 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 				'max_depth',
 				'depth',
 				'args',
-				'output' => array(
+				'output'            => array(
 					'pass_by_reference' => true,
 				),
 			),
-			'walk' => array(
+			'walk'                        => array(
 				'elements',
 				'max_depth',
 			),
-			'paged_walk' => array(
+			'paged_walk'                  => array(
 				'elements',
 				'max_depth',
 				'page_num',
@@ -162,7 +162,7 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 			'get_number_of_root_elements' => array(
 				'elements',
 			),
-			'unset_children' => array(
+			'unset_children'              => array(
 				'el',
 				'children_elements' => array(
 					'pass_by_reference' => true,
@@ -254,7 +254,7 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 		$parentSignature = $this->checkClasses[ $parentClassName ][ $methodName ];
 
 		if ( count( $signatureParams ) > count( $parentSignature ) ) {
-			$extra_params = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
+			$extra_params                  = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
 			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
 				if ( false === array_key_exists( 'default', $extra_param ) || 'true' !== $extra_param['default'] ) {
@@ -274,8 +274,8 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 		$i = 0;
 		foreach ( $parentSignature as $key => $param ) {
 			if ( true === is_array( $param ) ) {
-				if ( true === array_key_exists( 'default', $param ) && false === array_key_exists( 'default', $signatureParams[ $i ] ) ||
-					 true === array_key_exists( 'pass_by_reference', $param ) && $param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
+				if ( true === array_key_exists( 'default', $param ) && false === array_key_exists( 'default', $signatureParams[ $i ] )
+					|| true === array_key_exists( 'pass_by_reference', $param ) && $param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
 				) {
 					$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
 					return;
@@ -352,14 +352,14 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 	 */
 	protected function loadFunctionNamesInScope( File $phpcsFile, $currScope ) {
 		$this->_functionList = array();
-		$tokens = $phpcsFile->getTokens();
+		$tokens              = $phpcsFile->getTokens();
 
-		for ( $i = ($tokens[ $currScope ]['scope_opener'] + 1); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
+		for ( $i = ( $tokens[ $currScope ]['scope_opener'] + 1 ); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
 			if ( T_FUNCTION !== $tokens[ $i ]['code'] ) {
 				continue;
 			}
 
-			$next = $phpcsFile->findNext( T_STRING, $i );
+			$next                  = $phpcsFile->findNext( T_STRING, $i );
 			$this->_functionList[] = trim( $tokens[ $next ]['content'] );
 		}
 

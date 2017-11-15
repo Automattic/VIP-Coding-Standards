@@ -33,7 +33,7 @@ class IncludingFileUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			9 => 1,
+			9  => 1,
 			11 => 1,
 		);
 
