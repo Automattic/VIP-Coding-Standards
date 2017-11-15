@@ -72,7 +72,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 			),
 			'dbDelta'                  => array(
 				'type'      => 'error',
-				'message'   => 'All database modifications has to approved by the WordPress.com VIP team.',
+				'message'   => 'All database modifications have to approved by the WordPress.com VIP team.',
 				'functions' => array(
 					'dbDelta',
 				),
