@@ -63,6 +63,8 @@ $expected = array(
 		97 => 1,
 		108 => 1,
 		109 => 1,
+		135 => 1,
+		137 => 1,
 	),
 	'messages' => array(
 		129 => array(

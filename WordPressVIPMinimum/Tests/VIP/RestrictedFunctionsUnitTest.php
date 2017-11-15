@@ -39,6 +39,8 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return array(
 			5 => 1,
+			17 => 1,
+			19 => 1,
 		);
 
 	}

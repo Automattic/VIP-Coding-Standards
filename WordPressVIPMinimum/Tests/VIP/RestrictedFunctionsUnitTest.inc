@@ -13,3 +13,7 @@ flush_rewrite_rules(); // Bad.
 attachment_url_to_postid(); // Bad.
 
 wpcom_vip_attachment_url_to_postid(); // OK.
+
+wp_mail(); // Bad. Warning.
+
+mail(); // Bad. Warning.
