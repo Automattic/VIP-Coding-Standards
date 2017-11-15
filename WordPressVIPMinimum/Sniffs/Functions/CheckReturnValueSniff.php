@@ -118,7 +118,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ($stackPtr - 1), null, true );
+		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
 		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
 			// It's a function definition, not a function call.
 			return false;
@@ -188,11 +188,12 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
 		$startNext = $openBracket + 1;
-		while ( $next = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true ) ) {
+		$next = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true )
+		while ( $next ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
 				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
 			}
-			$startNext = $next + 1;
+			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true )
 		}
 
 	}//end findDirectFunctionCalls()
@@ -291,7 +292,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$search[] = T_VARIABLE;
 		$search[] = T_CONSTANT_ENCAPSED_STRING;
 
-		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ($nextVariableOccurrence - 1 ), null, true );
+		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ( $nextVariableOccurrence - 1 ), null, true );
 
 		foreach ( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : array();
@@ -304,7 +305,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			}
 
 			$search = array_merge( Tokens::$emptyTokens, array( T_EQUAL ) );
-			$next  = $phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true, null, false );
+			$next   = $phpcsFile->findNext( $search, ( $nextVariableOccurrence + 1 ), null, true, null, false );
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {

@@ -19,7 +19,7 @@ namespace WordPressVIPMinimum;
 
 // Expected values.
 $expected = array(
-	'errors' => array(
+	'errors'   => array(
 		4   => 1,
 		9   => 1,
 		16  => 1,

@@ -279,19 +279,26 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 
 		while ( T_IF === $this->_tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ] ) {
 
-			$searchStart = $lastConditionStackPtr + 1;
-			while ( $next = $this->_phpcsFile->findNext(
+			$next = $this->_phpcsFile->findNext(
 				array( T_VARIABLE ), // types.
-				$searchStart, // start.
+				( $lastConditionStackPtr + 1 ), // start.
 				null, // end.
 				false, // exclude.
 				$this->_tokens[ $stackPtr ]['content'], // value.
 				true // local.
-			) ) {
+			);
+			while ( $next ) {
 				if ( true === $this->isWPQueryMethodCall( $next, 'is_main_query' ) ) {
 					return true;
 				}
-				$searchStart = $next + 1;
+				$next = $this->_phpcsFile->findNext(
+					array( T_VARIABLE ), // types.
+					( $next + 1 ), // start.
+					null, // end.
+					false, // exclude.
+					$this->_tokens[ $stackPtr ]['content'], // value.
+					true // local.
+				);
 			}
 
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
@@ -431,7 +438,7 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 			&& true === is_array( $this->_tokens[ $stackPtr ]['conditions'] )
 			&& false === empty( $this->_tokens[ $stackPtr ]['conditions'] )
 		) {
-			$conditionStackPtrs = array_keys( $this->_tokens[ $stackPtr ]['conditions'] );
+			$conditionStackPtrs    = array_keys( $this->_tokens[ $stackPtr ]['conditions'] );
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
 			return T_IF === $this->_tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ];
 		}

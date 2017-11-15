@@ -48,11 +48,11 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 			'WP_Widget'             => array(
 				'id_base',
 				'name',
-				'widget_options' => array(
-					'default'    => 'array()',
+				'widget_options'  => array(
+					'default' => 'array()',
 				),
 				'constol_options' => array(
-					'default'     => 'array()',
+					'default' => 'array()',
 				),
 			),
 			'get_field_name'        => array( 'field_name' ),
@@ -70,7 +70,7 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 				),
 			),
 			'update_callback'       => array(
-				'deprecated'  => array(
+				'deprecated' => array(
 					'default' => '1',
 				),
 			),
@@ -99,7 +99,7 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 					'default' => 'array()',
 				),
 			),
-			'end_lvl'                    => array(
+			'end_lvl'                     => array(
 				'output' => array(
 					'pass_by_reference' => true,
 				),

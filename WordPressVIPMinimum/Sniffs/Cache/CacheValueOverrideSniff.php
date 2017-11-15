@@ -77,7 +77,7 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		}
 
 		$variableToken = $tokens[ $variablePos ];
-		$variableName = $variableToken['content'];
+		$variableName  = $variableToken['content'];
 
 		// Find the next non-empty token.
 		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
@@ -111,7 +111,7 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 	 */
 	private function isFunctionCall( $stackPtr ) {
 
-		$tokens = $this->_tokens;
+		$tokens    = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
 		if ( false === in_array( $tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) ) {
@@ -119,7 +119,7 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ($stackPtr + 1), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -129,7 +129,7 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ($stackPtr - 1), null, true );
+		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
 		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
 			// It's a function definition, not a function call.
 			return false;
@@ -147,20 +147,20 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
-		$tokens = $this->_tokens;
+		$tokens    = $this->_tokens;
 		$phpcsFile = $this->_phpcsFile;
 
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ($stackPtr - 1), null, true );
+		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
 
 		if ( T_EQUAL !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
 			return false;
 		}
 
-		$previous = $phpcsFile->findPrevious( $search, ($previous - 1), null, true );
+		$previous = $phpcsFile->findPrevious( $search, ( $previous - 1 ), null, true );
 
 		if ( T_VARIABLE !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
