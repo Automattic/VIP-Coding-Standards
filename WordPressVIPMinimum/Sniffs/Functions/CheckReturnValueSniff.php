@@ -188,7 +188,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
 		$startNext = $openBracket + 1;
-		$next = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
+		$next      = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
 				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
@@ -266,7 +266,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 
 				if ( T_COMMA === $tokens[ $i ]['code'] ) {
 					$params[ $paramNo++ ] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), array( $this, 'reduce_array' ) ) );
-					$prevCommaPos = $i + 1;
+					$prevCommaPos         = $i + 1;
 				}
 
 				if ( $i === $closeBracket ) {

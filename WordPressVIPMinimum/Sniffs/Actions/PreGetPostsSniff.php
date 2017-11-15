@@ -233,16 +233,15 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		$functionBodyScopeStart = $this->_tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->_tokens[ $stackPtr ]['scope_closer'];
 
-		$findStart = $functionBodyScopeStart + 1;
-
-		while ( $wpQueryVarUsed = $this->_phpcsFile->findNext(
+		$wpQueryVarUsed = $this->_phpcsFile->findNext(
 			array( T_VARIABLE ), // types.
-			$findStart, // start.
+			( $functionBodyScopeStart + 1 ), // start.
 			$functionBodyScopeEnd, // end.
 			false, // exclude.
 			$variableName, // value.
 			false // local.
-		) ) {
+		);
+		while ( $wpQueryVarUsed ) {
 			if ( $this->isPartOfIfConditional( $wpQueryVarUsed ) ) {
 				if ( $this->isEarlyMainQueryCheck( $wpQueryVarUsed ) ) {
 					return;
@@ -254,7 +253,14 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
 				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 			}
-			$findStart = $wpQueryVarUsed + 1;
+			$wpQueryVarUsed = $this->_phpcsFile->findNext(
+				array( T_VARIABLE ), // types.
+				( $wpQueryVarUsed + 1 ), // start.
+				$functionBodyScopeEnd, // end.
+				false, // exclude.
+				$variableName, // value.
+				false // local.
+			);
 		}
 	}
 

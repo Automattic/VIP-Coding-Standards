@@ -67,7 +67,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 				'message'   => '%s should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
 				'functions' => array(
 					'wp_mail',
-					'mail'
+					'mail',
 				),
 			),
 		);
