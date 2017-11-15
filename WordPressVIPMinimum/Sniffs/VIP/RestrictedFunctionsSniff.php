@@ -62,9 +62,9 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 					'strip_tags',
 				),
 			),
-			'wp_mail' => array(
-				'type' => 'warning',
-				'message' => '%s should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
+			'wp_mail'                  => array(
+				'type'      => 'warning',
+				'message'   => '%s should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
 				'functions' => array(
 					'wp_mail',
 					'mail'
