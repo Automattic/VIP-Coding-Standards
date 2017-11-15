@@ -149,3 +149,7 @@ get_category_by_slug(); // Ok.
 get_term_by(); // Ok.
 
 get_term_link(); // Ok.
+
+wp_mail(); // Bad. Warning.
+
+mail(); // Bad. Warning.

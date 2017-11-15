@@ -31,3 +31,7 @@ wpcom_vip_get_category_by_slug(); // Bad. Deprecated.
 wpcom_vip_get_term_by(); // Bad. Deprecated.
 
 wpcom_vip_get_term_link(); // Bad. Deprecated.
+
+wp_mail(); // Bad. Warning.
+
+mail(); // Bad. Warning.
