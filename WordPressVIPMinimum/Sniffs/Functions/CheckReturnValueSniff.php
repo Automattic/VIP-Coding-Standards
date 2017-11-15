@@ -188,12 +188,12 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
 		$startNext = $openBracket + 1;
-		$next = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true )
+		$next = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
 				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
 			}
-			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true )
+			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true );
 		}
 
 	}//end findDirectFunctionCalls()
