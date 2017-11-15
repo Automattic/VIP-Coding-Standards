@@ -23,8 +23,8 @@ class CheckReturnValueUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			5 => 1,
-			9 => 1,
+			5  => 1,
+			9  => 1,
 			14 => 1,
 			16 => 1,
 			19 => 1,
