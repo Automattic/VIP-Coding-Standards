@@ -29,7 +29,7 @@ if ( true == $true ) { // Bad. Warning.
 }
 
 // WordPress.PHP.YodaConditions
-if ( $true === true ) { // Bad. Warning.
+if ( $true === true ) { // Ok.
 }
 
 // WordPress.PHP.StrictInArray
@@ -155,3 +155,6 @@ wp_mail(); // Bad. Warning.
 mail(); // Bad. Warning.
 
 dbDelta(); // Bad. Error.
+
+// WordPress.CodeAnalysis.AssignmentInCondition.
+if ( $a = 1 ) {} // Bad. Warning.

@@ -15,17 +15,12 @@
 	<rule ref="WordPress.WP.PreparedSQL"/>
 	<rule ref="WordPress.Variables.GlobalVariables"/>
 	<rule ref="WordPress.PHP.StrictComparisons"/>
-	<rule ref="WordPress.PHP.YodaConditions"/>
+	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition"/>
 	<rule ref="WordPress.PHP.StrictInArray"/>
 	<rule ref="WordPress.Functions.DontExtract"/>
 
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
-
-	<!-- Lower Yoda Conditions Error to Warning -->
-	<rule ref="WordPress.PHP.YodaConditions.NotYoda">
-		<type>warning</type>
-	</rule>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#eval-and-create_function -->
 	<rule ref="Squiz.PHP.Eval"/>
