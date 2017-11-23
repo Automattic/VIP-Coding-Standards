@@ -21,6 +21,9 @@
 
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
+	<!-- Covers rule: Omitting the closing PHP tag at the end of a file is preferred. -->
+	<rule ref="PSR2.Files.ClosingTag"/>
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#eval-and-create_function -->
 	<rule ref="Squiz.PHP.Eval"/>
