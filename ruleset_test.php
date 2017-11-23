@@ -48,6 +48,7 @@ $expected = array(
 		131 => 1,
 		133 => 1,
 		157 => 1,
+		162 => 1,
 	),
 	'warnings' => array(
 		9   => 1,
@@ -258,3 +259,4 @@ if ( 0 === $test->run() ) {
 } else {
 	exit( 1 );
 }
+

@@ -158,3 +158,6 @@ dbDelta(); // Bad. Error.
 
 // WordPress.CodeAnalysis.AssignmentInCondition.
 if ( $a = 1 ) {} // Bad. Warning.
+
+?>
+
