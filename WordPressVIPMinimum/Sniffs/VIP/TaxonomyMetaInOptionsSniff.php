@@ -76,17 +76,16 @@ class TaxonomyMetaInOptionsSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-
 		$param_ptr = $phpcsFile->findNext( Tokens::$emptyTokens, $openBracket + 1, null, true );
 
 		if ( T_DOUBLE_QUOTED_STRING === $tokens[ $param_ptr ]['code'] ) {
-			foreach( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
+			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
 				if ( false !== strpos( $tokens[ $param_ptr ]['content'], $taxonomy_term_pattern ) ) {
 					$this->addWarning( $phpcsFile, $stackPtr );
 					return;
 				}
 			}
-		} else if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $param_ptr ]['code'] ) {
+		} elseif ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $param_ptr ]['code'] ) {
 
 			$string_concat = $phpcsFile->findNext( Tokens::$emptyTokens, ( $param_ptr + 1 ), null, true );
 			if ( T_STRING_CONCAT !== $tokens[ $string_concat ]['code'] ) {
@@ -115,16 +114,24 @@ class TaxonomyMetaInOptionsSniff implements \PHP_CodeSniffer_Sniff {
 				return;
 			}
 
-			foreach( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
+			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
 				if ( false !== strpos( $tokens[ $object_property ]['content'], $taxonomy_term_pattern ) ) {
 					$this->addWarning( $phpcsFile, $stackPtr );
 					return;
 				}
 			}
-
 		}
 	}//end process()
 
+	/**
+	 * Helper method for composing the Warnign for all possible cases.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param                             $stackPtr The position of the current token in the stack passed in $tokens.
+	 * @param string                      $type The warning type.
+	 *
+	 * @return void.
+	 */
 	public function addWarning( $phpcsFile, $stackPtr, $type = 'PossibleTermMetaInOptions' ) {
 		$phpcsFile->addWarning( sprintf( 'Possible detection of storing taxonomy term meta in options table. Needs manual inspection. All such data should be stored in term_meta.' ), $stackPtr, $type );
 	}
