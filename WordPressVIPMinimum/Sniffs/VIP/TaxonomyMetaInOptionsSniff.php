@@ -16,7 +16,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class TaxonomyMetaInOPtions implements \PHP_CodeSniffer_Sniff {
+class TaxonomyMetaInOptionsSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * List of options_ functions
