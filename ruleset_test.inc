@@ -159,5 +159,7 @@ dbDelta(); // Bad. Error.
 // WordPress.CodeAnalysis.AssignmentInCondition.
 if ( $a = 1 ) {} // Bad. Warning.
 
+add_option( 'taxonomy_rating_' . $obj->term_id ); // Bad. Warning.
+
 ?>
 
