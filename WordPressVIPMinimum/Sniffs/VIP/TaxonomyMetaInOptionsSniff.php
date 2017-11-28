@@ -127,7 +127,7 @@ class TaxonomyMetaInOptionsSniff implements \PHP_CodeSniffer_Sniff {
 	 * Helper method for composing the Warnign for all possible cases.
 	 *
 	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param                             $stackPtr The position of the current token in the stack passed in $tokens.
+	 * @param int                         $stackPtr The position of the current token in the stack passed in $tokens.
 	 * @param string                      $type The warning type.
 	 *
 	 * @return void.
