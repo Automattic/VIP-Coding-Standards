@@ -27,6 +27,7 @@
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
 		<include-pattern>*.php</include-pattern>
+		<include-pattern>*.inc</include-pattern>
 	</rule>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#eval-and-create_function -->
