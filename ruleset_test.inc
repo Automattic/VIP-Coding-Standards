@@ -169,5 +169,7 @@ $hello = true === isset( $_GET['utm_medium'] ) ? true : false; // NOK. Warning 3
 
 wp_safe_redirect( 'https.//vip.wordpress.com' ); // NOK. Error.
 
+is_multi_author(); // NOK. Warning.
+
 ?>
 
