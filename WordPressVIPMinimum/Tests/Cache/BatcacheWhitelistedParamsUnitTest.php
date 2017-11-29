@@ -22,10 +22,7 @@ class BatcacheWhitelistedParamsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
-			3 => 2,
-			7 => 1,
-		);
+		return array();
 	}
 
 	/**
@@ -34,7 +31,10 @@ class BatcacheWhitelistedParamsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return array(
+			3 => 2,
+			7 => 1,
+		);
 
 	}
 
