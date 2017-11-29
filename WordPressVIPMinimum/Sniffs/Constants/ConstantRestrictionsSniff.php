@@ -67,9 +67,7 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 			$constantName = trim( $tokens[ $stackPtr ]['content'], "\"'" );
 		}
 
-		if ( false === in_array( $constantName, $this->restrictedConstantNames, true )
-		     && false == in_array( $constantName, $this->restrictedConstantDeclaration, true )
-		) {
+		if ( false === in_array( $constantName, $this->restrictedConstantNames, true ) && false === in_array( $constantName, $this->restrictedConstantDeclaration, true ) ) {
 			// Not the constant we are looking for.
 			return;
 		}
