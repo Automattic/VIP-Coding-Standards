@@ -167,5 +167,7 @@ echo "<a href='" . esc_attr( $some_var ) . "'></a>"; // NOK. Error.
 
 $hello = true === isset( $_GET['utm_medium'] ) ? true : false; // NOK. Warning 3 times.
 
+wp_safe_redirect( 'https.//vip.wordpress.com' ); // NOK. Error.
+
 ?>
 
