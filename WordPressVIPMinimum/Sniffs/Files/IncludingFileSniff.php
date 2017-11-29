@@ -25,11 +25,12 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @var array
 	 */
-	public $getPathFuncitons = array(
+	public $getPathFunctions = array(
 		'plugin_dir_path',
 		'dirname',
 		'get_stylesheet_directory',
 		'get_template_directory',
+		'locate_template',
 	);
 
 	/**
@@ -106,7 +107,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( T_STRING === $tokens[ $nextToken ]['code'] ) {
 
-			if ( true === in_array( $tokens[ $nextToken ]['content'], $this->getPathFuncitons, true ) ) {
+			if ( true === in_array( $tokens[ $nextToken ]['content'], $this->getPathFunctions, true ) ) {
 				// The construct is using one of the function for getting correct path which is fine.
 				return;
 			}
