@@ -24,6 +24,8 @@ class ConstantRestrictionsUnitTest extends AbstractSniffUnitTest {
 	public function getErrorList() {
 		return array(
 			11 => 1,
+			13 => 1,
+			15 => 1,
 		);
 	}
 
