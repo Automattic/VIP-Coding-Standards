@@ -161,5 +161,7 @@ if ( $a = 1 ) {} // Bad. Warning.
 
 add_option( 'taxonomy_rating_' . $obj->term_id ); // Bad. Warning.
 
+//wpcom_vip_load_plugin( 'disqus' ); // Bad. Warning.
+
 ?>
 
