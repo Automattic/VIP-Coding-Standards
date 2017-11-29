@@ -18,6 +18,11 @@ use PHP_CodeSniffer_Tokens as Tokens;
  */
 class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 
+	/**
+	 * List of escaping functions which are being tested.
+	 *
+	 * @var array
+	 */
 	public $escaping_functions = array(
 		'esc_url',
 		'esc_attr',
@@ -66,7 +71,6 @@ class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 			if ( T_INLINE_HTML !== $tokens[ $html ]['code'] ) {
 				return;
 			}
-
 		} elseif ( T_STRING_CONCAT === $tokens[ $echo_or_string_concat ]['code'] ) {
 			// Very likely string concatenation mixing strings and functions/variables.
 			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $echo_or_string_concat - 1 ), null, true );
@@ -93,7 +97,7 @@ class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	/**
 	 * Tests whether provided string ends with open src or href attribute.
 	 *
-	 * @param $content Haystak in which we look for an open src or href attribute.
+	 * @param string $content Haystack in which we look for an open src or href attribute.
 	 *
 	 * @return bool True if string ends with open src or href attribute.
 	 */
@@ -147,6 +151,6 @@ class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	 * @return bool True if haystack ends with needle.
 	 */
 	public function endswith( $haystack, $needle ) {
-		return $needle === substr( $haystack, -strlen( $needle ) );
+		return substr( $haystack, -strlen( $needle ) ) === $needle;
 	}
 }
