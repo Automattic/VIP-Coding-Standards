@@ -165,5 +165,7 @@ add_option( 'taxonomy_rating_' . $obj->term_id ); // Bad. Warning.
 
 echo "<a href='" . esc_attr( $some_var ) . "'></a>"; // NOK. Error.
 
+$hello = true === isset( $_GET['utm_medium'] ) ? true : false; // NOK. Warning 3 times.
+
 ?>
 
