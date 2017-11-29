@@ -163,5 +163,7 @@ add_option( 'taxonomy_rating_' . $obj->term_id ); // Bad. Warning.
 
 //wpcom_vip_load_plugin( 'disqus' ); // Bad. Warning.
 
+echo "<a href='" . esc_attr( $some_var ) . "'></a>"; // NOK. Error.
+
 ?>
 
