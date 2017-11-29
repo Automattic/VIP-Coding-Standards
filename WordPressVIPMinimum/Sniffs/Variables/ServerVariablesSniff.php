@@ -56,7 +56,7 @@ class ServerVariablesSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$variableNamePtr = $phpcsFile->findNext( array( T_CONSTANT_ENCAPSED_STRING ), ($stackPtr + 1), null, false, null, true );
-		$variableName = str_replace( "'", '', $tokens[$variableNamePtr]['content'] );
+		$variableName = str_replace( "'", '', $tokens[ $variableNamePtr ]['content'] );
 
 		if ( false === in_array( $variableName, $this->restrictedVariables , true ) ) {
 			// Not the variable we are looking for.
