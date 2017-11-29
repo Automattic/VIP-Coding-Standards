@@ -800,7 +800,7 @@ class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
             if ($tokens[$scopePtr]['code'] === T_CLOSURE) {
                 return false;
             }
-            if ($scopeCode === T_CLASS) {
+            if ($scopeCode === T_CLASS || $scopeCode === T_TRAIT) {
                 return true;
             }
         }
