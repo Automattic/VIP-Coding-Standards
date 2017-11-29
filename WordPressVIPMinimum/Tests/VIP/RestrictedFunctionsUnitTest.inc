@@ -36,4 +36,6 @@ wp_mail(); // Bad. Warning.
 
 mail(); // Bad. Warning.
 
-dbDelta();
+dbDelta(); // Bad. Warning.
+
+is_multi_author(); // Bad. Warning.

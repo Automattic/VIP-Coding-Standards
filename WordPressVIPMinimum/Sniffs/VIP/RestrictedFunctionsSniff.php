@@ -77,6 +77,13 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 					'dbDelta',
 				),
 			),
+			'is_multi_author'          => array(
+				'type'      => 'warning',
+				'message'   => '%s can be very slow on large sites and likely not needed on many VIP sites since they tend to have more than one author.',
+				'functions' => array(
+					'is_multi_author',
+				),
+			),
 		);
 
 		$deprecated_vip_helpers = array(
