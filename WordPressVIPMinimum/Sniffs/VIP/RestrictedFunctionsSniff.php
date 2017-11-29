@@ -83,7 +83,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 				'functions' => array(
 					'is_multi_author',
 				),
-			)
+			),
 		);
 
 		$deprecated_vip_helpers = array(
