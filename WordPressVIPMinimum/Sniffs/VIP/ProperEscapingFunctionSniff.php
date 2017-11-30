@@ -103,7 +103,7 @@ class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function is_href_or_src( $content ) {
 		$is_href_or_src = false;
-		foreach ( array( 'href', 'src' ) as $attr ) {
+		foreach ( array( 'href', 'src', 'url' ) as $attr ) {
 			foreach ( array(
 				'="',
 				"='",
