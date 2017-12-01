@@ -28,6 +28,8 @@
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
 		<include-pattern>*.php</include-pattern>
 		<include-pattern>*.inc</include-pattern>
+		<exclude-pattern>*.js</exclude-pattern>
+		<exclude-pattern>*.css</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.PHP.CommentedOutCode"/>
 
