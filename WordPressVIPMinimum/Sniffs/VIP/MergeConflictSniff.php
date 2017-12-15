@@ -24,11 +24,11 @@ class MergeConflictSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = [
+	public $supportedTokenizers = array(
 		'PHP',
 		'JS',
 		'CSS',
-	];
+	);
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
