@@ -23,7 +23,7 @@ class StrippingTagsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			1 => 1,
+			2 => 1,
 		);
 	}
 
