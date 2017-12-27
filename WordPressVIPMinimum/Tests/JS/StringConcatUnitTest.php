@@ -5,11 +5,12 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-namespace WordPressVIPMinimum\Tests\Files;
+namespace WordPressVIPMinimum\Tests\JS;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
- * Unit test class for the IncludingFile sniff.
+ * Unit test class for the HTML String concatenation in JS sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */

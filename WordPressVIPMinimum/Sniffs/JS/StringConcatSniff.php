@@ -5,7 +5,7 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-namespace WordPressVIPMinimum\Sniffs\VIP;
+namespace WordPressVIPMinimum\Sniffs\JS;
 
 use PHP_CodeSniffer_File as File;
 use PHP_CodeSniffer_Tokens as Tokens;
