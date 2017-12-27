@@ -35,7 +35,7 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return array(
-			T_PLUS
+			T_PLUS,
 		);
 
 	}//end register()
@@ -65,12 +65,9 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] ) {
 			if ( false !== strpos( $tokens[ $prevToken ]['content'], '<' ) ) {
-
 				$phpcsFile->addError( sprintf( 'HTML string concatenation detected: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'StringConcatNext' );
 			}
 		}
-
-
 	}//end process()
 
 }//end class
