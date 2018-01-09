@@ -70,12 +70,10 @@ class InnerHTMLSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+		$nextToken     = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 		$foundVariable = false;
 
-		while( false !== $nextToken && T_SEMICOLON !== $tokens[ $nextToken ]['code'] ) {
-
-			var_export( $tokens[ $nextToken ] );
+		while ( false !== $nextToken && T_SEMICOLON !== $tokens[ $nextToken ]['code'] ) {
 
 			if ( T_STRING === $tokens[ $nextToken ]['code'] ) {
 				$foundVariable = true;
@@ -85,7 +83,7 @@ class InnerHTMLSniff implements \PHP_CodeSniffer_Sniff {
 			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 		}
 
-		if ( true == $foundVariable ) {
+		if ( true === $foundVariable ) {
 			$phpcsFile->addWarning( sprintf( 'Any HTML passed to %s gets executed. Consider using .textContent or make sure that used variables are properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
 		}
 
