@@ -56,7 +56,7 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] ) {
-			if ( false !== strpos( $tokens[ $nextToken ]['content'], '<' ) ) {
+			if ( false !== strpos( $tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $tokens[ $nextToken ]['content'] ) ) {
 				$phpcsFile->addError( sprintf( 'HTML string concatenation detected %s', '+' . $tokens[ $nextToken ]['content'] ), $stackPtr, 'StringConcatNext' );
 			}
 		}
@@ -64,7 +64,7 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] ) {
-			if ( false !== strpos( $tokens[ $prevToken ]['content'], '<' ) ) {
+			if ( false !== strpos( $tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $tokens[ $prevToken ]['content'] ) ) {
 				$phpcsFile->addError( sprintf( 'HTML string concatenation detected: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'StringConcatNext' );
 			}
 		}
