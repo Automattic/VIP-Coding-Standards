@@ -68,8 +68,6 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 				$phpcsFile->addError( sprintf( 'HTML string concatenation detected: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'StringConcatNext' );
 			}
 		}
-
-
 	}//end process()
 
 }//end class
