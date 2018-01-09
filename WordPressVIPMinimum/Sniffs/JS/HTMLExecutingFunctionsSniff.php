@@ -20,7 +20,9 @@ use PHP_CodeSniffer_Tokens as Tokens;
 class HTMLExecutingFunctionsSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
-	 * List of HTML executing functions
+	 * List of HTML executing functions.
+	 *
+	 * @var array
 	 */
 	public $HTMLExecutingFunctions = array(
 		'html',
