@@ -7,4 +7,7 @@
     el.append( variable ); // NOK.
     el.append( '<b>Hand written HTML</b>' ); // OK.
     el.append( '<b>' + variable + '</b>' ); // NOK.
+    document.write( '<script>console.log("hello")</script>' ); // OK. No variable, conscious.
+    document.write( hello ); // NOK.
+    document.writeln( hey ); // NOK.
 })();

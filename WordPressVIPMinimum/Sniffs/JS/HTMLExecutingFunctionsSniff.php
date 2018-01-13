@@ -27,6 +27,8 @@ class HTMLExecutingFunctionsSniff implements \PHP_CodeSniffer_Sniff {
 	public $HTMLExecutingFunctions = array(
 		'html',
 		'append',
+		'write',
+		'writeln',
 	);
 
 	/**
