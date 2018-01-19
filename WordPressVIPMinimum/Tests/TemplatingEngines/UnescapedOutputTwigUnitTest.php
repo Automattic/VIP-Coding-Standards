@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class HTMLExecutingFunctionsUnitTest extends AbstractSniffUnitTest {
+class UnescapedOutputTwigUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
