@@ -25,7 +25,6 @@ class CheckReturnValueUnitTest extends AbstractSniffUnitTest {
 		return array(
 			5  => 1,
 			9  => 1,
-			14 => 1,
 			16 => 1,
 			19 => 1,
 			23 => 1,

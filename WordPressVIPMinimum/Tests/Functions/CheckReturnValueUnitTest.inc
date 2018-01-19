@@ -11,7 +11,7 @@ if ( ! array_key_exists( $key, $theme_settings ) || empty( $theme_settings[ $key
 
 $my_url = wpcom_vip_get_term_link();
 
-echo '<a href="' . esc_url( $my_url ) . '">My Link</a>'; // Bad.
+echo '<a href="' . esc_url( $my_url ) . '">My Link</a>'; // Okay, deprecated.
 
 echo '<a href="' . esc_url( get_term_link( $link ) ) . '">My term link</a>'; // Bad.
 

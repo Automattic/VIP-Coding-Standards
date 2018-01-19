@@ -35,7 +35,6 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public $catch = array(
 		'esc_url'          => array(
-			'wpcom_vip_get_term_link',
 			'get_term_link',
 		),
 		'wp_list_pluck'    => array(
