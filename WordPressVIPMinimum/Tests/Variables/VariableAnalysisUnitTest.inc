@@ -11,3 +11,9 @@ trait bar {
 	}
 	function bar() {}
 }
+
+function test() {
+	try {
+		do_something_silly();
+	} catch ( Exception $e ) {} // OK.
+}
