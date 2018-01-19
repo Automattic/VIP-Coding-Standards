@@ -39,6 +39,7 @@ class UnescapedOutputMustacheSniff implements \PHP_CodeSniffer_Sniff {
 			T_CONSTANT_ENCAPSED_STRING,
 			T_STRING,
 			T_INLINE_HTML,
+			T_HEREDOC,
 		);
 
 	}//end register()
