@@ -9,7 +9,7 @@
 namespace WordPressVIPMinimum;
 
 /**
- * Load the WPCS/WordPress/autoload.php file and define possibly missing class when run agains PHPCS 2.x.
+ * Load the WPCS/WordPress/autoload.php file and define possibly missing class when run against PHPCS 2.x.
  *
  * @return void
  */
