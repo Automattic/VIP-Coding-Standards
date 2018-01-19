@@ -57,23 +57,23 @@ class UnescapedOutputMustacheSniff implements \PHP_CodeSniffer_Sniff {
 		$tokens = $phpcsFile->getTokens();
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{{' ) || false !== strpos( $tokens[ $stackPtr ]['content'], '}}}' ) ) {
-			// Mustache unescaped output notation
+			// Mustache unescaped output notation.
 			$phpcsFile->addWarning( 'Found Mustache unescaped output notation: "{{{}}}".', $stackPtr, '{{{' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{&' ) ) {
-			// Mustache unescaped variable notation
+			// Mustache unescaped variable notation.
 			$phpcsFile->addWarning( 'Found Mustache unescape variable notation: "{{&".', $stackPtr, '{{&' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{=' ) ) {
-			// Mustache delimiter change
+			// Mustache delimiter change.
 			$new_delimiter = trim( str_replace( array( '{{=', '=}}' ), '', substr( $tokens[ $stackPtr ]['content'], 0, ( strpos( $tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) ) );
 			$phpcsFile->addWarning( sprintf( 'Found Mustache delimiter change notation. New delimiter is: %s', $new_delimiter ), $stackPtr, 'delimiterChange' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], 'SafeString' ) ) {
-			// Handlebars.js Handlebars.SafeString does not get escaped
+			// Handlebars.js Handlebars.SafeString does not get escaped.
 			$phpcsFile->addWarning( 'Found Handlebars.SafeString call which does not get escaped.', $stackPtr, 'SafeString' );
 		}
 
