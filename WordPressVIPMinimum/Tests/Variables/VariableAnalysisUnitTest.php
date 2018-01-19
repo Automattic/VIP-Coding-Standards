@@ -31,10 +31,16 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
+		$warningList = array(
 			5 => 2,
 		);
 
+		// PHP prior to version 7.x does not properly process the $e.
+		if ( true === version_compare(PHP_VERSION, '7.0.0', '<') ) {
+			$warningList[18] = 2;
+		}
+
+		return $warningList;
 	}
 
 } // End class.
