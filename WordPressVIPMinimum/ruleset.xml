@@ -4,6 +4,10 @@
 
 	<autoload>./PHPCSCompatibility.php</autoload>
 
+	<rule ref="WordPressVIPMinimum.TemplatingEngines.UnescapedOutputTwig">
+		<include-pattern>*.twig</include-pattern>
+	</rule>
+
 	<rule ref="WordPress.VIP">
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput.MissingUnslash"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions"/>
