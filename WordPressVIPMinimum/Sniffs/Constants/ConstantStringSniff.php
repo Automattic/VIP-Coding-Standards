@@ -45,7 +45,7 @@ class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		// Find the previous non-empty token.
+		// Find the next non-empty token.
 		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $nextToken ]['code'] ) {
