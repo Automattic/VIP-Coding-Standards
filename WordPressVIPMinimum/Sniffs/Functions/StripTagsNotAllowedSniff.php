@@ -1,4 +1,9 @@
 <?php
+/**
+ * WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ */
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
