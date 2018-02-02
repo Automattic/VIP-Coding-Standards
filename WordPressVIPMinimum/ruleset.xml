@@ -118,4 +118,10 @@
 		<type>error</type>
 		<message>%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.</message>
 	</rule>
+
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions">
+		<!--Remove strip_tags() check, because we're rolling our own -->
+		<exclude name="WordPressVIPMinimum.VIP.RestrictedFunctions.strip_tags_strip_tags"/>
+	</rule>
 </ruleset>
