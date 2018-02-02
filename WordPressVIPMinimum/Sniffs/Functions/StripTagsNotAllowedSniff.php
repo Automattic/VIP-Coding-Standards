@@ -15,7 +15,7 @@ class StripTagsNotAllowedSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @var array
 	 */
-	private $_tokens = [];
+	private $_tokens = array();
 
 	/**
 	 * The phpcs file.
@@ -50,7 +50,6 @@ class StripTagsNotAllowedSniff implements \PHP_CodeSniffer_Sniff {
 
 		$this->_tokens    = $phpcsFile->getTokens();
 		$this->_phpcsFile = $phpcsFile;
-
 
 		if ( 'strip_tags' !== $this->_tokens[ $stackPtr ]['content'] ) {
 			// We only care for strip_slashes function.
