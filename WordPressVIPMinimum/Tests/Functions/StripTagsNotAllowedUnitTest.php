@@ -40,6 +40,6 @@ class StripTagsNotAllowedUnitTest extends AbstractSniffUnitTest {
 	 * @return array<int, int>
 	 */
 	protected function getWarningList() {
-		return [];
+		return array();
 	}
 }
