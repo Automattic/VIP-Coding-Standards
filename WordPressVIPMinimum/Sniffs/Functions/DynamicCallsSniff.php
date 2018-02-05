@@ -1,5 +1,4 @@
 <?php
-
 /**
  * WordPressVIPMinimum Coding Standard.
  *
@@ -27,14 +26,12 @@ use PHP_CodeSniffer_Tokens as Tokens;
  * Note that this sniff does not catch all possible forms of dynamic
  * calling, only some.
  */
-
 class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	/**
 	 * Functions that should not be called dynamically.
 	 *
 	 * @var array
 	 */
-
 	private $_blacklisted_functions = array(
 		'assert',
 		'compact',
@@ -53,9 +50,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @var array
 	 */
-
 	private	$_variables_arr = array();
-
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -81,6 +76,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
+
 		$this->_tokens    = $phpcsFile->getTokens();
 		$this->_phpcsFile = $phpcsFile;
 		$this->_stackPtr = $stackPtr;
@@ -100,8 +96,8 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @return void
 	 */
-
 	function _collect_variables() {
+
 		/*
 		 * Make sure we are working with a variable,
 		 * get its value if so.
@@ -178,7 +174,6 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 
 	} // end _collect_variables
 
-
 	/**
 	 * Find any dynamic calls being made using variables.
 	 * Report on this when found, using name of the function
@@ -186,8 +181,8 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @return void
 	 */
-
 	function _find_dynamic_calls() {
+
 		/*
 		 * No variables detected; no basis for doing
 		 * anything
@@ -283,6 +278,5 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 			$t_item_key,
 			'DynamicCalls'
 		);
-
 	} // end _find_dynamic_calls
 }
