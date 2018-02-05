@@ -50,7 +50,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @var array
 	 */
-	private	$_variables_arr = array();
+	private $_variables_arr = array();
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -60,8 +60,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return
-			array( T_VARIABLE => T_VARIABLE ) +
+		return array( T_VARIABLE => T_VARIABLE ) +
 			Tokens::$functionNameTokens;
 
 	}//end register()
@@ -76,15 +75,14 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-
 		$this->_tokens    = $phpcsFile->getTokens();
 		$this->_phpcsFile = $phpcsFile;
-		$this->_stackPtr = $stackPtr;
+		$this->_stackPtr  = $stackPtr;
 
-		// First collect all variables encountered and their values
+		// First collect all variables encountered and their values.
 		$this->_collect_variables();
 
-		// Then find all dynamic calls, and report them
+		// Then find all dynamic calls, and report them.
 		$this->_find_dynamic_calls();
 
 	}//end process()
@@ -96,24 +94,22 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @return void
 	 */
-	function _collect_variables() {
-
+	private function _collect_variables() {
 		/*
 		 * Make sure we are working with a variable,
 		 * get its value if so.
 		 */
 
 		if (
-			"T_VARIABLE" !==
-				$this->_tokens[ $this->_stackPtr ][ "type" ]
+			'T_VARIABLE' !==
+				$this->_tokens[ $this->_stackPtr ]['type']
 		) {
 			return;
 		}
 
 		$current_var_name = $this->_tokens[
 			$this->_stackPtr
-		]["content"];
-
+		]['content'];
 
 		/*
 		 * Find assignments ( $foo = "bar"; )
@@ -134,11 +130,11 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		if ( "T_EQUAL" !== $this->_tokens[ $t_item_key ]["type"] ) {
+		if ( 'T_EQUAL' !== $this->_tokens[ $t_item_key ]['type'] ) {
 			return;
 		}
 
-		if ( 1 !== $this->_tokens[ $t_item_key ]["length"] ) {
+		if ( 1 !== $this->_tokens[ $t_item_key ]['length'] ) {
 			return;
 		}
 
@@ -158,7 +154,6 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-
 		/*
 		 * We have found variable-assignment,
 		 * register its name and value in the
@@ -166,11 +161,10 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 		 */
 
 		$current_var_value =
-			$this->_tokens[ $t_item_key ]["content"];
-
+			$this->_tokens[ $t_item_key ]['content'];
 
 		$this->_variables_arr[ $current_var_name ] =
-			str_replace( "'", "", $current_var_value );
+			str_replace( "'", '', $current_var_value );
 
 	} // end _collect_variables
 
@@ -181,8 +175,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 *
 	 * @return void
 	 */
-	function _find_dynamic_calls() {
-
+	private function _find_dynamic_calls() {
 		/*
 		 * No variables detected; no basis for doing
 		 * anything
@@ -192,18 +185,16 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-
 		/*
 		 * Make sure we do have a variable to work with.
 		 */
 
 		if (
-			"T_VARIABLE" !==
-				$this->_tokens[ $this->_stackPtr ][ "type" ]
+			'T_VARIABLE' !==
+				$this->_tokens[ $this->_stackPtr ]['type']
 		) {
 			return;
 		}
-
 
 		/*
 		 * If variable is not found in our registry of
@@ -214,12 +205,11 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( ! isset(
 			$this->_variables_arr[
-				$this->_tokens[ $this->_stackPtr ]["content"]
+				$this->_tokens[ $this->_stackPtr ]['content']
 			]
 		) ) {
 			return;
 		}
-
 
 		/*
 		 * Check if we have an '(' next, or separated by whitespaces
@@ -231,23 +221,22 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 		do {
 			$i++;
 		} while (
-			"T_WHITESPACE" ===
+			'T_WHITESPACE' ===
 				$this->_tokens[
 					$this->_stackPtr + $i
-				]["type"]
+				]['type']
 		);
 
 		if (
-			"T_OPEN_PARENTHESIS" !==
+			'T_OPEN_PARENTHESIS' !==
 				$this->_tokens[
 					$this->_stackPtr + $i
-				]["type"]
+				]['type']
 		) {
 			return;
 		}
 
 		$t_item_key = $this->_stackPtr + $i;
-
 
 		/*
 		 * We have a variable match, but make sure it contains name
@@ -256,23 +245,23 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( ! in_array(
 			$this->_variables_arr[
-				$this->_tokens[ $this->_stackPtr ]["content"]
+				$this->_tokens[ $this->_stackPtr ]['content']
 			],
-			$this->_blacklisted_functions
+			$this->_blacklisted_functions,
+			true
 		) ) {
 			return;
 		}
 
-
 		// We do, so report.
 		$this->_phpcsFile->addError(
 			sprintf(
-				"Dynamic calling is not recommended " .
-					"in the case of %s",
+				'Dynamic calling is not recommended ' .
+					'in the case of %s',
 				$this->_variables_arr[
 					$this->_tokens[
 						$this->_stackPtr
-					]["content"]
+					]['content']
 				]
 			),
 			$t_item_key,
