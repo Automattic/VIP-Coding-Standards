@@ -21,7 +21,13 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *   $func = 'func_num_args';
  *   $func();
  * </code>
+ *
+ * See here: http://php.net/manual/en/migration71.incompatible.php
+ *
+ * Note that this sniff does not catch all possible forms of dynamic
+ * calling, only some.
  */
+
 class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	/**
 	 * Functions that should not be called dynamically.
@@ -79,8 +85,10 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 		$this->_phpcsFile = $phpcsFile;
 		$this->_stackPtr = $stackPtr;
 
+		// First collect all variables encountered and their values
 		$this->_collect_variables();
-		
+
+		// Then find all dynamic calls, and report them
 		$this->_find_dynamic_calls();
 
 	}//end process()
@@ -95,65 +103,75 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 
 	function _collect_variables() {
 		/*
-		 * Find variable within the next semicolon
+		 * Make sure we are working with a variable,
+		 * get its value if so.
 		 */
 
-		$t_item_key = $this->_phpcsFile->findNext(
-			array( T_VARIABLE ),
-			$this->_stackPtr,
-			null,
-			false,
-			null,
-			true
-		);
-
-		if ( false === $t_item_key ) {
+		if (
+			"T_VARIABLE" !==
+				$this->_tokens[ $this->_stackPtr ][ "type" ]
+		) {
 			return;
 		}
 
-		$current_var_name = $this->_tokens[ $t_item_key ]["content"];
-
-
-		/*
-		 * Find encapsed string ( "" )
-		 */
-		$t_item_key = $this->_phpcsFile->findNext(
-			array( T_CONSTANT_ENCAPSED_STRING ),
-			$this->_stackPtr,
-			null,
-			false,
-			null,
-			true
-		);
-
-		if ( false === $t_item_key ) {
-			return;
-		}
-
-		$current_var_value =
-			$this->_tokens[ $t_item_key ]["content"];
+		$current_var_name = $this->_tokens[
+			$this->_stackPtr
+		]["content"];
 
 
 		/*
 		 * Find assignments ( $foo = "bar"; )
+		 * -- do this by finding all non-whitespaces, and
+		 * check if the first one is T_EQUAL.
 		 */
 
 		$t_item_key = $this->_phpcsFile->findNext(
-			array( T_EQUAL ),
-			$this->_stackPtr,
+			array( T_WHITESPACE ),
+			$this->_stackPtr + 1,
 			null,
-			false,
+			true,
 			null,
 			true
 		);
 
 		if ( false === $t_item_key ) {
+			return;
+		}
+
+		if ( "T_EQUAL" !== $this->_tokens[ $t_item_key ]["type"] ) {
 			return;
 		}
 
 		if ( 1 !== $this->_tokens[ $t_item_key ]["length"] ) {
 			return;
 		}
+
+		/*
+		 * Find encapsed string ( "" )
+		 */
+		$t_item_key = $this->_phpcsFile->findNext(
+			array( T_CONSTANT_ENCAPSED_STRING ),
+			$t_item_key + 1,
+			null,
+			false,
+			null,
+			true
+		);
+
+		if ( false === $t_item_key ) {
+			return;
+		}
+
+
+		/*
+		 * We have found variable-assignment,
+		 * register its name and value in the
+		 * internal array for later usage.
+		 */
+
+		$current_var_value =
+			$this->_tokens[ $t_item_key ]["content"];
+
 
 		$this->_variables_arr[ $current_var_name ] =
 			str_replace( "'", "", $current_var_value );
@@ -179,50 +197,22 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		/*
-		 * Make sure we do have a variable
-		 * in the stack, and within the next semicolon.
-		 */
-
-		$t_item_key = $this->_phpcsFile->findNext(
-			array( T_VARIABLE ),
-			$this->_stackPtr,
-			null,
-			false,
-			null,
-			true
-		);
-
-		if ( false === $t_item_key ) {
-			return;
-		}
-
 
 		/*
-		 * Check if we have an '(' somewhere next in the stack,
-		 * but not outside of the next semicolon ( ';' ).
+		 * Make sure we do have a variable to work with.
 		 */
 
-		$t_item_key  = $this->_phpcsFile->findNext(
-			array( T_OPEN_PARENTHESIS ),
-			$this->_stackPtr + 1,
-			null,
-			false,
-			null,
-			true
-		);
-
-		if ( false === $t_item_key ) {
-			// None found, return
+		if (
+			"T_VARIABLE" !==
+				$this->_tokens[ $this->_stackPtr ][ "type" ]
+		) {
 			return;
 		}
-
-		$t_item_val = $this->_tokens[ $t_item_key ];
 
 
 		/*
 		 * If variable is not found in our registry of
-		 * variables, do not do anything, as we cannot be
+		 * variables, do nothing, as we cannot be
 		 * sure that the function being called is one of the
 		 * blacklisted ones.
 		 */
@@ -234,6 +224,35 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 		) ) {
 			return;
 		}
+
+
+		/*
+		 * Check if we have an '(' next, or separated by whitespaces
+		 * from our current position.
+		 */
+
+		$i = 0;
+
+		do {
+			$i++;
+		} while (
+			"T_WHITESPACE" ===
+				$this->_tokens[
+					$this->_stackPtr + $i
+				]["type"]
+		);
+
+		if (
+			"T_OPEN_PARENTHESIS" !==
+				$this->_tokens[
+					$this->_stackPtr + $i
+				]["type"]
+		) {
+			return;
+		}
+
+		$t_item_key = $this->_stackPtr + $i;
+
 
 		/*
 		 * We have a variable match, but make sure it contains name
@@ -253,7 +272,8 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 		// We do, so report.
 		$this->_phpcsFile->addError(
 			sprintf(
-				"Dynamic calling is not recommended in the case of %s",
+				"Dynamic calling is not recommended " .
+					"in the case of %s",
 				$this->_variables_arr[
 					$this->_tokens[
 						$this->_stackPtr
