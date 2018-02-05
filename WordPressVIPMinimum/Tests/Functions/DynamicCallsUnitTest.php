@@ -23,7 +23,7 @@ class DynamicCallsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			5  => 1,
+			9  => 1,
 		);
 	}
 
