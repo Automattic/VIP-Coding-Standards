@@ -95,7 +95,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 
 	function _collect_variables() {
 		/*
-		 * Find variable within the next semicolon 
+		 * Find variable within the next semicolon
 		 */
 
 		$t_item_key = $this->_phpcsFile->findNext(
@@ -170,9 +170,9 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 
 	function _find_dynamic_calls() {
-		/* 
-		 * No variables detected; no basis for doing 
-		 * anything 
+		/*
+		 * No variables detected; no basis for doing
+		 * anything
 		 */
 
 		if ( empty( $this->_variables_arr ) ) {
@@ -220,8 +220,8 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 		$t_item_val = $this->_tokens[ $t_item_key ];
 
 
-		/* 
-		 * If variable is not found in our registry of 
+		/*
+		 * If variable is not found in our registry of
 		 * variables, do not do anything, as we cannot be
 		 * sure that the function being called is one of the
 		 * blacklisted ones.
