@@ -1,0 +1,7 @@
+<?php
+
+$myfunc = 'extract';
+
+$myfunc();
+
+
