@@ -60,8 +60,7 @@ class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return array( T_VARIABLE => T_VARIABLE ) +
-			Tokens::$functionNameTokens;
+		return array( T_VARIABLE => T_VARIABLE );
 
 	}//end register()
 
