@@ -60,7 +60,6 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-
 		$t_item_key = $this->_phpcsFile->findNext(
 			array( T_OPEN_PARENTHESIS ),
 			$this->_stackPtr + 1,
