@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class CheckReturnValueUnitTest extends AbstractSniffUnitTest {
+class CreateFunctionUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
