@@ -13,7 +13,12 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions"/>
 	</rule>
 
-	<rule ref="WordPress.XSS.EscapeOutput"/>
+	<rule ref="WordPress.XSS.EscapeOutput">
+		<severity>3</severity>
+	</rule>
+	<rule ref="WordPress.XSS.EscapeOutput._e">
+		<severity>1</severity>
+	</rule>
 	<rule ref="WordPress.CSRF.NonceVerification"/>
 	<rule ref="WordPress.WP.EnqueuedResources"/>
 	<rule ref="WordPress.WP.PreparedSQL"/>
@@ -21,7 +26,9 @@
 	<rule ref="WordPress.PHP.StrictComparisons"/>
 	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition"/>
 	<rule ref="WordPress.PHP.StrictInArray"/>
-	<rule ref="WordPress.Functions.DontExtract"/>
+	<rule ref="WordPress.Functions.DontExtract">
+		<severity>3</severity>
+	</rule>
 
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
@@ -114,7 +121,18 @@
 		<message>%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.</message>
 	</rule>
 
-	<!-- Lower severity for get_posts functions -->
+	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
+		<severity>1</severity>
+	</rule>	
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents">
+		<severity>3</severity>
+	</rule>
+  
+  <rule ref="WordPressVIPMinimum.Files.IncludingFile">
+		<severity>2</severity>
+	</rule>
+  
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>
 		<message>%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.</message>
@@ -169,6 +187,5 @@
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
 		<type>warning</type>
-	</rule>
 
 </ruleset>
