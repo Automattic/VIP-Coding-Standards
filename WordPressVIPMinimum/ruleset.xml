@@ -187,5 +187,6 @@
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
 		<type>warning</type>
+	</rule>
 
 </ruleset>
