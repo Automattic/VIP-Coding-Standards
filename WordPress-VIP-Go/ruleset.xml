@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress VIP Go">
+	<description>WordPress VIP Go Coding Standards</description>
+
+	<!-- Include the base VIP Minimum ruleset -->
+	<rule ref="WordPressVIPMinimum" />
+
+	<rule ref="WordPress.XSS.EscapeOutput">
+		<severity>3</severity>
+	</rule>
+	<rule ref="WordPress.XSS.EscapeOutput._e">
+		<severity>1</severity>
+	</rule>
+
+	<rule ref="WordPress.Functions.DontExtract">
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
+		<severity>1</severity>
+	</rule>	
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents">
+		<severity>3</severity>
+	</rule>
+  
+	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
+		<severity>2</severity>
+	</rule>
+  
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
+		<type>warning</type>
+		<severity>2</severity>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_posts">
+		<type>warning</type>
+		<severity>2</severity>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_wp_get_recent_posts">
+		<type>warning</type>
+		<severity>2</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
+		<type>warning</type>
+	</rule>
+
+	<rule ref="WordPress.VIP.SuperGlobalInputUsage.AccessDetected">
+		<type>warning</type>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect">
+		<type>warning</type>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
+		<type>warning</type>
+	</rule>
+
+	<!-- VIP Uncached warnings -->
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_page_by_path_get_page_by_path">
+		<type>warning</type>
+		<message>%s() is uncached, please use wpcom_vip_get_page_by_path() instead.</message>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_page_by_title_get_page_by_title">
+		<type>warning</type>
+		<message>%s() is uncached, please use wpcom_vip_get_page_by_title() instead.</message>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.url_to_postid_url_to_postid">
+		<type>warning</type>
+		<message>%s() is uncached, please use wpcom_vip_url_to_postid() instead.</message>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
+		<type>warning</type>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead.</message>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid">
+		<type>warning</type>
+		<message>%s() is uncached, please use wpcom_vip_attachment_url_to_postid() instead.</message>
+	</rule>
+
+</ruleset>
