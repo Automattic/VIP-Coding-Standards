@@ -190,7 +190,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$next      = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
-				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
+				$phpcsFile->addError( sprintf( "`%s`'s return type must be checked before calling `%s` using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
 			}
 			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true );
 		}
@@ -299,7 +299,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				&& $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'CheckReturnValue' );
+				$phpcsFile->addError( sprintf( 'Type of `%s` must be checked before calling `%s()` using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'CheckReturnValue' );
 				return;
 			}
 
@@ -308,7 +308,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $next, 'CheckReturnValue' );
+				$phpcsFile->addError( sprintf( 'Type of `%s` must be checked before calling `%s()` using that variable', $variableName, $callee ), $next, 'CheckReturnValue' );
 				return;
 			}
 		}

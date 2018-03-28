@@ -61,7 +61,7 @@ class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
 		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $nextToken ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Constant name, as a string, should be used along with %s().', $tokens[ $stackPtr ]['content'] ), $nextToken, 'NotCheckingConstantName' );
+			$phpcsFile->addError( sprintf( 'Constant name, as a string, should be used along with `%s()`.', $tokens[ $stackPtr ]['content'] ), $nextToken, 'NotCheckingConstantName' );
 			return;
 		}
 
