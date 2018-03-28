@@ -89,7 +89,7 @@ class FlushRewriteRulesSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( '%s should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'FlushRewriteRules' );
+		$phpcsFile->addError( sprintf( '`%s()` should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'FlushRewriteRules' );
 	}
 
 }

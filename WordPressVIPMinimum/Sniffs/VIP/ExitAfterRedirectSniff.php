@@ -59,10 +59,10 @@ class ExitAfterRedirectSniff implements \PHP_CodeSniffer_Sniff {
 				}
 			}
 			if ( false === $is_exit_in_scope ) {
-				$phpcsFile->addError( sprintf( '%s should almost always be followed by a call to exit;', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExitInConditional' );
+				$phpcsFile->addError( sprintf( '`%s()` should almost always be followed by a call to `exit;`', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExitInConditional' );
 			}
 		} elseif ( T_EXIT !== $tokens[ $next_token ]['code'] ) {
-			$phpcsFile->addError( sprintf( '%s should almost always be followed by a call to exit;', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExit' );
+			$phpcsFile->addError( sprintf( '`%s()` should almost always be followed by a call to `exit;`', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExit' );
 		}
 	}//end process()
 }

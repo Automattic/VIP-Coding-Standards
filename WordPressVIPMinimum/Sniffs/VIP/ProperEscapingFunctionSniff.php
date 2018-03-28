@@ -84,11 +84,11 @@ class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( 'esc_url' !== $function_name && $this->is_href_or_src( $tokens[ $html ]['content'] ) ) {
-			$phpcsFile->addError( sprintf( 'Wrong escaping function. href and src attributes should be escaped by esc_url, not by %s', $function_name ), $stackPtr, 'hrefSrcEscUrl' );
+			$phpcsFile->addError( sprintf( 'Wrong escaping function. href and src attributes should be escaped by `esc_url()`, not by `%s()`', $function_name ), $stackPtr, 'hrefSrcEscUrl' );
 			return;
 		}
 		if ( 'esc_html' === $function_name && $this->is_html_attr( $tokens[ $html ]['content'] ) ) {
-			$phpcsFile->addError( sprintf( 'Wrong escaping function. HTML attributes should be escaped by esc_attr, not by %s', $function_name ), $stackPtr, 'htmlAttrNotByEscHTML' );
+			$phpcsFile->addError( sprintf( 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`', $function_name ), $stackPtr, 'htmlAttrNotByEscHTML' );
 			return;
 		}
 

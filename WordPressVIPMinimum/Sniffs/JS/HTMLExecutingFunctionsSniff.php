@@ -81,7 +81,7 @@ class HTMLExecutingFunctionsSniff implements \PHP_CodeSniffer_Sniff {
 		while ( $nextToken < $parenthesis_closer ) {
 			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 			if ( T_STRING === $tokens[ $nextToken ]['code'] ) {
-				$phpcsFile->addWarning( sprintf( 'Any HTML passed to %s gets executed. Make sure it\'s properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
+				$phpcsFile->addWarning( sprintf( 'Any HTML passed to `%s` gets executed. Make sure it\'s properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
 				return;
 			}
 		}

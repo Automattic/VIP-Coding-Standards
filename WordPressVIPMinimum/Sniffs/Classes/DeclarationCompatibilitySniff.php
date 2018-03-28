@@ -303,7 +303,7 @@ class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractS
 
 		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
 
-		$phpcsFile->addError( sprintf( 'Declaration of %s should be compatible with %s', $currentSignature, $parentSignature ), $stackPtr, 'DeclarationCompatibility' );
+		$phpcsFile->addError( sprintf( 'Declaration of `%s` should be compatible with `%s`', $currentSignature, $parentSignature ), $stackPtr, 'DeclarationCompatibility' );
 	}//end addError()
 
 	/**

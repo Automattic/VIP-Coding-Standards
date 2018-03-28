@@ -46,12 +46,12 @@ class WPQueryParamsSniff implements \PHP_CodeSniffer_Sniff {
 			$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_EQUAL, T_CLOSE_SQUARE_BRACKET, T_DOUBLE_ARROW ) ), ( $stackPtr + 1 ), null, true );
 
 			if ( T_TRUE === $tokens[ $next_token ]['code'] ) {
-				$phpcsFile->addError( 'Setting suppress_filters to true is probihited.', $stackPtr, 'suppressFiltersTrue' );
+				$phpcsFile->addError( 'Setting `suppress_filters` to `true` is probihited.', $stackPtr, 'suppressFiltersTrue' );
 			}
 		}
 
 		if ( 'post__not_in' === trim( $tokens[ $stackPtr ]['content'], '\'' ) ) {
-			$phpcsFile->addWarning( 'Using post__not_in should be used with cautious.', $stackPtr, 'post__not_in' );
+			$phpcsFile->addWarning( 'Using `post__not_in` should be used with cautioun.', $stackPtr, 'post__not_in' );
 		}
 	}
 
