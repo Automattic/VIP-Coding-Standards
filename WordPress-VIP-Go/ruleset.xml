@@ -5,77 +5,169 @@
 	<!-- Include the base VIP Minimum ruleset -->
 	<rule ref="WordPressVIPMinimum" />
 
+	<!-- Escaping - usually a severity of 5, sometimes less -->
 	<rule ref="WordPress.XSS.EscapeOutput">
-		<severity>3</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPress.XSS.EscapeOutput._e">
 		<severity>1</severity>
 	</rule>
 
+
+	<!-- PHP Best Practices Severity usually severity 1-3 -->
 	<rule ref="WordPress.Functions.DontExtract">
+		<type>warning</type>
 		<severity>3</severity>
 	</rule>
 
-	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
-		<severity>1</severity>
-	</rule>	
-
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents">
-		<severity>3</severity>
-	</rule>
-  
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
-		<severity>2</severity>
-	</rule>
-  
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>
 		<severity>2</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_posts">
+
+	<rule ref="WordPress.PHP.StrictComparisons">
+		<type>warning</type>
+		<severity>4</severity>
+	</rule>
+
+	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition" >
 		<type>warning</type>
 		<severity>2</severity>
 	</rule>
+
+	<rule ref="Squiz.PHP.CommentedOutCode">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
+
+	<rule ref="WordPress.Variables.GlobalVariables" >
+		<type>warning</type>
+		<severity>4</severity>
+	</rule>
+
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+		<type>warning</type>
+		<severity>2</severity>
+	</rule>
+	<rule ref="Generic.PHP.DisallowShortOpenTag" >
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+
+	<!-- Things you should only do in a dev environment and never on production -->
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set">
+		<type>warning</type>
+		<severity>5</severity>
+	</rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_error_log">
+		<type>warning</type>
+		<severity>5</severity>
+	</rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_dump">
+		<type>warning</type>
+		<severity>5</severity>
+	</rule>
+
+
+
+
+
+	<!-- WordPress best practices -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_wp_get_recent_posts">
 		<type>warning</type>
 		<severity>2</severity>
 	</rule>
 
+	<rule ref="WordPress.WP.EnqueuedResources" >
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+
+	<!-- WordPress Potential pitfalls - often in case specific -->
+
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
 		<type>warning</type>
+		<severity>3</severity>
+		<message>Talk about how it only switches the DB context, not the theme so not all hooks and plugins etc</message>
 	</rule>
 
+
+
+	<!-- Security usually 6-10 -->
+
+	<!-- We need to look at these manually for now -->
 	<rule ref="WordPress.VIP.SuperGlobalInputUsage.AccessDetected">
 		<type>warning</type>
+		<severity>6</severity>
 	</rule>
 
+
+	<rule ref="WordPress.WP.PreparedSQL" >
+		<severity>6</severity>
+	</rule>
+
+
+	<!-- VIP Uncached remote calls usually severity 4 -->
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents">
+		<severity>4</severity>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If this is</message>
+	</rule>
+
+	<!-- todo add all wp_remote_get and WP_HTTP functions here -->
+
+
+	<!-- VIP Uncached WP_Query based function warnings usually severity 4 -->
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
+		<type>warning</type>
+		<severity>4</severity>
+		<message>https://vip.wordpress.com/documentation/uncached-functions/ talk about adding the parameters</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_posts">
+		<type>warning</type>
+		<severity>4</severity>
+		<message>https://vip.wordpress.com/documentation/uncached-functions/ talk about adding the parameters</message>
+	</rule>
+
+	<!-- Why is this here at level 1 is it not the same as the previous? -->
+	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
+		<severity>1</severity>
+	</rule>
+
+	<!-- VIP Uncached function warnings usually severity 4 -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect">
 		<type>warning</type>
+		<severity>4</severity>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
 		<type>warning</type>
+		<severity>4</severity>
 	</rule>
 
-	<!-- VIP Uncached warnings -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_page_by_path_get_page_by_path">
 		<type>warning</type>
+		<severity>4</severity>
 		<message>%s() is uncached, please use wpcom_vip_get_page_by_path() instead.</message>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_page_by_title_get_page_by_title">
 		<type>warning</type>
+		<severity>4</severity>
 		<message>%s() is uncached, please use wpcom_vip_get_page_by_title() instead.</message>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.url_to_postid_url_to_postid">
 		<type>warning</type>
+		<severity>4</severity>
 		<message>%s() is uncached, please use wpcom_vip_url_to_postid() instead.</message>
-	</rule>
-
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
-		<type>warning</type>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead.</message>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid">
