@@ -51,7 +51,6 @@ $expected = array(
 		166 => 1,
 		170 => 1,
 		174 => 1,
-		178 => 1, // Error on the end of the file. When any code is added, bounce this.
 	),
 	'warnings' => array(
 		9   => 1,
@@ -77,6 +76,7 @@ $expected = array(
 		164 => 1,
 		168 => 1,
 		172 => 1,
+		176 => 1,
 	),
 	'messages' => array(
 		129 => array(
