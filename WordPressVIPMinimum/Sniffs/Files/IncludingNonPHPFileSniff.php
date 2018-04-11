@@ -59,11 +59,11 @@ class IncludingNonPHPFileSniff implements \PHP_CodeSniffer_Sniff {
 			}
 
 			$extension = $regexMatches[1];
-			if ( true === in_array( $extension, array( '.php', '.inc' ) ) ) {
+			if ( true === in_array( $extension, array( '.php', '.inc' ), true ) ) {
 				return;
 			}
 
-			if ( true === in_array( $extension, array( '.svg', '.css' ) ) ) {
+			if ( true === in_array( $extension, array( '.svg', '.css' ), true ) ) {
 				$phpcsFile->addError( sprintf( 'Local SVG and CSS files should be loaded via `get_file_contents` rather than via `%s`.', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingSVGCSSFile' );
 			} else {
 				$phpcsFile->addError( sprintf( 'Local non-PHP file should be loaded via `get_file_contents` rather than via `%s`', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingNonPHPFile' );
