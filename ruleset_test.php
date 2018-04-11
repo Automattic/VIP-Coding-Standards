@@ -79,7 +79,7 @@ $expected = array(
 	),
 	'messages' => array(
 		129 => array(
-			'get_children() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. get_children() will do a -1 query by default, a maximum of 100 should be used.',
+			'`get_children()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `get_children()` will do a -1 query by default, a maximum of 100 should be used.',
 		),
 	),
 );
