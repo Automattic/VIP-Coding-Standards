@@ -50,7 +50,7 @@ $expected = array(
 		157 => 1,
 		166 => 1,
 		170 => 1,
-		174 => 1, // Error on the end of the file. When any code is added, bounce this.
+		174 => 1,
 	),
 	'warnings' => array(
 		9   => 1,
@@ -76,10 +76,11 @@ $expected = array(
 		164 => 1,
 		168 => 1,
 		172 => 1,
+		176 => 1,
 	),
 	'messages' => array(
 		129 => array(
-			'get_children() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. get_children() will do a -1 query by default, a maximum of 100 should be used.',
+			'`get_children()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `get_children()` will do a -1 query by default, a maximum of 100 should be used.',
 		),
 	),
 );
