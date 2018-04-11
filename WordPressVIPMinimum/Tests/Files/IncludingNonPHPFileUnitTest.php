@@ -29,6 +29,7 @@ class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			25 => 1,
 			27 => 1,
+			29 => 1,
 			31 => 1,
 			33 => 1,
 			35 => 1,
