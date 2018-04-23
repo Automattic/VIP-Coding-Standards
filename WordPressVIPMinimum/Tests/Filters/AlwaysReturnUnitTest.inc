@@ -91,3 +91,13 @@ add_filter( 'bad_example_closure', function() {
 	}
 	// Missing else return;
 } );
+
+add_filter( 'another_bad_example_closure', function() {
+	return;
+} );
+
+if ( 1 === 1 ) {
+	add_filter( 'another_good_example_closure', function () {
+		return 'hello';
+	} );
+}

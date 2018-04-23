@@ -195,10 +195,12 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
+		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
+
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
-		$returnToken = $this->phpcsFile->findNext(
+		$returnTokenPtr = $this->phpcsFile->findNext(
 			array( T_RETURN ), // types.
 			( $functionBodyScopeStart + 1 ), // start.
 			$functionBodyScopeEnd, // end.
@@ -210,15 +212,18 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		$insideIfConditionalReturn = 0;
 		$outsideConditionalReturn = 0;
 
-		while ( $returnToken ) {
-			if ( $this->isInsideIfConditonal( $returnToken ) ) {
+		while ( $returnTokenPtr ) {
+			if ( $this->isInsideIfConditonal( $returnTokenPtr ) ) {
 				$insideIfConditionalReturn++;
 			} else {
 				$outsideConditionalReturn++;
 			}
-			$returnToken = $this->phpcsFile->findNext(
+			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
+				$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is returnin void intentionally.', $filterName ), $functionBodyScopeStart, 'voidReturn' );
+			}
+			$returnTokenPtr = $this->phpcsFile->findNext(
 				array( T_RETURN ), // types.
-				( $returnToken + 1 ), // start.
+				( $returnTokenPtr + 1 ), // start.
 				$functionBodyScopeEnd, // end.
 				false, // exclude.
 				null, // value.
@@ -227,8 +232,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( $insideIfConditionalReturn > 0 && $outsideConditionalReturn === 0 ) {
-			$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
-			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to %s filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
+			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
 		}
 
 	}
@@ -248,6 +252,11 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 			return false;
 		}
 
+		// Similar case may be a conditional closure
+		if ( 'PHPCS_T_CLOSURE' === end( $this->tokens[ $stackPtr ]['conditions'] ) ) {
+			return false;
+		}
+
 		// Loop over the array of conditions and look for an IF.
 		reset( $this->tokens[ $stackPtr ]['conditions'] );
 
@@ -261,6 +270,24 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 				}
 			}
 		}
+		return false;
+	}
+
+	private function isReturningVoid( $stackPtr ) {
+
+		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
+			array( Tokens::$emptyTokens ), // types.
+			( $stackPtr + 1 ), // start.
+			null, // end.
+			true, // exclude.
+			null, // value.
+			false // local.
+		);
+
+		if ( T_SEMICOLON === $this->tokens[ $nextToReturnTokenPtr ]['code'] ) {
+			return true;
+		}
+
 		return false;
 	}
 }
