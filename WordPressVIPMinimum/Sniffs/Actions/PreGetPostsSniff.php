@@ -248,10 +248,10 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 				}
 			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
 				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
-					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
+					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 				}
 			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
-				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
+				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 			}
 			$wpQueryVarUsed = $this->_phpcsFile->findNext(
 				array( T_VARIABLE ), // types.

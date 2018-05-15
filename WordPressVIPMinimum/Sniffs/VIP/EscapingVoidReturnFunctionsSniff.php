@@ -61,7 +61,7 @@ class EscapingVoidReturnFunctionsSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( 0 === strpos( $tokens[ $next_token ]['content'], '_e' ) ) {
-			$phpcsFile->addError( sprintf( 'Attempting to escape %s() which is printing it\'s output.', $tokens[ $next_token ]['content'] ), $stackPtr, 'escapingVoidReturningFunction' );
+			$phpcsFile->addError( sprintf( 'Attempting to escape `%s()` which is printing its output.', $tokens[ $next_token ]['content'] ), $stackPtr, 'escapingVoidReturningFunction' );
 			return;
 		}
 	}

@@ -726,7 +726,7 @@ class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
             $this->markVariableRead($varName, $stackPtr, $currScope);
             if ($this->isVariableUndefined($varName, $stackPtr, $currScope) === true) {
                 // We haven't been defined by this point.
-                $phpcsFile->addWarning("Variable %s is undefined.", $stackPtr,
+                $phpcsFile->addWarning("Variable `%s` is undefined.", $stackPtr,
                     'UndefinedVariable',
                     array("\${$varName}"),
                     'WordPressVIPMinimum.Variables.VariableAnalysis'
@@ -873,7 +873,7 @@ class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
                     //  self within a closure is invalid
                     //  Note: have to fetch code from $tokens, T_CLOSURE isn't set for conditions codes.
                     if ($tokens[$scopePtr]['code'] === T_CLOSURE) {
-                        $phpcsFile->addError("Use of {$err_desc}%s inside closure.", $stackPtr,
+                        $phpcsFile->addError("Use of `{$err_desc}%s` inside closure.", $stackPtr,
                             $err_class,
                             array("\${$varName}"),
                             'WordPressVIPMinimum.Variables.VariableAnalysis'
@@ -885,7 +885,7 @@ class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
                     }
                 }
             }
-            $phpcsFile->addError("Use of {$err_desc}%s outside class definition.", $stackPtr,
+            $phpcsFile->addError("Use of `{$err_desc}%s` outside class definition.", $stackPtr,
                 $err_class,
                 array("\${$varName}"),
                 'WordPressVIPMinimum.Variables.VariableAnalysis'
@@ -1418,7 +1418,7 @@ class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
             }
             if (isset($varInfo->firstDeclared)) {
                 $phpcsFile->addWarning(
-                    "Unused %s %s.",
+                    "Unused %s `%s`.",
                     $varInfo->firstDeclared,
                     'UnusedVariable',
                     array(
@@ -1429,7 +1429,7 @@ class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
             }
             if (isset($varInfo->firstInitialized)) {
                 $phpcsFile->addWarning(
-                    "Unused %s %s.",
+                    "Unused %s `%s`.",
                     $varInfo->firstInitialized,
                     'UnusedVariable',
                     array(

@@ -41,7 +41,7 @@
 	<rule ref="Squiz.PHP.Eval"/>
 	<rule ref="Squiz.PHP.Eval.Discouraged">
 		<type>error</type>
-		<message>eval() is a security risk so not allowed.</message>
+		<message>`eval()` is a security risk so not allowed.</message>
 	</rule>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#settings-alteration -->
@@ -105,17 +105,19 @@
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_json_encode-over-json_encode -->
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#filesystem-writes -->
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#remote-calls -->
-	<rule ref="WordPress.WP.AlternativeFunctions"/>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+	</rule>
 	<!-- VIP recommends other functions -->
 	<rule ref="WordPress.WP.AlternativeFunctions.curl">
 		<message>Using cURL functions is highly discouraged within VIP context. Check (Fetching Remote Data) on VIP Documentation.</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_get_contents">
-		<message>%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.</message>
+		<message>`%s()` is highly discouraged, please use `vip_safe_wp_remote_get()` instead.</message>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>error</type>
-		<message>%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.</message>
+		<message>`%1$s()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `%1$s()` will do a -1 query by default, a maximum of 100 should be used.</message>
 	</rule>
 </ruleset>
