@@ -51,7 +51,7 @@ class WPQueryParamsSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( 'post__not_in' === trim( $tokens[ $stackPtr ]['content'], '\'' ) ) {
-			$phpcsFile->addWarning( 'Using `post__not_in` should be used with cautioun.', $stackPtr, 'post__not_in' );
+			$phpcsFile->addWarning( 'Using `post__not_in` should be done with caution.', $stackPtr, 'post__not_in' );
 		}
 	}
 
