@@ -49,7 +49,7 @@ class ZoninatorSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
-			return ;
+			return;
 		}
 
 		$plugin_name = $phpcsFile->findNext( Tokens::$emptyTokens, ( $openBracket + 1 ), null, true );
@@ -83,6 +83,13 @@ class ZoninatorSniff implements \PHP_CodeSniffer_Sniff {
 
 	}//end process()
 
+	/**
+	 * Removes the quotation marks around T_CONSTANT_ENCAPSED_STRING.
+	 *
+	 * @param $string T_CONSTANT_ENCAPSED_STRING containing wrapping quotation marks.
+	 *
+	 * @return string String w/o wrapping quotation marks.
+	 */
 	public function remove_wrapping_quotation_marks( $string ) {
 		return trim( str_replace( '"', "'", $string ), "'" );
 	}
