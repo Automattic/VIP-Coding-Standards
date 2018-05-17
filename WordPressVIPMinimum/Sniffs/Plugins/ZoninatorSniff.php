@@ -86,7 +86,7 @@ class ZoninatorSniff implements \PHP_CodeSniffer_Sniff {
 	/**
 	 * Removes the quotation marks around T_CONSTANT_ENCAPSED_STRING.
 	 *
-	 * @param $string T_CONSTANT_ENCAPSED_STRING containing wrapping quotation marks.
+	 * @param string $string T_CONSTANT_ENCAPSED_STRING containing wrapping quotation marks.
 	 *
 	 * @return string String w/o wrapping quotation marks.
 	 */
