@@ -87,7 +87,6 @@
 
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents">
 		<type>error</type>
-		<severity>7</severity>
 		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
@@ -95,7 +94,6 @@
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown">
 		<type>error</type>
-		<severity>7</severity>
 		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
