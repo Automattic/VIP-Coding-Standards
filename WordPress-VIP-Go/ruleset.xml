@@ -79,19 +79,181 @@
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
 		<severity>2</severity>
 	</rule>
+  
+	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedScript">
+		<type>warning</type>
+		<severity>3</severity>
+		<message>Scripts must be registered/enqueued via `wp_enqueue_script`. This can improve the site's performance due to script concatenation</message>
+	</rule>
+
+	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet">
+		<type>warning</type>
+		<severity>3</severity>
+		<message>Stylesheets must be registered/enqueued via `wp_enqueue_style`. This can improve the site's performance due to styles concatenation</message>
+	</rule>
+
+	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedScript">
+		<type>warning</type>
+		<severity>3</severity>
+		<message>Scripts must be registered/enqueued via `wp_enqueue_script`. This can improve the site's performance due to script concatenation</message>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.JS.StringConcat.StringConcatNext">
+		<type>warning</type>
+		<severity>5</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie">
+		<type>error</type>
+		<severity>5</severity>
+		<message>Due to server-side caching, server-side based client related logic might not work, use JS instead.</message>
+	</rule>
+
+	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE">
+		<type>error</type>
+		<severity>5</severity>
+		<message>Due to server-side caching, server-side based client related logic might not work, use JS instead.</message>
+	</rule>
+
+	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__">
+		<type>error</type>
+		<severity>5</severity>
+		<message>Due to server-side caching, server-side based client related logic might not work, use JS instead.</message>
+	</rule>
+
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
+		<type>error</type>
+		<severity>5</severity>
+		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s()</message>
+	</rule>
+
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
+		<type>error</type>
+		<severity>5</severity>
+	</rule>
+
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
+		<type>error</type>
+		<severity>5</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.JS.HTMLExecutingFunctions.append">
+		<type>error</type>
+		<severity>5</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.JS.InnerHTML.innerHTML">
+		<type>error</type>
+		<severity>5</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown">
+		<type>error</type>
+		<severity>7</severity>
+	</rule>
+
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents">
+		<type>error</type>
+		<severity>7</severity>
+	</rule>
+	
+	<rule ref="Squiz.PHP.CommentedOutCode.Found">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.is_multi_author_is_multi_author">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_posts">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
+
+	<rule ref="Internal.Tokenizer.Exception">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
 	<rule ref="WordPress.VIP.SuperGlobalInputUsage.AccessDetected">
-		<seveirty>7</seveirty>
+		<severity>7</severity>
 		<type>warning</type>
 	</rule>
+
+	<rule ref="WordPress.CSRF.NonceVerification.NoNonceVerification">
+		<severity>7</severity>
+		<type>warning</type>
+	</rule>
+	
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_wp_get_recent_posts">
+		<type>warning</type>
+		<severity>10</severity>
+	</rule>
+
+	<rule ref="WordPress.PHP.StrictComparisons.LooseComparison">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.Files.IncludingFile.IncludingFile">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPress.PHP.StrictInArray.MissingTrueStrict">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="WordPressVIPMinimum.VIP.WPQueryParams.post__not_in">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<rule ref="Internal.LineEndings.Mixed">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
+
+	<!-- needs to be manually checked -->
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.wp_mail_wp_mail">
+		<type>warning</type>
+		<severity>7</severity>
+	</rule>
+
+	<!-- potential security issue, needs manual checking -->
 	<rule ref="WordPress.CSRF.NonceVerification.NoNonceVerification">
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
+
+>>>>>>> Changed type and severity level of particular sniffs
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
 		<type>warning</type>
 		<severity>7</severity>
@@ -316,7 +478,10 @@
 	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query_meta_key">	<!-- meta_key is usually fine, it's only a problem with meta_value -->
 		<severity>0</severity>
 	</rule>
-	
+
+	<!-- Ignored Rules -->
+
+	<!-- Only appliable to WordPress.com -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
 		<severity>0</severity>
 	</rule>
@@ -324,4 +489,13 @@
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
 		<severity>0</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_update_user_meta">
+		<severity>0</severity>
+	</rule>
+
+	<!-- meta_key is usually fine, it's only a problem with meta_value -->
+	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query_meta_key">
+		<severity>0</severity>
+	</rule>
+
 </ruleset>
