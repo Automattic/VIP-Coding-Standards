@@ -114,6 +114,10 @@
 		<type>warning</type>
 		<severity>5</severity>
 	</rule>
+	<rule ref="WordPress.XSS.EscapeOutput.UnsafePrintingFunction">
+		<type>warning</type>
+		<severity>5</severity>
+	</rule>
 
 
 	<!-- Things that work but aren't good (changing type from error to warning) -->
