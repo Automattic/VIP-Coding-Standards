@@ -1,3 +1,10 @@
 .DS_Store
 .idea/
 .DS_Store
+
+.buildpath
+.project
+.settings/
+vendor
+composer.lock
+phpunit.xml
