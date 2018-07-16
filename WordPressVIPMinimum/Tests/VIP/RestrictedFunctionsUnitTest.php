@@ -50,4 +50,4 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

@@ -37,4 +37,4 @@ class UnescapedOutputTwigUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

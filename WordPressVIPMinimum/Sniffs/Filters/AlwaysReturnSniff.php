@@ -45,7 +45,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-	}//end register()
+	}
 
 	/**
 	 * Processes the tokens that this sniff is interested in.

@@ -40,4 +40,4 @@ class WPQueryParamsUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

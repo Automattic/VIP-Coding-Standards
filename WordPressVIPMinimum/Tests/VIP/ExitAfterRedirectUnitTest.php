@@ -37,4 +37,4 @@ class ExitAfterRedirectUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

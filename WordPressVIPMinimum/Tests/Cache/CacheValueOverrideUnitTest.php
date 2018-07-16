@@ -36,4 +36,4 @@ class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

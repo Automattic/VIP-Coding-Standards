@@ -39,4 +39,4 @@ class ZoninatorUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

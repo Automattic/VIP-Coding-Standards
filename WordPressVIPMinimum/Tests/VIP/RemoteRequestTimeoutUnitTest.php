@@ -36,4 +36,4 @@ class RemoteRequestTimeoutUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

@@ -36,4 +36,4 @@ class CreateFunctionUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

@@ -36,4 +36,4 @@ class StringConcatUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

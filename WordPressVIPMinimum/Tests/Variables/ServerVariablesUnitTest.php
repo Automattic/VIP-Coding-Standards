@@ -36,4 +36,4 @@ class ServerVariablesUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

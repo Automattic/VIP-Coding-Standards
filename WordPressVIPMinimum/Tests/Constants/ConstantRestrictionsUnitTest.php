@@ -41,4 +41,4 @@ class ConstantRestrictionsUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

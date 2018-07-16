@@ -43,4 +43,4 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

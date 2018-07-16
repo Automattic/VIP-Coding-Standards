@@ -37,4 +37,4 @@ class StaticStrreplaceUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

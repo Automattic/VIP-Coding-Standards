@@ -41,4 +41,4 @@ class HTMLExecutingFunctionsUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

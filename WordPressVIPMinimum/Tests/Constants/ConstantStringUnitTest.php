@@ -37,4 +37,4 @@ class ConstantStringUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

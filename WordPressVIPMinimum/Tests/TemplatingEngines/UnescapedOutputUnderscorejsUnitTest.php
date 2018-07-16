@@ -37,4 +37,4 @@ class UnescapedOutputUnderscorejsUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

@@ -40,4 +40,4 @@ class CheckReturnValueUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

@@ -38,4 +38,4 @@ class MergeConflictUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

@@ -38,4 +38,4 @@ class AlwaysReturnUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

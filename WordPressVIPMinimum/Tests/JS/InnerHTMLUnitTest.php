@@ -36,4 +36,4 @@ class InnerHTMLUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}

@@ -36,4 +36,4 @@ class ErrorControlUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

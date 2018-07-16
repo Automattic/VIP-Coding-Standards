@@ -36,4 +36,4 @@ class FetchingRemoteDataUnitTest extends AbstractSniffUnitTest {
 		);
 	}
 
-} // End class.
+}
