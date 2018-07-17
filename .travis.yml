@@ -42,11 +42,13 @@ before_install:
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=/tmp/phpcs
     - export WPCS_DIR=/tmp/wpcs
+    - export PHPCOMPATIBILITY_DIR=/tmp/phpcompatibility
     - export PHPUNIT_DIR=/tmp/phpunit
     - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
-    - $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR
+    - mkdir -p $PHPCOMPATIBILITY_DIR && git clone --depth 1 https://github.com/phpcompatibility/phpcompatibility.git -b master $PHPCOMPATIBILITY_DIR
+    - $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR,$PHPCOMPATIBILITY_DIR
     # Download PHPUnit 5.x for builds on PHP 7, nightly as the PHPCS
     # test suite was not compatible with PHPUnit 6.x (but now is).
     # Fixed at a very specific PHPUnit version which was also compatible with HHVM.
@@ -58,19 +60,11 @@ script:
     # Run the unit tests.
     - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then phpunit --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $PHPCS_DIR/tests/AllTests.php; fi
     - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinumum $PHPCS_DIR/tests/AllTests.php; fi
-    # WordPress Coding Standards.
-    # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
-    # @link http://pear.php.net/package/PHP_CodeSniffer/
-    # -p flag: Show progress of the run.
-    # -s flag: Show sniff codes in all reports.
-    # -v flag: Print verbose output.
-    # -n flag: Do not print warnings. (shortcut for --warning-severity=0)
-    # --standard: Use WordPress as the standard.
-    # --extensions: Only sniff PHP files.
-    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN . --standard=./bin/phpcs.xml --runtime-set ignore_warnings_on_exit 1; fi
-    # Validate the xml files.
+    # Run PHPCS against VIPCS.
+    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN . --standard=.phpcs.xml.dist --runtime-set ignore_warnings_on_exit 1; fi
+    # Validate the XML files.
     # @link http://xmlsoft.org/xmllint.html
     - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./*/ruleset.xml; fi
-    # Check the code-style consistency of the xml files.
+    # Check the code-style consistency of the XML files.
     - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml"); fi
     - if [[ "$INTEGRATION_TEST" == "1" ]]; then php ./ruleset_test.php; fi
