@@ -75,7 +75,7 @@
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
 		<type>warning</type>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead.</message>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents(). If this is used to query for a local file please use WP_Filesystem methods instead.</message>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid">
