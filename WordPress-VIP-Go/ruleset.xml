@@ -161,6 +161,7 @@
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
 		<type>warning</type>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents(). If this is used to query for a local file please use WP_Filesystem methods instead.</message>
 	</rule>
 
 
