@@ -5,14 +5,14 @@
 	<!-- Include the base VIP Minimum ruleset -->
 	<rule ref="WordPressVIPMinimum" />
 
-	<rule ref="WordPress.XSS.EscapeOutput">
+	<rule ref="WordPress.Security.EscapeOutput">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.XSS.EscapeOutput._e">
+	<rule ref="WordPress.Security.EscapeOutput._e">
 		<severity>1</severity>
 	</rule>
 
-	<rule ref="WordPress.Functions.DontExtract">
+	<rule ref="WordPress.PHP.DontExtract">
 		<severity>3</severity>
 	</rule>
 
