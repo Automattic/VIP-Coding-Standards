@@ -14,7 +14,9 @@ The ruleset takes advantage of existing rules in the [WordPress-Coding-Standards
 # Installation
 
 
-First, make sure you have WPCS v1+ and PHPCS v3+ installed. If you do not, please refer to the [installation instructions of the WordPress Coding Standards for PHP_CodeSniffer project](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards#installation).
+First, make sure you have WPCS v1+ and PHPCS v3+ installed. If you do not, please refer to the [installation instructions for installing PHP CodeSniffer for WordPress.com VIP](https://vip.wordpress.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/)
+
+You will also find additional information at the [WordPress Coding Standards for PHP_CodeSniffer project](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards#installation).
 
 Then, clone this repo to your local machine, and add the standard to PHPCodeSniffer by appending the folder you cloned into to the end of the installed paths. e.g.
 
