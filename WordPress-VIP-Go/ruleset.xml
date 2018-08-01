@@ -307,9 +307,9 @@
 	</rule>
 	
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
-		<severity>0</type>
+		<severity>0</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
-		<severity>0</type>
+		<severity>0</severity>
 	</rule>
 </ruleset>
