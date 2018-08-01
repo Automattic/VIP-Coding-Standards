@@ -159,6 +159,7 @@
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_get_page_by_title() instead.</message>
 	</rule>
+
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.url_to_postid_url_to_postid">
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_url_to_postid() instead.</message>
@@ -304,5 +305,11 @@
 	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query_meta_key">	<!-- meta_key is usually fine, it's only a problem with meta_value -->
 		<severity>0</severity>
 	</rule>
-
+	
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
+		<severity>0</type>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
+		<severity>0</type>
+	</rule>
 </ruleset>
