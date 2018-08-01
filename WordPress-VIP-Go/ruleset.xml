@@ -67,6 +67,7 @@
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_get_page_by_title() instead.</message>
 	</rule>
+	
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.url_to_postid_url_to_postid">
 		<type>warning</type>
@@ -82,5 +83,11 @@
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_attachment_url_to_postid() instead.</message>
 	</rule>
-
+	
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
+		<severity>0</type>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
+		<severity>0</type>
+	</rule>
 </ruleset>
