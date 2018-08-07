@@ -119,7 +119,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 
 			if ( true === in_array( $tokens[ $nextToken ]['content'], array_keys( $this->restrictedConstants ), true ) ) {
 				// The construct is using one of the restricted constants.
-				$phpcsFile->addError( sprintf( '`%s` constant might not be defined or available. Use `%s()` instead.', $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ), $nextToken );
+				$phpcsFile->addError( sprintf( '`%s` constant might not be defined or available. Use `%s()` instead.', $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
