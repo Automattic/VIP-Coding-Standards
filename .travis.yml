@@ -33,13 +33,6 @@ matrix:
           packages:
             - libxml2-utils
 
-    # Run against HHVM and PHP nightly.
-    - php: hhvm
-      sudo: required
-      dist: trusty
-      group: edge
-      env: PHPCS_BRANCH=master LINT=1
-
     # Test PHP 5.3 only against PHPCS 2.x as PHPCS 3.x has a minimum requirement of PHP 5.4.
     - php: 5.3
       env: PHPCS_BRANCH=2.9 LINT=1
@@ -55,7 +48,6 @@ matrix:
   allow_failures:
     # Allow failures for unstable builds.
     - php: nightly
-    - php: hhvm
 
 before_install:
     - export XMLLINT_INDENT="	"
@@ -66,7 +58,7 @@ before_install:
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
     - $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR
-    # Download PHPUnit 5.x for builds on PHP 7, nightly and HHVM as the PHPCS
+    # Download PHPUnit 5.x for builds on PHP 7, nightly as the PHPCS
     # test suite is currently not compatible with PHPUnit 6.x.
     # Fixed at a very specific PHPUnit version which is also compatible with HHVM.
     - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then wget -P $PHPUNIT_DIR https://phar.phpunit.de/phpunit-5.7.17.phar && chmod +x $PHPUNIT_DIR/phpunit-5.7.17.phar; fi
