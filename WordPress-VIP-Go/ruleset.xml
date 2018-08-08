@@ -5,26 +5,24 @@
 	<!-- Include the base VIP Minimum ruleset -->
 	<rule ref="WordPressVIPMinimum" />
 
-	<!-- Escaping - usually a severity of 5, sometimes less -->
-	<rule ref="WordPress.XSS.EscapeOutput">
+	<rule ref="WordPress.Security.EscapeOutput">
 		<severity>5</severity>
 	</rule>
-	<rule ref="WordPress.XSS.EscapeOutput._e">
+	<rule ref="WordPress.Security.EscapeOutput._e">
 		<severity>1</severity>
 	</rule>
 
-
 	<!-- PHP Best Practices Severity usually severity 1-3 -->
-	<rule ref="WordPress.Functions.DontExtract">
+	<rule ref="WordPress.PHP.DontExtract">
 		<type>warning</type>
 		<severity>3</severity>
 	</rule>
-
+  
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
 		<type>warning</type>
 		<severity>2</severity>
 	</rule>
-
+  
 	<rule ref="WordPress.PHP.StrictComparisons">
 		<type>warning</type>
 		<severity>4</severity>
@@ -74,10 +72,6 @@
 		<severity>5</severity>
 	</rule>
 
-
-
-
-
 	<!-- WordPress best practices -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_wp_get_recent_posts">
 		<type>warning</type>
@@ -89,16 +83,13 @@
 		<severity>3</severity>
 	</rule>
 
-
 	<!-- WordPress Potential pitfalls - often in case specific -->
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
 		<type>warning</type>
 		<severity>3</severity>
-		<message>Talk about how it only switches the DB context, not the theme so not all hooks and plugins etc</message>
+		<message>`switch_to_blog` changes the database context, but it does not change the theme or plugin context. There is also a performance cost.</message>
 	</rule>
-
-
 
 	<!-- Security usually 6-10 -->
 
@@ -119,10 +110,10 @@
 		<severity>4</severity>
 		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If this is</message>
 	</rule>
-
+	
 	<!-- todo add all wp_remote_get and WP_HTTP functions here -->
-
-
+	
+	
 	<!-- VIP Uncached WP_Query based function warnings usually severity 4 -->
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
@@ -135,12 +126,12 @@
 		<severity>4</severity>
 		<message>https://vip.wordpress.com/documentation/uncached-functions/ talk about adding the parameters</message>
 	</rule>
-
+	
 	<!-- Why is this here at level 1 is it not the same as the previous? -->
 	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
 		<severity>1</severity>
 	</rule>
-
+	
 	<!-- VIP Uncached function warnings usually severity 4 -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect">
 		<type>warning</type>
@@ -151,7 +142,7 @@
 		<type>warning</type>
 		<severity>4</severity>
 	</rule>
-
+	
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_page_by_path_get_page_by_path">
 		<type>warning</type>
 		<severity>4</severity>
@@ -175,4 +166,18 @@
 		<message>%s() is uncached, please use wpcom_vip_attachment_url_to_postid() instead.</message>
 	</rule>
 
+
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
+		<type>warning</type>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents(). If this is used to query for a local file please use WP_Filesystem methods instead.</message>
+	</rule>
+
+	
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
+		<severity>0</severity>
+	</rule>
+	
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
+		<severity>0</severity>
+	</rule>
 </ruleset>
