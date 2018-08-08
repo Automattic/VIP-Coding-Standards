@@ -5,6 +5,12 @@
 	<!-- Include the base VIP Minimum ruleset -->
 	<rule ref="WordPressVIPMinimum" />
 
+	<!-- Things that must be fixed -->
+
+
+	<!-- Things that should be fixed, but don't have to be -->
+
+	<!-- Warnings and other things -->
 	<rule ref="WordPress.Security.EscapeOutput">
 		<severity>3</severity>
 	</rule>
@@ -18,7 +24,7 @@
 
 	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
 		<severity>1</severity>
-	</rule>	
+	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents">
 		<severity>3</severity>
@@ -82,7 +88,9 @@
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_attachment_url_to_postid() instead.</message>
 	</rule>
-	
+
+	<!-- Silence is golden, these don't affect us -->
+
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
 		<severity>0</severity>
 	</rule>
@@ -90,4 +98,7 @@
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
 		<severity>0</severity>
 	</rule>
+
+	<!-- deprecations -->
+
 </ruleset>
