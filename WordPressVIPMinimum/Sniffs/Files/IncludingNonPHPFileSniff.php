@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * WordPressVIPMinimum_Sniffs_Files_IncludingNonPHPFileSniff.
@@ -18,7 +19,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class IncludingNonPHPFileSniff implements \PHP_CodeSniffer_Sniff {
+class IncludingNonPHPFileSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

@@ -7,19 +7,15 @@
 
 namespace WordPressVIPMinimum\Sniffs\Classes;
 
-use PHP_CodeSniffer_File as File;
-
-// WPCS pre 0.13.1 backwardcompatibility.
-if ( ! class_exists( '\PHP_CodeSniffer_Standards_AbstractScopeSniff' ) ) {
-	class_alias( 'PHP_CodeSniffer\Sniffs\AbstractScopeSniff', '\PHP_CodeSniffer_Standards_AbstractScopeSniff' );
-}
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 /**
  * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class DeclarationCompatibilitySniff extends \PHP_CodeSniffer_Standards_AbstractScopeSniff {
+class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 	/**
 	 * The name of the class we are currently checking.

@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Checks whether proper escaping function is used.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
+class ProperEscapingFunctionSniff implements Sniff {
 
 	/**
 	 * List of escaping functions which are being tested.

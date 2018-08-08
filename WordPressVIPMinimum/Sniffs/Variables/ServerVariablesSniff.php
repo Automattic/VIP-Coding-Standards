@@ -8,15 +8,15 @@
 
 namespace WordPressVIPMinimum\Sniffs\Variables;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Restricts usage of some server variables.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class ServerVariablesSniff implements \PHP_CodeSniffer_Sniff {
+class ServerVariablesSniff implements Sniff {
 
 	/**
 	 * List of restricted constant names.

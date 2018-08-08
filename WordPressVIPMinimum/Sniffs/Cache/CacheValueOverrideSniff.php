@@ -7,9 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Cache;
 
-use PHP_CodeSniffer_Sniff as PHPCS_Sniff;
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff enforces checking the return value of a function before passing it to anoher one.
@@ -22,7 +22,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class CacheValueOverrideSniff implements PHPCS_Sniff {
+class CacheValueOverrideSniff implements Sniff {
 
 	/**
 	 * Tokens of the file.

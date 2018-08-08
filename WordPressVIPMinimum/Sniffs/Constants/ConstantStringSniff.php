@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Sniff for properly using constant name when checking whether a constant is defined.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
+class ConstantStringSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Actions;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff validates a propper usage of pre_get_posts action callback
@@ -17,7 +18,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
+class PreGetPostsSniff implements Sniff {
 
 	/**
 	 * The tokens of the phpcsFile.

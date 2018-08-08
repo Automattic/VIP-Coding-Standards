@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff enforces checking the return value of a function before passing it to another one.
@@ -19,7 +20,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  * echo esc_url( wpcom_vip_get_term_link( $term ) );
  * </code>
  */
-class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
+class CheckReturnValueSniff implements Sniff {
 
 	/**
 	 * Tokens of the whole file.

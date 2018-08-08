@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Require `exit;` being called after wp_redirect and wp_safe_redirect.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class ExitAfterRedirectSniff implements \PHP_CodeSniffer_Sniff {
+class ExitAfterRedirectSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

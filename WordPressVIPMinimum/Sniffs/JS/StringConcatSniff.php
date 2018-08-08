@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * WordPressVIPMinimum_Sniffs_JS_StringConcatSniff.
@@ -17,7 +18,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
+class StringConcatSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
