@@ -15,7 +15,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Variables;
 
-use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Checks the for undefined function variables.
@@ -29,8 +30,7 @@ use PHP_CodeSniffer_File as File;
  * @copyright 2011 Sam Graham <php-codesniffer-variableanalysis BLAHBLAH illusori.co.uk>
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class VariableAnalysisSniff implements \PHP_CodeSniffer_Sniff
-{
+class VariableAnalysisSniff implements Sniff {
 	/**
      * The current phpcsFile being checked.
      *

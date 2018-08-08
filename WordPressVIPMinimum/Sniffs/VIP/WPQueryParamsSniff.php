@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Flag suspicious WP_Query and get_posts params.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WPQueryParamsSniff implements \PHP_CodeSniffer_Sniff {
+class WPQueryParamsSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

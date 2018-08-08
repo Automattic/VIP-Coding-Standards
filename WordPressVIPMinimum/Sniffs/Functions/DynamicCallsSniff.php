@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * This sniff enforces that certain functions are not
@@ -26,7 +26,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  * Note that this sniff does not catch all possible forms of dynamic
  * calling, only some.
  */
-class DynamicCallsSniff implements \PHP_CodeSniffer_Sniff {
+class DynamicCallsSniff implements Sniff {
 	/**
 	 * Functions that should not be called dynamically.
 	 *

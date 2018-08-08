@@ -7,14 +7,15 @@
 
 namespace WordPressVIPMinimum\Sniffs\Plugins;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff reminds the developers to check whether the WordPress Core REST API is enabled
  * along with loading v0.8 and above.
  */
-class ZoninatorSniff implements \PHP_CodeSniffer_Sniff {
+class ZoninatorSniff implements Sniff {
 
 	/**
 	 * Returns the token types that this sniff is interested in.
