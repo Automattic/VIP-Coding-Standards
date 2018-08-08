@@ -99,28 +99,26 @@
 		<severity>6</severity>
 	</rule>
 
-
 	<rule ref="WordPress.WP.PreparedSQL" >
 		<severity>6</severity>
 	</rule>
 
-
 	<!-- VIP Uncached remote calls usually severity 4 -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents">
 		<severity>4</severity>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If this is</message>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents(). If this is used to query for a local file please use WP_Filesystem methods instead.</message>
 	</rule>
 	
 	<!-- todo add all wp_remote_get and WP_HTTP functions here -->
 	
 	
 	<!-- VIP Uncached WP_Query based function warnings usually severity 4 -->
-
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>
 		<severity>4</severity>
 		<message>https://vip.wordpress.com/documentation/uncached-functions/ talk about adding the parameters</message>
 	</rule>
+
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_posts">
 		<type>warning</type>
 		<severity>4</severity>
