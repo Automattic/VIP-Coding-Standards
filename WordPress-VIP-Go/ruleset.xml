@@ -62,41 +62,41 @@
 
 	<rule ref="WordPress.XSS.EscapeOutput.OutputNotEscaped">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPress.VIP.PostsPerPage.posts_per_page_posts_per_page">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.ExitAfterRedirect.NoExit">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.ProperEscapingFunction.hrefSrcEscUrl">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.WPQueryParams.suppressFiltersTrue">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.JS.HTMLExecutingFunctions.append">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.JS.InnerHTML.innerHTML">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.JS.StringConcat.StringConcatNext">
 		<type>error</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 
 	<rule ref="WordPress.XSS.EscapeOutput.UnsafePrintingFunction">
 		<type>warning</type>
-		<severity>6</severity>
+		<severity>5</severity>
 	</rule>
 
 	<!-- Warnings and other things -->
