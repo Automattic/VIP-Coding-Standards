@@ -10,7 +10,7 @@
 	<rule ref="WordPress.VIP.FileSystemWritesDisallow.file_ops_fwrite">
 		<type>error</type>
 		<severity>6</severity>
-		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results.</message>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 
 
@@ -21,32 +21,32 @@
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
 		<type>error</type>
 		<Severity>5</Severity>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead</message>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents">
 		<type>error</type>
 		<Severity>5</Severity>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead</message>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown">
 		<type>error</type>
 		<Severity>5</Severity>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead</message>
+		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
 		<type>error</type>
 		<severity>5</severity>
-		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s()</message>
+		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
 		<type>error</type>
 		<severity>5</severity>
-		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s()</message>
+		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
 		<type>error</type>
 		<severity>5</severity>
-		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s()</message>
+		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie">
 		<type>error</type>
@@ -135,7 +135,7 @@
 	<rule ref="WordPress.WP.PostsPerPage.posts_per_page_posts_per_page">
 		<type>warning</type>
 		<severity>5</severity>
-		<message>Having more than 100 posts returned per page can lead to severe performance problems</message>
+		<message>Having more than 100 posts returned per page can lead to severe performance problems.</message>
 	</rule>
 
 
