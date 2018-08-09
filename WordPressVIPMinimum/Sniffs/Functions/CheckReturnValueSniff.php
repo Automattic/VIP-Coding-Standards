@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff enforces checking the return value of a function before passing it to another one.
@@ -19,7 +20,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  * echo esc_url( wpcom_vip_get_term_link( $term ) );
  * </code>
  */
-class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
+class CheckReturnValueSniff implements Sniff {
 
 	/**
 	 * Tokens of the whole file.
@@ -68,9 +69,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
-
+	}
 
 	/**
 	 * Processes the tokens that this sniff is interested in.
@@ -88,7 +87,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 
 		$this->findDirectFunctionCalls( $stackPtr );
 		$this->findNonCheckedVariables( $stackPtr );
-	}//end process()
+	}
 
 	/**
 	 * Check whether the currently examined code is a function call.
@@ -190,12 +189,11 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		$next      = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
-				$phpcsFile->addError( sprintf( "%s's return type must be checked before calling %s using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
+				$phpcsFile->addError( sprintf( "`%s`'s return type must be checked before calling `%s` using that value", $tokens[ $next ]['content'], $functionName ), $next, 'CheckReturnValue' );
 			}
 			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true );
 		}
-
-	}//end findDirectFunctionCalls()
+	}
 
 	/**
 	 * Deals with situations in which the variable is being used later in the code along with a function which is known for causing issues.
@@ -299,7 +297,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				&& $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'CheckReturnValue' );
+				$phpcsFile->addError( sprintf( 'Type of `%s` must be checked before calling `%s()` using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'CheckReturnValue' );
 				return;
 			}
 
@@ -308,7 +306,7 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of %s must be checked before calling %s using that variable', $variableName, $callee ), $next, 'CheckReturnValue' );
+				$phpcsFile->addError( sprintf( 'Type of `%s` must be checked before calling `%s()` using that variable', $variableName, $callee ), $next, 'CheckReturnValue' );
 				return;
 			}
 		}
@@ -326,6 +324,4 @@ class CheckReturnValueSniff implements \PHP_CodeSniffer_Sniff {
 		return $carry .= $item['content'];
 	}
 
-}//end class
-
-
+}

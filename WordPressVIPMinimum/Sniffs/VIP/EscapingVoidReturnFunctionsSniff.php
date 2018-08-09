@@ -17,7 +17,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WPQueryParamsSniff implements Sniff {
+class EscapingVoidReturnFunctionsSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -26,7 +26,7 @@ class WPQueryParamsSniff implements Sniff {
 	 */
 	public function register() {
 		return array(
-			T_CONSTANT_ENCAPSED_STRING,
+			T_STRING,
 		);
 	}
 
@@ -42,17 +42,28 @@ class WPQueryParamsSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		if ( 'suppress_filters' === trim( $tokens[ $stackPtr ]['content'], '\'' ) ) {
-
-			$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_EQUAL, T_CLOSE_SQUARE_BRACKET, T_DOUBLE_ARROW ) ), ( $stackPtr + 1 ), null, true );
-
-			if ( T_TRUE === $tokens[ $next_token ]['code'] ) {
-				$phpcsFile->addError( 'Setting `suppress_filters` to `true` is probihited.', $stackPtr, 'suppressFiltersTrue' );
-			}
+		if ( 0 !== strpos( $tokens[ $stackPtr ]['content'], 'esc_' ) && 0 !== strpos( $tokens[ $stackPtr ]['content'], 'wp_kses' ) ) {
+			// Not what we are looking for.
+			return;
 		}
 
-		if ( 'post__not_in' === trim( $tokens[ $stackPtr ]['content'], '\'' ) ) {
-			$phpcsFile->addWarning( 'Using `post__not_in` should be done with caution.', $stackPtr, 'post__not_in' );
+		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+
+		if ( T_OPEN_PARENTHESIS !== $tokens[ $next_token ]['code'] ) {
+			// Not a function call.
+			return;
+		}
+
+		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $next_token + 1 ), null, true );
+
+		if ( T_STRING !== $tokens[ $next_token ]['code'] ) {
+			// Not what we are looking for.
+			return;
+		}
+
+		if ( 0 === strpos( $tokens[ $next_token ]['content'], '_e' ) ) {
+			$phpcsFile->addError( sprintf( 'Attempting to escape `%s()` which is printing its output.', $tokens[ $next_token ]['content'] ), $stackPtr, 'escapingVoidReturningFunction' );
+			return;
 		}
 	}
 

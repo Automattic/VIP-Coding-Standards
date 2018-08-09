@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Restricts usage of str_replace with all 3 params being static.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class StaticStrreplaceSniff implements \PHP_CodeSniffer_Sniff {
+class StaticStrreplaceSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -83,5 +84,5 @@ class StaticStrreplaceSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$phpcsFile->addError( sprintf( 'This code pattern is often used to run a very dangerous shell programs on your server. The code in these files needs to be reviewed, and possibly cleaned.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'StaticStrreplace' );
-	}//end process()
+	}
 }

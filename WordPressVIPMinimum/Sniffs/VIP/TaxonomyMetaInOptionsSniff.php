@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Restricts the implementation of taxonomy term meta via options.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class TaxonomyMetaInOptionsSniff implements \PHP_CodeSniffer_Sniff {
+class TaxonomyMetaInOptionsSniff implements Sniff {
 
 	/**
 	 * List of options_ functions
@@ -121,7 +122,7 @@ class TaxonomyMetaInOptionsSniff implements \PHP_CodeSniffer_Sniff {
 				}
 			}
 		}
-	}//end process()
+	}
 
 	/**
 	 * Helper method for composing the Warnign for all possible cases.

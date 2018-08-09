@@ -10,9 +10,9 @@
 		}
 	],
 	"require"    : {
-		"php" : ">=5.3",
-		"squizlabs/php_codesniffer": "^2.9.0 || ^3.0.2",
-		"wp-coding-standards/wpcs": "*"
+		"php" : ">=5.4",
+		"squizlabs/php_codesniffer": "^3.0.2",
+		"wp-coding-standards/wpcs": "1.*"
 	},
 	"suggest" : {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.1"

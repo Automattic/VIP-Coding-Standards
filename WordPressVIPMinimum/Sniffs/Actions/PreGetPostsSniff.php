@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Actions;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff validates a propper usage of pre_get_posts action callback
@@ -17,7 +18,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
+class PreGetPostsSniff implements Sniff {
 
 	/**
 	 * The tokens of the phpcsFile.
@@ -40,8 +41,7 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -106,7 +106,6 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		} elseif ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
 		}
-
 	}
 
 	/**
@@ -126,7 +125,6 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		);
 
 		$this->processString( $previous );
-
 	}
 
 	/**
@@ -153,7 +151,6 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$this->processFunction( $callbackFunctionPtr );
-
 	}
 
 	/**
@@ -194,7 +191,6 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$this->processFunctionBody( $functionDefinitionPtr, $wpQueryObjectVariableName );
-
 	}
 
 	/**
@@ -219,7 +215,6 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$this->processFunctionBody( $stackPtr, $this->_tokens[ $wpQueryObjectNamePtr ]['content'] );
-
 	}
 
 	/**
@@ -248,10 +243,10 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 				}
 			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
 				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
-					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
+					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 				}
 			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
-				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without $query->is_main_query() check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
+				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
 			}
 			$wpQueryVarUsed = $this->_phpcsFile->findNext(
 				array( T_VARIABLE ), // types.
@@ -397,7 +392,6 @@ class PreGetPostsSniff implements \PHP_CodeSniffer_Sniff {
 		} else {
 			return false;
 		}
-
 	}
 
 	/**

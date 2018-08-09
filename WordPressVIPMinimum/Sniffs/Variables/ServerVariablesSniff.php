@@ -8,15 +8,15 @@
 
 namespace WordPressVIPMinimum\Sniffs\Variables;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Restricts usage of some server variables.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class ServerVariablesSniff implements \PHP_CodeSniffer_Sniff {
+class ServerVariablesSniff implements Sniff {
 
 	/**
 	 * List of restricted constant names.
@@ -36,7 +36,7 @@ class ServerVariablesSniff implements \PHP_CodeSniffer_Sniff {
 		return array(
 			T_VARIABLE,
 		);
-	}//end register()
+	}
 
 	/**
 	 * Process this test when one of its tokens is encoutnered
@@ -66,4 +66,4 @@ class ServerVariablesSniff implements \PHP_CodeSniffer_Sniff {
 		$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'ServerVariables' );
 	}
 
-} // End class.
+}

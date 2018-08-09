@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * WordPressVIPMinimum_Sniffs_JS_HTMLExecutingFunctions.
@@ -17,7 +18,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class HTMLExecutingFunctionsSniff implements \PHP_CodeSniffer_Sniff {
+class HTMLExecutingFunctionsSniff implements Sniff {
 
 	/**
 	 * List of HTML executing functions.
@@ -49,8 +50,7 @@ class HTMLExecutingFunctionsSniff implements \PHP_CodeSniffer_Sniff {
 		return array(
 			T_STRING,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -81,11 +81,10 @@ class HTMLExecutingFunctionsSniff implements \PHP_CodeSniffer_Sniff {
 		while ( $nextToken < $parenthesis_closer ) {
 			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 			if ( T_STRING === $tokens[ $nextToken ]['code'] ) {
-				$phpcsFile->addWarning( sprintf( 'Any HTML passed to %s gets executed. Make sure it\'s properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
+				$phpcsFile->addWarning( sprintf( 'Any HTML passed to `%s` gets executed. Make sure it\'s properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
 				return;
 			}
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

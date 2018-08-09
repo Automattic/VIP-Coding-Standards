@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Sniff for properly using constant name when checking whether a constant is defined.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
+class ConstantStringSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -27,7 +28,7 @@ class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
 		return array(
 			T_STRING,
 		);
-	}//end register()
+	}
 
 	/**
 	 * Process this test when one of its tokens is encountered.
@@ -45,7 +46,7 @@ class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		// Find the previous non-empty token.
+		// Find the next non-empty token.
 		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $nextToken ]['code'] ) {
@@ -61,10 +62,9 @@ class ConstantStringSniff implements \PHP_CodeSniffer_Sniff {
 		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $nextToken ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Constant name, as a string, should be used along with %s().', $tokens[ $stackPtr ]['content'] ), $nextToken, 'NotCheckingConstantName' );
+			$phpcsFile->addError( sprintf( 'Constant name, as a string, should be used along with `%s()`.', $tokens[ $stackPtr ]['content'] ), $nextToken, 'NotCheckingConstantName' );
 			return;
 		}
-
 	}
 
-} // End class.
+}

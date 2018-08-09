@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Checks whether proper escaping function is used.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
+class ProperEscapingFunctionSniff implements Sniff {
 
 	/**
 	 * List of escaping functions which are being tested.
@@ -84,15 +85,14 @@ class ProperEscapingFunctionSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( 'esc_url' !== $function_name && $this->is_href_or_src( $tokens[ $html ]['content'] ) ) {
-			$phpcsFile->addError( sprintf( 'Wrong escaping function. href and src attributes should be escaped by esc_url, not by %s', $function_name ), $stackPtr, 'hrefSrcEscUrl' );
+			$phpcsFile->addError( sprintf( 'Wrong escaping function. href and src attributes should be escaped by `esc_url()`, not by `%s()`', $function_name ), $stackPtr, 'hrefSrcEscUrl' );
 			return;
 		}
 		if ( 'esc_html' === $function_name && $this->is_html_attr( $tokens[ $html ]['content'] ) ) {
-			$phpcsFile->addError( sprintf( 'Wrong escaping function. HTML attributes should be escaped by esc_attr, not by %s', $function_name ), $stackPtr, 'htmlAttrNotByEscHTML' );
+			$phpcsFile->addError( sprintf( 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`', $function_name ), $stackPtr, 'htmlAttrNotByEscHTML' );
 			return;
 		}
-
-	}//end process()
+	}
 
 	/**
 	 * Tests whether provided string ends with open src or href attribute.

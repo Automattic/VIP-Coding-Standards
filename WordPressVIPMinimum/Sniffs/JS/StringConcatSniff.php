@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * WordPressVIPMinimum_Sniffs_JS_StringConcatSniff.
@@ -17,7 +18,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
+class StringConcatSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -37,8 +38,7 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 		return array(
 			T_PLUS,
 		);
-
-	}//end register()
+	}
 
 
 	/**
@@ -57,7 +57,7 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] ) {
 			if ( false !== strpos( $tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $tokens[ $nextToken ]['content'] ) ) {
-				$phpcsFile->addError( sprintf( 'HTML string concatenation detected %s', '+' . $tokens[ $nextToken ]['content'] ), $stackPtr, 'StringConcatNext' );
+				$phpcsFile->addError( sprintf( 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s', '+' . $tokens[ $nextToken ]['content'] ), $stackPtr, 'StringConcatNext' );
 			}
 		}
 
@@ -65,9 +65,9 @@ class StringConcatSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] ) {
 			if ( false !== strpos( $tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $tokens[ $prevToken ]['content'] ) ) {
-				$phpcsFile->addError( sprintf( 'HTML string concatenation detected: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'StringConcatNext' );
+				$phpcsFile->addError( sprintf( 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'StringConcatNext' );
 			}
 		}
-	}//end process()
+	}
 
-}//end class
+}

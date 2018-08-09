@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Restricts usage of some constants.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
+class ConstantRestrictionsSniff implements Sniff {
 
 	/**
 	 * List of restricted constant names.
@@ -47,7 +48,7 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 			T_CONSTANT_ENCAPSED_STRING,
 			T_STRING,
 		);
-	}//end register()
+	}
 
 	/**
 	 * Process this test when one of its tokens is encoutnered
@@ -73,7 +74,7 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( T_STRING === $tokens[ $stackPtr ]['code'] && true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
-			$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr, 'ConstantRestrictions' );
+			$phpcsFile->addWarning( sprintf( 'Code is touching the `%s` constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr, 'ConstantRestrictions' );
 			return;
 		}
 
@@ -101,11 +102,10 @@ class ConstantRestrictionsSniff implements \PHP_CodeSniffer_Sniff {
 
 		if ( true === in_array( $tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) ) {
 			if ( 'define' === $tokens[ $previous ]['content'] ) {
-				$phpcsFile->addError( sprintf( 'The definition of %s constant is prohibited. Please use a different name.', $constantName ), $previous, 'ConstantRestrictions' );
+				$phpcsFile->addError( sprintf( 'The definition of `%s` constant is prohibited. Please use a different name.', $constantName ), $previous, 'ConstantRestrictions' );
 			} elseif ( true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
-				$phpcsFile->addWarning( sprintf( 'Code is touching the %s constant. Make sure it\'s used appropriately.', $constantName ), $previous, 'ConstantRestrictions' );
+				$phpcsFile->addWarning( sprintf( 'Code is touching the `%s` constant. Make sure it\'s used appropriately.', $constantName ), $previous, 'ConstantRestrictions' );
 			}
 		}
 	}
-
-} // End class.
+}

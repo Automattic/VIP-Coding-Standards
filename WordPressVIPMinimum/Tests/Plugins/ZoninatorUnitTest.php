@@ -5,16 +5,16 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-namespace WordPressVIPMinimum\Tests\VIP;
+namespace WordPressVIPMinimum\Tests\Plugins;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the RestrictedFunctions sniff.
+ * Unit test class for the CheckReturnValue sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
+class ZoninatorUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -22,14 +22,7 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
-			3  => 1,
-			7  => 1,
-			9  => 1,
-			11 => 1,
-			13 => 1,
-			39 => 1,
-		);
+		return array();
 	}
 
 	/**
@@ -39,14 +32,10 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			1  => 1,
-			5  => 1,
-			29 => 1,
-			31 => 1,
-			33 => 1,
-			35 => 1,
-			37 => 1,
-			41 => 1,
+			3 => 1,
+			4 => 1,
+			5 => 1,
+			6 => 1,
 		);
 
 	}

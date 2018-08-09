@@ -7,9 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Cache;
 
-use PHP_CodeSniffer_Sniff as PHPCS_Sniff;
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff enforces checking the return value of a function before passing it to anoher one.
@@ -22,7 +22,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class CacheValueOverrideSniff implements PHPCS_Sniff {
+class CacheValueOverrideSniff implements Sniff {
 
 	/**
 	 * Tokens of the file.
@@ -38,8 +38,7 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -97,10 +96,9 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ( $rightAfterNextVariableOccurence + 1 ), null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Obtained cached value in %s is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'CacheValueOverride' );
+			$phpcsFile->addError( sprintf( 'Obtained cached value in `%s` is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'CacheValueOverride' );
 		}
-
-	} //end Process()
+	}
 
 	/**
 	 * Check whether the examined code is a function call.
@@ -168,9 +166,6 @@ class CacheValueOverrideSniff implements PHPCS_Sniff {
 		}
 
 		return $previous;
-
 	}
 
-}//end class
-
-
+}

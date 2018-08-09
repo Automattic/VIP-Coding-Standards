@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\TemplatingEngines;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_TemplatingEngines_UnescapedOutputUnderscorejsSniff.
@@ -17,7 +17,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class UnescapedOutputUnderscorejsSniff implements \PHP_CodeSniffer_Sniff {
+class UnescapedOutputUnderscorejsSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -41,8 +41,7 @@ class UnescapedOutputUnderscorejsSniff implements \PHP_CodeSniffer_Sniff {
 			T_INLINE_HTML,
 			T_HEREDOC,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -65,7 +64,6 @@ class UnescapedOutputUnderscorejsSniff implements \PHP_CodeSniffer_Sniff {
 			// Underscore.js unescaped output.
 			$phpcsFile->addWarning( 'Found Underscore.js delimiter change notation.', $stackPtr, 'interpolate' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

@@ -1,3 +1,5 @@
-.DS_Store
-.idea/
-.DS_Store
+vendor/
+composer.lock
+phpcs.xml
+.phpcs.xml
+phpunit.xml

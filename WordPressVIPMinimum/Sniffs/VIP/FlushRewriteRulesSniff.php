@@ -8,15 +8,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Restricts usage of rewrite rules flushing
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class FlushRewriteRulesSniff implements \PHP_CodeSniffer_Sniff {
+class FlushRewriteRulesSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -89,7 +90,7 @@ class FlushRewriteRulesSniff implements \PHP_CodeSniffer_Sniff {
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( '%s should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'FlushRewriteRules' );
+		$phpcsFile->addError( sprintf( '`%s()` should not be used in any normal circumstances in the theme code.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'FlushRewriteRules' );
 	}
 
 }

@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\TemplatingEngines;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_TemplatingEngines_UnescapedOutputMustacheSniff.
@@ -17,7 +17,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class UnescapedOutputMustacheSniff implements \PHP_CodeSniffer_Sniff {
+class UnescapedOutputMustacheSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -41,8 +41,7 @@ class UnescapedOutputMustacheSniff implements \PHP_CodeSniffer_Sniff {
 			T_INLINE_HTML,
 			T_HEREDOC,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -76,7 +75,6 @@ class UnescapedOutputMustacheSniff implements \PHP_CodeSniffer_Sniff {
 			// Handlebars.js Handlebars.SafeString does not get escaped.
 			$phpcsFile->addWarning( 'Found Handlebars.SafeString call which does not get escaped.', $stackPtr, 'SafeString' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

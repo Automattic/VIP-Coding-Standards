@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\TemplatingEngines;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_TemplatingEngines_UnescapedOutputVuejsSniff.
@@ -17,7 +17,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class UnescapedOutputVuejsSniff implements \PHP_CodeSniffer_Sniff {
+class UnescapedOutputVuejsSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -39,8 +39,7 @@ class UnescapedOutputVuejsSniff implements \PHP_CodeSniffer_Sniff {
 			T_CONSTANT_ENCAPSED_STRING,
 			T_INLINE_HTML,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -58,7 +57,6 @@ class UnescapedOutputVuejsSniff implements \PHP_CodeSniffer_Sniff {
 			// Twig autoescape disabled.
 			$phpcsFile->addWarning( 'Found Vue.js non-escaped (raw) HTML directive.', $stackPtr, 'v-html' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

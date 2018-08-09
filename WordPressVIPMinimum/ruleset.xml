@@ -13,15 +13,15 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions"/>
 	</rule>
 
-	<rule ref="WordPress.XSS.EscapeOutput"/>
-	<rule ref="WordPress.CSRF.NonceVerification"/>
+	<rule ref="WordPress.Security.EscapeOutput"/>
+	<rule ref="WordPress.Security.NonceVerification"/>
 	<rule ref="WordPress.WP.EnqueuedResources"/>
-	<rule ref="WordPress.WP.PreparedSQL"/>
-	<rule ref="WordPress.Variables.GlobalVariables"/>
+	<rule ref="WordPress.DB.PreparedSQL"/>
+	<rule ref="WordPress.WP.GlobalVariablesOverride"/>
 	<rule ref="WordPress.PHP.StrictComparisons"/>
 	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition"/>
 	<rule ref="WordPress.PHP.StrictInArray"/>
-	<rule ref="WordPress.Functions.DontExtract"/>
+	<rule ref="WordPress.PHP.DontExtract"/>
 
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
@@ -41,7 +41,7 @@
 	<rule ref="Squiz.PHP.Eval"/>
 	<rule ref="Squiz.PHP.Eval.Discouraged">
 		<type>error</type>
-		<message>eval() is a security risk so not allowed.</message>
+		<message>`eval()` is a security risk so not allowed.</message>
 	</rule>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#settings-alteration -->
@@ -105,23 +105,73 @@
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_json_encode-over-json_encode -->
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#filesystem-writes -->
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#remote-calls -->
-	<rule ref="WordPress.WP.AlternativeFunctions"/>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+	</rule>
 	<!-- VIP recommends other functions -->
 	<rule ref="WordPress.WP.AlternativeFunctions.curl">
 		<message>Using cURL functions is highly discouraged within VIP context. Check (Fetching Remote Data) on VIP Documentation.</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_get_contents">
-		<message>%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.</message>
+		<message>`%s()` is highly discouraged, please use `vip_safe_wp_remote_get()` instead.</message>
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>error</type>
-		<message>%1$s() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. %1$s() will do a -1 query by default, a maximum of 100 should be used.</message>
+		<message>`%1$s()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `%1$s()` will do a -1 query by default, a maximum of 100 should be used.</message>
 	</rule>
 
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis">
+	<!-- Silence WPCS VIP deprecations, -->
+	<!-- @TODO: Migrate these sniffs so that they're not used -->
+	<!-- see https://github.com/Automattic/VIP-Coding-Standards/issues/187 -->
+	<rule ref="WordPress.VIP.AdminBarRemoval.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.CronInterval.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.DirectDatabaseQuery.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.FileSystemWritesDisallow.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.OrderByRand.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.PluginMenuSlug.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+
+	<rule ref="WordPress.VIP.RestrictedVariables.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.SessionFunctionsUsage.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.SessionVariableUsage.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.SlowDBQuery.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.SuperGlobalInputUsage.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.TimezoneChange.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.VIP.ValidatedSanitizedInput.DeprecatedSniff">
+		<severity>0</severity>
+	</rule>
+  
+  <rule ref="WordPressVIPMinimum.Variables.VariableAnalysis">
 		<properties>
 			<property name="allowUnusedCaughtExceptions" value="1"/>
 		</properties>
 	</rule>
+
 </ruleset>

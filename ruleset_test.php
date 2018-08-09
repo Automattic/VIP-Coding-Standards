@@ -50,7 +50,7 @@ $expected = array(
 		157 => 1,
 		166 => 1,
 		170 => 1,
-		174 => 1, // Error on the end of the file. When any code is added, bounce this.
+		174 => 1,
 	),
 	'warnings' => array(
 		9   => 1,
@@ -79,7 +79,7 @@ $expected = array(
 	),
 	'messages' => array(
 		129 => array(
-			'get_children() performs a no-LIMIT query by default, make sure to set a reasonable posts_per_page. get_children() will do a -1 query by default, a maximum of 100 should be used.',
+			'`get_children()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `get_children()` will do a -1 query by default, a maximum of 100 should be used.',
 		),
 	),
 );
@@ -186,14 +186,14 @@ class PHPCS_Ruleset_Test {
 				continue;
 			}
 			foreach ( $lines as $line => $number ) {
-				if ( false === isset( $this->$type[ $line ] ) ) {
+				if ( false === isset( $this->{$type}[ $line ] ) ) {
 					$this->error_warning_message( $number, $type, 0, $line );
 					$this->total_issues ++;
-				} elseif ( $this->$type[ $line ] !== $number ) {
-					$this->error_warning_message( $number, $type, $this->$type[ $line ], $line );
+				} elseif ( $this->{$type}[ $line ] !== $number ) {
+					$this->error_warning_message( $number, $type, $this->{$type}[ $line ], $line );
 					$this->total_issues ++;
 				}
-				unset( $this->$type[ $line ] );
+				unset( $this->{$type}[ $line ] );
 			}
 		}
 	}

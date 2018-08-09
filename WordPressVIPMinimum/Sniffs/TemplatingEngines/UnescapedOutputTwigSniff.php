@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\TemplatingEngines;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_TemplatingEngines_UnescapedOutputTwigSniff.
@@ -17,7 +17,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class UnescapedOutputTwigSniff implements \PHP_CodeSniffer_Sniff {
+class UnescapedOutputTwigSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -40,8 +40,7 @@ class UnescapedOutputTwigSniff implements \PHP_CodeSniffer_Sniff {
 			T_INLINE_HTML,
 			T_HEREDOC,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -64,7 +63,6 @@ class UnescapedOutputTwigSniff implements \PHP_CodeSniffer_Sniff {
 			// Twig default unescape filter.
 			$phpcsFile->addWarning( 'Found Twig default unescape filter: "|raw".', $stackPtr, 'raw' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

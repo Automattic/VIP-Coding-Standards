@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * WordPressVIPMinimum_Sniffs_JS_InnerHTMLSniff.
@@ -17,7 +18,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class InnerHTMLSniff implements \PHP_CodeSniffer_Sniff {
+class InnerHTMLSniff implements Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -37,8 +38,7 @@ class InnerHTMLSniff implements \PHP_CodeSniffer_Sniff {
 		return array(
 			T_STRING,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -84,9 +84,8 @@ class InnerHTMLSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( true === $foundVariable ) {
-			$phpcsFile->addWarning( sprintf( 'Any HTML passed to %s gets executed. Consider using .textContent or make sure that used variables are properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
+			$phpcsFile->addWarning( sprintf( 'Any HTML passed to `%s` gets executed. Consider using `.textContent` or make sure that used variables are properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

@@ -8,14 +8,15 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Restricts usage of error control operators. Currently only the at sign.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class ErrorControlSniff implements \PHP_CodeSniffer_Sniff {
+class ErrorControlSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -40,7 +41,7 @@ class ErrorControlSniff implements \PHP_CodeSniffer_Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		$phpcsFile->addError( sprintf( 'The code shouldn\'t use error control operators (%s). The call should be wrapped in appropriate checks.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'ErrorControl' );
+		$phpcsFile->addError( sprintf( 'The code shouldn\'t use error control operators (`%s`). The call should be wrapped in appropriate checks.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'ErrorControl' );
 	}
 
 }

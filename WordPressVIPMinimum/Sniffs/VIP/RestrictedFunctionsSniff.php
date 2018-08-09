@@ -26,45 +26,45 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 		$new_groups = array(
 			'wp_cache_get_multi'       => array(
 				'type'      => 'error',
-				'message'   => '%s is not supported on the WordPress.com VIP platform.',
+				'message'   => '`%s` is not supported on the WordPress.com VIP platform.',
 				'functions' => array( 'wp_cache_get_multi' ),
 			),
 			'get_super_admins'         => array(
 				'type'      => 'error',
-				'message'   => '%s is prohibited on the WordPress.com VIP platform',
+				'message'   => '`%s` is prohibited on the WordPress.com VIP platform',
 				'functions' => array( 'get_super_admins' ),
 			),
 			'internal'                 => array(
 				'type'      => 'error',
-				'message'   => '%1$s() is for internal use only.',
+				'message'   => '`%1$s()` is for internal use only.',
 				'functions' => array(
 					'wpcom_vip_irc',
 				),
 			),
 			'rewrite_rules'            => array(
 				'type'      => 'error',
-				'message'   => '%s should not be used in any normal circumstances in the theme code.',
+				'message'   => '`%s` should not be used in any normal circumstances in the theme code.',
 				'functions' => array(
 					'flush_rewrite_rules',
 				),
 			),
 			'attachment_url_to_postid' => array(
 				'type'      => 'error',
-				'message'   => '%s() is prohibited, please use wpcom_vip_attachment_url_to_postid() instead.',
+				'message'   => '`%s()` is prohibited, please use `wpcom_vip_attachment_url_to_postid()` instead.',
 				'functions' => array(
 					'attachment_url_to_postid',
 				),
 			),
 			'strip_tags'               => array(
 				'type'      => 'error',
-				'message'   => '%s does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags` should be used instead.',
+				'message'   => '`%s()` does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags()` should be used instead.',
 				'functions' => array(
 					'strip_tags',
 				),
 			),
 			'wp_mail'                  => array(
 				'type'      => 'warning',
-				'message'   => '%s should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
+				'message'   => '`%s` should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
 				'functions' => array(
 					'wp_mail',
 					'mail',
@@ -79,7 +79,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 			),
 			'is_multi_author'          => array(
 				'type'      => 'warning',
-				'message'   => '%s can be very slow on large sites and likely not needed on many VIP sites since they tend to have more than one author.',
+				'message'   => '`%s` can be very slow on large sites and likely not needed on many VIP sites since they tend to have more than one author.',
 				'functions' => array(
 					'is_multi_author',
 				),
@@ -94,7 +94,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 		foreach ( $deprecated_vip_helpers as $restricted => $helper ) {
 			$new_groups[ $helper ] = array(
 				'type'      => 'warning',
-				'message'   => "%s() is deprecated, please use {$restricted} instead.",
+				'message'   => "`%s()` is deprecated, please use {$restricted} instead.",
 				'functions' => array(
 					$helper,
 				),
@@ -102,7 +102,8 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 			unset( $original_groups[ $restricted ] );
 		}
 
-		return array_merge( $original_groups, $new_groups );
+		unset( $original_groups['file_get_contents'] );
 
-	} // end getGroups().
+		return array_merge( $original_groups, $new_groups );
+	}
 }

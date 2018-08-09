@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
@@ -18,7 +19,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
+class IncludingFileSniff implements Sniff {
 
 	/**
 	 * List of function used for getting paths.
@@ -72,8 +73,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return Tokens::$includeTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -101,7 +101,7 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( T_VARIABLE === $tokens[ $nextToken ]['code'] ) {
-			$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
+			$phpcsFile->addWarning( sprintf( 'File inclusion using variable (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 			return;
 		}
 
@@ -119,40 +119,38 @@ class IncludingFileSniff implements \PHP_CodeSniffer_Sniff {
 
 			if ( true === in_array( $tokens[ $nextToken ]['content'], array_keys( $this->restrictedConstants ), true ) ) {
 				// The construct is using one of the restricted constants.
-				$phpcsFile->addError( sprintf( '%s constant might not be defined or available. Use %s instead.', $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ), $nextToken );
+				$phpcsFile->addError( sprintf( '`%s` constant might not be defined or available. Use `%s()` instead.', $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
 			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) ) {
-				// The construct is using custom constant, which needs manula inspection.
-				$phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
+				// The construct is using custom constant, which needs manual inspection.
+				$phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
 			if ( 0 === strpos( $tokens[ $nextToken ]['content'], '$' ) ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using variable (%s). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using variable (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
 			if ( true === in_array( $tokens[ $nextToken ]['content'], $this->slashingFunctions, true ) ) {
-				// The construct is using one fo the slashing functions, it's probably correct.
+				// The construct is using one of the slashing functions, it's probably correct.
 				return;
 			}
 
 			$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 			if ( T_OPEN_PARENTHESIS === $tokens[ $nextNextToken ]['code'] ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( %s() ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( `%s()` ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
-			$phpcsFile->addError( 'Absolute include path must be used. Use get_template_directory, get_stylesheet_directory or plugin_dir_path.', $nextToken, 'IncludingFile' );
+			$phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'IncludingFile' );
 			return;
 		} else {
-			$phpcsFile->addError( 'Absolute include path must be used. Use get_template_directory, get_stylesheet_directory or plugin_dir_path.', $nextToken, 'IncludingFile' );
+			$phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'IncludingFile' );
 			return;
-		}// End if().
+		}
+	}
 
-	}//end process()
-
-
-}//end class
+}

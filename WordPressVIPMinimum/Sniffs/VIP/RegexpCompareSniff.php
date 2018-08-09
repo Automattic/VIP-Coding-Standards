@@ -62,4 +62,4 @@ class RegexpCompareSniff extends \WordPress\AbstractArrayAssignmentRestrictionsS
 		}
 	}
 
-} // End class.
+}
