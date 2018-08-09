@@ -11,9 +11,7 @@ use PHP_CodeSniffer_File as File;
 use PHP_CodeSniffer_Tokens as Tokens;
 
 /**
- * This sniff validates a propper usage of pre_get_posts action callback
- *
- * It looks for cases when the WP_Query object is being modified without checking for WP_Query::is_main_query().
+ * This sniff validates that filters always return a value
  *
  * @package VIPCS\WordPressVIPMinimum
  */
