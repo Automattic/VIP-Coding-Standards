@@ -40,13 +40,13 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	 * Processes the tokens that this sniff is interested in.
 	 *
 	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-	 * @param int $stackPtr                          The position in the stack where
+	 * @param int                         $stackPtr  The position in the stack where
 	 *                                               the token was found.
 	 *
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		$this->_tokens	  = $phpcsFile->getTokens();
+		$this->_tokens    = $phpcsFile->getTokens();
 		$this->_phpcsFile = $phpcsFile;
 		$this->_stackPtr  = $stackPtr;
 
