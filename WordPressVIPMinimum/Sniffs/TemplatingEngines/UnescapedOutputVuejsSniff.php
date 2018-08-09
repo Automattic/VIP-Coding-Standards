@@ -39,8 +39,7 @@ class UnescapedOutputVuejsSniff implements Sniff {
 			T_CONSTANT_ENCAPSED_STRING,
 			T_INLINE_HTML,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -58,7 +57,6 @@ class UnescapedOutputVuejsSniff implements Sniff {
 			// Twig autoescape disabled.
 			$phpcsFile->addWarning( 'Found Vue.js non-escaped (raw) HTML directive.', $stackPtr, 'v-html' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

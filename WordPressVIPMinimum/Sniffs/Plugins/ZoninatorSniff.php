@@ -24,8 +24,7 @@ class ZoninatorSniff implements Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -81,8 +80,7 @@ class ZoninatorSniff implements Sniff {
 		if ( true === version_compare( $version, '0.8', '>=' ) ) {
 			$phpcsFile->addWarning( 'Zoninator of version >= v0.8 requires WordPress core REST API. Please, make sure the `wpcom_vip_load_wp_rest_api()` is being called on all sites loading this file.', $stackPtr, 'Zoninator' );
 		}
-
-	}//end process()
+	}
 
 	/**
 	 * Removes the quotation marks around T_CONSTANT_ENCAPSED_STRING.
@@ -94,7 +92,4 @@ class ZoninatorSniff implements Sniff {
 	public function remove_wrapping_quotation_marks( $string ) {
 		return trim( str_replace( '"', "'", $string ), "'" );
 	}
-
-}//end class
-
-
+}

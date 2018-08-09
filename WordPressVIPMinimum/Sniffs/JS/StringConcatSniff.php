@@ -38,8 +38,7 @@ class StringConcatSniff implements Sniff {
 		return array(
 			T_PLUS,
 		);
-
-	}//end register()
+	}
 
 
 	/**
@@ -69,6 +68,6 @@ class StringConcatSniff implements Sniff {
 				$phpcsFile->addError( sprintf( 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'StringConcatNext' );
 			}
 		}
-	}//end process()
+	}
 
-}//end class
+}

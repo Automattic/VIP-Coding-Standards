@@ -73,8 +73,7 @@ class IncludingFileSniff implements Sniff {
 	 */
 	public function register() {
 		return Tokens::$includeTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -125,7 +124,7 @@ class IncludingFileSniff implements Sniff {
 			}
 
 			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) ) {
-				// The construct is using custom constant, which needs manula inspection.
+				// The construct is using custom constant, which needs manual inspection.
 				$phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
@@ -136,7 +135,7 @@ class IncludingFileSniff implements Sniff {
 			}
 
 			if ( true === in_array( $tokens[ $nextToken ]['content'], $this->slashingFunctions, true ) ) {
-				// The construct is using one fo the slashing functions, it's probably correct.
+				// The construct is using one of the slashing functions, it's probably correct.
 				return;
 			}
 
@@ -151,9 +150,7 @@ class IncludingFileSniff implements Sniff {
 		} else {
 			$phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'IncludingFile' );
 			return;
-		}// End if().
+		}
+	}
 
-	}//end process()
-
-
-}//end class
+}

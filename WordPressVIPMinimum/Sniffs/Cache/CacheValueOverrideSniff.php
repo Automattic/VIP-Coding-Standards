@@ -38,8 +38,7 @@ class CacheValueOverrideSniff implements Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -99,8 +98,7 @@ class CacheValueOverrideSniff implements Sniff {
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
 			$phpcsFile->addError( sprintf( 'Obtained cached value in `%s` is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'CacheValueOverride' );
 		}
-
-	} //end Process()
+	}
 
 	/**
 	 * Check whether the examined code is a function call.
@@ -168,9 +166,6 @@ class CacheValueOverrideSniff implements Sniff {
 		}
 
 		return $previous;
-
 	}
 
-}//end class
-
-
+}

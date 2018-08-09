@@ -189,7 +189,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 */
 	public function __construct() {
 		parent::__construct( array( T_CLASS ), array( T_FUNCTION ), true );
-	}//end __construct()
+	}
 
 	/**
 	 * Processes this test when one of its tokens is encountered.
@@ -279,7 +279,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			}
 			$i++;
 		}
-	}//end processTokenWithinScope()
+	}
 
 	/**
 	 * Generates an error with nice current and parent class method notations
@@ -300,7 +300,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
 
 		$phpcsFile->addError( sprintf( 'Declaration of `%s` should be compatible with `%s`', $currentSignature, $parentSignature ), $stackPtr, 'DeclarationCompatibility' );
-	}//end addError()
+	}
 
 	/**
 	 * Generates an array of params as they appear in the signature.
@@ -336,7 +336,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		}
 
 		return $paramList;
-	}//end generateParamList()
+	}
 
 	/**
 	 * Extracts all the function names found in the given scope.
@@ -358,8 +358,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			$next                  = $phpcsFile->findNext( T_STRING, $i );
 			$this->_functionList[] = trim( $tokens[ $next ]['content'] );
 		}
-
-	}//end loadFunctionNamesInScope()
+	}
 
 	/**
 	 * Do nothing outside the scope. Has to be implemented accordingly to parent abstract class.

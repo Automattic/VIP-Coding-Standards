@@ -41,8 +41,7 @@ class UnescapedOutputMustacheSniff implements Sniff {
 			T_INLINE_HTML,
 			T_HEREDOC,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -76,7 +75,6 @@ class UnescapedOutputMustacheSniff implements Sniff {
 			// Handlebars.js Handlebars.SafeString does not get escaped.
 			$phpcsFile->addWarning( 'Found Handlebars.SafeString call which does not get escaped.', $stackPtr, 'SafeString' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

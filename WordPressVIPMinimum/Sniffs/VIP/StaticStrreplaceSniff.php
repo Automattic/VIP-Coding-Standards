@@ -84,5 +84,5 @@ class StaticStrreplaceSniff implements Sniff {
 		}
 
 		$phpcsFile->addError( sprintf( 'This code pattern is often used to run a very dangerous shell programs on your server. The code in these files needs to be reviewed, and possibly cleaned.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'StaticStrreplace' );
-	}//end process()
+	}
 }
