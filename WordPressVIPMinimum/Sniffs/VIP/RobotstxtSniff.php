@@ -1,4 +1,7 @@
 <?php
+
+namespace Sniffs\VIP;
+
 /**
  * WordPressVIPMinimum Coding Standard.
  *
@@ -43,7 +46,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements PHP_CodeSniffer_S
 		}
 
 		$actionNamePtr = $phpcsFile->findNext(
-			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types
+			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.
