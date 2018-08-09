@@ -63,7 +63,8 @@
 		<severity>5</severity>
 		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
-	<rule ref="WordPress.Security.EscapeOutput.UnsafePrintingFunction"><!-- This is a warning at level 5 because they should fix all of them but it doesn't need a manual review -->
+	<rule ref="WordPress.Security.EscapeOutput.UnsafePrintingFunction">
+		<!-- This is a warning at level 5 because they should fix all of them but it doesn't need a manual review -->
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
@@ -103,15 +104,18 @@
 		<type>warning</type>
 		<severity>7</severity>
 	</rule>
-	<rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized"><!-- Needs a manual check -->
+	<rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized">
+		<!-- Needs a manual check -->
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPress.VIP.SuperGlobalInputUsage.AccessDetected"><!-- Needs a manual check -->
+	<rule ref="WordPress.VIP.SuperGlobalInputUsage.AccessDetected">
+		<!-- Needs a manual check -->
 		<severity>7</severity>
 		<type>warning</type>
 	</rule>
-	<rule ref="WordPress.Security.NonceVerification.NoNonceVerification"><!-- Needs a manual check -->
+	<rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
+		<!-- Needs a manual check -->
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
@@ -208,7 +212,8 @@
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
 		<severity>2</severity>
 	</rule>
-	<rule ref="WordPress.Security.EscapeOutput._e"><!-- We trust that translations are safe on VIP Go -->
+	<rule ref="WordPress.Security.EscapeOutput._e">
+		<!-- We trust that translations are safe on VIP Go -->
 		<severity>1</severity>
 	</rule>
 	<rule ref="WordPress.VIP.AdminBarRemoval.RemovalDetected">
@@ -217,10 +222,12 @@
 	<rule ref="WordPress.VIP.AdminBarRemoval.HidingDetected">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.ProperEscapingFunction.htmlAttrNotByEscHTML"><!-- This is still safe, just sub-optimal-->
+	<rule ref="WordPressVIPMinimum.VIP.ProperEscapingFunction.htmlAttrNotByEscHTML">
+		<!-- This is still safe, just sub-optimal-->
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.WP.GlobalVariables.OverrideProhibited"><!-- This is often a false positive. Still nice to flag for a check -->
+	<rule ref="WordPress.WP.GlobalVariables.OverrideProhibited">
+		<!-- This is often a false positive. Still nice to flag for a check -->
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile.IncludingFile">
@@ -299,7 +306,8 @@
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_get_user_meta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key"> <!-- We are silencing this one because VIP Go has a combined index on meta_key, meta_value-->
+	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">
+		<!-- We are silencing this one because VIP Go has a combined index on meta_key, meta_value-->
 		<severity>0</severity>
 	</rule>
 
