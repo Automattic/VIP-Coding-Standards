@@ -36,7 +36,7 @@ class ServerVariablesSniff implements Sniff {
 		return array(
 			T_VARIABLE,
 		);
-	}//end register()
+	}
 
 	/**
 	 * Process this test when one of its tokens is encoutnered
@@ -66,4 +66,4 @@ class ServerVariablesSniff implements Sniff {
 		$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'ServerVariables' );
 	}
 
-} // End class.
+}
