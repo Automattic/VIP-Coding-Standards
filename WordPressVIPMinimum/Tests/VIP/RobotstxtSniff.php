@@ -1,6 +1,10 @@
 <?php
 /**
  * Unit test class for WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ * @link    https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://github.com/Automattic/VIP-Coding-Standards/blob/master/LICENSE.md GPL v2 or later.
  */
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
