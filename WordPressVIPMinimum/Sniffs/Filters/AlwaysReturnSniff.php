@@ -140,6 +140,8 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	 * Process string.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 * @param int $start The start of the token.
+	 * @param int $end The end of the token.
 	 */
 	private function processString( $stackPtr, $start = 0, $end = null ) {
 
@@ -167,13 +169,15 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	 * Process function.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 * @param int $start The start of the token.
+	 * @param int $end The end of the token.
 	 */
 	private function processFunction( $stackPtr, $start = 0, $end = null ) {
 
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while( $functionStackPtr = $this->phpcsFile->findNext( array( T_FUNCTION ), $offset, $end, false, null, false ) ) {
+		while ( $functionStackPtr = $this->phpcsFile->findNext( array( T_FUNCTION ), $offset, $end, false, null, false ) ) {
 			$functionNamePtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
 			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] ) {
 				if ( $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
@@ -189,7 +193,6 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	 * Process function's body
 	 *
 	 * @param int    $stackPtr The position in the stack where the token was found.
-	 * @param string $variableName Variable name.
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
@@ -208,7 +211,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		);
 
 		$insideIfConditionalReturn = 0;
-		$outsideConditionalReturn = 0;
+		$outsideConditionalReturn  = 0;
 
 		while ( $returnTokenPtr ) {
 			if ( $this->isInsideIfConditonal( $returnTokenPtr ) ) {
@@ -229,7 +232,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 			);
 		}
 
-		if ( $insideIfConditionalReturn > 0 && $outsideConditionalReturn === 0 ) {
+		if ( 0 < $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
 			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
 		}
 
@@ -262,7 +265,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		     && true === is_array( $this->tokens[ $stackPtr ]['conditions'] )
 		     && false === empty( $this->tokens[ $stackPtr ]['conditions'] )
 		) {
-			foreach( $this->tokens[ $stackPtr ]['conditions'] as $tokenPtr => $tokenCode ) {
+			foreach ( $this->tokens[ $stackPtr ]['conditions'] as $tokenPtr => $tokenCode ) {
 				if ( T_IF === $this->tokens[ $stackPtr ]['conditions'][ $tokenPtr ] ) {
 					return true;
 				}
@@ -271,6 +274,13 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		return false;
 	}
 
+	/**
+	 * Is the token returning void
+	 *
+	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return bool
+	 **/
 	private function isReturningVoid( $stackPtr ) {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
