@@ -1,4 +1,8 @@
 <?php
+/**
+ * WordPressVIPMinimum Coding Standard.
+ *
+ */
 
 /**
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
@@ -13,7 +17,7 @@ class WordPressVIPminimum_Sniffs_VIP_RobotstxtSniff implements PHP_CodeSniffer_S
 	 */
 	public function register() {
 		return PHP_CodeSniffer_Tokens::$functionNameTokens;
-	}// end register()
+	}
 
 	/**
 	 * Processes the tokens that this sniff is interested in.
@@ -51,6 +55,5 @@ class WordPressVIPminimum_Sniffs_VIP_RobotstxtSniff implements PHP_CodeSniffer_S
 			$phpcsFile->addWarning( 'Internal note: remember to flush robots.txt nginx cache after deploying this revision', $stackPtr );
 		}
 
-	}// end process()
-
+	}
 }
