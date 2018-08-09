@@ -43,7 +43,7 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	 * @param int                         $stackPtr  The position in the stack where
 	 *                                               the token was found.
 	 *
-	 * @return void
+	 * @return int
 	 */
 	private function getNextTString( File $phpcsFile, $stackPtr ) {
 		return $phpcsFile->findNext(
