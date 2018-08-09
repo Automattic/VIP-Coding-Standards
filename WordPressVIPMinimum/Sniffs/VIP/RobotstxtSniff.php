@@ -2,12 +2,16 @@
 /**
  * WordPressVIPMinimum Coding Standard.
  *
- * @package Automattic/VIP-Coding-Standards
+ * @package VIPCS\WordPressVIPMinimum
  * @link    https://github.com/Automattic/VIP-Coding-Standards
  * @license https://github.com/Automattic/VIP-Coding-Standards/blob/master/LICENSE.md GPL v2 or later.
  */
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
@@ -21,7 +25,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements \PHP_CodeSniffer_
 	 * @return array(int)
 	 */
 	public function register() {
-		return PHP_CodeSniffer_Tokens::$functionNameTokens;
+		return Tokens::$functionNameTokens;
 	}
 
 	/**
@@ -34,7 +38,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements \PHP_CodeSniffer_
 	 *
 	 * @return void
 	 */
-	public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		$tokens = $phpcsFile->getTokens();
 
