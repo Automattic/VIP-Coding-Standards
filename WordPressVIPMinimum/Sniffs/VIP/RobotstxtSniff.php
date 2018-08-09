@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\VIP;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHP_CodeSniffer\Util;
 
 /**
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
@@ -49,7 +50,7 @@ class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements \PHP_CodeSniffer_
 		}
 
 		$actionNamePtr = $phpcsFile->findNext(
-			array_merge( PHP_CodeSniffer_Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
+			array_merge( Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.
