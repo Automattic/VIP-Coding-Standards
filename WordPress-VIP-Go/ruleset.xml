@@ -226,7 +226,7 @@
 		<!-- This is still safe, just sub-optimal-->
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.WP.GlobalVariables.OverrideProhibited">
+	<rule ref="WordPress.Variables.GlobalVariables.OverrideProhibited">
 		<!-- This is often a false positive. Still nice to flag for a check -->
 		<severity>3</severity>
 	</rule>
