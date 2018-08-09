@@ -110,5 +110,5 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 			$phpcsFile->addWarning( sprintf( 'Batcache whitelisted GET param, `%s`, found. Batcache whitelisted parameters get stripped and are not available in PHP.', $variable_name ), $stackPtr, 'strippedGetParam' );
 			return;
 		}
-	}//end process()
+	}
 }

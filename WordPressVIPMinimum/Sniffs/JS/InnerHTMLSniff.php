@@ -38,8 +38,7 @@ class InnerHTMLSniff implements Sniff {
 		return array(
 			T_STRING,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -87,7 +86,6 @@ class InnerHTMLSniff implements Sniff {
 		if ( true === $foundVariable ) {
 			$phpcsFile->addWarning( sprintf( 'Any HTML passed to `%s` gets executed. Consider using `.textContent` or make sure that used variables are properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

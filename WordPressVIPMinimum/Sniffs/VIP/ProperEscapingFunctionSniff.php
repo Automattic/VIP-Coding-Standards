@@ -92,8 +92,7 @@ class ProperEscapingFunctionSniff implements Sniff {
 			$phpcsFile->addError( sprintf( 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`', $function_name ), $stackPtr, 'htmlAttrNotByEscHTML' );
 			return;
 		}
-
-	}//end process()
+	}
 
 	/**
 	 * Tests whether provided string ends with open src or href attribute.

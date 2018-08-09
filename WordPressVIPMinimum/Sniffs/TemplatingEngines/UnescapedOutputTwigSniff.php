@@ -40,8 +40,7 @@ class UnescapedOutputTwigSniff implements Sniff {
 			T_INLINE_HTML,
 			T_HEREDOC,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -64,7 +63,6 @@ class UnescapedOutputTwigSniff implements Sniff {
 			// Twig default unescape filter.
 			$phpcsFile->addWarning( 'Found Twig default unescape filter: "|raw".', $stackPtr, 'raw' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

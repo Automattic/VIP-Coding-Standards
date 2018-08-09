@@ -69,9 +69,7 @@ class CheckReturnValueSniff implements Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
-
+	}
 
 	/**
 	 * Processes the tokens that this sniff is interested in.
@@ -89,7 +87,7 @@ class CheckReturnValueSniff implements Sniff {
 
 		$this->findDirectFunctionCalls( $stackPtr );
 		$this->findNonCheckedVariables( $stackPtr );
-	}//end process()
+	}
 
 	/**
 	 * Check whether the currently examined code is a function call.
@@ -195,8 +193,7 @@ class CheckReturnValueSniff implements Sniff {
 			}
 			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true );
 		}
-
-	}//end findDirectFunctionCalls()
+	}
 
 	/**
 	 * Deals with situations in which the variable is being used later in the code along with a function which is known for causing issues.
@@ -327,6 +324,4 @@ class CheckReturnValueSniff implements Sniff {
 		return $carry .= $item['content'];
 	}
 
-}//end class
-
-
+}

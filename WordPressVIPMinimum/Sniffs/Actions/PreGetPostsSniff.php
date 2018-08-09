@@ -41,8 +41,7 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -107,7 +106,6 @@ class PreGetPostsSniff implements Sniff {
 		} elseif ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
 		}
-
 	}
 
 	/**
@@ -127,7 +125,6 @@ class PreGetPostsSniff implements Sniff {
 		);
 
 		$this->processString( $previous );
-
 	}
 
 	/**
@@ -154,7 +151,6 @@ class PreGetPostsSniff implements Sniff {
 		}
 
 		$this->processFunction( $callbackFunctionPtr );
-
 	}
 
 	/**
@@ -195,7 +191,6 @@ class PreGetPostsSniff implements Sniff {
 		}
 
 		$this->processFunctionBody( $functionDefinitionPtr, $wpQueryObjectVariableName );
-
 	}
 
 	/**
@@ -220,7 +215,6 @@ class PreGetPostsSniff implements Sniff {
 		}
 
 		$this->processFunctionBody( $stackPtr, $this->_tokens[ $wpQueryObjectNamePtr ]['content'] );
-
 	}
 
 	/**
@@ -398,7 +392,6 @@ class PreGetPostsSniff implements Sniff {
 		} else {
 			return false;
 		}
-
 	}
 
 	/**

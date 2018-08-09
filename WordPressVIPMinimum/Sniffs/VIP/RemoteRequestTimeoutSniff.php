@@ -58,4 +58,4 @@ class RemoteRequestTimeoutSniff extends \WordPress\AbstractArrayAssignmentRestri
 		}
 	}
 
-} // End class.
+}

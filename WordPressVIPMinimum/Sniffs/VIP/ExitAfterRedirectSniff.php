@@ -65,5 +65,5 @@ class ExitAfterRedirectSniff implements Sniff {
 		} elseif ( T_EXIT !== $tokens[ $next_token ]['code'] ) {
 			$phpcsFile->addError( sprintf( '`%s()` should almost always be followed by a call to `exit;`', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExit' );
 		}
-	}//end process()
+	}
 }

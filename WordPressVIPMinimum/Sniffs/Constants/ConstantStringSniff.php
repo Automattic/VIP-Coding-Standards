@@ -28,7 +28,7 @@ class ConstantStringSniff implements Sniff {
 		return array(
 			T_STRING,
 		);
-	}//end register()
+	}
 
 	/**
 	 * Process this test when one of its tokens is encountered.
@@ -65,7 +65,6 @@ class ConstantStringSniff implements Sniff {
 			$phpcsFile->addError( sprintf( 'Constant name, as a string, should be used along with `%s()`.', $tokens[ $stackPtr ]['content'] ), $nextToken, 'NotCheckingConstantName' );
 			return;
 		}
-
 	}
 
-} // End class.
+}

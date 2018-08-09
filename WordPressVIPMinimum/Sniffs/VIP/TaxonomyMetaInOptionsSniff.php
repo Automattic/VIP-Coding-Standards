@@ -122,7 +122,7 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 				}
 			}
 		}
-	}//end process()
+	}
 
 	/**
 	 * Helper method for composing the Warnign for all possible cases.

@@ -38,8 +38,7 @@ class StrippingTagsSniff implements Sniff {
 		return array(
 			T_STRING,
 		);
-
-	}//end register()
+	}
 
 
 	/**
@@ -77,7 +76,6 @@ class StrippingTagsSniff implements Sniff {
 		if ( T_STRING === $tokens[ $nextToken ]['code'] && 'text' === $tokens[ $nextToken ]['content'] ) {
 			$phpcsFile->addError( 'Vulnerable tag stripping approach detected', $stackPtr, 'VulnerableTagStripping' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

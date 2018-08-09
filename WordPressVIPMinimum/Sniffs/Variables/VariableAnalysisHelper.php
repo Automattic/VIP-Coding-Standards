@@ -30,7 +30,7 @@ class ScopeInfo {
     public $closer;
     public $variables = array();
 
-    function __construct($currScope) {
+    function __construct( $currScope ) {
         $this->owner = $currScope;
         // TODO: extract opener/closer
     }
@@ -64,9 +64,9 @@ class VariableInfo {
         'static' => 'static variable',
         'global' => 'global variable',
         'bound'  => 'bound variable',
-        );
+    );
 
-    function __construct($varName) {
+    function __construct( $varName ) {
         $this->name = $varName;
     }
 }

@@ -48,7 +48,7 @@ class ConstantRestrictionsSniff implements Sniff {
 			T_CONSTANT_ENCAPSED_STRING,
 			T_STRING,
 		);
-	}//end register()
+	}
 
 	/**
 	 * Process this test when one of its tokens is encoutnered
@@ -108,5 +108,4 @@ class ConstantRestrictionsSniff implements Sniff {
 			}
 		}
 	}
-
-} // End class.
+}

@@ -50,8 +50,7 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 		return array(
 			T_STRING,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -86,7 +85,6 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 				return;
 			}
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

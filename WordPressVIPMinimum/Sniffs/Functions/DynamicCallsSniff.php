@@ -61,8 +61,7 @@ class DynamicCallsSniff implements Sniff {
 	 */
 	public function register() {
 		return array( T_VARIABLE => T_VARIABLE );
-
-	}//end register()
+	}
 
 	/**
 	 * Processes the tokens that this sniff is interested in.
@@ -83,8 +82,7 @@ class DynamicCallsSniff implements Sniff {
 
 		// Then find all dynamic calls, and report them.
 		$this->_find_dynamic_calls();
-
-	}//end process()
+	}
 
 	/**
 	 * Finds any variable-definitions in the file being processed,
@@ -164,8 +162,7 @@ class DynamicCallsSniff implements Sniff {
 
 		$this->_variables_arr[ $current_var_name ] =
 			str_replace( "'", '', $current_var_value );
-
-	} // end _collect_variables
+	}
 
 	/**
 	 * Find any dynamic calls being made using variables.
@@ -266,5 +263,5 @@ class DynamicCallsSniff implements Sniff {
 			$t_item_key,
 			'DynamicCalls'
 		);
-	} // end _find_dynamic_calls
+	}
 }

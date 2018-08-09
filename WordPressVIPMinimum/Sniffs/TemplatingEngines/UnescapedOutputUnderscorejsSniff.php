@@ -41,8 +41,7 @@ class UnescapedOutputUnderscorejsSniff implements Sniff {
 			T_INLINE_HTML,
 			T_HEREDOC,
 		);
-
-	}//end register()
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -65,7 +64,6 @@ class UnescapedOutputUnderscorejsSniff implements Sniff {
 			// Underscore.js unescaped output.
 			$phpcsFile->addWarning( 'Found Underscore.js delimiter change notation.', $stackPtr, 'interpolate' );
 		}
+	}
 
-	}//end process()
-
-}//end class
+}

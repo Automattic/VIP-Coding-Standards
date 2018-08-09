@@ -28,8 +28,7 @@ class IncludingNonPHPFileSniff implements Sniff {
 	 */
 	public function register() {
 		return Tokens::$includeTokens;
-
-	}//end register()
+	}
 
 
 	/**
@@ -70,8 +69,6 @@ class IncludingNonPHPFileSniff implements Sniff {
 				$phpcsFile->addError( sprintf( 'Local non-PHP file should be loaded via `get_file_contents` rather than via `%s`', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingNonPHPFile' );
 			}
 		}
+	}
 
-	}//end process()
-
-
-}//end class
+}

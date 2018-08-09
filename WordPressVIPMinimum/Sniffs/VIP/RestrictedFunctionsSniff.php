@@ -105,6 +105,5 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 		unset( $original_groups['file_get_contents'] );
 
 		return array_merge( $original_groups, $new_groups );
-
-	} // end getGroups().
+	}
 }
