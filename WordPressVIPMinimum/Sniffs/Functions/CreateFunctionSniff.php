@@ -76,7 +76,7 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 			if ( 'create_function' !==
 				$this->_tokens[ $this->_stackPtr ]['content']
 			) {
-				// Not a function call, repeat.
+				// Not the function call we want.
 				$functionName = $this->getNextTString(
 					$phpcsFile,
 					$functionName + 1
@@ -97,7 +97,7 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 				( false === $bracket ) ||
 				( T_OPEN_PARENTHESIS !== $this->_tokens[ $bracket ]['code'] )
 			) {
-				// Not a function call, repeat.
+				// Not a function call.
 				$functionName = $this->getNextTString(
 					$phpcsFile,
 					$functionName + 1
