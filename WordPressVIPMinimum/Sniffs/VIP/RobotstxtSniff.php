@@ -7,6 +7,7 @@
  * @license https://github.com/Automattic/VIP-Coding-Standards/blob/master/LICENSE.md GPL v2 or later.
  */
 
+
 namespace Sniffs\VIP;
 
 /**
