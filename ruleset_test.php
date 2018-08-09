@@ -186,14 +186,14 @@ class PHPCS_Ruleset_Test {
 				continue;
 			}
 			foreach ( $lines as $line => $number ) {
-				if ( false === isset( $this->$type[ $line ] ) ) {
+				if ( false === isset( $this->{$type}[ $line ] ) ) {
 					$this->error_warning_message( $number, $type, 0, $line );
 					$this->total_issues ++;
-				} elseif ( $this->$type[ $line ] !== $number ) {
-					$this->error_warning_message( $number, $type, $this->$type[ $line ], $line );
+				} elseif ( $this->{$type}[ $line ] !== $number ) {
+					$this->error_warning_message( $number, $type, $this->{$type}[ $line ], $line );
 					$this->total_issues ++;
 				}
-				unset( $this->$type[ $line ] );
+				unset( $this->{$type}[ $line ] );
 			}
 		}
 	}
