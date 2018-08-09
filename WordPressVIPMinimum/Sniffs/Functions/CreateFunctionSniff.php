@@ -60,12 +60,8 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 		);
 
 		while ( false !== $functionName ) {
-			if (
-				( 'T_STRING' !==
-					$this->_tokens[ $this->_stackPtr ]['type'] )
-				||
-				( 'create_function' !==
-					$this->_tokens[ $this->_stackPtr ]['content'] )
+			if ( 'create_function' !==
+				$this->_tokens[ $this->_stackPtr ]['content']
 			) {
 				// Not a function call, repeat.
 				$functionName = $phpcsFile->findNext(
