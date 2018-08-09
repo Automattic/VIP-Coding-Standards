@@ -7,6 +7,8 @@
  * @license https://github.com/Automattic/VIP-Coding-Standards/blob/master/LICENSE.md GPL v2 or later.
  */
 
+namespace WordPressVIPMinimum\Sniffs\VIP;
+
 /**
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
  * for VIP devs to flush related caches in order to make the change actually happen in production
