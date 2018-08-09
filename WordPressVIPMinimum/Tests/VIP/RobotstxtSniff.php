@@ -3,6 +3,10 @@
  * Unit test class for WordPressVIPMinimum Coding Standard.
  */
 
+namespace WordPressVIPMinimum\Sniffs\VIP;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
  * Unit test class for the RobotstxtSniff sniff.
  */
