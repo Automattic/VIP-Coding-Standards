@@ -271,7 +271,7 @@
 		<type>warning</type>
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.Functions.DontExtract">
+	<rule ref="WordPress.PHP.DontExtract">
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedScript">
