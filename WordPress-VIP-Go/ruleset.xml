@@ -60,11 +60,11 @@
 		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
 
-	<rule ref="WordPress.XSS.EscapeOutput.OutputNotEscaped">
+	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped">
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
-	<rule ref="WordPress.VIP.PostsPerPage.posts_per_page_posts_per_page">
+	<rule ref="WordPress.WP.PostsPerPage.posts_per_page_posts_per_page">
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
@@ -94,7 +94,7 @@
 		<severity>5</severity>
 	</rule>
 
-	<rule ref="WordPress.XSS.EscapeOutput.UnsafePrintingFunction">
+	<rule ref="WordPress.Security.EscapeOutput.UnsafePrintingFunction">
 		<type>warning</type>
 		<severity>5</severity>
 	</rule>
@@ -104,7 +104,7 @@
 		<type>warning</type>
 		<severity>7</severity>
 	</rule>
-	<rule ref="WordPress.VIP.ValidatedSanitizedInput.InputNotSanitized">
+	<rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized">
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
@@ -112,7 +112,7 @@
 		<severity>7</severity>
 		<type>warning</type>
 	</rule>
-	<rule ref="WordPress.CSRF.NonceVerification.NoNonceVerification">
+	<rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
@@ -219,7 +219,8 @@
 	<rule ref="WordPressVIPMinimum.VIP.ProperEscapingFunction.htmlAttrNotByEscHTML"><!-- This is still safe-->
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.Variables.GlobalVariables.OverrideProhibited"><!-- This is often a false positive. Still nice to flag for a check -->
+	<rule ref="WordPress.WP.GlobalVariablesOverride.OverrideProhibited">
+		<!-- This is often a false positive. Still nice to flag for a check -->
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile.IncludingFile">
@@ -234,7 +235,7 @@
 		<type>warning</type>
 	</rule>
 
-	<rule ref="WordPress.CSRF.NonceVerification.NoNonceVerification">
+	<rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
 		<severity>7</severity>
 		<type>warning</type>
 	</rule>
@@ -327,7 +328,7 @@
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_get_user_meta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query_meta_key">	
+	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">	
 		<severity>0</severity>
 	</rule>
 
