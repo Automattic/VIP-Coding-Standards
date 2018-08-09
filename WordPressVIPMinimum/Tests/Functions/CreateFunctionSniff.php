@@ -23,7 +23,7 @@ class CreateFunctionUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			6 => 1,
+			9 => 1,
 		);
 	}
 
