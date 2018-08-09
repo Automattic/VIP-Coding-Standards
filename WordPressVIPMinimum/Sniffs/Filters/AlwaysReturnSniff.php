@@ -192,7 +192,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	/**
 	 * Process function's body
 	 *
-	 * @param int    $stackPtr The position in the stack where the token was found.
+	 * @param int $stackPtr The position in the stack where the token was found.
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
@@ -253,7 +253,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 			return false;
 		}
 
-		// Similar case may be a conditional closure
+		// Similar case may be a conditional closure.
 		if ( 'PHPCS_T_CLOSURE' === end( $this->tokens[ $stackPtr ]['conditions'] ) ) {
 			return false;
 		}
@@ -262,8 +262,8 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		reset( $this->tokens[ $stackPtr ]['conditions'] );
 
 		if ( true === array_key_exists( 'conditions', $this->tokens[ $stackPtr ] )
-		     && true === is_array( $this->tokens[ $stackPtr ]['conditions'] )
-		     && false === empty( $this->tokens[ $stackPtr ]['conditions'] )
+			&& true  === is_array( $this->tokens[ $stackPtr ]['conditions'] )
+			&& false === empty( $this->tokens[ $stackPtr ]['conditions'] )
 		) {
 			foreach ( $this->tokens[ $stackPtr ]['conditions'] as $tokenPtr => $tokenCode ) {
 				if ( T_IF === $this->tokens[ $stackPtr ]['conditions'][ $tokenPtr ] ) {
