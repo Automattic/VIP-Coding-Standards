@@ -262,7 +262,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		reset( $this->tokens[ $stackPtr ]['conditions'] );
 
 		if ( true === array_key_exists( 'conditions', $this->tokens[ $stackPtr ] )
-			&& true  === is_array( $this->tokens[ $stackPtr ]['conditions'] )
+			&& true === is_array( $this->tokens[ $stackPtr ]['conditions'] )
 			&& false === empty( $this->tokens[ $stackPtr ]['conditions'] )
 		) {
 			foreach ( $this->tokens[ $stackPtr ]['conditions'] as $tokenPtr => $tokenCode ) {
