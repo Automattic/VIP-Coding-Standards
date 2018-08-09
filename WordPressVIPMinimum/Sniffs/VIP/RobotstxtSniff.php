@@ -13,7 +13,7 @@ namespace WordPressVIPMinimum\Sniffs\VIP;
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
  * for VIP devs to flush related caches in order to make the change actually happen in production
  */
-class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements PHP_CodeSniffer_Sniff {
+class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements \PHP_CodeSniffer_Sniff {
 
 	/**
 	 * Returns the token types that this sniff is interested in.
