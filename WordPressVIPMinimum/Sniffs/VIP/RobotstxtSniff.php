@@ -2,6 +2,9 @@
 /**
  * WordPressVIPMinimum Coding Standard.
  *
+ * @package Automattic/VIP-Coding-Standards
+ * @link    https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://github.com/Automattic/VIP-Coding-Standards/blob/master/LICENSE.md GPL v2 or later.
  */
 
 /**
@@ -22,8 +25,10 @@ class WordPressVIPminimum_Sniffs_VIP_RobotstxtSniff implements PHP_CodeSniffer_S
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-	 * @param int $stackPtr  The position in the stack where the token was found.
+	 * @param PHP_CodeSniffer_File $phpcsFile The file where the token 
+	 *					  was found.
+	 * @param int                  $stackPtr  The position in the stack
+	 *					  where the token was found.
 	 *
 	 * @return void
 	 */
