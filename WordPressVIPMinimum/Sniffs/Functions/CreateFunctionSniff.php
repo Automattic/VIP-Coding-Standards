@@ -37,6 +37,26 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	}
 
 	/**
+	 * Get next T_STRING token.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
+	 *
+	 * @return void
+	 */
+	private function getNextTString( File $phpcsFile, $stackPtr ) {
+		return $phpcsFile->findNext(
+			T_STRING,
+			( $stackPtr ),
+			null,
+			false,
+			null,
+			true
+		);
+	}
+
+	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
 	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
@@ -50,27 +70,16 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 		$this->_phpcsFile = $phpcsFile;
 		$this->_stackPtr  = $stackPtr;
 
-		$functionName = $phpcsFile->findNext(
-			T_STRING,
-			( $stackPtr ),
-			null,
-			false,
-			null,
-			true
-		);
+		$functionName = $this->getNextTString( $phpcsFile, $stackPtr );
 
 		while ( false !== $functionName ) {
 			if ( 'create_function' !==
 				$this->_tokens[ $this->_stackPtr ]['content']
 			) {
 				// Not a function call, repeat.
-				$functionName = $phpcsFile->findNext(
-					T_STRING,
-					( $functionName + 1 ),
-					null,
-					false,
-					null,
-					true
+				$functionName = $this->getNextTString(
+					$phpcsFile,
+					$functionName + 1
 				);
 
 				continue;
@@ -89,13 +98,9 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 				( T_OPEN_PARENTHESIS !== $this->_tokens[ $bracket ]['code'] )
 			) {
 				// Not a function call, repeat.
-				$functionName = $phpcsFile->findNext(
-					T_STRING,
-					( $functionName + 1 ),
-					null,
-					false,
-					null,
-					true
+				$functionName = $this->getNextTString(
+					$phpcsFile,
+					$functionName + 1
 				);
 
 				continue;
