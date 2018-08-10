@@ -9,6 +9,7 @@ namespace WordPressVIPMinimum\Sniffs\SVG;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This function generates an error when
@@ -22,15 +23,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  * to errors.
  */
 class HTMLCodeSniff implements Sniff {
-
-	/**
-	 * A list of tokenizers this sniff supports.
-	 *
-	 * @var array
-	 */
-	public $supportedTokenizers = array(
-		'PHP',
-	);
 
 	/**
 	 * Returns the token types that this sniff is interested in.
