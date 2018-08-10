@@ -22,3 +22,10 @@ $c = new Foo();
 $c->create_function = 'bar' . ( 1 === 1 ?? 'foo' );
 
 $m = bla_function( '$a, $b', 'return ( $b / $a ); ');
+
+$wp_random_testing = 
+   create_function2( '$a, $b', 'return ( $b / $a ); ');
+
+$wp_random_testing = 
+   create_function3( '$a, $b', 'return ( $b / $a ); ');
+
