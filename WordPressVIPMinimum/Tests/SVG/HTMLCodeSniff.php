@@ -22,9 +22,7 @@ class StrippingTagsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
-			7 => 1,
-		);
+		return array();
 	}
 
 	/**
@@ -33,8 +31,9 @@ class StrippingTagsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
-
+		return array(
+			7 => 1,
+		);
 	}
 
 } // End class.

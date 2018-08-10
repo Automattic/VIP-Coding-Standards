@@ -74,7 +74,7 @@ class HTMLCodeSniff implements Sniff {
 			( false !== $found1 ) ||
 			( false !== $found2 )
 		) {
-			$phpcsFile->addError(
+			$phpcsFile->addWarning(
 				'<?php or <? found in SVG file',
 				$nxt,
 				'HTMLCode'
