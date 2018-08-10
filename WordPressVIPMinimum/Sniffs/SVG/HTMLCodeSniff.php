@@ -22,6 +22,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  * to errors.
  */
 class HTMLCodeSniff implements Sniff {
+
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
 	public $supportedTokenizers = array(
 		'PHP',
 	);
@@ -43,8 +49,8 @@ class HTMLCodeSniff implements Sniff {
 	 * Processes the tokens that this sniff is interested in.
 	 *
 	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-	 * @param int						 $stackPtr  The position in the stack where
-	 *											   the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
 	 *
 	 * @return void
 	 */
@@ -68,7 +74,6 @@ class HTMLCodeSniff implements Sniff {
 
 		$found2 =
 			strpos( $tokens[ $nxt ]['content'], '<?' );
-
 
 		if (
 			( false !== $found1 ) ||
