@@ -55,8 +55,8 @@ class HTMLCodeSniff implements Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		// Get tokens	
-		$tokens	= $phpcsFile->getTokens();
+		// Get tokens.
+		$tokens = $phpcsFile->getTokens();
 
 		$nxt = $phpcsFile->findNext(
 			T_OPEN_TAG,
