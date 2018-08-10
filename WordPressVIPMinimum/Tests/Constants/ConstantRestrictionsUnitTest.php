@@ -39,7 +39,6 @@ class ConstantRestrictionsUnitTest extends AbstractSniffUnitTest {
 			3 => 1,
 			7 => 2,
 		);
-
 	}
 
 } // End class.

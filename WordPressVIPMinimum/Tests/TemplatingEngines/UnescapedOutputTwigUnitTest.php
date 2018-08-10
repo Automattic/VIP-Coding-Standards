@@ -32,10 +32,9 @@ class UnescapedOutputTwigUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			5 => 1,
+			5  => 1,
 			10 => 1,
 		);
-
 	}
 
 } // End class.

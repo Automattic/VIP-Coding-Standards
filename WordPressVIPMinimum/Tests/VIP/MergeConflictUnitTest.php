@@ -23,8 +23,8 @@ class MergeConflictUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			4 => 1,
-			8 => 1,
+			4  => 1,
+			8  => 1,
 			12 => 1,
 		);
 	}
@@ -36,7 +36,6 @@ class MergeConflictUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array();
-
 	}
 
 } // End class.

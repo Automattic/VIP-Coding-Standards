@@ -4,6 +4,7 @@
 
 	<file>.</file>
 	<!-- Exclude Composer vendor directory. -->
+	<exclude-pattern>*/.git/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 
 	<arg value="sp"/> <!-- Show sniff and progress -->
@@ -32,7 +33,7 @@
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
 
 	<!-- Check code for cross-version PHP compatibility. -->
-	<config name="testVersion" value="5.3-"/>
+	<config name="testVersion" value="5.4-"/>
 	<rule ref="PHPCompatibility">
 		<!-- Exclude PHP constants back-filled by PHPCS. -->
 		<exclude name="PHPCompatibility.PHP.NewConstants.t_finallyFound"/>

@@ -41,7 +41,6 @@ class MergeConflictSniff implements \PHP_CodeSniffer_Sniff {
 			T_ENCAPSED_AND_WHITESPACE,
 			T_IS_IDENTICAL,
 		);
-
 	}//end register()
 
 
@@ -76,11 +75,10 @@ class MergeConflictSniff implements \PHP_CodeSniffer_Sniff {
 				$phpcsFile->addError( sprintf( 'Merge conflict detected. Found "%s" string.', trim( $tokens[ $stackPtr ]['content'] ) ), $stackPtr, 'DELIMITER' );
 				return;
 			}
-		} else if ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ ( $stackPtr + 1 ) ]['code'] ) {
+		} elseif ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ ( $stackPtr + 1 ) ]['code'] ) {
 			$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'DELIMITER' );
 			return;
 		}
-
 	}//end process()
 
 
