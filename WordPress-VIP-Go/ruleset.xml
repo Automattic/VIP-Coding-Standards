@@ -3,7 +3,7 @@
 	<description>WordPress VIP Go Coding Standards</description>
 
 	<!-- Include the base VIP Minimum ruleset -->
-	<rule ref="WordPressVIPMinimum" />
+	<rule ref="WordPressVIPMinimum"/>
 
 
 	<!-- Things that must be fixed because they (probably) won't work -->
