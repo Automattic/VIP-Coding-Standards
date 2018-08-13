@@ -49,7 +49,6 @@ class HTMLCodeSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
-		print_r($tokens);
 
 		// Make sure it is a SVG file.
 		$file_extension = strtolower(
@@ -65,7 +64,7 @@ class HTMLCodeSniff implements Sniff {
 		}
 
 		$phpcsFile->addWarning(
-			'<?php or <?= found in SVG file, needs to be reviewed',
+			'<?php or <?= found in SVG file, needs to be reviewed manually',
 			$stackPtr,
 			'HTMLCode'
 		);
