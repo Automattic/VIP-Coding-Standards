@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * This function generates an error when
+ * This function generates a warning when
  * <?php or <? is found in a SVG file.
  *
  * The aim is to bring this to the notice of
@@ -27,13 +27,14 @@ class HTMLCodeSniff implements Sniff {
 	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
-	 * We want everything function-related.
+	 * We want everything related to opening PHP tags.
 	 *
 	 * @return array(int)
 	 */
 	public function register() {
 		return array(
 			T_OPEN_TAG,
+			T_OPEN_TAG_WITH_ECHO,
 		);
 	}
 
@@ -47,36 +48,26 @@ class HTMLCodeSniff implements Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		// Get tokens.
 		$tokens = $phpcsFile->getTokens();
+		print_r($tokens);
 
-		$nxt = $phpcsFile->findNext(
-			T_OPEN_TAG,
-			( $stackPtr ),
-			null,
-			false,
-			null,
-			true
+		// Make sure it is a SVG file.
+		$file_extension = strtolower(
+			pathinfo(
+				$phpcsFile->path,
+				PATHINFO_EXTENSION
+			)
 		);
 
-		$tokens[ $nxt ]['content'] =
-			strtolower( $tokens[ $nxt ]['content'] );
-
-		$found1 =
-			strpos( $tokens[ $nxt ]['content'], '<?php' );
-
-		$found2 =
-			strpos( $tokens[ $nxt ]['content'], '<?' );
-
-		if (
-			( false !== $found1 ) ||
-			( false !== $found2 )
-		) {
-			$phpcsFile->addWarning(
-				'<?php or <? found in SVG file',
-				$nxt,
-				'HTMLCode'
-			);
+		// If not SVG file, ignore.
+		if ( 'svg' !== $file_extension ) {
+			return;
 		}
+
+		$phpcsFile->addWarning(
+			'<?php or <?= found in SVG file, needs to be reviewed',
+			$stackPtr,
+			'HTMLCode'
+		);
 	}
 }
