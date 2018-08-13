@@ -19,6 +19,7 @@
 
 	<rule ref="WordPressVIPMinimum.SVG.HTMLCode">
 		<include-pattern>*.svg</include-pattern>
+		<exclude-pattern>*.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.PreparedSQL"/>
