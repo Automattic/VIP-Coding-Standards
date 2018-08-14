@@ -35,7 +35,6 @@ class BatcacheWhitelistedParamsUnitTest extends AbstractSniffUnitTest {
 			3 => 2,
 			7 => 1,
 		);
-
 	}
 
-} // End class.
+}

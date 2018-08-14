@@ -34,7 +34,6 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 		return array(
 			5 => 2,
 		);
-
 	}
 
-} // End class.
+}

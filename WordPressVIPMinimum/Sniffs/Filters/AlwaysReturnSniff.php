@@ -45,8 +45,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return Tokens::$functionNameTokens;
-
-	}//end register()
+	}
 
 	/**
 	 * Processes the tokens that this sniff is interested in.
@@ -104,7 +103,6 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		} elseif ( true === in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
 		}
-
 	}
 
 	/**
@@ -133,7 +131,6 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$this->processString( $previous );
-
 	}
 
 	/**
@@ -162,7 +159,6 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$this->processFunction( $callbackFunctionPtr, $start, $end );
-
 	}
 
 	/**
@@ -235,7 +231,6 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 		if ( 0 < $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
 			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
 		}
-
 	}
 
 	/**

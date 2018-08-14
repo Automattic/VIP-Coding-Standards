@@ -58,4 +58,4 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

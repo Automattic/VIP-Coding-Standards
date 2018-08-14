@@ -155,7 +155,6 @@ class CheckReturnValueSniff implements Sniff {
 		}
 
 		return $previous;
-
 	}
 
 	/**

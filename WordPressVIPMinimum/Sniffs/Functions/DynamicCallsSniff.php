@@ -78,10 +78,10 @@ class DynamicCallsSniff implements Sniff {
 		$this->_stackPtr  = $stackPtr;
 
 		// First collect all variables encountered and their values.
-		$this->_collect_variables();
+		$this->collect_variables();
 
 		// Then find all dynamic calls, and report them.
-		$this->_find_dynamic_calls();
+		$this->find_dynamic_calls();
 	}
 
 	/**
@@ -91,7 +91,7 @@ class DynamicCallsSniff implements Sniff {
 	 *
 	 * @return void
 	 */
-	private function _collect_variables() {
+	private function collect_variables() {
 		/*
 		 * Make sure we are working with a variable,
 		 * get its value if so.
@@ -171,7 +171,7 @@ class DynamicCallsSniff implements Sniff {
 	 *
 	 * @return void
 	 */
-	private function _find_dynamic_calls() {
+	private function find_dynamic_calls() {
 		/*
 		 * No variables detected; no basis for doing
 		 * anything

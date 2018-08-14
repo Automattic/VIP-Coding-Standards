@@ -33,7 +33,6 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 	 */
 	public function register() {
 		return [ T_STRING ];
-
 	}
 
 	/**

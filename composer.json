@@ -14,17 +14,22 @@
 		"squizlabs/php_codesniffer": "^3.0.2",
 		"wp-coding-standards/wpcs": "1.*"
 	},
+	"require-dev" : {
+		"phpcompatibility/php-compatibility": "^8"
+	},
 	"suggest" : {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.1"
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
 	},
 	"minimum-stability" : "RC",
 	"support"    : {
 		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
+		"wiki"  : "https://github.com/Automattic/VIP-Coding-Standards/wiki",
 		"source": "https://github.com/Automattic/VIP-Coding-Standards"
 	},
 	"type"       : "phpcodesniffer-standard",
 	"scripts"    : {
-		"post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..",
-		"post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths ../../.."
+		"install-codestandards": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility",
+		"post-install-cmd": "@install-codestandards",
+		"post-update-cmd" : "@install-codestandards"
 	}
 }

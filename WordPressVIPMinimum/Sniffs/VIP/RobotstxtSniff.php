@@ -66,6 +66,5 @@ class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements \PHP_CodeSniffer_
 		if ( 'do_robotstxt' === substr( $tokens[ $actionNamePtr ]['content'], 1, -1 ) ) {
 			$phpcsFile->addWarning( 'Internal note: remember to flush robots.txt nginx cache after deploying this revision', $stackPtr, 'RobotstxtSniff' );
 		}
-
 	}
 }
