@@ -33,7 +33,7 @@ class StrippingTagsUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return array(
 			8  => 1,
-			19 => 1,
+			20 => 1,
 		);
 	}
 
