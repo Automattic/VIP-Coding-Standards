@@ -39,6 +39,20 @@ class HTMLCodeSniff implements Sniff {
 	}
 
 	/**
+	 * Returns the file extension of a given file.
+	 *
+	 * @return string
+	 */
+	private function get_file_extension( $file_path ) {
+		return strtolower(
+			pathinfo(
+				$file_path,
+				PATHINFO_EXTENSION
+			)
+		);
+	}
+
+	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
 	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
@@ -50,12 +64,9 @@ class HTMLCodeSniff implements Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// Make sure it is a SVG file.
-		$file_extension = strtolower(
-			pathinfo(
-				$phpcsFile->path,
-				PATHINFO_EXTENSION
-			)
+		// Get file extension
+		$file_extension = $this->get_file_extension(
+			$phpcsFile->path
 		);
 
 		// If not SVG file, ignore.
