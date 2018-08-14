@@ -41,6 +41,8 @@ class HTMLCodeSniff implements Sniff {
 	/**
 	 * Returns the file extension of a given file.
 	 *
+	 * @param string $file_path Path to file.
+	 *
 	 * @return string
 	 */
 	private function get_file_extension( $file_path ) {
@@ -64,7 +66,7 @@ class HTMLCodeSniff implements Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// Get file extension
+		// Get file extension.
 		$file_extension = $this->get_file_extension(
 			$phpcsFile->path
 		);
