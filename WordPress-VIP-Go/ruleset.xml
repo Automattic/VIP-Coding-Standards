@@ -119,10 +119,6 @@
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
-		<type>warning</type>
-		<severity>7</severity>
-	</rule>
 	<rule ref="Generic.NamingConventions.ConstructorName.OldStyle">
 		<type>warning</type>
 		<severity>10</severity>
@@ -270,6 +266,11 @@
 		<type>warning</type>
 		<severity>3</severity>
 		<message>Stylesheets must be registered/enqueued via `wp_enqueue_style`. This can improve the site's performance due to styles concatenation</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
+		<type>warning</type>
+		<severity>3</severity>
+		<message>Switch to blog may not work as you expect. It only changes the database context for the blog. It doesn't load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.ErrorControl.ErrorControl">
 		<severity>1</severity>
