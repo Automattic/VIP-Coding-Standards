@@ -99,6 +99,7 @@
 	<rule ref="Generic.NamingConventions.ConstructorName.OldStyle">
 		<type>error</type>
 		<severity>5</severity>
+		<message>This is currently deprecated in PHP 7.0 and will be removed in the future. This will cause a fatal error on newer versions of PHP and should be fixed.</message>
 	</rule>
 
 
