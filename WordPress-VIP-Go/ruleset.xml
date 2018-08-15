@@ -6,18 +6,37 @@
 	<rule ref="WordPressVIPMinimum"/>
 
 
-	<!-- Things that must be fixed because they (probably) won't work -->
+	<!-- Things that probably won't work and needs a dev to review -->
 	<rule ref="WordPress.VIP.FileSystemWritesDisallow.file_ops_fwrite">
 		<type>error</type>
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+		<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
+		<type>error</type>
+		<severity>5</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie">
+		<type>error</type>
+		<severity>6</severity>
+		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
+	</rule>
+	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE">
+		<type>error</type>
+		<severity>6</severity>
+		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
+	</rule>
+	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__">
+		<type>error</type>
+		<severity>6</severity>
+		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
 
 
 	<!-- Things that really should be fixed, but don't nessesarily have to be for the site to work.
 		 This includes potential security holes as well as functions that may bring down sites for performance reasons.
 	 -->
-
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
 		<type>error</type>
 		<Severity>5</Severity>
@@ -38,30 +57,10 @@
 		<severity>5</severity>
 		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
-		<type>error</type>
-		<severity>5</severity>
-		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
-	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
 		<type>error</type>
 		<severity>5</severity>
 		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
-	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie">
-		<type>error</type>
-		<severity>5</severity>
-		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
-	</rule>
-	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE">
-		<type>error</type>
-		<severity>5</severity>
-		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
-	</rule>
-	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__">
-		<type>error</type>
-		<severity>5</severity>
-		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
 	<rule ref="WordPress.Security.EscapeOutput.UnsafePrintingFunction">
 		<!-- This is a warning at level 5 because they should fix all of them but it doesn't need a manual review -->
