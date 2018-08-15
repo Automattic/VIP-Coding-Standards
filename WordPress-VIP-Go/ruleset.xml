@@ -96,6 +96,10 @@
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
+	<rule ref="Generic.NamingConventions.ConstructorName.OldStyle">
+		<type>error</type>
+		<severity>5</severity>
+	</rule>
 
 
 
@@ -116,10 +120,6 @@
 	</rule>
 	<rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
 		<!-- Needs a manual check -->
-		<type>warning</type>
-		<severity>10</severity>
-	</rule>
-	<rule ref="Generic.NamingConventions.ConstructorName.OldStyle">
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
