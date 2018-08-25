@@ -58,10 +58,10 @@ before_install:
   - composer validate --no-check-all --strict
   # Handle new PHP version with old PHPCS version. Version of PHPUnit 6 is the current latest release.
   - |
-    if [[ "$TRAVIS_PHP_VERSION" == "7.2" && "$PHPCS_BRANCH" == "3.1.0" ]]; then
+    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." && "$PHPCS_BRANCH" == "3.1.0" ]]; then
       export USE_OLD_PHPUNIT="1"
       export PHPUNIT_DIR=/tmp/phpunit
-      export PHPUNIT6="6.5.11"
+      export PHPUNIT6="6.5.12"
     fi
 
 install:
@@ -72,29 +72,17 @@ install:
 
 script:
   # Lint the PHP files against parse errors.
-  - if [[ "$LINT" == "1" ]]; then if find . -path ./vendor -prune -o -path ./bin -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
+  - if [[ "$LINT" == "1" ]]; then ./bin/php-lint; fi
   # Run the unit tests.
   - |
     if [[ "$USE_OLD_PHPUNIT" == "1" ]]; then
       php "$PHPUNIT_DIR/phpunit-$PHPUNIT6.phar" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php"
     else
-      phpunit --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+      ./bin/unit-tests
     fi
   # Run PHPCS against VIPCS.
-  - if [[ "$SNIFF" == "1" ]]; then "$(pwd)/vendor/bin/phpcs" --runtime-set ignore_warnings_on_exit 1; fi
-  # Validate the XML files.
-  # @link http://xmlsoft.org/xmllint.html
-  - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./*/ruleset.xml; fi
-  # Check the code-style consistency of the XML files.
-  - |
-    if [[ "$SNIFF" == "1" ]]; then
-      export XMLLINT_INDENT="	"
-      diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml")
-      diff -B --tabsize=4 ./WordPress-VIP-Go/ruleset.xml <(xmllint --format "./WordPress-VIP-Go/ruleset.xml")
-    fi
+  - if [[ "$SNIFF" == "1" ]]; then ./bin/phpcs; fi
+  # Validate the XML files and check the code-style consistency of the XML files.
+  - if [[ "$LINT" == "1" ]]; then ./bin/xml-lint; fi
   # Run integration test.
-  - |
-    if [[ "$INTEGRATION_TEST" == "1" ]]; then
-      export PHPCS_BIN="$(pwd)/vendor/bin/phpcs"
-      php ./ruleset_test.php
-    fi
+  - if [[ "$INTEGRATION_TEST" == "1" ]]; then ./bin/integration-test; fi
