@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+# Run integration test.
+#
+# {description needed}
+#
+# EXAMPLE TO RUN LOCALLY:
+#
+#   ./bin/integration-test
+
+# Set PHPCS_BIN, which is used in the ruleset_test.php file.
+PHPCS_BIN="$(pwd)/vendor/bin/phpcs"
+export PHPCS_BIN
+php ./ruleset_test.php
