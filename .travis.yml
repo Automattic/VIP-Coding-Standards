@@ -3,59 +3,18 @@ sudo: false
 dist: trusty
 
 cache:
-  apt: true
   directories:
-    # Cache directory for older Composer versions.
-    - $HOME/.composer/cache/files
-    # Cache directory for more recent Composer versions.
     - $HOME/.cache/composer/files
 
 language:
   - php
-
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-  - nightly
-
-env:
-  # `master` is now 3.x.
-  - PHPCS_BRANCH="dev-master"
-  # Lowest supported release in the 3.x series with which VIPCS is compatible (and which can run the unit tests).
-  - PHPCS_BRANCH="3.1.0"
-
-matrix:
-  fast_finish: true
-  include:
-    # Run PHPCS against VIPCS, run PHP Lint, and run integration test
-    - php: 7.2
-      env: PHPCS_BRANCH="dev-master" SNIFF=1 INTEGRATION_TEST=1 LINT=1
-      addons:
-        apt:
-          packages:
-            - libxml2-utils
-  exclude:
-    # PHP 7.3 is known to fail with PHPCS < 3.3.1.
-    # @link https://github.com/squizlabs/PHP_CodeSniffer/issues/2086
-    - php: nightly
-      env: PHPCS_BRANCH="3.1.0"
-
-  allow_failures:
-    # Allow failures for unstable builds.
-    - php: nightly
 
 before_install:
   # Speed up build time by disabling Xdebug.
   # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
   # https://twitter.com/kelunik/status/954242454676475904
   - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-  # Validate the composer.json file.
-  # @link https://getcomposer.org/doc/03-cli.md#validate
-  - composer validate --no-check-all --strict
+
   # Handle new PHP version with old PHPCS version. Version of PHPUnit 6 is the current latest release.
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." && "$PHPCS_BRANCH" == "3.1.0" ]]; then
@@ -71,8 +30,6 @@ install:
   - if [[ "$USE_OLD_PHPUNIT" == "1" ]]; then wget -P "$PHPUNIT_DIR" "https://phar.phpunit.de/phpunit-$PHPUNIT6.phar" && chmod +x "$PHPUNIT_DIR/phpunit-$PHPUNIT6.phar"; fi
 
 script:
-  # Lint the PHP files against parse errors.
-  - if [[ "$LINT" == "1" ]]; then ./bin/php-lint; fi
   # Run the unit tests.
   - |
     if [[ "$USE_OLD_PHPUNIT" == "1" ]]; then
@@ -80,9 +37,113 @@ script:
     else
       ./bin/unit-tests
     fi
-  # Run PHPCS against VIPCS.
-  - if [[ "$SNIFF" == "1" ]]; then ./bin/phpcs; fi
-  # Validate the XML files and check the code-style consistency of the XML files.
-  - if [[ "$LINT" == "1" ]]; then ./bin/xml-lint; fi
+
   # Run integration test.
   - if [[ "$INTEGRATION_TEST" == "1" ]]; then ./bin/integration-test; fi
+
+# Rather than a `matrix` property, we use build stages. This allows early
+# build failure for basic linting and sniffing issues.
+# @link https://docs.travis-ci.com/user/build-stages/
+#
+# PHP >= 7.3 & PHPCS < 3.3.1 is known to fail.
+# @link https://github.com/squizlabs/PHP_CodeSniffer/issues/2086.
+#
+# We can't use Matrix Expansion here, since we need to exclude jobs for the known failures,
+# which Matrix Expansion does not yet support. We list each combination instead.
+# @link https://docs.travis-ci.com/user/conditional-builds-stages-jobs/#conditional-jobs
+
+stages:
+  - lint
+  - sniff
+  - test
+
+jobs:
+  allow_failure:
+    - php: nightly
+  fast_finish: true
+  include:
+
+    - stage: lint
+      php: 7.2
+      env: PHPCS_BRANCH="dev-master"
+      before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+      install: false
+      cache: false
+      script:
+        # Lint the PHP files against parse errors.
+        - ./bin/php-lint
+
+        # Validate the XML files and check the code-style consistency of the XML files.
+        - ./bin/xml-lint
+
+        # Validate the composer.json file.
+        # @link https://getcomposer.org/doc/03-cli.md#validate
+        - composer validate --no-check-all --strict
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
+
+    - stage: sniff
+      php: 7.2
+      env: PHPCS_BRANCH="dev-master"
+      before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+      install: composer install --dev --no-suggest
+      script:
+        # Run PHPCS against VIPCS.
+        - ./bin/phpcs
+
+    # PHPCS_BRANCH="3.1.0" is the lowest supported release in the 3.x series with which VIPCS is compatible
+    # (and which can run the unit tests).
+    - stage: test
+      php: 5.4
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage:
+      php: 5.4
+      env: PHPCS_BRANCH="3.1.0"
+
+    - stage:
+      php: 5.5
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage:
+      php: 5.5
+      env: PHPCS_BRANCH="3.1.0"
+
+    - stage:
+      php: 5.6
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage:
+      php: 5.6
+      env: PHPCS_BRANCH="3.1.0"
+
+    - stage:
+      php: 7.0
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage:
+      php: 7.0
+      env: PHPCS_BRANCH="3.1.0"
+
+    - stage:
+      php: 7.1
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage:
+      php: 7.1
+      env: PHPCS_BRANCH="3.1.0"
+
+    - stage:
+      php: 7.2
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage:
+      php: 7.2
+      env: PHPCS_BRANCH="3.1.0"
+
+    # Only use PHPCS_BRANCH="dev-master" from this point.
+    - stage:
+      php: nightly
+      env: PHPCS_BRANCH="dev-master"
