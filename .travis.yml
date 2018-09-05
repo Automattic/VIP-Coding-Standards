@@ -95,7 +95,7 @@ jobs:
 
     # PHPCS_BRANCH="3.2.3" is the lowest supported release in the 3.x series with which VIPCS is compatible
     # (and which can run the unit tests).
-    - stage:
+    - stage: test
       php: 5.6
       env: PHPCS_BRANCH="dev-master"
 
