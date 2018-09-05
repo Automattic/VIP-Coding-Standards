@@ -17,7 +17,7 @@ before_install:
 
   # Handle new PHP version with old PHPCS version. Version of PHPUnit 6 is the current latest release.
   - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." && "$PHPCS_BRANCH" == "3.1.0" ]]; then
+    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." && "$PHPCS_BRANCH" == "3.2.3" ]]; then
       export USE_OLD_PHPUNIT="1"
       export PHPUNIT_DIR=/tmp/phpunit
       export PHPUNIT6="6.5.12"
@@ -26,7 +26,7 @@ before_install:
 install:
   - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
   - composer install --dev --no-suggest
-  # Download PHPUnit 6.x for builds on PHP 7.2 with PHPCS 3.1.0, as PHPCS 3.1.0 is not compatible with PHPUnit 7.x.
+  # Download PHPUnit 6.x for builds on PHP 7.2 with PHPCS 3.2.3, as PHPCS 3.2.3 is not compatible with PHPUnit 7.x.
   - if [[ "$USE_OLD_PHPUNIT" == "1" ]]; then wget -P "$PHPUNIT_DIR" "https://phar.phpunit.de/phpunit-$PHPUNIT6.phar" && chmod +x "$PHPUNIT_DIR/phpunit-$PHPUNIT6.phar"; fi
 
 script:
@@ -93,31 +93,15 @@ jobs:
         # Run PHPCS against VIPCS.
         - ./bin/phpcs
 
-    # PHPCS_BRANCH="3.1.0" is the lowest supported release in the 3.x series with which VIPCS is compatible
+    # PHPCS_BRANCH="3.2.3" is the lowest supported release in the 3.x series with which VIPCS is compatible
     # (and which can run the unit tests).
-    - stage: test
-      php: 5.4
-      env: PHPCS_BRANCH="dev-master"
-
-    - stage:
-      php: 5.4
-      env: PHPCS_BRANCH="3.1.0"
-
-    - stage:
-      php: 5.5
-      env: PHPCS_BRANCH="dev-master"
-
-    - stage:
-      php: 5.5
-      env: PHPCS_BRANCH="3.1.0"
-
     - stage:
       php: 5.6
       env: PHPCS_BRANCH="dev-master"
 
     - stage:
       php: 5.6
-      env: PHPCS_BRANCH="3.1.0"
+      env: PHPCS_BRANCH="3.2.3"
 
     - stage:
       php: 7.0
@@ -125,7 +109,7 @@ jobs:
 
     - stage:
       php: 7.0
-      env: PHPCS_BRANCH="3.1.0"
+      env: PHPCS_BRANCH="3.2.3"
 
     - stage:
       php: 7.1
@@ -133,7 +117,7 @@ jobs:
 
     - stage:
       php: 7.1
-      env: PHPCS_BRANCH="3.1.0"
+      env: PHPCS_BRANCH="3.2.3"
 
     - stage:
       php: 7.2
@@ -141,7 +125,7 @@ jobs:
 
     - stage:
       php: 7.2
-      env: PHPCS_BRANCH="3.1.0"
+      env: PHPCS_BRANCH="3.2.3"
 
     # Only use PHPCS_BRANCH="dev-master" from this point.
     - stage:
