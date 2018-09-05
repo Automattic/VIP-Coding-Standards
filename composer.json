@@ -15,7 +15,8 @@
 		"wp-coding-standards/wpcs": "1.*"
 	},
 	"require-dev" : {
-		"phpcompatibility/php-compatibility": "^8"
+		"phpcompatibility/php-compatibility": "^8",
+		"phpunit/phpunit": "*"
 	},
 	"suggest" : {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
@@ -30,6 +31,19 @@
 	"scripts"    : {
 		"install-codestandards": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility",
 		"post-install-cmd": "@install-codestandards",
-		"post-update-cmd" : "@install-codestandards"
+		"post-update-cmd" : "@install-codestandards",
+		"lint": [
+			"bin/php-lint",
+			"bin/xml-lint"
+		],
+		"phpcs": "bin/phpcs",
+		"phpunit": "bin/unit-tests",
+		"integration": "bin/integration-test",
+		"test": [
+		    "@lint",
+		    "@phpcs",
+		    "@integration",
+		    "@phpunit"
+		]
 	}
 }
