@@ -233,6 +233,10 @@
 		<type>warning</type>
 		<severity>3</severity>
 	</rule>
+	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
+		<type>warning</type>
+		<severity>1</severity>
+	</rule>
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile.IncludingFile">
 		<type>warning</type>
 		<severity>3</severity>
@@ -305,10 +309,6 @@
 	</rule>
 	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">
 		<!-- We are silencing this one because VIP Go has a combined index on meta_key, meta_value-->
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
-		<!-- This is a false positive 99.9% of the time -->
 		<severity>0</severity>
 	</rule>
 
