@@ -15,28 +15,13 @@ before_install:
   # https://twitter.com/kelunik/status/954242454676475904
   - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
 
-  # Handle new PHP version with old PHPCS version. Version of PHPUnit 6 is the current latest release.
-  - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." && "$PHPCS_BRANCH" == "3.2.3" ]]; then
-      export USE_OLD_PHPUNIT="1"
-      export PHPUNIT_DIR=/tmp/phpunit
-      export PHPUNIT6="6.5.12"
-    fi
-
 install:
   - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
   - composer install --dev --no-suggest
-  # Download PHPUnit 6.x for builds on PHP 7.2 with PHPCS 3.2.3, as PHPCS 3.2.3 is not compatible with PHPUnit 7.x.
-  - if [[ "$USE_OLD_PHPUNIT" == "1" ]]; then wget -P "$PHPUNIT_DIR" "https://phar.phpunit.de/phpunit-$PHPUNIT6.phar" && chmod +x "$PHPUNIT_DIR/phpunit-$PHPUNIT6.phar"; fi
 
 script:
   # Run the unit tests.
-  - |
-    if [[ "$USE_OLD_PHPUNIT" == "1" ]]; then
-      php "$PHPUNIT_DIR/phpunit-$PHPUNIT6.phar" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php"
-    else
-      ./bin/unit-tests
-    fi
+  - ./bin/unit-tests
 
   # Run integration test.
   - if [[ "$INTEGRATION_TEST" == "1" ]]; then ./bin/integration-test; fi
@@ -93,41 +78,40 @@ jobs:
         # Run PHPCS against VIPCS.
         - ./bin/phpcs
 
-    # PHPCS_BRANCH="3.2.3" is the lowest supported release in the 3.x series with which VIPCS is compatible
-    # (and which can run the unit tests).
+    # PHPCS 3.2.3 is the lowest supported release
     - stage: test
       php: 5.6
       env: PHPCS_BRANCH="dev-master"
 
-    - stage:
+    - stage: test
       php: 5.6
       env: PHPCS_BRANCH="3.2.3"
 
-    - stage:
+    - stage: test
       php: 7.0
       env: PHPCS_BRANCH="dev-master"
 
-    - stage:
+    - stage: test
       php: 7.0
       env: PHPCS_BRANCH="3.2.3"
 
-    - stage:
+    - stage: test
       php: 7.1
       env: PHPCS_BRANCH="dev-master"
 
-    - stage:
+    - stage: test
       php: 7.1
       env: PHPCS_BRANCH="3.2.3"
 
-    - stage:
+    - stage: test
       php: 7.2
       env: PHPCS_BRANCH="dev-master"
 
-    - stage:
+    - stage: test
       php: 7.2
       env: PHPCS_BRANCH="3.2.3"
 
     # Only use PHPCS_BRANCH="dev-master" from this point.
-    - stage:
+    - stage: test
       php: nightly
       env: PHPCS_BRANCH="dev-master"
