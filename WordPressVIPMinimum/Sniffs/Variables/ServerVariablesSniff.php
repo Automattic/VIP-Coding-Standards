@@ -27,7 +27,7 @@ class ServerVariablesSniff implements Sniff {
 		'PHP_AUTH_PW',
 		'HTTP_X_IP_TRAIL',
 		'HTTP_X_FORWARDED_FOR',
-		'REMOTE_ADDR'
+		'REMOTE_ADDR',
 	);
 
 	/**
@@ -59,7 +59,7 @@ class ServerVariablesSniff implements Sniff {
 		}
 
 		$variableNamePtr = $phpcsFile->findNext( array( T_CONSTANT_ENCAPSED_STRING ), ( $stackPtr + 1 ), null, false, null, true );
-		$variableName    = str_replace( array( "'", "\"" ), '', $tokens[ $variableNamePtr ]['content'] );
+		$variableName    = str_replace( array( "'", '"' ), '', $tokens[ $variableNamePtr ]['content'] );
 
 		if ( false === in_array( $variableName, $this->restrictedVariables, true ) ) {
 			// Not the variable we are looking for.
@@ -68,11 +68,11 @@ class ServerVariablesSniff implements Sniff {
 
 		if ( 'PHP_AUTH_PW' === $variableName ) {
 			$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'ServerVariables' );
-		} else if ( 'HTTP_X_IP_TRAIL' === $variableName || 'HTTP_X_FORWARDED_FOR' === $variableName || 'REMOTE_ADDR' === $variableName ) {
-			$phpcsFile->addError( 
-				sprintf( 'Header "%s" is user-controlled and should be properly validated before use.', $variableName ), 
-				$stackPtr, 
-				'UserControlledHeaders' 
+		} elseif ( 'HTTP_X_IP_TRAIL' === $variableName || 'HTTP_X_FORWARDED_FOR' === $variableName || 'REMOTE_ADDR' === $variableName ) {
+			$phpcsFile->addError(
+				sprintf( 'Header "%s" is user-controlled and should be properly validated before use.', $variableName ),
+				$stackPtr,
+				'UserControlledHeaders'
 			);
 		}
 	}
