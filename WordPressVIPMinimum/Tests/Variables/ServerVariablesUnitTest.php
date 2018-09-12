@@ -23,7 +23,10 @@ class ServerVariablesUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			3 => 1,
+			4 => 1,
+			5 => 1,
+			6 => 1,
+			8 => 1
 		);
 	}
 
