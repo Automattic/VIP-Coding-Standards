@@ -32,7 +32,7 @@ class ServerVariablesSniff implements Sniff {
 			'HTTP_X_IP_TRAIL'      => true,
 			'HTTP_X_FORWARDED_FOR' => true,
 			'REMOTE_ADDR'          => true,
-		)
+		),
 	);
 
 	/**
