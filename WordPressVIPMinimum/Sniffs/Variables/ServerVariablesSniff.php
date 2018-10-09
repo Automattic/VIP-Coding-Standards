@@ -24,15 +24,7 @@ class ServerVariablesSniff implements Sniff {
 	 * @var array
 	 */
 	public $restrictedVariables = array(
-		'authVariables' => array( 
-			'PHP_AUTH_USER' => true,
-			'PHP_AUTH_PW'   => true 
-		),
-		'userControlledVariables' => array( 
-			'HTTP_X_IP_TRAIL' 	   => true,
-			'HTTP_X_FORWARDED_FOR' => true,
-			'REMOTE_ADDR' 		   => true, 
-		)
+		'PHP_AUTH_PW',
 	);
 
 	/**
@@ -64,17 +56,14 @@ class ServerVariablesSniff implements Sniff {
 		}
 
 		$variableNamePtr = $phpcsFile->findNext( array( T_CONSTANT_ENCAPSED_STRING ), ( $stackPtr + 1 ), null, false, null, true );
-		$variableName    = str_replace( array( "'", '"' ), '', $tokens[ $variableNamePtr ]['content'] );
+		$variableName    = str_replace( "'", '', $tokens[ $variableNamePtr ]['content'] );
 
-		if ( isset( $this->restrictedVariables['authVariables'][ $variableName ] ) ) {
-			$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'BasicAuthentication' );
-		} elseif ( isset( $this->restrictedVariables['userControlledVariables'][ $variableName ] ) ) {
-			$phpcsFile->addError(
-				sprintf( 'Header "%s" is user-controlled and should be properly validated before use.', $variableName ),
-				$stackPtr,
-				'UserControlledHeaders'
-			);
+		if ( false === in_array( $variableName, $this->restrictedVariables, true ) ) {
+			// Not the variable we are looking for.
+			return;
 		}
+
+		$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'ServerVariables' );
 	}
 
 }
