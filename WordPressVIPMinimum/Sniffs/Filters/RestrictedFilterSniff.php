@@ -23,7 +23,7 @@ class RestrictedFilterSniff implements \PHP_CodeSniffer_Sniff {
 	 * @var array
 	 */
 	public $restrictedFilters = array(
-		'upload_mimes',
+		'upload_mimes' => true,
 	);
 
 	/**
@@ -65,14 +65,8 @@ class RestrictedFilterSniff implements \PHP_CodeSniffer_Sniff {
 
 		$filterName = str_replace( array( "'", '"' ), '', $tokens[ $filterNamePtr ]['content'] );
 
-
-		if ( false === in_array( $filterName, $this->restrictedFilters, true ) ) {
-			// Not the filter we are looking for.
-			return;
-		}
-
-		if ( 'upload_mimes' === $filterName ) {
-			$phpcsFile->addWarning( 'Please ensure that the mime types being filtered do not include SVG. Manual inspection required.', $stackPtr, 'RestrictedFilter' );
+		if ( isset( $this->restrictedFilters[ $filterName ] ) && 'upload_mimes' === $filterName ) {
+			$phpcsFile->addWarning( 'Please ensure that the mimes being filtered do not include insecure types (e.g. SVG). Manual inspection required.', $stackPtr, 'UploadMimesRestrictedFilter' );
 		}
 
 	}
