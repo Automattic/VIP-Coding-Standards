@@ -68,7 +68,5 @@ class RestrictedFilterSniff implements \PHP_CodeSniffer_Sniff {
 		if ( isset( $this->restrictedFilters[ $filterName ] ) && 'upload_mimes' === $filterName ) {
 			$phpcsFile->addWarning( 'Please ensure that the mimes being filtered do not include insecure types (e.g. SVG). Manual inspection required.', $stackPtr, 'UploadMimesRestrictedFilter' );
 		}
-
 	}
-
 }
