@@ -98,9 +98,6 @@
 	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_error_log">
 		<type>error</type>
 	</rule>
-	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_dump">
-		<type>error</type>
-	</rule>
 
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_parse_url-instead-of-parse_url -->
 	<!-- https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#use-wp_json_encode-over-json_encode -->
