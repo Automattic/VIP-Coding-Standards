@@ -216,7 +216,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 				$outsideConditionalReturn++;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
-				$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is returnin void intentionally.', $filterName ), $functionBodyScopeStart, 'voidReturn' );
+				$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is returning void intentionally.', $filterName ), $functionBodyScopeStart, 'voidReturn' );
 			}
 			$returnTokenPtr = $this->phpcsFile->findNext(
 				array( T_RETURN ), // types.
