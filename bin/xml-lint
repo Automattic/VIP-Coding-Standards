@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# Check XML files.
+#
+# @link http://xmlsoft.org/xmllint.html
+#
+# EXAMPLE TO RUN LOCALLY:
+#
+#   ./bin/xml-lint
+
+# Validate the ruleset XML files.
+xmllint --noout ./*/ruleset.xml
+
+# Check the code-style consistency of the XML files.
+export XMLLINT_INDENT="	" # This is a tab character.
+diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml")
+diff -B --tabsize=4 ./WordPress-VIP-Go/ruleset.xml <(xmllint --format "./WordPress-VIP-Go/ruleset.xml")

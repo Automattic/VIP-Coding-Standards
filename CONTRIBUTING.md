@@ -1,17 +1,31 @@
+# Contributing to VIP Coding Standards
+
 Hi, thank you for your interest in contributing to the VIP Coding Standards! We look forward to working with you.
 
-# Reporting Bugs
+## Reporting Bugs
 
 Before reporting a bug, you should check what sniff an error is coming from.
 Running `phpcs` with the `-s` flag will show the name of the sniff with each error.
 
 Bug reports containing a minimal code sample which can be used to reproduce the issue are highly appreciated as those are most easily actionable.
 
-## Upstream Issues
+### Upstream Issues
 
 Since VIPCS employs many sniffs that are part of PHPCS, and makes use of WordPress Coding Standards sniffs, sometimes an issue will be caused by a bug upstream and not in VIPCS itself. If the error message in question doesn't come from a sniff whose name starts with `WordPressVIPMinimum`, the issue is probably a bug in PHPCS itself, and should be [reported there](https://github.com/squizlabs/PHP_CodeSniffer/issues).
 
-# Contributing patches and new features
+----
+
+## tl;dr Composer Scripts
+
+This package contains Composer scripts to quickly run the developer checks which are described (with setups) further below.
+
+After `composer install`, you can do:
+
+ - `composer test`: **Run all checks and tests** - this should pass cleanly before you submit a pull request.
+     - `composer lint`: Just run PHP and XML linters.
+     - `composer phpcs`: Just run PHPCS against this package.
+     - `composer phpunit`: Just run the unit tests.
+     - `composer integration`: Just run the integration test.
 
 ## Branches
 
@@ -19,7 +33,9 @@ Ongoing development will be done in features branches then pulled against the `m
 
 To contribute an improvement to this project, fork the repo and open a pull request to the relevant branch. Alternatively, if you have push access to this repo, create a feature branch prefixed by `feature/` and then open an intra-repo PR from that branch to the right branch.
 
-# Considerations when writing sniffs
+## Code Standards for this project
+
+The sniffs and test files - not test _case_ files! - for VIPCS should be written such that they pass the `WordPress-Extra` and the `WordPress-Docs` code standards using the custom ruleset as found in `.phpcs.xml.dist`.
 
 ## Public properties
 
@@ -28,9 +44,9 @@ Only make a property `public` if that is the intended behaviour.
 
 When you introduce new `public` sniff properties, or your sniff extends a class from which you inherit a `public` property, please don't forget to update the [public properties wiki page](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties) with the relevant details once your PR has been merged into the `develop` branch.
 
-# Unit Testing
+## Unit Testing
 
-## Pre-requisites
+### Pre-requisites
 * VIP Coding Standards
 * WordPress-Coding-Standards
 * PHP_CodeSniffer 3.x
@@ -47,7 +63,7 @@ If you already have PHPUnit installed on your system: Congrats, you're all set.
 If not, you can navigate to the directory where the `PHP_CodeSniffer` repo is checked out and do `composer install` to install the `dev` dependencies.
 Alternatively, you can [install PHPUnit](https://phpunit.de/manual/5.7/en/installation.html) as a PHAR file.
 
-## Before running the unit tests
+### Before running the unit tests
 
 N.B.: _If you used Composer to install the WordPress Coding Standards, you can skip this step._
 
@@ -67,7 +83,7 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 </phpunit>
 ```
 
-## Running the unit tests
+### Running the unit tests
 
 * Make sure you have registered the directory in which you installed VIPCS with PHPCS using;
     
@@ -92,7 +108,7 @@ Tests generated 29 unique error codes; 0 were fixable (0%)
 Time: 268 ms, Memory: 30.00MB
 ```
 
-## Unit Testing conventions
+### Unit Testing conventions
 
 If you look inside the `WordPressVIPMinimum/Tests` subdirectory, you'll see the structure mimics the `WordPressVIPMinimum/Sniffs` subdirectory structure. For example, the `WordPressVIPMinimum/Sniffs/VIP/WPQueryParams.php` sniff has its unit test class defined in `WordPressVIPMinimum/Tests/VIP/WPQueryParamsUnitTest.php` which checks the `WordPressVIPMinimum/Tests/VIP/WPQueryParamsUnitTest.inc` test case file. See the file naming convention?
 
@@ -152,7 +168,3 @@ FOUND 2 ERRORS AND 2 WARNINGS AFFECTING 4 LINES
 You'll see the line number and number of ERRORs we need to return in the `getErrorList()` method.
 
 The `--sniffs=...` directive limits the output to the sniff you are testing.
-
-## Code Standards for this project
-
-The sniffs and test files - not test _case_ files! - for VIPCS should be written such that they pass the `WordPress-Extra` and the `WordPress-Docs` code standards using the custom ruleset as found in `/bin/phpcs.xml`.

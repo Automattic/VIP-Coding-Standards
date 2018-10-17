@@ -64,9 +64,9 @@ class IncludingNonPHPFileSniff implements Sniff {
 			}
 
 			if ( true === in_array( $extension, array( '.svg', '.css' ), true ) ) {
-				$phpcsFile->addError( sprintf( 'Local SVG and CSS files should be loaded via `get_file_contents` rather than via `%s`.', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingSVGCSSFile' );
+				$phpcsFile->addError( sprintf( 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`.', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingSVGCSSFile' );
 			} else {
-				$phpcsFile->addError( sprintf( 'Local non-PHP file should be loaded via `get_file_contents` rather than via `%s`', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingNonPHPFile' );
+				$phpcsFile->addError( sprintf( 'Local non-PHP file should be loaded via `file_get_contents` rather than via `%s`', $tokens[ $stackPtr ]['content'] ), $curStackPtr, 'IncludingNonPHPFile' );
 			}
 		}
 	}
