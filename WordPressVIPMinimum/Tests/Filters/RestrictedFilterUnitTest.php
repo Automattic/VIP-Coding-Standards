@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the Filters/RestrictedFilter sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
- * 
+ *
  * @since 0.4.0
  */
 class RestrictedFilterUnitTest extends AbstractSniffUnitTest {

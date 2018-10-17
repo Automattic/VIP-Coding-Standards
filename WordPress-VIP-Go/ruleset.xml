@@ -104,6 +104,10 @@
 
 
 	<!-- Warnings and other things -->
+	<rule ref="WordPressVIPMinimum.Filters.RestrictedFilter.UploadMimes">
+		<type>warning</type>
+		<severity>10</severity>
+	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.dbDelta_dbdelta">
 		<type>warning</type>
 		<severity>7</severity>

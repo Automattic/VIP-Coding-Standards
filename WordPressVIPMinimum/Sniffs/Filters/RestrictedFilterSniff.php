@@ -65,12 +65,12 @@ class RestrictedFilterSniff implements \PHP_CodeSniffer_Sniff {
 			true
 		);
 
-		$endHookPtr = $phpcsFile->findNext( 
+		$endHookPtr = $phpcsFile->findNext(
 			T_COMMA,
 			$filterNamePtr,
 			null,
 			false,
-			null, 
+			null,
 			true
 		);
 
@@ -82,11 +82,11 @@ class RestrictedFilterSniff implements \PHP_CodeSniffer_Sniff {
 			$filterNamePtr,
 			$endHookPtr,
 			false,
-			null, 
+			null,
 			true
 		);
-		$concatenation = $concatPtr ? true: false; 
-		if ( $concatenation ) { 
+		$concatenation = $concatPtr ? true : false;
+		if ( $concatenation ) {
 			for ( $i = $filterNamePtr + 1; $i < $endHookPtr; $i++ ) {
 				if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $i ]['code'] ) {
 					$filterName .= $this->transformString( $tokens[ $i ]['content'] );
@@ -95,7 +95,7 @@ class RestrictedFilterSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		if ( isset( $this->restrictedFilters[ $filterName ] ) && 'upload_mimes' === $filterName ) {
-			$phpcsFile->addWarning( 'Please ensure that the mimes being filtered do not include insecure types (e.g. SVG). Manual inspection required.', $stackPtr, 'UploadMimesRestrictedFilter' );
+			$phpcsFile->addWarning( 'Please ensure that the mimes being filtered do not include insecure types (e.g. SVG). Manual inspection required.', $stackPtr, 'UploadMimes' );
 		}
 	}
 
