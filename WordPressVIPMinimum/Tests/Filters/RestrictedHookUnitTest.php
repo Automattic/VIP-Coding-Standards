@@ -9,13 +9,13 @@ namespace WordPressVIPMinimum\Tests\Filters;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
- * Unit test class for the Filters/RestrictedFilter sniff.
+ * Unit test class for the Filters/RestrictedHook sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  *
  * @since 0.4.0
  */
-class RestrictedFilterUnitTest extends AbstractSniffUnitTest {
+class RestrictedHookUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -33,7 +33,6 @@ class RestrictedFilterUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			6 => 1,
 			7 => 1,
 			8 => 1,
 			9 => 1,
@@ -41,6 +40,10 @@ class RestrictedFilterUnitTest extends AbstractSniffUnitTest {
 			11 => 1,
 			12 => 1,
 			13 => 1,
+			14 => 1,
+			15 => 1,
+			16 => 1,
+			19 => 1,
 		);
 	}
 
