@@ -45,7 +45,7 @@ class RestrictedHookSniff extends AbstractFunctionParameterSniff {
 	 */
 	private $restricted_hooks = [
 		'upload_mimes' => [
-			'error'     => 'Please ensure that the mimes being filtered do not include insecure types (e.g. SVG). Manual inspection required.',
+			'error'     => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
 			'error_code' => 'UploadMimes',
 		],
 	];
