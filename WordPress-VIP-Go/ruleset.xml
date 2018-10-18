@@ -235,7 +235,7 @@
 	</rule>
 	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
 		<type>warning</type>
-		<severity>3</severity>
+		<severity>1</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile.IncludingFile">
 		<type>warning</type>
