@@ -11,6 +11,8 @@ These rulesets contain only the rules which are considered being "blockers" and 
 
 The ruleset takes advantage of existing rules in the [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) project.
 
+Go to https://vip.wordpress.com/documentation/phpcs-review-feedback/ to learn about why various things are flagged as errors vs warnings and what the levels mean for us.
+
 # Installation
 
 
