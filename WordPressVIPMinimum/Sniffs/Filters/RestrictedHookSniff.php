@@ -45,6 +45,7 @@ class RestrictedHookSniff extends AbstractFunctionParameterSniff {
 	 */
 	private $restricted_hooks = [
 		'upload_mimes' => [
+			// TODO: This error message needs a link to the VIP Documentation, see https://github.com/Automattic/VIP-Coding-Standards/issues/235.
 			'error'     => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
 			'error_code' => 'UploadMimes',
 		],
