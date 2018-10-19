@@ -104,7 +104,7 @@
 
 
 	<!-- Warnings and other things -->
-	<rule ref="WordPressVIPMinimum.Filters.RestrictedFilter.UploadMimes">
+	<rule ref="WordPressVIPMinimum.Filters.RestrictedHooks.UploadMimes">
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
