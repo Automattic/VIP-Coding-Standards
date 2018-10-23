@@ -34,9 +34,9 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	 *            depending on your needs.
 	 */
 	protected $target_functions = [
-		'filter_var' => true,
-		'filter_input' => true,
-		'filter_var_array' => true,
+		'filter_var'         => true,
+		'filter_input'       => true,
+		'filter_var_array'   => true,
 		'filter_input_array' => true,
 	];
 
@@ -46,7 +46,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	 * @var array
 	 */
 	private $restricted_filters = [
-		'FILTER_DEFAULT' => true,
+		'FILTER_DEFAULT'    => true,
 		'FILTER_UNSAFE_RAW' => true,
 	];
 
