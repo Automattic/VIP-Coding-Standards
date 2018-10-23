@@ -34,7 +34,9 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	 *            depending on your needs.
 	 */
 	protected $target_functions = [
-		'wp_cache_set' => true,
+		'wp_cache_set'     => true,
+		'wp_cache_add'     => true,
+		'wp_cache_replace' => true,
 	];
 
 	/**
@@ -72,11 +74,11 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 		if ( false === is_numeric( $time ) ) {
 			// If using time constants, we need to convert to a number.
 			$time = str_replace( array_keys( $this->wp_time_constants ), array_values( $this->wp_time_constants ), $time );
-			
+
 			if ( preg_match( '#^[\s\d+*/-]+$#', $time ) > 0 ) {
 				$time = eval( "return $time;" ); // @codingStandardsIgnoreLine - No harm here.
 			}
-		} 
+		}
 
 		if ( $time < 300 ) {
 			$this->phpcsFile->addWarning(
