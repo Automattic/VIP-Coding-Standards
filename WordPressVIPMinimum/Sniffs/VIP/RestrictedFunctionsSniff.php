@@ -32,7 +32,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 			'opcache_reset'            => array(
 				'type'      => 'error',
 				'message'   => '`%s` is prohibited on the WordPress VIP platform due to memory corruption.',
-				'functions' => array( 'get_super_admins' ),
+				'functions' => array( 'opcache_reset' ),
 			),
 			'get_super_admins'         => array(
 				'type'      => 'error',
