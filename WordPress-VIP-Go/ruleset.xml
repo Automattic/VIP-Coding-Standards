@@ -108,6 +108,18 @@
 		<type>warning</type>
 		<severity>10</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.PHPFilterFunctions.MissingSecondParameter">
+		<type>warning</type>
+		<severity>10</severity>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.PHPFilterFunctions.MissingThirdParameter">
+		<type>warning</type>
+		<severity>10</severity>
+	</rule>
+	<rule ref="WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter">
+		<type>warning</type>
+		<severity>10</severity>
+	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.dbDelta_dbdelta">
 		<type>warning</type>
 		<severity>7</severity>
