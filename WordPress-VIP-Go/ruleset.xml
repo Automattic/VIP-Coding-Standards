@@ -288,6 +288,10 @@
 		<severity>3</severity>
 		<message>Switch to blog may not work as you expect. It only changes the database context for the blog. It doesn't load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.</message>
 	</rule>
+	<rule ref="WordPressVIPMinimum.Cache.LowExpiryCacheTime.LowCacheTime">
+		<type>warning</type>
+		<severity>3</severity>
+	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.ErrorControl.ErrorControl">
 		<severity>1</severity>
 	</rule>
