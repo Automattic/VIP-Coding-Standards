@@ -41,3 +41,7 @@ dbDelta(); // Bad. Warning.
 is_multi_author(); // Bad. Warning.
 
 opcache_reset(); // Bad.
+
+// Warning - ACF.
+the_field( 'field' );
+the_sub_field( 'field' );
