@@ -18,7 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-
 class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
 	/**
@@ -87,7 +86,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param int $stack_ptr The position of the current token in the stack.
+	 * @param int $stackPtr The position of the current token in the stack.
 	 *
 	 * @return void
 	 */
@@ -95,7 +94,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 		$tokens = $this->phpcsFile->getTokens();
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
-		
+
 		if ( T_OPEN_PARENTHESIS === $tokens[ $nextToken ]['code'] ) {
 			// The construct is using parenthesis, grab the next non empty token.
 			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
@@ -160,6 +159,6 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
 			$this->phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'IncludingFile' );
 			return;
-		} 
+		}
 	}
 }
