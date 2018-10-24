@@ -39,3 +39,5 @@ mail(); // Bad. Warning.
 dbDelta(); // Bad. Warning.
 
 is_multi_author(); // Bad. Warning.
+
+opcache_reset(); // Bad.

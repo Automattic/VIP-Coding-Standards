@@ -29,6 +29,11 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 				'message'   => '`%s` is not supported on the WordPress.com VIP platform.',
 				'functions' => array( 'wp_cache_get_multi' ),
 			),
+			'opcache_reset'            => array(
+				'type'      => 'error',
+				'message'   => '`%s` is prohibited on the WordPress VIP platform due to memory corruption.',
+				'functions' => array( 'opcache_reset' ),
+			),
 			'get_super_admins'         => array(
 				'type'      => 'error',
 				'message'   => '`%s` is prohibited on the WordPress.com VIP platform',

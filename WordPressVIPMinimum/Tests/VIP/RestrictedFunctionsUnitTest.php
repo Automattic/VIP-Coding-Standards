@@ -29,6 +29,7 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 			11 => 1,
 			13 => 1,
 			39 => 1,
+			43 => 1,
 		);
 	}
 
