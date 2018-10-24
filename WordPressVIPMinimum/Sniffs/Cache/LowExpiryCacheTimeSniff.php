@@ -65,7 +65,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		if ( false === isset( $parameters[4] ) ) {
-			// If no cache expiry time, bail.
+			// If no cache expiry time, bail (i.e. we don't want to flag for something like feeds where it is cached indefinitely until a hook runs).
 			return;
 		}
 
