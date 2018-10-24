@@ -150,7 +150,7 @@ class IncludingFileSniff implements Sniff {
 			return;
 		} else {
 			if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && filter_var( str_replace( [ '"', "'" ], '', $tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
-				$phpcsFile->addError( 'Include path must be local file source, external URLs are probibited on WordPress VIP.', $nextToken, 'IncludingFile' );
+				$phpcsFile->addError( 'Include path must be local file source, external URLs are prohibited on WordPress VIP.', $nextToken, 'IncludingFile' );
 				return;
 			}
 
