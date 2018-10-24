@@ -76,7 +76,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			$time = str_replace( array_keys( $this->wp_time_constants ), array_values( $this->wp_time_constants ), $time );
 
 			if ( preg_match( '#^[\s\d+*/-]+$#', $time ) > 0 ) {
-				$time = eval( "return $time;" ); // @codingStandardsIgnoreLine - No harm here.
+				$time = eval( "return $time;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
 			}
 		}
 
