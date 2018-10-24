@@ -123,7 +123,9 @@ class IncludingFileSniff implements Sniff {
 				return;
 			}
 
-			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) ) {
+			$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+
+			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) && T_OPEN_PARENTHESIS !== $tokens[ $nextNextToken ]['code'] ) {
 				// The construct is using custom constant, which needs manual inspection.
 				$phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
@@ -139,15 +141,19 @@ class IncludingFileSniff implements Sniff {
 				return;
 			}
 
-			$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
 			if ( T_OPEN_PARENTHESIS === $tokens[ $nextNextToken ]['code'] ) {
-				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( `%s()` ). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
+				$phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( `%s()` ). Must return local file source, as external URLs are prohibited on WordPress VIP. Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'IncludingFile' );
 				return;
 			}
 
 			$phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'IncludingFile' );
 			return;
 		} else {
+			if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && filter_var( str_replace( [ '"', "'" ], '', $tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
+				$phpcsFile->addError( 'Include path must be local file source, external URLs are probibited on WordPress VIP.', $nextToken, 'IncludingFile' );
+				return;
+			}
+
 			$phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'IncludingFile' );
 			return;
 		}

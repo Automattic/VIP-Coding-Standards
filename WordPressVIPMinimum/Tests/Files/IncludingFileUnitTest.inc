@@ -11,3 +11,13 @@ include ( MY_CONSTANT . "my_file.php" ); // Warning.
 require_once ( MY_CONSTANT . "my_file.php" ); // Warning.
 
 include( locate_template('index-loop.php') ); // Ok.
+
+include( 'http://www.google.com/bad_file.php' ); // Bad.
+
+include("http://www.google.com/bad_file.php"); // Bad.
+
+require_once( custom_function( 'test_string.php' ) ); // Warning.
+
+function custom_function( $string ) {
+	return 'http://www.google.com/' . $string;
+}
