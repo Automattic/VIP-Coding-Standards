@@ -50,3 +50,8 @@ opcache_​is_​script_​cached( 'test_script.php' ); // Bad.
 opcache_​get_​status(); // Bad.
 opcache_​get_​status( false ); // Bad.
 opcache_​get_​configuration(); // Bad.
+
+opcache_resets(); // Ok, similarly-named custom function.
+foo_opcache_get_status( $test_script ); // Ok, similarly-named custom function.
+opcach_invalidate ( $test_script ); // Ok, similarly-named custom function.
+okcache_is_​script_​cached( 'test_script.php' ); // Ok, similarly-named custom function.
