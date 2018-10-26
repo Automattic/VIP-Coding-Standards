@@ -102,6 +102,14 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 					'is_multi_author',
 				),
 			),
+			'advanced_custom_fields'          => array(
+				'type'      => 'warning',
+				'message'   => '`%1$s` does not escape output by default, please echo and escape with the `get_*()` variant function instead (i.e. `get_field()`).',
+				'functions' => array(
+					'the_sub_field',
+					'the_field',
+				),
+			),
 		);
 
 		$deprecated_vip_helpers = array(
