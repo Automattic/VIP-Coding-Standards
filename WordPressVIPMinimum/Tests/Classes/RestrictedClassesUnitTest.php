@@ -31,7 +31,7 @@ class RestrictedClassesUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return [ 
+		return [
 			8  => 1,
 			9  => 1,
 			10 => 1,
