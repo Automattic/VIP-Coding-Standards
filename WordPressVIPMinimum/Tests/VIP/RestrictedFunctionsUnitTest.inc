@@ -40,10 +40,24 @@ dbDelta(); // Bad. Warning.
 
 is_multi_author(); // Bad. Warning.
 
-opcache_reset(); // Bad.
-
 the_field( 'field' ); // Warning - ACF.
 the_sub_field( 'field' ); // Warning - ACF.
 
 echo esc_html( get_the_field( 'field' ) ); // Ok - ACF.
 echo '<img src="test.jpg" alt="' . esc_attr( get_sub_field( 'field' ) ) . '">'; // Ok - ACF.
+
+$test_script = '$test_script.php';
+
+opcache_reset(); // Bad.
+opcache_invalidate( 'test_script.php' ); // Bad.
+opcache_invalidate( $test_script, true ); // Bad.
+opcache_compile_file( $test_script ); // Bad.
+opcache_​is_​script_​cached( 'test_script.php' ); // Bad.
+opcache_​get_​status(); // Bad.
+opcache_​get_​status( false ); // Bad.
+opcache_​get_​configuration(); // Bad.
+
+opcache_resets(); // Ok, similarly-named custom function.
+foo_opcache_get_status( $test_script ); // Ok, similarly-named custom function.
+opcach_invalidate ( $test_script ); // Ok, similarly-named custom function.
+okcache_is_​script_​cached( 'test_script.php' ); // Ok, similarly-named custom function.

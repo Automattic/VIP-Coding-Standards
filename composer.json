@@ -1,49 +1,53 @@
 {
-	"name"       : "automattic/vipwpcs",
+	"name": "automattic/vipwpcs",
+	"type": "phpcodesniffer-standard",
 	"description": "PHP_CodeSniffer rules (sniffs) to enforce WordPress VIP minimum coding conventions",
-	"keywords"   : ["phpcs", "standards", "WordPress"],
-	"license"    : "MIT",
-	"authors"    : [
+	"keywords": [
+		"phpcs",
+		"standards",
+		"WordPress"
+	],
+	"license": "MIT",
+	"authors": [
 		{
-			"name"    : "Contributors",
+			"name": "Contributors",
 			"homepage": "https://github.com/Automattic/VIP-Coding-Standards/graphs/contributors"
 		}
 	],
-	"require"    : {
-		"php" : ">=5.6",
+	"require": {
+		"php": ">=5.6",
 		"squizlabs/php_codesniffer": "^3.2.3",
 		"wp-coding-standards/wpcs": "1.*"
 	},
-	"require-dev" : {
+	"require-dev": {
 		"phpcompatibility/php-compatibility": "^9",
 		"phpunit/phpunit": "*"
 	},
-	"suggest" : {
+	"suggest": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
 	},
-	"minimum-stability" : "RC",
-	"support"    : {
-		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
-		"wiki"  : "https://github.com/Automattic/VIP-Coding-Standards/wiki",
-		"source": "https://github.com/Automattic/VIP-Coding-Standards"
-	},
-	"type"       : "phpcodesniffer-standard",
-	"scripts"    : {
-		"install-codestandards": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility",
+	"minimum-stability": "RC",
+	"scripts": {
 		"post-install-cmd": "@install-codestandards",
-		"post-update-cmd" : "@install-codestandards",
+		"post-update-cmd": "@install-codestandards",
+		"install-codestandards": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility",
+		"integration": "bin/integration-test",
 		"lint": [
 			"bin/php-lint",
 			"bin/xml-lint"
 		],
 		"phpcs": "bin/phpcs",
 		"phpunit": "bin/unit-tests",
-		"integration": "bin/integration-test",
 		"test": [
-		    "@lint",
-		    "@phpcs",
-		    "@integration",
-		    "@phpunit"
+			"@lint",
+			"@phpcs",
+			"@integration",
+			"@phpunit"
 		]
+	},
+	"support": {
+		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
+		"wiki": "https://github.com/Automattic/VIP-Coding-Standards/wiki",
+		"source": "https://github.com/Automattic/VIP-Coding-Standards"
 	}
 }
