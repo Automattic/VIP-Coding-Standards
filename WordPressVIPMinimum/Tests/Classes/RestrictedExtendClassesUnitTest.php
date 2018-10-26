@@ -10,11 +10,11 @@ namespace WordPressVIPMinimum\Tests\Classes;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the DeclarationCompatibility sniff.
+ * Unit test class for the RestrictedExtendClasses sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class RestrictedClassesUnitTest extends AbstractSniffUnitTest {
+class RestrictedExtendClassesUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -32,10 +32,10 @@ class RestrictedClassesUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			8  => 1,
 			9  => 1,
 			10 => 1,
 			11 => 1,
+			12 => 1,
 		];
 	}
 

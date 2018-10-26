@@ -12,13 +12,13 @@ use WordPress\AbstractClassRestrictionsSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * WordPressVIPMinimum_Sniffs_Classes_RestrictedClassesSniff.
+ * WordPressVIPMinimum_Sniffs_Classes_RestrictedExtendClassesSniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  *
  * @since 0.4.0
  */
-class RestrictedClassesSniff extends AbstractClassRestrictionsSniff {
+class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {
 
 	/**
 	 * Groups of classes to restrict.
@@ -28,6 +28,8 @@ class RestrictedClassesSniff extends AbstractClassRestrictionsSniff {
 	public function getGroups() {
 		return array(
 			'wp_cli' => array(
+				'type' => 'warning',
+				'message' => 'We recommend extending `WPCOM_VIP_CLI_Command` instead of `WP_CLI_Command` and using the helper functions available in it (such as `stop_the_insanity()`), see https://vip.wordpress.com/documentation/writing-bin-scripts/ for more information.',
 				'classes' => array(
 					'WP_CLI_Command',
 				),
@@ -47,8 +49,13 @@ class RestrictedClassesSniff extends AbstractClassRestrictionsSniff {
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
 		$tokens = $this->phpcsFile->getTokens();
 
-		if ( T_EXTENDS === $tokens[ $stackPtr ]['code'] ) {
-			$this->phpcsFile->addWarning( 'We recommend extending `WPCOM_VIP_CLI_Command` instead of `WP_CLI_Command` and using the helper functions available in it (such as `stop_the_insanity()`), see https://vip.wordpress.com/documentation/writing-bin-scripts/ for more information.', $stackPtr, 'Extend_WP_CLI_Command' );
+		if ( T_EXTENDS !== $tokens[ $stackPtr ]['code'] ) {
+			// If not extending, bail.
+			return;
+		}
+
+		foreach ( $this->getGroups() as $group => $group_args ) {
+			$this->phpcsFile->{ 'add' . $group_args['type'] }( $group_args['message'], $stackPtr, $group );
 		}
 	}
 }
