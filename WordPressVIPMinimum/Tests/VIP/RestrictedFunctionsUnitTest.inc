@@ -42,6 +42,8 @@ is_multi_author(); // Bad. Warning.
 
 opcache_reset(); // Bad.
 
-// Warning - ACF.
-the_field( 'field' );
-the_sub_field( 'field' );
+the_field( 'field' ); // Warning - ACF.
+the_sub_field( 'field' ); // Warning - ACF.
+
+echo esc_html( get_the_field( 'field' ) ); // Ok - ACF.
+echo '<img src="test.jpg" alt="' . esc_attr( get_sub_field( 'field' ) ) . '">'; // Ok - ACF.

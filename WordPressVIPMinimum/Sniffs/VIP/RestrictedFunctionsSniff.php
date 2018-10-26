@@ -91,7 +91,7 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 			),
 			'advanced_custom_fields'          => array(
 				'type'      => 'warning',
-				'message'   => '`%1$s` does not escape output by default, please echo and escape `get_%1$s` instead.',
+				'message'   => '`%1$s` does not escape output by default, please echo and escape with the `get_*()` variant function instead (i.e. `get_field()`).',
 				'functions' => array(
 					'the_sub_field',
 					'the_field',
