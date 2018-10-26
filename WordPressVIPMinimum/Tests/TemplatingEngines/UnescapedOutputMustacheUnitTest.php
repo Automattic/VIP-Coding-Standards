@@ -39,7 +39,6 @@ class UnescapedOutputMustacheUnitTest extends AbstractSniffUnitTest {
 			8  => 1,
 			18 => 1,
 		);
-
 	}
 
-} // End class.
+}

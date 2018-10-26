@@ -7,9 +7,11 @@ This project contains 2 PHP Codesniffer rulesets:
  - `WordPressVIPMinimum` - for use on WordPress.com projects
  - `WordPress-VIP-Go` - for use on VIP Go projects
 
-These ruleset contains only the rules which are considered being "blockers" according to the [WordPress.com VIP documentation](https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/)
+These rulesets contain only the rules which are considered being "blockers" and "warnings" according to the [WordPress VIP Go documentation](https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/)
 
 The ruleset takes advantage of existing rules in the [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) project.
+
+Go to https://vip.wordpress.com/documentation/phpcs-review-feedback/ to learn about why various things are flagged as errors vs warnings and what the levels mean for us.
 
 # Installation
 

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Run the unit tests.
+#
+# This ensures that the logic in the VIP sniffs is correct,
+# by running them against the .inc files in /tests.
+#
+# EXAMPLE TO RUN LOCALLY:
+#
+#   ./bin/unit-tests
+#
+
+"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php"

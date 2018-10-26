@@ -43,4 +43,4 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 		return $warningList;
 	}
 
-} // End class.
+}

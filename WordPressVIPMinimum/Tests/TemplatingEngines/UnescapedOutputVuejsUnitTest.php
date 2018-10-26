@@ -34,7 +34,6 @@ class UnescapedOutputVuejsUnitTest extends AbstractSniffUnitTest {
 		return array(
 			5 => 1,
 		);
-
 	}
 
-} // End class.
+}

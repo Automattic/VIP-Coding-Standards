@@ -29,6 +29,24 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 				'message'   => '`%s` is not supported on the WordPress.com VIP platform.',
 				'functions' => array( 'wp_cache_get_multi' ),
 			),
+			'opcache'            => array(
+				'type'      => 'error',
+				'message'   => '`%s` is prohibited on the WordPress VIP platform due to memory corruption.',
+				'functions' => array(
+					'opcache_reset',
+					'opcache_invalidate',
+					'opcache_compile_file',
+				),
+			),
+			'config_settings'       => array(
+				'type'      => 'error',
+				'message'   => '`%s` is not recommended for use on the WordPress VIP platform due to potential setting changes.',
+				'functions' => array(
+					'opcache_​is_​script_​cached',
+					'opcache_​get_​status',
+					'opcache_​get_​configuration',
+				),
+			),
 			'get_super_admins'         => array(
 				'type'      => 'error',
 				'message'   => '`%s` is prohibited on the WordPress.com VIP platform',
@@ -82,6 +100,14 @@ class RestrictedFunctionsSniff extends \WordPress\Sniffs\VIP\RestrictedFunctions
 				'message'   => '`%s` can be very slow on large sites and likely not needed on many VIP sites since they tend to have more than one author.',
 				'functions' => array(
 					'is_multi_author',
+				),
+			),
+			'advanced_custom_fields'          => array(
+				'type'      => 'warning',
+				'message'   => '`%1$s` does not escape output by default, please echo and escape with the `get_*()` variant function instead (i.e. `get_field()`).',
+				'functions' => array(
+					'the_sub_field',
+					'the_field',
 				),
 			),
 		);

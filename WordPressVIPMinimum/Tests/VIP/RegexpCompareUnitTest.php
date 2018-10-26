@@ -39,4 +39,4 @@ class RegexpCompareUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

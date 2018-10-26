@@ -3,74 +3,115 @@ sudo: false
 dist: trusty
 
 cache:
-  apt: true
+  directories:
+    - $HOME/.cache/composer/files
 
 language:
-    - php
+  - php
 
-php:
-    - 5.4
-    - 5.5
-    - 5.6
-    - 7.0
-    - 7.1
-    - 7.2
-    - nightly
+before_install:
+  # Speed up build time by disabling Xdebug.
+  # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
+  # https://twitter.com/kelunik/status/954242454676475904
+  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
 
-env:
-  # `master` is now 3.x.
-  - PHPCS_BRANCH=master
-  # Lowest version of PHPCS that VIPCS supports (and that will run tests)
-  - PHPCS_BRANCH=3.1.0
+install:
+  - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
+  - composer install --dev --no-suggest
 
-matrix:
+script:
+  # Run the unit tests.
+  - ./bin/unit-tests
+
+  # Run integration test.
+  - if [[ "$INTEGRATION_TEST" == "1" ]]; then ./bin/integration-test; fi
+
+# Rather than a `matrix` property, we use build stages. This allows early
+# build failure for basic linting and sniffing issues.
+# @link https://docs.travis-ci.com/user/build-stages/
+#
+# PHP >= 7.3 & PHPCS < 3.3.1 is known to fail.
+# @link https://github.com/squizlabs/PHP_CodeSniffer/issues/2086.
+#
+# We can't use Matrix Expansion here, since we need to exclude jobs for the known failures,
+# which Matrix Expansion does not yet support. We list each combination instead.
+# @link https://docs.travis-ci.com/user/conditional-builds-stages-jobs/#conditional-jobs
+
+stages:
+  - lint
+  - sniff
+  - test
+
+jobs:
+  allow_failure:
+    - php: nightly
   fast_finish: true
   include:
-    # Run PHPCS against VIPCS, run PHP Lint, and run integration test
-    - php: 7.2
-      env: PHPCS_BRANCH=master SNIFF=1 INTEGRATION_TEST=1 LINT=1
+
+    - stage: lint
+      php: 7.2
+      env: PHPCS_BRANCH="dev-master"
+      before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+      install: false
+      cache: false
+      script:
+        # Lint the PHP files against parse errors.
+        - ./bin/php-lint
+
+        # Validate the XML files and check the code-style consistency of the XML files.
+        - ./bin/xml-lint
+
+        # Validate the composer.json file.
+        # @link https://getcomposer.org/doc/03-cli.md#validate
+        - composer validate --no-check-all --strict
       addons:
         apt:
           packages:
             - libxml2-utils
 
-  allow_failures:
-    # Allow failures for unstable builds.
-    - php: nightly
+    - stage: sniff
+      php: 7.2
+      env: PHPCS_BRANCH="dev-master"
+      before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+      install: composer install --dev --no-suggest
+      script:
+        # Run PHPCS against VIPCS.
+        - ./bin/phpcs
 
-before_install:
-    - export XMLLINT_INDENT="	"
-    - export PHPCS_DIR=/tmp/phpcs
-    - export WPCS_DIR=/tmp/wpcs
-    - export PHPUNIT_DIR=/tmp/phpunit
-    - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs
-    - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
-    - mkdir -p $WPCS_DIR && git clone --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git -b master $WPCS_DIR
-    - $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR
-    # Download PHPUnit 5.x for builds on PHP 7, nightly as the PHPCS
-    # test suite was not compatible with PHPUnit 6.x (but now is).
-    # Fixed at a very specific PHPUnit version which was also compatible with HHVM.
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then wget -P $PHPUNIT_DIR https://phar.phpunit.de/phpunit-5.7.17.phar && chmod +x $PHPUNIT_DIR/phpunit-5.7.17.phar; fi
+    # PHPCS 3.2.3 is the lowest supported release
+    - stage: test
+      php: 5.6
+      env: PHPCS_BRANCH="dev-master"
 
-script:
-    # Lint the PHP files against parse errors.
-    - if [[ "$LINT" == "1" ]]; then if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
-    # Run the unit tests.
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then phpunit --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinimum $PHPCS_DIR/tests/AllTests.php; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then php $PHPUNIT_DIR/phpunit-5.7.17.phar --bootstrap $WPCS_DIR/Test/bootstrap.php --filter WordPressVIPMinumum $PHPCS_DIR/tests/AllTests.php; fi
-    # WordPress Coding Standards.
-    # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
-    # @link http://pear.php.net/package/PHP_CodeSniffer/
-    # -p flag: Show progress of the run.
-    # -s flag: Show sniff codes in all reports.
-    # -v flag: Print verbose output.
-    # -n flag: Do not print warnings. (shortcut for --warning-severity=0)
-    # --standard: Use WordPress as the standard.
-    # --extensions: Only sniff PHP files.
-    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN . --standard=./bin/phpcs.xml --runtime-set ignore_warnings_on_exit 1; fi
-    # Validate the xml files.
-    # @link http://xmlsoft.org/xmllint.html
-    - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./*/ruleset.xml; fi
-    # Check the code-style consistency of the xml files.
-    - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml"); fi
-    - if [[ "$INTEGRATION_TEST" == "1" ]]; then php ./ruleset_test.php; fi
+    - stage: test
+      php: 5.6
+      env: PHPCS_BRANCH="3.2.3"
+
+    - stage: test
+      php: 7.0
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage: test
+      php: 7.0
+      env: PHPCS_BRANCH="3.2.3"
+
+    - stage: test
+      php: 7.1
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage: test
+      php: 7.1
+      env: PHPCS_BRANCH="3.2.3"
+
+    - stage: test
+      php: 7.2
+      env: PHPCS_BRANCH="dev-master"
+
+    - stage: test
+      php: 7.2
+      env: PHPCS_BRANCH="3.2.3"
+
+    # Only use PHPCS_BRANCH="dev-master" from this point.
+    - stage: test
+      php: nightly
+      env: PHPCS_BRANCH="dev-master"

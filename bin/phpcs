@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Run PHPCS against VIP Coding Standards.
+#
+# This ensures that the code in the Sniffs and Tests follow the rules
+# defined in the custom ruleset for this repo, `.phpcs.xml.dist`.
+#
+# EXAMPLE TO RUN LOCALLY:
+#
+#   ./bin/phpcs
+
+"$(pwd)/vendor/bin/phpcs" --runtime-set ignore_warnings_on_exit 1
