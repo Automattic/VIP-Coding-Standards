@@ -163,9 +163,8 @@
 
 
 	<!-- VIP Uncached warnings -->
-	<rule ref="WordPress.VIP.RestrictedFunctions.get_posts">
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts">
 		<severity>3</severity>
-		<message>%s() is uncached unless the 'suppress_filters' parameter is set to false. If the suppress_filter parameter is set to false this can be safely ignored. More Info: https://vip.wordpress.com/documentation/vip-go/uncached-functions/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>
