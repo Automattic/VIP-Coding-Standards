@@ -25,12 +25,12 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	public function getGroups() {
 
 		$groups = array(
-			'wp_cache_get_multi'       => array(
+			'wp_cache_get_multi' => array(
 				'type'      => 'error',
 				'message'   => '`%s` is not supported on the WordPress.com VIP platform.',
 				'functions' => array( 'wp_cache_get_multi' ),
 			),
-			'opcache'            => array(
+			'opcache' => array(
 				'type'      => 'error',
 				'message'   => '`%s` is prohibited on the WordPress VIP platform due to memory corruption.',
 				'functions' => array(
@@ -39,7 +39,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'opcache_compile_file',
 				),
 			),
-			'config_settings'       => array(
+			'config_settings' => array(
 				'type'      => 'error',
 				'message'   => '`%s` is not recommended for use on the WordPress VIP platform due to potential setting changes.',
 				'functions' => array(
@@ -48,14 +48,14 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'opcache_​get_​configuration',
 				),
 			),
-			'get_super_admins'         => array(
+			'get_super_admins' => array(
 				'type'      => 'error',
 				'message'   => '`%s` is prohibited on the WordPress.com VIP platform',
-				'functions' => array( 
-					'get_super_admins' 
+				'functions' => array(
+					'get_super_admins',
 				),
 			),
-			'internal'                 => array(
+			'internal' => array(
 				'type'      => 'error',
 				'message'   => '`%1$s()` is for internal use only.',
 				'functions' => array(
@@ -63,7 +63,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				),
 			),
 			// @link WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#flush_rewrite_rules
-			'rewrite_rules'            => array(
+			'rewrite_rules' => array(
 				'type'      => 'error',
 				'message'   => '`%s` should not be used in any normal circumstances in the theme code.',
 				'functions' => array(
@@ -78,14 +78,14 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				),
 			),
 			// TODO: Add strip_tags sniff that checks based on parameters.
-			'strip_tags'               => array(
+			'strip_tags' => array(
 				'type'      => 'error',
 				'message'   => '`%s()` does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags()` should be used instead.',
 				'functions' => array(
 					'strip_tags',
 				),
 			),
-			'dbDelta'                  => array(
+			'dbDelta' => array(
 				'type'      => 'error',
 				'message'   => 'All database modifications have to approved by the WordPress.com VIP team.',
 				'functions' => array(
@@ -182,7 +182,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'wp_is_mobile',
 				),
 			),
-			'wp_mail'                  => array(
+			'wp_mail' => array(
 				'type'      => 'warning',
 				'message'   => '`%s` should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
 				'functions' => array(
@@ -190,14 +190,14 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'mail',
 				),
 			),
-			'is_multi_author'          => array(
+			'is_multi_author' => array(
 				'type'      => 'warning',
 				'message'   => '`%s` can be very slow on large sites and likely not needed on many VIP sites since they tend to have more than one author.',
 				'functions' => array(
 					'is_multi_author',
 				),
 			),
-			'advanced_custom_fields'          => array(
+			'advanced_custom_fields' => array(
 				'type'      => 'warning',
 				'message'   => '`%1$s` does not escape output by default, please echo and escape with the `get_*()` variant function instead (i.e. `get_field()`).',
 				'functions' => array(
@@ -248,7 +248,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					$helper,
 				),
 			);
-			unset( $groups[ $restricted ] );
 		}
 
 		return $groups;
