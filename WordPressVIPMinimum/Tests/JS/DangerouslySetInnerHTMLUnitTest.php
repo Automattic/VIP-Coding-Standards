@@ -23,7 +23,7 @@ class DangerouslySetInnerHTMLUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			9 => 1,
+			10 => 1,
 		];
 	}
 

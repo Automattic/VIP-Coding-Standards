@@ -64,6 +64,13 @@ class DangerouslySetInnerHTMLSniff implements Sniff {
 			return;
 		}
 
+		$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+
+		if ( T_OBJECT !== $tokens[ $nextNextToken ]['code'] ) {
+			// Not react syntax.
+			return;
+		}
+
 		$phpcsFile->addError( sprintf( "Any HTML passed to `%s` gets executed. Please make sure it's properly escaped.", $tokens[ $stackPtr ]['content'] ), $stackPtr, 'dangerouslySetInnerHTML' );
 	}
 
