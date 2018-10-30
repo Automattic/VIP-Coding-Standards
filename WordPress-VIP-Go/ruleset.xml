@@ -91,6 +91,10 @@
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.JS.DangerouslySetInnerHTML.dangerouslySetInnerHTML">
+		<type>error</type>
+		<severity>5</severity>
+	</rule>
 	<rule ref="WordPressVIPMinimum.JS.StringConcat.StringConcatNext">
 		<type>error</type>
 		<severity>5</severity>
