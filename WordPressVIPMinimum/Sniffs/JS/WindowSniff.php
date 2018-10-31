@@ -86,7 +86,7 @@ class WindowSniff implements Sniff {
 		$nextNextNextToken = $phpcsFile->findNext( null, ( $nextNextToken + 1 ), null, true, null, true );
 
 		if ( isset( $this->windowProperties[ $tokens[ $nextNextToken ]['content'] ] ) && T_OBJECT_OPERATOR !== $tokens[ $nextNextNextToken ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Data from JS globals may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextToken ]['content'] );
+			$phpcsFile->addError( sprintf( 'Data from JS global "window.' . $tokens[ $nextNextToken ]['content'] . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextToken ]['content'] );
 		}
 
 		if ( T_OBJECT_OPERATOR !== $tokens[ $nextNextNextToken ]['code'] ) {
@@ -97,7 +97,7 @@ class WindowSniff implements Sniff {
 		$nextNextNextNextToken = $phpcsFile->findNext( null, ( $nextNextNextToken + 1 ), null, true, null, true );
 
 		if ( isset( $this->windowProperties[ $tokens[ $nextNextToken ]['content'] ][ $tokens[ $nextNextNextNextToken ]['content'] ] ) ) {
-			$phpcsFile->addError( sprintf( "Data from JS globals may contain user-supplied values and should be sanitized before output to prevent XSS.", $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextToken ]['content'] . $tokens[ $nextNextNextNextToken ]['content'] );
+			$phpcsFile->addError( sprintf( 'Data from JS global "window.' . $tokens[ $nextNextToken ]['content'] . '.' . $tokens[ $nextNextNextNextToken ]['content'] . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextToken ]['content'] . $tokens[ $nextNextNextNextToken ]['content'] );
 		}
 	}
 

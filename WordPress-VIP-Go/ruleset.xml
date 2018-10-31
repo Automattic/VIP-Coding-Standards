@@ -87,7 +87,7 @@
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
-		<rule ref="WordPressVIPMinimum.JS.Window">
+	<rule ref="WordPressVIPMinimum.JS.Window">
 		<type>error</type>
 		<severity>5</severity>
 	</rule>
