@@ -77,14 +77,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'attachment_url_to_postid',
 				),
 			),
-			// TODO: Add strip_tags sniff that checks based on parameters.
-			'strip_tags' => array(
-				'type'      => 'error',
-				'message'   => '`%s()` does not strip CSS and JS in between the script and style tags. `wp_strip_all_tags()` should be used instead.',
-				'functions' => array(
-					'strip_tags',
-				),
-			),
 			'dbDelta' => array(
 				'type'      => 'error',
 				'message'   => 'All database modifications have to approved by the WordPress.com VIP team.',

@@ -1,0 +1,65 @@
+<?php
+/**
+ * WordPressVIPMinimum Coding Standard.
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ */
+
+namespace WordPressVIPMinimum\Sniffs\Functions;
+
+use WordPress\AbstractFunctionParameterSniff;
+
+/**
+ * This sniff ensures proper tag stripping.
+ *
+ * @package VIPCS\WordPressVIPMinimum
+ *
+ * @since 0.4.0
+ */
+class StripTagsSniff extends AbstractFunctionParameterSniff {
+
+	/**
+	 * The group name for this group of functions.
+	 *
+	 * @var string
+	 */
+	protected $group_name = 'strip_functions';
+
+	/**
+	 * Functions this sniff is looking for.
+	 *
+	 * @var array The only requirement for this array is that the top level
+	 *            array keys are the names of the functions you're looking for.
+	 *            Other than that, the array can have arbitrary content
+	 *            depending on your needs.
+	 */
+	protected $target_functions = [
+		'strip_tags'    => true,
+	];
+
+	/**
+	 * Process the parameters of a matched function.
+	 *
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param array  $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched.
+	 * @param array  $parameters      Array with information about the parameters.
+	 * @return int|void Integer stack pointer to skip forward or void to continue
+	 *                  normal file processing.
+	 */
+	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
+		if ( 1 === count( $parameters ) ) {
+			$this->phpcsFile->addWarning(
+					sprintf( '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_strip_all_tags()` to strip all tags.', $matched_content ),
+					$stackPtr,
+					'StripTagsOneParameter'
+			);
+		} elseif ( isset( $parameters[2] ) ) {
+			$this->phpcsFile->addWarning(
+					sprintf( '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_kses()` instead to allow only the HTML you need.', $matched_content ),
+					$stackPtr,
+					'StripTagsTwoParameters'
+			);
+		}
+	}
+}

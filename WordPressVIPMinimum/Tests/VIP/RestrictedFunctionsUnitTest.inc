@@ -45,9 +45,9 @@ flush_rewrite_rules(); // Error.
 wpcom_vip_attachment_url_to_postid( $url ); // Ok - VIP recommended version of attachment_url_to_postid().
 attachment_url_to_postid( $url ); // Error.
 
-wp_strip_tags( $test ); // Ok - VIP recommended version of strip_tags().
-wp_kses( $test_string, $allowed_html ); // Ok - VIP recommended version of strip_tags().
-strip_tags( $test_string ); // Error.
+
+
+
 
 db_delta(); // Ok - similarly-named function to dbDelta().
 dbDelta(); // Error.
