@@ -50,15 +50,15 @@ class StripTagsSniff extends AbstractFunctionParameterSniff {
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		if ( 1 === count( $parameters ) ) {
 			$this->phpcsFile->addWarning(
-					sprintf( '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_strip_all_tags()` to strip all tags.', $matched_content ),
-					$stackPtr,
-					'StripTagsOneParameter'
+				sprintf( '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_strip_all_tags()` to strip all tags.', $matched_content ),
+				$stackPtr,
+				'StripTagsOneParameter'
 			);
 		} elseif ( isset( $parameters[2] ) ) {
 			$this->phpcsFile->addWarning(
-					sprintf( '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_kses()` instead to allow only the HTML you need.', $matched_content ),
-					$stackPtr,
-					'StripTagsTwoParameters'
+				sprintf( '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_kses()` instead to allow only the HTML you need.', $matched_content ),
+				$stackPtr,
+				'StripTagsTwoParameters'
 			);
 		}
 	}
