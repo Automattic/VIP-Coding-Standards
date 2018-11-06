@@ -147,10 +147,9 @@
 		<type>warning</type>
 		<severity>7</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.strip_tags_strip_tags">
+	<rule ref="WordPressVIPMinimum.Functions.StripTags">
 		<type>warning</type>
 		<severity>5</severity>
-		<message>We recommend using wp_kses() or wp_kses_post() instead https://codex.wordpress.org/Function_Reference/wp_kses</message>
 	</rule>
 	<rule ref="WordPress.WP.PostsPerPage.posts_per_page_posts_per_page">
 		<type>warning</type>

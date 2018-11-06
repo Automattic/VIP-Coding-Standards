@@ -115,6 +115,7 @@
 	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#remote-calls -->
 	<rule ref="WordPress.WP.AlternativeFunctions">
 		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+		<exclude name="WordPress.WP.AlternativeFunctions.strip_tags_strip_tags"/>
 	</rule>
 	<!-- VIP recommends other functions -->
 	<rule ref="WordPress.WP.AlternativeFunctions.curl">
