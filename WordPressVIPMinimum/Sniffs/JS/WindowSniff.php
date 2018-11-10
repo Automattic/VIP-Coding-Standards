@@ -41,17 +41,23 @@ class WindowSniff implements Sniff {
 	}
 
 	/**
-	 * List of window properties that need to be flagged
+	 * List of window properties that need to be flagged.
 	 *
 	 * @var array
 	 */
 	private $windowProperties = [
 		'location' => [
-			'href' => true,
+			'href'     => true,
+			'protocol' => true,
+			'host'     => true,
 			'hostname' => true,
 			'pathname' => true,
 			'protocol' => true,
-			'assign' => true,
+			'search'   => true,
+			'hash'     => true,
+			'username' => true,
+			'port'     => true,
+			'password' => true,
 		],
 		'name' => true,
 		'status' => true,
@@ -70,35 +76,43 @@ class WindowSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 
 		if ( 'window' !== $tokens[ $stackPtr ]['content'] ) {
-			// if it doesn't begin with 'window', bail.
+			// Doesn't begin with 'window', bail.
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( null, ( $stackPtr + 1 ), null, true, null, true );
+		$nextTokenPtr = $phpcsFile->findNext( null, ( $stackPtr + 1 ), null, true, null, true );
 
-		if ( T_OBJECT_OPERATOR !== $tokens[ $nextToken ]['code'] ) {
-			// if there is no '.' next, bail.
+		if ( T_OBJECT_OPERATOR !== $tokens[ $nextTokenPtr ]['code'] ) {
+			// No '.' next, bail.
 			return;
 		}
 
-		$nextNextToken = $phpcsFile->findNext( null, ( $nextToken + 1 ), null, true, null, true );
+		$nextNextTokenPtr = $phpcsFile->findNext( null, ( $nextTokenPtr + 1 ), null, true, null, true );
 
-		$nextNextNextToken = $phpcsFile->findNext( null, ( $nextNextToken + 1 ), null, true, null, true );
-
-		if ( isset( $this->windowProperties[ $tokens[ $nextNextToken ]['content'] ] ) && T_OBJECT_OPERATOR !== $tokens[ $nextNextNextToken ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Data from JS global "window.' . $tokens[ $nextNextToken ]['content'] . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextToken ]['content'] );
-		}
-
-		if ( T_OBJECT_OPERATOR !== $tokens[ $nextNextNextToken ]['code'] ) {
-			// if there is no '.' next, bail.
+		if ( ! isset( $this->windowProperties[ $tokens[ $nextNextTokenPtr ]['content'] ] ) ) {
+			// Not in $windowProperties, bail.
 			return;
 		}
 
-		$nextNextNextNextToken = $phpcsFile->findNext( null, ( $nextNextNextToken + 1 ), null, true, null, true );
+		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
+		$nextNextNextTokenPtr = $phpcsFile->findNext( null, ( $nextNextTokenPtr + 1 ), null, true, null, true );
+		$nextNextNextNextTokenPtr = $phpcsFile->findNext( null, ( $nextNextNextTokenPtr + 1 ), null, true, null, true );
 
-		if ( isset( $this->windowProperties[ $tokens[ $nextNextToken ]['content'] ][ $tokens[ $nextNextNextNextToken ]['content'] ] ) ) {
-			$phpcsFile->addError( sprintf( 'Data from JS global "window.' . $tokens[ $nextNextToken ]['content'] . '.' . $tokens[ $nextNextNextNextToken ]['content'] . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextToken ]['content'] . $tokens[ $nextNextNextNextToken ]['content'] );
+		if ( T_OBJECT_OPERATOR === $tokens[ $nextNextNextTokenPtr ]['code'] && ! isset( $this->windowProperties[ $tokens[ $nextNextTokenPtr ]['content'] ][ $tokens[ $nextNextNextNextTokenPtr ]['content'] ] ) ) {
+			// There is a '.' next but the property after is not in $windowProperties, bail.
+			return;
 		}
+
+		$windowName = 'window.';
+		$windowName .= ( isset( $this->windowProperties[ $tokens[ $nextNextTokenPtr ]['content'] ][ $tokens[ $nextNextNextNextTokenPtr ]['content'] ] ) ) ? $tokens[ $nextNextTokenPtr ]['content'] . $tokens[ $nextNextNextTokenPtr ]['content'] . $tokens[ $nextNextNextNextTokenPtr ]['content'] : $tokens[ $nextNextTokenPtr ]['content'];
+
+		if ( T_EQUAL === $tokens[ $prevTokenPtr ]['code'] ) {
+			// Variable assignment.
+			$phpcsFile->addWarning( sprintf( 'Data from JS global "' . $windowName . '" may contain user-supplied values and should be checked.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'VarAssignment' );
+			return;
+		}
+
+		$phpcsFile->addError( sprintf( 'Data from JS global "' . $windowName . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextTokenPtr ]['content'] );
 	}
 
 }
