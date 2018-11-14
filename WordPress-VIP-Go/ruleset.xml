@@ -338,6 +338,10 @@
 		<!-- We are silencing this one because VIP Go has a combined index on meta_key, meta_value-->
 		<severity>0</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.Cache.BatcacheWhitelistedParams">
+		<!-- We are silencing this one because VIP Go does not use Batcache-->
+		<severity>0</severity>
+	</rule>
 
 	<!-- deprecations -->
 
