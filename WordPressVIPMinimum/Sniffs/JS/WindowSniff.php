@@ -59,8 +59,18 @@ class WindowSniff implements Sniff {
 			'port'     => true,
 			'password' => true,
 		],
-		'name' => true,
+		'name'   => true,
 		'status' => true,
+	];
+
+	/**
+	 * A list of tokens that are allowed in the syntax.
+	 *
+	 * @var array
+	 */
+	private $syntaxTokens = [
+		T_OBJECT_OPERATOR,
+
 	];
 
 	/**
@@ -80,39 +90,54 @@ class WindowSniff implements Sniff {
 			return;
 		}
 
-		$nextTokenPtr = $phpcsFile->findNext( null, ( $stackPtr + 1 ), null, true, null, true );
-
-		if ( T_OBJECT_OPERATOR !== $tokens[ $nextTokenPtr ]['code'] ) {
-			// No '.' next, bail.
+		$nextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $tokens[ $nextTokenPtr ]['code'];
+		if ( T_OBJECT_OPERATOR !== $nextToken && T_OPEN_SQUARE_BRACKET !== $nextToken ) {
+			// No . or [' next, bail.
 			return;
 		}
 
-		$nextNextTokenPtr = $phpcsFile->findNext( null, ( $nextTokenPtr + 1 ), null, true, null, true );
+		$nextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextTokenPtr + 1 ), null, true, null, true );
+		if ( false === $nextNextTokenPtr ) {
+			// Something went wrong, bail.
+			return;
+		}
 
-		if ( ! isset( $this->windowProperties[ $tokens[ $nextNextTokenPtr ]['content'] ] ) ) {
+		$nextNextToken = str_replace( [ '"', "'" ], '', $tokens[ $nextNextTokenPtr ]['content'] );
+		if ( ! isset( $this->windowProperties[ $nextNextToken ] ) ) {
 			// Not in $windowProperties, bail.
 			return;
 		}
 
-		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
-		$nextNextNextTokenPtr = $phpcsFile->findNext( null, ( $nextNextTokenPtr + 1 ), null, true, null, true );
-		$nextNextNextNextTokenPtr = $phpcsFile->findNext( null, ( $nextNextNextTokenPtr + 1 ), null, true, null, true );
+		$nextNextNextTokenPtr = $phpcsFile->findNext( array_merge( [ T_CLOSE_SQUARE_BRACKET ], Tokens::$emptyTokens ), ( $nextNextTokenPtr + 1 ), null, true, null, true );
+		$nextNextNextToken = $tokens[ $nextNextNextTokenPtr ]['code'];
 
-		if ( T_OBJECT_OPERATOR === $tokens[ $nextNextNextTokenPtr ]['code'] && ! isset( $this->windowProperties[ $tokens[ $nextNextTokenPtr ]['content'] ][ $tokens[ $nextNextNextNextTokenPtr ]['content'] ] ) ) {
-			// There is a '.' next but the property after is not in $windowProperties, bail.
-			return;
+		$nextNextNextNextToken = false;
+		if ( T_OBJECT_OPERATOR === $nextNextNextToken || T_OPEN_SQUARE_BRACKET === $nextNextNextToken ) {
+			$nextNextNextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextNextNextTokenPtr + 1 ), null, true, null, true );
+			if ( false === $nextNextNextNextTokenPtr ) {
+				// Something went wrong, bail.
+				return;
+			}
+
+			$nextNextNextNextToken = str_replace( [ '"', "'" ], '', $tokens[ $nextNextNextNextTokenPtr ]['content'] );
+			if ( ! isset( $this->windowProperties[ $nextNextToken ][ $nextNextNextNextToken ] ) ) {
+				// Not in $windowProperties, bail.
+				return;
+			}
 		}
 
-		$windowName = 'window.';
-		$windowName .= ( isset( $this->windowProperties[ $tokens[ $nextNextTokenPtr ]['content'] ][ $tokens[ $nextNextNextNextTokenPtr ]['content'] ] ) ) ? $tokens[ $nextNextTokenPtr ]['content'] . $tokens[ $nextNextNextTokenPtr ]['content'] . $tokens[ $nextNextNextNextTokenPtr ]['content'] : $tokens[ $nextNextTokenPtr ]['content'];
+		$windowProperty = 'window.';
+		$windowProperty .= $nextNextNextNextToken ? $nextNextToken . '.' . $nextNextNextNextToken : $nextNextToken;
 
+		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
 		if ( T_EQUAL === $tokens[ $prevTokenPtr ]['code'] ) {
 			// Variable assignment.
-			$phpcsFile->addWarning( sprintf( 'Data from JS global "' . $windowName . '" may contain user-supplied values and should be checked.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'VarAssignment' );
+			$phpcsFile->addWarning( sprintf( 'Data from JS global "' . $windowProperty . '" may contain user-supplied values and should be checked.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'VarAssignment' );
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( 'Data from JS global "' . $windowName . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $nextNextTokenPtr ]['content'] );
+		$phpcsFile->addError( sprintf( 'Data from JS global "' . $windowProperty . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $nextNextToken );
 	}
 
 }

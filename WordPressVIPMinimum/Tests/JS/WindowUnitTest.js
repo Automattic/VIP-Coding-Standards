@@ -27,3 +27,8 @@ document.theform.reference.onchange = function( url ) {
     var id = document.theform.reference.selectedIndex;
     window.name = url; // Error.
 }
+
+window['location']; // Error.
+window.location['href']; // Error.
+window['location']['protocol']; // Error.
+window['location'].host; // Error.

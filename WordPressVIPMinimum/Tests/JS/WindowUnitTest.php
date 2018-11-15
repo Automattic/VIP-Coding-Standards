@@ -37,6 +37,10 @@ class WindowUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			24 => 1,
 			28 => 1,
+			31 => 1,
+			32 => 1,
+			33 => 1,
+			34 => 1,
 		];
 	}
 
