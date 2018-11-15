@@ -176,4 +176,10 @@
 		<severity>0</severity>
 	</rule>
 
+	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis">
+		<properties>
+			<property name="allowUnusedCaughtExceptions" value="1"/>
+		</properties>
+	</rule>
+
 </ruleset>
