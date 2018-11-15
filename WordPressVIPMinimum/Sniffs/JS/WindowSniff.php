@@ -70,7 +70,6 @@ class WindowSniff implements Sniff {
 	 */
 	private $syntaxTokens = [
 		T_OBJECT_OPERATOR,
-
 	];
 
 	/**

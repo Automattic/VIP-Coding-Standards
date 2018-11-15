@@ -32,3 +32,7 @@ window['location']; // Error.
 window.location['href']; // Error.
 window['location']['protocol']; // Error.
 window['location'].host; // Error.
+
+window['location']['test']; // Ok.
+window.location['test']; // Ok.
+window['test'].location; // Ok.
