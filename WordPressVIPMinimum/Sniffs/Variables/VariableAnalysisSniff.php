@@ -1427,7 +1427,7 @@ class VariableAnalysisSniff implements Sniff {
 					)
 				);
 			}
-			if ( $varInfo->firstDeclared !== $varInfo->firstInitialized && isset( $varInfo->firstInitialized ) ) {
+			if ( isset( $varInfo->firstInitialized ) && $varInfo->firstDeclared !== $varInfo->firstInitialized ) {
 				$phpcsFile->addWarning(
 					"Unused %s `%s`.",
 					$varInfo->firstInitialized,
