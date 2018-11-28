@@ -34,13 +34,13 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 		$warningList = [
 			5 => 2,
 		];
-	
- 		// PHP prior to version 7.x does not properly process the $e.
-		if ( true === version_compare( PHP_VERSION, '7.0.0', '>' ) ) {
+
+		// PHP prior to version 7.x does not properly process the $e.
+		if ( true === version_compare( PHP_VERSION, '7.0.0', '>=' ) ) {
 			$warningList[18] = 2;
 		}
 
- 		return $warningList;
+		return $warningList;
 	}
 
 }
