@@ -159,10 +159,6 @@
 		<severity>5</severity>
 		<message>Having more than 100 posts returned per page can lead to severe performance problems.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Filters.RestrictedHook.HighTimeout">
-		<type>warning</type>
-		<severity>5</severity>
-	</rule>
 	<rule ref="WordPressVIPMinimum.Classes.RestrictedExtendClasses.wp_cli">
 		<type>warning</type>
 		<severity>5</severity>
