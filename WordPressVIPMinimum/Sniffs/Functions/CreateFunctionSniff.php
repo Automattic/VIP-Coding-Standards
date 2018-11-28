@@ -80,8 +80,7 @@ class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
 		}
 
 		$phpcsFile->addError(
-			'create_function() is deprecated as of ' .
-				'PHP 7.2.0',
+			'create_function() is deprecated as of PHP 7.2.0.',
 			$functionName,
 			'CreateFunction'
 		);
