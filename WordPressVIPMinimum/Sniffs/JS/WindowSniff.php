@@ -132,11 +132,21 @@ class WindowSniff implements Sniff {
 		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
 		if ( T_EQUAL === $tokens[ $prevTokenPtr ]['code'] ) {
 			// Variable assignment.
-			$phpcsFile->addWarning( sprintf( 'Data from JS global "' . $windowProperty . '" may contain user-supplied values and should be checked.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'VarAssignment' );
+			$phpcsFile->addWarning(
+				'Data from JS global "%s" may contain user-supplied values and should be checked.',
+				$stackPtr,
+				'VarAssignment',
+				[ $windowProperty ]
+			);
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( 'Data from JS global "' . $windowProperty . '" may contain user-supplied values and should be sanitized before output to prevent XSS.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $nextNextToken );
+		$phpcsFile->addError(
+			'Data from JS global "%s" may contain user-supplied values and should be sanitized before output to prevent XSS.',
+			$stackPtr,
+			$nextNextToken,
+			[ $windowProperty ]
+		);
 	}
 
 }
