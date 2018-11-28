@@ -251,17 +251,10 @@ class DynamicCallsSniff implements Sniff {
 
 		// We do, so report.
 		$this->_phpcsFile->addError(
-			sprintf(
-				'Dynamic calling is not recommended ' .
-					'in the case of %s',
-				$this->_variables_arr[
-					$this->_tokens[
-						$this->_stackPtr
-					]['content']
-				]
-			),
+			'Dynamic calling is not recommended in the case of %s',
 			$t_item_key,
-			'DynamicCalls'
+			'DynamicCalls',
+			[ $this->_variables_arr[ $this->_tokens[ $this->_stackPtr ]['content'] ] ]
 		);
 	}
 }
