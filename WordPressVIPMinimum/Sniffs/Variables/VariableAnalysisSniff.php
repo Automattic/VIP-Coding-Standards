@@ -728,8 +728,7 @@ class VariableAnalysisSniff implements Sniff {
 				// We haven't been defined by this point.
 				$phpcsFile->addWarning( "Variable `%s` is undefined.", $stackPtr,
 					'UndefinedVariable',
-					array( "\${$varName}" ),
-					'WordPressVIPMinimum.Variables.VariableAnalysis'
+					array( "\${$varName}" )
 				);
 				return true;
 			}
@@ -875,8 +874,7 @@ class VariableAnalysisSniff implements Sniff {
 					if ( $tokens[$scopePtr]['code'] === T_CLOSURE ) {
 						$phpcsFile->addError( "Use of `{$err_desc}%s` inside closure.", $stackPtr,
 							$err_class,
-							array( "\${$varName}" ),
-							'WordPressVIPMinimum.Variables.VariableAnalysis'
+							array( "\${$varName}" )
 						);
 						return true;
 					}
@@ -887,8 +885,7 @@ class VariableAnalysisSniff implements Sniff {
 			}
 			$phpcsFile->addError( "Use of `{$err_desc}%s` outside class definition.", $stackPtr,
 				$err_class,
-				array( "\${$varName}" ),
-				'WordPressVIPMinimum.Variables.VariableAnalysis'
+				array( "\${$varName}" )
 			);
 			return true;
 		}
