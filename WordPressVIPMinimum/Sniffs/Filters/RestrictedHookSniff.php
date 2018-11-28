@@ -46,8 +46,23 @@ class RestrictedHookSniff extends AbstractFunctionParameterSniff {
 	private $restricted_hooks = [
 		'upload_mimes' => [
 			// TODO: This error message needs a link to the VIP Documentation, see https://github.com/Automattic/VIP-Coding-Standards/issues/235.
-			'error'     => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
-			'error_code' => 'UploadMimes',
+			'type' => 'Warning',
+			'msg'  => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
+			'code' => 'UploadMimes',
+		],
+		'http_request_timeout' => [
+			// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.
+			// VIP Go: https://vip.wordpress.com/documentation/vip-go/fetching-remote-data/.
+			'type' => 'Warning',
+			'msg'     => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
+			'code'    => 'HighTimeout',
+		],
+		'http_request_args' => [
+			// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.
+			// VIP Go: https://vip.wordpress.com/documentation/vip-go/fetching-remote-data/.
+			'type' => 'Warning',
+			'msg'     => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
+			'code'    => 'HighTimeout',
 		],
 	];
 
@@ -64,7 +79,8 @@ class RestrictedHookSniff extends AbstractFunctionParameterSniff {
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		foreach ( $this->restricted_hooks as $restricted_hook => $hook_args ) {
 			if ( $this->normalize_hook_name_from_parameter( $parameters[1] ) === $restricted_hook ) {
-				$this->phpcsFile->addWarning( $hook_args['error'], $stackPtr, $hook_args['error_code'] );
+				$addMethod = 'add' . $hook_args['type'];
+				$this->phpcsFile->{$addMethod}( $hook_args['msg'], $stackPtr, $hook_args['code'] );
 			}
 		}
 	}
