@@ -47,7 +47,7 @@ class FetchingRemoteDataSniff implements Sniff {
 
 		$fileNameStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, ( $stackPtr + 1 ), null, false, null, true );
 		if ( false === $fileNameStackPtr ) {
-			$phpcsFile->addWarning( 
+			$phpcsFile->addWarning(
 				'`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead. If it\'s for a local file please use WP_Filesystem instead.',
 				$stackPtr,
 				'fileGetContentsUknown',
@@ -59,7 +59,7 @@ class FetchingRemoteDataSniff implements Sniff {
 
 		$isRemoteFile = ( false !== strpos( $fileName, '://' ) );
 		if ( true === $isRemoteFile ) {
-			$phpcsFile->addWarning( 
+			$phpcsFile->addWarning(
 				'`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead.',
 				$stackPtr,
 				'fileGetContentsRemoteFile',
