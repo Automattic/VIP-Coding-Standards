@@ -24,7 +24,7 @@ script:
   - ./bin/unit-tests
 
   # Run integration test.
-  - if [[ "$INTEGRATION_TEST" == "1" ]]; then ./bin/integration-test; fi
+  - ./bin/integration-test
 
 # Rather than a `matrix` property, we use build stages. This allows early
 # build failure for basic linting and sniffing issues.
