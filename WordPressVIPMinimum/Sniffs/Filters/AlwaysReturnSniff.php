@@ -228,7 +228,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 			);
 		}
 
-		if ( 0 < $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
+		if ( 0 <= $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
 			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
 		}
 	}
