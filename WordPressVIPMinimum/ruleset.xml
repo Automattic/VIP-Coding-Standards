@@ -8,6 +8,8 @@
 
 	<autoload>./PHPCSCompatibility.php</autoload>
 
+	<rule ref="Generic.PHP.Syntax" />
+
 	<rule ref="WordPressVIPMinimum.TemplatingEngines.UnescapedOutputTwig">
 		<include-pattern>*.twig</include-pattern>
 	</rule>
