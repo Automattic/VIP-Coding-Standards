@@ -40,9 +40,9 @@
 		"phpunit": "bin/unit-tests",
 		"test": [
 			"@lint",
-			"@phpcs",
 			"@integration",
-			"@phpunit"
+			"@phpunit",
+			"@phpcs"
 		]
 	},
 	"support": {
