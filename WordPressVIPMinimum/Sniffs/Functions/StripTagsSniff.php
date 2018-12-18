@@ -34,7 +34,7 @@ class StripTagsSniff extends AbstractFunctionParameterSniff {
 	 *            depending on your needs.
 	 */
 	protected $target_functions = [
-		'strip_tags'    => true,
+		'strip_tags' => true,
 	];
 
 	/**
