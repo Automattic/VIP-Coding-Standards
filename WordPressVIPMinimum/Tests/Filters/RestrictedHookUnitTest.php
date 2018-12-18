@@ -33,9 +33,9 @@ class RestrictedHookUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			7 => 1,
-			8 => 1,
-			9 => 1,
+			7  => 1,
+			8  => 1,
+			9  => 1,
 			10 => 1,
 			11 => 1,
 			12 => 1,

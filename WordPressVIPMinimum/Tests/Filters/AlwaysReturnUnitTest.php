@@ -31,10 +31,10 @@ class AlwaysReturnUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array(
-			15 => 1,
-			49 => 1,
-			88 => 1,
-			95 => 1,
+			15  => 1,
+			49  => 1,
+			88  => 1,
+			95  => 1,
 			105 => 1,
 		);
 	}

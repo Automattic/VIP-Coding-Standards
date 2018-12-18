@@ -54,15 +54,15 @@ class RestrictedHookSniff extends AbstractFunctionParameterSniff {
 			// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.
 			// VIP Go: https://vip.wordpress.com/documentation/vip-go/fetching-remote-data/.
 			'type' => 'Warning',
-			'msg'     => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
-			'code'    => 'HighTimeout',
+			'msg'  => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
+			'code' => 'HighTimeout',
 		],
 		'http_request_args' => [
 			// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.
 			// VIP Go: https://vip.wordpress.com/documentation/vip-go/fetching-remote-data/.
 			'type' => 'Warning',
-			'msg'     => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
-			'code'    => 'HighTimeout',
+			'msg'  => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
+			'code' => 'HighTimeout',
 		],
 	];
 
