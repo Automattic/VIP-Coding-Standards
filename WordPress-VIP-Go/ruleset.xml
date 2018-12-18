@@ -50,7 +50,6 @@
 	<rule ref="WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown">
 		<type>error</type>
 		<Severity>5</Severity>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
 		<type>error</type>
