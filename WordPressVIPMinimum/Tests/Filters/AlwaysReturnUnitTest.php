@@ -28,7 +28,6 @@ class AlwaysReturnUnitTest extends AbstractSniffUnitTest {
 			95  => 1,
 			105 => 1,
 			129 => 1,
-			141 => 1,
 		];
 	}
 

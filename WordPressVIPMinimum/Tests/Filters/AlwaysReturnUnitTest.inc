@@ -137,9 +137,3 @@ function bad_example_arg( $test ) { // Error.
 	// Missing universal return.
 }
 add_filter( 'bad_example_filter', 'bad_example_arg' );
-
-add_filter( 'bad_anonymous_example_arg', function( $input ) { // Error.
-	$input = $input . ' hello!';
-
-	// But we never return _anywhere_
-}, 10, 2 );
