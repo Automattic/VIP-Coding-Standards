@@ -1,6 +1,12 @@
 # Change Log for VIP Coding Standards
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## 0.4.0 - 2018-12-19
+
+This release contains breaking changes.
 
 ### Added
  - `WordPressVIPMinimum.Cache.LowExpiryCacheTime` sniff.
@@ -46,7 +52,7 @@
  - Integration tests not running in Travis.
  
 ### Removed
- - SVG support, since it was not working well.
+ - BREAKING: `WordPressVIPMinimum.SVG.HTMLCodeSniff` (SVG support), since it was not working well. You should remove any reference to this in your custom ruleset.
  - `var_dump` from `WordPressVIPMinimum` ruleset since it should be the same type as `var_export`
  - `wpcom_vip_get_page_by_path` from `WordPressVIPMinimum.VIP.RestrictedFunctions`
  - Version check for PHP 7 or less in `WordPressVIPMinimum.Variables.VariableAnalysis` unit test since tests are not failing anymore.
