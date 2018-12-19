@@ -50,7 +50,7 @@ class FetchingRemoteDataSniff implements Sniff {
 			$phpcsFile->addWarning(
 				'`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead. If it\'s for a local file please use WP_Filesystem instead.',
 				$stackPtr,
-				'fileGetContentsUknown',
+				'fileGetContentsUnknown',
 				[ $tokens[ $stackPtr ]['content'] ]
 			);
 		}
