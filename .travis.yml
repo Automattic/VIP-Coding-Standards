@@ -58,6 +58,8 @@ jobs:
         # Lint the PHP files against parse errors.
         - ./bin/php-lint
 
+        # Add PHPCS locally for the XSD.
+        - composer require squizlabs/php_codesniffer
         # Validate the XML files and check the code-style consistency of the XML files.
         - ./bin/xml-lint
 

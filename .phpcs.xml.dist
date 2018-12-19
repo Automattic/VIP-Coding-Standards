@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="VIP Coding Standards">
-	<description>The Coding standard for the VIP Coding Standards itself.</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="VIP Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+	<description>The custom ruleset for the VIP Coding Standards itself.</description>
 
 	<file>.</file>
 	<!-- Exclude Composer vendor directory. -->

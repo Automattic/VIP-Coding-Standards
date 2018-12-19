@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress VIP Go">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress VIP Go" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>WordPress VIP Go Coding Standards</description>
 
 	<!-- Include the base VIP Minimum ruleset -->
@@ -39,17 +39,17 @@
 	 -->
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
 		<type>error</type>
-		<Severity>5</Severity>
+		<severity>5</severity>
 		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents">
 		<type>error</type>
-		<Severity>5</Severity>
+		<severity>5</severity>
 		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.FetchingRemoteData.fileGetContentsUknown">
 		<type>error</type>
-		<Severity>5</Severity>
+		<severity>5</severity>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
 		<type>error</type>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress VIP Minimum">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress VIP Minimum" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>WordPress VIP Minimum Coding Standards</description>
 
 	<!-- Link references are platform-specific. See
