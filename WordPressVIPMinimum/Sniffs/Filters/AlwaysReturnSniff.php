@@ -7,15 +7,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\Filters;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff validates that filters always return a value
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
+class AlwaysReturnSniff implements Sniff {
 
 	/**
 	 * The tokens of the phpcsFile.
@@ -228,7 +229,7 @@ class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
 			);
 		}
 
-		if ( 0 < $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
+		if ( 0 <= $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
 			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
 		}
 	}

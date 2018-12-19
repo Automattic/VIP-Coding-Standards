@@ -12,13 +12,12 @@ namespace WordPressVIPMinimum\Sniffs\VIP;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
-use PHP_CodeSniffer\Util;
 
 /**
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
  * for VIP devs to flush related caches in order to make the change actually happen in production
  */
-class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniff implements \PHP_CodeSniffer_Sniff {
+class RobotstxtSniff implements Sniff {
 
 	/**
 	 * Returns the token types that this sniff is interested in.

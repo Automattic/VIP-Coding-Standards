@@ -24,11 +24,11 @@ class ServerVariablesSniff implements Sniff {
 	 * @var array
 	 */
 	public $restrictedVariables = array(
-		'authVariables' => array(
+		'authVariables'           => array(
 			'PHP_AUTH_USER' => true,
 			'PHP_AUTH_PW'   => true,
 		),
-		'userControlledVariables'  => array(
+		'userControlledVariables' => array(
 			'HTTP_X_IP_TRAIL'      => true,
 			'HTTP_X_FORWARDED_FOR' => true,
 			'REMOTE_ADDR'          => true,

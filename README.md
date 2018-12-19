@@ -13,10 +13,10 @@ The ruleset takes advantage of existing rules in the [WordPress-Coding-Standards
 
 Go to https://vip.wordpress.com/documentation/phpcs-review-feedback/ to learn about why various things are flagged as errors vs warnings and what the levels mean for us.
 
-# Installation
+## Installation
 
 
-First, make sure you have WPCS v1+ and PHPCS v3+ installed. If you do not, please refer to the [installation instructions for installing PHP CodeSniffer for WordPress.com VIP](https://vip.wordpress.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/)
+First, make sure you have WPCS 1.* and PHPCS v3+ installed. If you do not, please refer to the [installation instructions for installing PHP CodeSniffer for WordPress.com VIP](https://vip.wordpress.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/). Note that VIPCS does not currently work with the `develop` branch of WPCS.
 
 You will also find additional information at the [WordPress Coding Standards for PHP_CodeSniffer project](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards#installation).
 
@@ -24,15 +24,17 @@ Then, clone this repo to your local machine, and add the standard to PHPCodeSnif
 
 `phpcs --config-set installed_paths [/path/to/wpcsstandard],[path/to/vipcsstandard],etc`
 
-## Minimal requirements
+Alternatively, we recommend the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer), which handles the registration of all of the installed standards, so there is no need to set the `installed_paths` config value manually, for single or multiple standards.
 
-* [PHPCS v3](https://github.com/squizlabs/PHP_CodeSniffer/releases/tag/3.3.0)
-* [WPCS v1.0.0](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases/tag/1.0.0)
+### Minimal requirements
 
-# Setup note
+* [PHPCS 3+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
+* [WPCS 1.*](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
+
+### Setup note
 
 Should you wish to run both standards (WordPress.com VIP minimum standard & WordPress.com VIP coding standard), you can add both to PHPCS by running the following configuration command:
 
 `phpcs --config-set installed_paths [/path/to/standard],[path/to/standard]`
 
-(note the comma separating each standard)
+Note the comma separating each standard.
