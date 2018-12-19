@@ -175,4 +175,6 @@ include( 'non-php-file.svg' ); // NOK. Error. Including non-php file.
 
 echo file_get_contents( 'non-php-file.svg' ); // XSS OK. Preferred way of including SVG/CSS file. WP_Filesystem Warning.
 
+thisisasyntaxerror! // Bad. Error.
+
 ?> <!-- closing PHP tag should be omitted -->

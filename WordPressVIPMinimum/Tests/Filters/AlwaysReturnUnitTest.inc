@@ -101,3 +101,9 @@ if ( 1 === 1 ) {
 		return 'hello';
 	} );
 }
+
+add_filter( 'bad_example_closure_with_no_returns', function( $input ) {
+	$input = $input . ' hello!';
+
+	// But we never return _anywhere_
+}, 10, 2 );

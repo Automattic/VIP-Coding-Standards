@@ -59,8 +59,8 @@ class WindowSniff implements Sniff {
 			'port'     => true,
 			'password' => true,
 		],
-		'name'   => true,
-		'status' => true,
+		'name'     => true,
+		'status'   => true,
 	];
 
 	/**
@@ -90,7 +90,7 @@ class WindowSniff implements Sniff {
 		}
 
 		$nextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
-		$nextToken = $tokens[ $nextTokenPtr ]['code'];
+		$nextToken    = $tokens[ $nextTokenPtr ]['code'];
 		if ( T_OBJECT_OPERATOR !== $nextToken && T_OPEN_SQUARE_BRACKET !== $nextToken ) {
 			// No . or [' next, bail.
 			return;
@@ -109,7 +109,7 @@ class WindowSniff implements Sniff {
 		}
 
 		$nextNextNextTokenPtr = $phpcsFile->findNext( array_merge( [ T_CLOSE_SQUARE_BRACKET ], Tokens::$emptyTokens ), ( $nextNextTokenPtr + 1 ), null, true, null, true );
-		$nextNextNextToken = $tokens[ $nextNextNextTokenPtr ]['code'];
+		$nextNextNextToken    = $tokens[ $nextNextNextTokenPtr ]['code'];
 
 		$nextNextNextNextToken = false;
 		if ( T_OBJECT_OPERATOR === $nextNextNextToken || T_OPEN_SQUARE_BRACKET === $nextNextNextToken ) {
@@ -126,7 +126,7 @@ class WindowSniff implements Sniff {
 			}
 		}
 
-		$windowProperty = 'window.';
+		$windowProperty  = 'window.';
 		$windowProperty .= $nextNextNextNextToken ? $nextNextToken . '.' . $nextNextNextNextToken : $nextNextToken;
 
 		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
