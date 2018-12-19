@@ -193,8 +193,22 @@ class AlwaysReturnSniff implements Sniff {
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
-		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
+		$argPtr = $this->phpcsFile->findNext(
+			array_merge( Tokens::$emptyTokens, [ T_STRING, T_OPEN_PARENTHESIS ] ), // types.
+			$stackPtr + 1, // start.
+			null, // end.
+			true, // exclude.
+			null, // value.
+			true // local.
+		);
 
+		// If arg is being passed by reference, we can skip.
+		if ( T_BITWISE_AND === $this->tokens[ $argPtr ][ 'code' ] ) {
+			return;
+		}
+
+		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
+	
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
