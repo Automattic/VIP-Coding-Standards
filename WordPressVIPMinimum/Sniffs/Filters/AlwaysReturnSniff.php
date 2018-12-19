@@ -7,15 +7,16 @@
 
 namespace WordPressVIPMinimum\Sniffs\Filters;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff validates that filters always return a value
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class AlwaysReturnSniff implements \PHP_CodeSniffer_Sniff {
+class AlwaysReturnSniff implements Sniff {
 
 	/**
 	 * The tokens of the phpcsFile.
