@@ -203,12 +203,12 @@ class AlwaysReturnSniff implements Sniff {
 		);
 
 		// If arg is being passed by reference, we can skip.
-		if ( T_BITWISE_AND === $this->tokens[ $argPtr ][ 'code' ] ) {
+		if ( T_BITWISE_AND === $this->tokens[ $argPtr ]['code'] ) {
 			return;
 		}
 
 		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
-	
+
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
