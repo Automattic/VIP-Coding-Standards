@@ -9,6 +9,7 @@ namespace WordPressVIPMinimum\Sniffs\VIP;
 
 use WordPress\AbstractFunctionRestrictionsSniff;
 use WordPress\AbstractFunctionRestrictionSniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Restricts usage of some functions in VIP context.
@@ -63,11 +64,21 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				),
 			),
 			// @link WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#flush_rewrite_rules
-			'rewrite_rules' => array(
+			'flush_rewrite_rules' => array(
 				'type'      => 'error',
 				'message'   => '`%s` should not be used in any normal circumstances in the theme code.',
 				'functions' => array(
 					'flush_rewrite_rules',
+				),
+			),
+			'flush_rules' => array(
+				'type'      => 'error',
+				'message'   => '`%s` should not be used in any normal circumstances in the theme code.',
+				'functions' => array(
+					'flush_rules',
+				),
+				'class'     => array(
+					'$wp_rewrite' => true,
 				),
 			),
 			'attachment_url_to_postid' => array(
@@ -243,5 +254,50 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 		}
 
 		return $groups;
+	}
+
+	/**
+	 * Verify is the current token is a function call.
+	 *
+	 * @param int $stackPtr The position of the current token in the stack.
+	 *
+	 * @return bool
+	 */
+	public function is_targetted_token( $stackPtr ) {
+		// Exclude function definitions, class methods, and namespaced calls.
+		if ( \T_STRING === $this->tokens[ $stackPtr ]['code'] && isset( $this->tokens[ ( $stackPtr - 1 ) ] ) ) {
+			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+			if ( false !== $prev ) {
+				// Check to see if function is part of specific classes.
+				if ( ! empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['class'] ) ) {
+					$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 2 ), null, true );
+					if ( \T_OBJECT_OPERATOR === $this->tokens[ $prev ]['code'] && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['class'][ $this->tokens[ $prevPrev ]['content'] ] ) ) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+				// Skip sniffing if calling a same-named method, or on function definitions.
+				$skipped = array(
+					\T_FUNCTION        => \T_FUNCTION,
+					\T_CLASS           => \T_CLASS,
+					\T_AS              => \T_AS, // Use declaration alias.
+					\T_DOUBLE_COLON    => \T_DOUBLE_COLON,
+					\T_OBJECT_OPERATOR => \T_OBJECT_OPERATOR,
+				);
+				if ( isset( $skipped[ $this->tokens[ $prev ]['code'] ] ) ) {
+					return false;
+				}
+				// Skip namespaced functions, ie: \foo\bar() not \bar().
+				if ( \T_NS_SEPARATOR === $this->tokens[ $prev ]['code'] ) {
+					$pprev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $prev - 1 ), null, true );
+					if ( false !== $pprev && \T_STRING === $this->tokens[ $pprev ]['code'] ) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }

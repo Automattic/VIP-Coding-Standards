@@ -45,9 +45,9 @@ flush_rewrite_rules(); // Error.
 wpcom_vip_attachment_url_to_postid( $url ); // Ok - VIP recommended version of attachment_url_to_postid().
 attachment_url_to_postid( $url ); // Error.
 
-
-
-
+flush_rules(); // Ok - not in global class.
+$wp_write->flush_rules(); // Ok - not in global class $wp_rewrite.
+$wp_rewrite->flush_rules(); // Error.
 
 db_delta(); // Ok - similarly-named function to dbDelta().
 dbDelta(); // Error.
