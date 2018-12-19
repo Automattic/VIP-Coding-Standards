@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the RobotstxtSniff sniff.
  */
-class WordPressVIPMinimum_Sniffs_VIP_RobotstxtSniffUnitTest extends AbstractSniffUnitTest {
+class RobotstxtSniffUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
