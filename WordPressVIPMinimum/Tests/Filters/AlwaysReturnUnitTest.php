@@ -21,7 +21,13 @@ class AlwaysReturnUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array();
+		return [
+			15  => 1,
+			49  => 1,
+			88  => 1,
+			95  => 1,
+			105 => 1,
+		];
 	}
 
 	/**
@@ -30,13 +36,7 @@ class AlwaysReturnUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
-			15  => 1,
-			49  => 1,
-			88  => 1,
-			95  => 1,
-			105 => 1,
-		);
+		return [];
 	}
 
 }
