@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * This function generates an error when
@@ -23,7 +23,7 @@ use PHP_CodeSniffer_Tokens as Tokens;
  *
  * See here: http://php.net/manual/en/function.create-function.php
  */
-class CreateFunctionSniff implements \PHP_CodeSniffer_Sniff {
+class CreateFunctionSniff implements Sniff {
 	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
