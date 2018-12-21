@@ -74,7 +74,7 @@ class ConstantRestrictionsSniff implements Sniff {
 		}
 
 		if ( T_STRING === $tokens[ $stackPtr ]['code'] && true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
-			$phpcsFile->addWarning( sprintf( 'Code is touching the `%s` constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr, 'ConstantRestrictions' );
+			$phpcsFile->addWarning( sprintf( 'Code is touching the `%s` constant. Make sure it\'s used appropriately.', $constantName ), $stackPtr, 'UsingRestrictedConstant' );
 			return;
 		}
 
@@ -102,9 +102,9 @@ class ConstantRestrictionsSniff implements Sniff {
 
 		if ( true === in_array( $tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) ) {
 			if ( 'define' === $tokens[ $previous ]['content'] ) {
-				$phpcsFile->addError( sprintf( 'The definition of `%s` constant is prohibited. Please use a different name.', $constantName ), $previous, 'ConstantRestrictions' );
+				$phpcsFile->addError( sprintf( 'The definition of `%s` constant is prohibited. Please use a different name.', $constantName ), $previous, 'DefiningRestrictedConstant' );
 			} elseif ( true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
-				$phpcsFile->addWarning( sprintf( 'Code is touching the `%s` constant. Make sure it\'s used appropriately.', $constantName ), $previous, 'ConstantRestrictions' );
+				$phpcsFile->addWarning( sprintf( 'Code is touching the `%s` constant. Make sure it\'s used appropriately.', $constantName ), $previous, 'UsingRestrictedConstant' );
 			}
 		}
 	}
