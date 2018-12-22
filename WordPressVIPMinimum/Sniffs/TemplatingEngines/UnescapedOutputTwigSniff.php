@@ -56,7 +56,7 @@ class UnescapedOutputTwigSniff implements Sniff {
 
 		if ( 1 === preg_match( '/autoescape\s+false/', $tokens[ $stackPtr ]['content'] ) ) {
 			// Twig autoescape disabled.
-			$phpcsFile->addWarning( 'Found Twig autoescape disabling notation.', $stackPtr, 'autoescape false' );
+			$phpcsFile->addWarning( 'Found Twig autoescape disabling notation.', $stackPtr, 'AutoescapeFalse' );
 		}
 
 		if ( 1 === preg_match( '/\|\s*raw/', $tokens[ $stackPtr ]['content'] ) ) {
