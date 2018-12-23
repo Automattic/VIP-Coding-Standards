@@ -234,7 +234,7 @@ class AlwaysReturnSniff implements Sniff {
 				$this->phpcsFile->addError(
 					'Please, make sure that a callback to `%s` filter is returning void intentionally.',
 					$functionBodyScopeStart,
-					'voidReturn',
+					'VoidReturn',
 					[ $filterName ]
 				);
 			}
@@ -252,7 +252,7 @@ class AlwaysReturnSniff implements Sniff {
 			$this->phpcsFile->addError(
 				'Please, make sure that a callback to `%s` filter is always returning some value.',
 				$functionBodyScopeStart,
-				'missingReturnStatement',
+				'MissingReturnStatement',
 				[ $filterName ]
 			);
 		}

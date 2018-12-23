@@ -68,7 +68,7 @@ class UnescapedOutputMustacheSniff implements Sniff {
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{=' ) ) {
 			// Mustache delimiter change.
 			$new_delimiter = trim( str_replace( [ '{{=', '=}}' ], '', substr( $tokens[ $stackPtr ]['content'], 0, ( strpos( $tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) ) );
-			$phpcsFile->addWarning( sprintf( 'Found Mustache delimiter change notation. New delimiter is: %s', $new_delimiter ), $stackPtr, 'delimiterChange' );
+			$phpcsFile->addWarning( sprintf( 'Found Mustache delimiter change notation. New delimiter is: %s', $new_delimiter ), $stackPtr, 'DelimiterChange' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], 'SafeString' ) ) {

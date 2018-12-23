@@ -78,7 +78,7 @@ class ZoninatorSniff implements Sniff {
 		$version = $this->remove_wrapping_quotation_marks( $tokens[ $version ]['content'] );
 
 		if ( true === version_compare( $version, '0.8', '>=' ) ) {
-			$phpcsFile->addWarning( 'Zoninator of version >= v0.8 requires WordPress core REST API. Please, make sure the `wpcom_vip_load_wp_rest_api()` is being called on all sites loading this file.', $stackPtr, 'Zoninator' );
+			$phpcsFile->addWarning( 'Zoninator of version >= v0.8 requires WordPress core REST API. Please, make sure the `wpcom_vip_load_wp_rest_api()` is being called on all sites loading this file.', $stackPtr, 'RequiresRESTAPI' );
 		}
 	}
 

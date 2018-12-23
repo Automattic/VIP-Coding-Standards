@@ -61,7 +61,7 @@ class UnescapedOutputTwigSniff implements Sniff {
 
 		if ( 1 === preg_match( '/\|\s*raw/', $tokens[ $stackPtr ]['content'] ) ) {
 			// Twig default unescape filter.
-			$phpcsFile->addWarning( 'Found Twig default unescape filter: "|raw".', $stackPtr, 'raw' );
+			$phpcsFile->addWarning( 'Found Twig default unescape filter: "|raw".', $stackPtr, 'RawFound' );
 		}
 	}
 
