@@ -25,9 +25,9 @@ class EscapingVoidReturnFunctionsSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_STRING,
-		);
+		];
 	}
 
 	/**

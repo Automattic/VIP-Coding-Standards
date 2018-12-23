@@ -32,6 +32,9 @@
 
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
 
+	<!-- Disallow long array syntax -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
 	<!-- Check code for cross-version PHP compatibility. -->
 	<config name="testVersion" value="5.6-"/>
 	<rule ref="PHPCompatibility">

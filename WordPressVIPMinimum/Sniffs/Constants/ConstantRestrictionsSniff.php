@@ -24,19 +24,19 @@ class ConstantRestrictionsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $restrictedConstantNames = array(
+	public $restrictedConstantNames = [
 		'A8C_PROXIED_REQUEST',
-	);
+	];
 
 	/**
 	 * List of restricted constant declarations.
 	 *
 	 * @var array
 	 */
-	public $restrictedConstantDeclaration = array(
+	public $restrictedConstantDeclaration = [
 		'JETPACK_DEV_DEBUG',
 		'WP_CRON_CONTROL_SECRET',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -44,10 +44,10 @@ class ConstantRestrictionsSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CONSTANT_ENCAPSED_STRING,
 			T_STRING,
-		);
+		];
 	}
 
 	/**

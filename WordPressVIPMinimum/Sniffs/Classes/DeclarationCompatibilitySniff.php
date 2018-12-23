@@ -29,151 +29,151 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 *
 	 * @var string[]
 	 */
-	private $_functionList = array();
+	private $_functionList = [];
 
 	/**
 	 * A list of classes and methods to check.
 	 *
 	 * @var array
 	 */
-	public $checkClasses = array(
-		'WP_Widget' => array(
-			'widget'                => array( 'args', 'instance' ),
-			'update'                => array( 'new_instance', 'old_instance' ),
-			'form'                  => array( 'instance' ),
-			'WP_Widget'             => array(
+	public $checkClasses = [
+		'WP_Widget' => [
+			'widget'                => [ 'args', 'instance' ],
+			'update'                => [ 'new_instance', 'old_instance' ],
+			'form'                  => [ 'instance' ],
+			'WP_Widget'             => [
 				'id_base',
 				'name',
-				'widget_options'  => array(
+				'widget_options'  => [
 					'default' => 'array()',
-				),
-				'constol_options' => array(
+				],
+				'constol_options' => [
 					'default' => 'array()',
-				),
-			),
-			'get_field_name'        => array( 'field_name' ),
-			'get_field_id'          => array( 'field_name' ),
-			'_register'             => array(),
-			'_set'                  => array( 'number' ),
-			'_get_display_callback' => array(),
-			'_get_update_callback'  => array(),
-			'_get_form_callback'    => array(),
-			'is_preview'            => array(),
-			'display_callback'      => array(
+				],
+			],
+			'get_field_name'        => [ 'field_name' ],
+			'get_field_id'          => [ 'field_name' ],
+			'_register'             => [],
+			'_set'                  => [ 'number' ],
+			'_get_display_callback' => [],
+			'_get_update_callback'  => [],
+			'_get_form_callback'    => [],
+			'is_preview'            => [],
+			'display_callback'      => [
 				'args',
-				'widget_args' => array(
+				'widget_args' => [
 					'default' => '1',
-				),
-			),
-			'update_callback'       => array(
-				'deprecated' => array(
+				],
+			],
+			'update_callback'       => [
+				'deprecated' => [
 					'default' => '1',
-				),
-			),
-			'form_callback'         => array(
-				'widget_args' => array(
+				],
+			],
+			'form_callback'         => [
+				'widget_args' => [
 					'default' => '1',
-				),
-			),
-			'register_one'          => array(
-				'number' => array(
+				],
+			],
+			'register_one'          => [
+				'number' => [
 					'default' => '-1',
-				),
-			),
-			'save_settings'         => array( 'settings' ),
-			'get_settings'          => array(),
-		),
-		'Walker'    => array(
-			'start_lvl'                   => array(
-				'output' => array(
+				],
+			],
+			'save_settings'         => [ 'settings' ],
+			'get_settings'          => [],
+		],
+		'Walker'    => [
+			'start_lvl'                   => [
+				'output' => [
 					'pass_by_reference' => true,
-				),
-				'depth'  => array(
+				],
+				'depth'  => [
 					'default' => '0',
-				),
-				'args'   => array(
+				],
+				'args'   => [
 					'default' => 'array()',
-				),
-			),
-			'end_lvl'                     => array(
-				'output' => array(
+				],
+			],
+			'end_lvl'                     => [
+				'output' => [
 					'pass_by_reference' => true,
-				),
-				'depth'  => array(
+				],
+				'depth'  => [
 					'default' => '0',
-				),
-				'args'   => array(
+				],
+				'args'   => [
 					'default' => 'array()',
-				),
-			),
-			'start_el'                    => array(
-				'output'            => array(
+				],
+			],
+			'start_el'                    => [
+				'output'            => [
 					'pass_by_reference' => true,
-				),
+				],
 				'object',
-				'depth'             => array(
+				'depth'             => [
 					'default' => '0',
-				),
-				'args'              => array(
+				],
+				'args'              => [
 					'default' => 'array()',
-				),
-				'current_object_id' => array(
+				],
+				'current_object_id' => [
 					'default' => '0',
-				),
-			),
-			'end_el'                      => array(
-				'output' => array(
+				],
+			],
+			'end_el'                      => [
+				'output' => [
 					'pass_by_reference' => true,
-				),
+				],
 				'object',
-				'depth'  => array(
+				'depth'  => [
 					'default' => '0',
-				),
-				'args'   => array(
+				],
+				'args'   => [
 					'default' => 'array()',
-				),
-			),
-			'display_element'             => array(
+				],
+			],
+			'display_element'             => [
 				'element',
-				'children_elements' => array(
+				'children_elements' => [
 					'pass_by_reference' => true,
-				),
+				],
 				'max_depth',
 				'depth',
 				'args',
-				'output'            => array(
+				'output'            => [
 					'pass_by_reference' => true,
-				),
-			),
-			'walk'                        => array(
+				],
+			],
+			'walk'                        => [
 				'elements',
 				'max_depth',
-			),
-			'paged_walk'                  => array(
+			],
+			'paged_walk'                  => [
 				'elements',
 				'max_depth',
 				'page_num',
 				'per_page',
-			),
-			'get_number_of_root_elements' => array(
+			],
+			'get_number_of_root_elements' => [
 				'elements',
-			),
-			'unset_children'              => array(
+			],
+			'unset_children'              => [
 				'el',
-				'children_elements' => array(
+				'children_elements' => [
 					'pass_by_reference' => true,
-				),
-			),
-		),
-	);
+				],
+			],
+		],
+	];
 
 	/**
 	 * List of grouped classes with same methods (as they extend the same parent class)
 	 *
 	 * @var array
 	 */
-	public $checkClassesGroups = array(
-		'Walker' => array(
+	public $checkClassesGroups = [
+		'Walker' => [
 			'Walker_Category_Checklist',
 			'Walker_Category',
 			'Walker_CategoryDropdown',
@@ -181,14 +181,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			'Walker_Nav_Menu',
 			'Walker_Page',
 			'Walker_Comment',
-		),
-	);
+		],
+	];
 
 	/**
 	 * Constructs the test with the tokens it wishes to listen for.
 	 */
 	public function __construct() {
-		parent::__construct( array( T_CLASS ), array( T_FUNCTION ), true );
+		parent::__construct( [ T_CLASS ], [ T_FUNCTION ], true );
 	}
 
 	/**
@@ -310,7 +310,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 * @return array
 	 */
 	private function generateParamList( $methodSignature ) {
-		$paramList = array();
+		$paramList = [];
 		foreach ( $methodSignature as $param => $options ) {
 			$paramName = '$';
 			if ( false === is_array( $options ) ) {
@@ -347,7 +347,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 * @return void
 	 */
 	protected function loadFunctionNamesInScope( File $phpcsFile, $currScope ) {
-		$this->_functionList = array();
+		$this->_functionList = [];
 		$tokens              = $phpcsFile->getTokens();
 
 		for ( $i = ( $tokens[ $currScope ]['scope_opener'] + 1 ); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {

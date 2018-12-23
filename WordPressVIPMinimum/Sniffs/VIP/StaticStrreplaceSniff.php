@@ -52,7 +52,7 @@ class StaticStrreplaceSniff implements Sniff {
 
 		$next_start_ptr = $openBracket + 1;
 		for ( $i = 0; $i < 3; $i++ ) {
-			$param_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), $next_start_ptr, null, true );
+			$param_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $next_start_ptr, null, true );
 
 			if ( T_ARRAY === $tokens[ $param_ptr ]['code'] ) {
 				$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $param_ptr + 1 ), null, true );
@@ -63,13 +63,13 @@ class StaticStrreplaceSniff implements Sniff {
 				// Find the closing bracket.
 				$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
-				$array_item_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), ( $openBracket + 1 ), $closeBracket, true );
+				$array_item_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), ( $openBracket + 1 ), $closeBracket, true );
 				while ( false !== $array_item_ptr ) {
 
 					if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $array_item_ptr ]['code'] ) {
 						return;
 					}
-					$array_item_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), ( $array_item_ptr + 1 ), $closeBracket, true );
+					$array_item_ptr = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), ( $array_item_ptr + 1 ), $closeBracket, true );
 				}
 
 				$next_start_ptr = $closeBracket + 1;

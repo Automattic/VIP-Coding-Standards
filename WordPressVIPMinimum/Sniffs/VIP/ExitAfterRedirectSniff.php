@@ -50,7 +50,7 @@ class ExitAfterRedirectSniff implements Sniff {
 			return;
 		}
 
-		$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_SEMICOLON, T_CLOSE_PARENTHESIS ) ), ( $tokens[ $openBracket ]['parenthesis_closer'] + 1 ), null, true );
+		$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_SEMICOLON, T_CLOSE_PARENTHESIS ] ), ( $tokens[ $openBracket ]['parenthesis_closer'] + 1 ), null, true );
 
 		if ( T_OPEN_CURLY_BRACKET === $tokens[ $next_token ]['code'] ) {
 			$is_exit_in_scope = false;

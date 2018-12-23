@@ -24,7 +24,7 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $whitelistes_batcache_params = array(
+	public $whitelistes_batcache_params = [
 		'hpt',
 		'eref',
 		'iref',
@@ -69,7 +69,7 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 		'__rmid',
 		'sr_share',
 		'ia_share_url',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -77,7 +77,7 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array( T_VARIABLE );
+		return [ T_VARIABLE ];
 	}
 
 	/**
@@ -96,7 +96,7 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 			return;
 		}
 
-		$key = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_OPEN_SQUARE_BRACKET ) ), ( $stackPtr + 1 ), null, true );
+		$key = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_OPEN_SQUARE_BRACKET ] ), ( $stackPtr + 1 ), null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $key ]['code'] ) {
 			return;

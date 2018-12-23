@@ -23,17 +23,17 @@ class ServerVariablesSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $restrictedVariables = array(
-		'authVariables'           => array(
+	public $restrictedVariables = [
+		'authVariables'           => [
 			'PHP_AUTH_USER' => true,
 			'PHP_AUTH_PW'   => true,
-		),
-		'userControlledVariables' => array(
+		],
+		'userControlledVariables' => [
 			'HTTP_X_IP_TRAIL'      => true,
 			'HTTP_X_FORWARDED_FOR' => true,
 			'REMOTE_ADDR'          => true,
-		),
-	);
+		],
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -41,9 +41,9 @@ class ServerVariablesSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_VARIABLE,
-		);
+		];
 	}
 
 	/**
@@ -63,8 +63,8 @@ class ServerVariablesSniff implements Sniff {
 			return;
 		}
 
-		$variableNamePtr = $phpcsFile->findNext( array( T_CONSTANT_ENCAPSED_STRING ), ( $stackPtr + 1 ), null, false, null, true );
-		$variableName    = str_replace( array( "'", '"' ), '', $tokens[ $variableNamePtr ]['content'] );
+		$variableNamePtr = $phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], ( $stackPtr + 1 ), null, false, null, true );
+		$variableName    = str_replace( [ "'", '"' ], '', $tokens[ $variableNamePtr ]['content'] );
 
 		if ( isset( $this->restrictedVariables['authVariables'][ $variableName ] ) ) {
 			$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'BasicAuthentication' );

@@ -25,11 +25,11 @@ class MergeConflictSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'PHP',
 		'JS',
 		'CSS',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -37,11 +37,11 @@ class MergeConflictSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_SL,
 			T_ENCAPSED_AND_WHITESPACE,
 			T_IS_IDENTICAL,
-		);
+		];
 	}
 
 

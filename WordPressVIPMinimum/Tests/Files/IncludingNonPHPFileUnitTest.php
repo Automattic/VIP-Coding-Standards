@@ -21,7 +21,7 @@ class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			15 => 1,
 			17 => 1,
 			19 => 1,
@@ -39,7 +39,7 @@ class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 			45 => 1,
 			47 => 1,
 			49 => 1,
-		);
+		];
 	}
 
 	/**
@@ -48,7 +48,7 @@ class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

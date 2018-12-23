@@ -32,7 +32,7 @@ class DynamicCallsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	private $_blacklisted_functions = array(
+	private $_blacklisted_functions = [
 		'assert',
 		'compact',
 		'extract',
@@ -42,7 +42,7 @@ class DynamicCallsSniff implements Sniff {
 		'get_defined_vars',
 		'mb_parse_str',
 		'parse_str',
-	);
+	];
 
 	/**
 	 * Array of functions encountered, along with their values.
@@ -50,7 +50,7 @@ class DynamicCallsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	private $_variables_arr = array();
+	private $_variables_arr = [];
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -60,7 +60,7 @@ class DynamicCallsSniff implements Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return array( T_VARIABLE => T_VARIABLE );
+		return [ T_VARIABLE => T_VARIABLE ];
 	}
 
 	/**
@@ -115,7 +115,7 @@ class DynamicCallsSniff implements Sniff {
 		 */
 
 		$t_item_key = $this->_phpcsFile->findNext(
-			array( T_WHITESPACE ),
+			[ T_WHITESPACE ],
 			$this->_stackPtr + 1,
 			null,
 			true,
@@ -139,7 +139,7 @@ class DynamicCallsSniff implements Sniff {
 		 * Find encapsed string ( "" )
 		 */
 		$t_item_key = $this->_phpcsFile->findNext(
-			array( T_CONSTANT_ENCAPSED_STRING ),
+			[ T_CONSTANT_ENCAPSED_STRING ],
 			$t_item_key + 1,
 			null,
 			false,

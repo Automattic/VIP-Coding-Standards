@@ -24,10 +24,10 @@ class UnescapedOutputTwigSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'JS',
 		'PHP',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -35,11 +35,11 @@ class UnescapedOutputTwigSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CONSTANT_ENCAPSED_STRING,
 			T_INLINE_HTML,
 			T_HEREDOC,
-		);
+		];
 	}
 
 	/**

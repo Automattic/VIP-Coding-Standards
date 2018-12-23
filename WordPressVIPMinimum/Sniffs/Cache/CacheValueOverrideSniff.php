@@ -29,7 +29,7 @@ class CacheValueOverrideSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	private $_tokens = array();
+	private $_tokens = [];
 
 	/**
 	 * Returns the token types that this sniff is interested in.

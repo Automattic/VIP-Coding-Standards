@@ -25,21 +25,21 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $HTMLExecutingFunctions = array(
+	public $HTMLExecutingFunctions = [
 		'html',
 		'append',
 		'write',
 		'writeln',
-	);
+	];
 
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'JS',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -47,9 +47,9 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_STRING,
-		);
+		];
 	}
 
 	/**

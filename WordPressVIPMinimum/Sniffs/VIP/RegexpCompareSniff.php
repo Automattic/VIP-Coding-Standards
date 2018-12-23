@@ -31,15 +31,15 @@ class RegexpCompareSniff extends \WordPress\AbstractArrayAssignmentRestrictionsS
 	 * @return array
 	 */
 	public function getGroups() {
-		return array(
-			'compare' => array(
+		return [
+			'compare' => [
 				'type' => 'error',
-				'keys' => array(
+				'keys' => [
 					'compare',
 					'meta_compare',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
@@ -56,7 +56,7 @@ class RegexpCompareSniff extends \WordPress\AbstractArrayAssignmentRestrictionsS
 	public function callback( $key, $val, $line, $group ) {
 		if ( 0 === strpos( $val, 'NOT REGEXP' )
 			|| 0 === strpos( $val, 'REGEXP' )
-			|| true === in_array( $val, array( 'REGEXP', 'NOT REGEXP' ), true )
+			|| true === in_array( $val, [ 'REGEXP', 'NOT REGEXP' ], true )
 		) {
 			return 'Detected regular expression comparison. `%s` is set to `%s`.';
 		}

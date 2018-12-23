@@ -25,9 +25,9 @@ class WindowSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'JS',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

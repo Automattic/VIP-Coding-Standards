@@ -27,40 +27,40 @@ class CheckReturnValueSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	private $_tokens = array();
+	private $_tokens = [];
 
 	/**
 	 * Pairs we are about to check.
 	 *
 	 * @var array
 	 */
-	public $catch = array(
-		'esc_url'          => array(
+	public $catch = [
+		'esc_url'          => [
 			'get_term_link',
-		),
-		'wp_list_pluck'    => array(
+		],
+		'wp_list_pluck'    => [
 			'get_the_tags',
 			'get_the_terms',
-		),
-		'foreach'          => array(
+		],
+		'foreach'          => [
 			'get_post_meta',
 			'get_term_meta',
 			'get_the_terms',
 			'get_the_tags',
-		),
-		'array_key_exists' => array(
+		],
+		'array_key_exists' => [
 			'get_option',
-		),
-	);
+		],
+	];
 
 	/**
 	 * Tokens we are about to examine, which are not functions.
 	 *
 	 * @var array
 	 */
-	public $notFunctions = array(
+	public $notFunctions = [
 		'foreach' => T_FOREACH,
-	);
+	];
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -213,7 +213,7 @@ class CheckReturnValueSniff implements Sniff {
 
 		$isFunctionWeLookFor = false;
 
-		$callees = array();
+		$callees = [];
 
 		foreach ( $this->catch as $callee => $checkReturnArray ) {
 			if ( true === in_array( $functionName, $checkReturnArray, true ) ) {
@@ -248,9 +248,9 @@ class CheckReturnValueSniff implements Sniff {
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
-		if ( true === in_array( $functionName, array( 'get_post_meta', 'get_term_meta' ), true ) ) {
+		if ( true === in_array( $functionName, [ 'get_post_meta', 'get_term_meta' ], true ) ) {
 			// Since the get_post_meta and get_term_meta always returns an array if $single is set to `true` we need to check for the value of it's third param before proceeding.
-			$params       = array();
+			$params       = [];
 			$paramNo      = 1;
 			$prevCommaPos = $openBracket + 1;
 
@@ -261,12 +261,12 @@ class CheckReturnValueSniff implements Sniff {
 				}
 
 				if ( T_COMMA === $tokens[ $i ]['code'] ) {
-					$params[ $paramNo++ ] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), array( $this, 'reduce_array' ) ) );
+					$params[ $paramNo++ ] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), [ $this, 'reduce_array' ] ) );
 					$prevCommaPos         = $i + 1;
 				}
 
 				if ( $i === $closeBracket ) {
-					$params[ $paramNo ] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), array( $this, 'reduce_array' ) ) );
+					$params[ $paramNo ] = trim( array_reduce( array_slice( $tokens, $prevCommaPos, $i - $prevCommaPos ), [ $this, 'reduce_array' ] ) );
 					break;
 				}
 			}
@@ -291,7 +291,7 @@ class CheckReturnValueSniff implements Sniff {
 		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ( $nextVariableOccurrence - 1 ), null, true );
 
 		foreach ( $callees as $callee ) {
-			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : array();
+			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : [];
 			// Check whether the found token is one of the function calls (or foreach call) we are interested in.
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				&& $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
@@ -300,7 +300,7 @@ class CheckReturnValueSniff implements Sniff {
 				return;
 			}
 
-			$search = array_merge( Tokens::$emptyTokens, array( T_EQUAL ) );
+			$search = array_merge( Tokens::$emptyTokens, [ T_EQUAL ] );
 			$next   = $phpcsFile->findNext( $search, ( $nextVariableOccurrence + 1 ), null, true, null, false );
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee

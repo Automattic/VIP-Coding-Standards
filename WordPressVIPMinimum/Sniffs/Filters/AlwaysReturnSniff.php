@@ -70,7 +70,7 @@ class AlwaysReturnSniff implements Sniff {
 		}
 
 		$this->filterNamePtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
+			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ), // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -84,7 +84,7 @@ class AlwaysReturnSniff implements Sniff {
 		}
 
 		$callbackPtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), // types.
+			array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), // types.
 			$this->filterNamePtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -174,7 +174,7 @@ class AlwaysReturnSniff implements Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( $functionStackPtr = $this->phpcsFile->findNext( array( T_FUNCTION ), $offset, $end, false, null, false ) ) {
+		while ( $functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false ) ) {
 			$functionNamePtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
 			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] ) {
 				if ( $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
@@ -213,7 +213,7 @@ class AlwaysReturnSniff implements Sniff {
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
 		$returnTokenPtr = $this->phpcsFile->findNext(
-			array( T_RETURN ), // types.
+			[ T_RETURN ], // types.
 			( $functionBodyScopeStart + 1 ), // start.
 			$functionBodyScopeEnd, // end.
 			false, // exclude.
@@ -239,7 +239,7 @@ class AlwaysReturnSniff implements Sniff {
 				);
 			}
 			$returnTokenPtr = $this->phpcsFile->findNext(
-				array( T_RETURN ), // types.
+				[ T_RETURN ], // types.
 				( $returnTokenPtr + 1 ), // start.
 				$functionBodyScopeEnd, // end.
 				false, // exclude.
@@ -304,7 +304,7 @@ class AlwaysReturnSniff implements Sniff {
 	private function isReturningVoid( $stackPtr ) {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
-			array( Tokens::$emptyTokens ), // types.
+			[ Tokens::$emptyTokens ], // types.
 			( $stackPtr + 1 ), // start.
 			null, // end.
 			true, // exclude.

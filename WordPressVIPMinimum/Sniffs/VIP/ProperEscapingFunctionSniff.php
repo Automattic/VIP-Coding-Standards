@@ -24,11 +24,11 @@ class ProperEscapingFunctionSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $escaping_functions = array(
+	public $escaping_functions = [
 		'esc_url',
 		'esc_attr',
 		'esc_html',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -103,13 +103,13 @@ class ProperEscapingFunctionSniff implements Sniff {
 	 */
 	public function is_href_or_src( $content ) {
 		$is_href_or_src = false;
-		foreach ( array( 'href', 'src', 'url' ) as $attr ) {
-			foreach ( array(
+		foreach ( [ 'href', 'src', 'url' ] as $attr ) {
+			foreach ( [
 				'="',
 				"='",
 				'=\'"', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
 				'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-			) as $ending ) {
+			] as $ending ) {
 				if ( true === $this->endswith( $content, $attr . $ending ) ) {
 					$is_href_or_src = true;
 					break;
@@ -128,12 +128,12 @@ class ProperEscapingFunctionSniff implements Sniff {
 	 */
 	public function is_html_attr( $content ) {
 		$is_html_attr = false;
-		foreach ( array(
+		foreach ( [
 			'="',
 			"='",
 			'=\'"', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
 			'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-		) as $ending ) {
+		] as $ending ) {
 			if ( true === $this->endswith( $content, $ending ) ) {
 				$is_html_attr = true;
 				break;

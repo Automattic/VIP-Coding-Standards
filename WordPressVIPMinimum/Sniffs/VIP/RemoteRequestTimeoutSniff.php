@@ -31,14 +31,14 @@ class RemoteRequestTimeoutSniff extends \WordPress\AbstractArrayAssignmentRestri
 	 * @return array
 	 */
 	public function getGroups() {
-		return array(
-			'timeout' => array(
+		return [
+			'timeout' => [
 				'type' => 'error',
-				'keys' => array(
+				'keys' => [
 					'timeout',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**
