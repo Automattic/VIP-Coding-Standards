@@ -63,7 +63,8 @@ class RobotstxtSniff implements Sniff {
 		}
 
 		if ( 'do_robotstxt' === substr( $tokens[ $actionNamePtr ]['content'], 1, -1 ) ) {
-			$phpcsFile->addWarning( 'Internal note: remember to flush robots.txt nginx cache after deploying this revision', $stackPtr, 'DoRobotsTxtFound' );
+			$message = 'Internal note: remember to flush robots.txt NGINX cache after deploying this revision.';
+			$phpcsFile->addWarning( $message, $stackPtr, 'DoRobotsTxtFound' );
 		}
 	}
 }

@@ -71,7 +71,9 @@ class DangerouslySetInnerHTMLSniff implements Sniff {
 			return;
 		}
 
-		$phpcsFile->addError( sprintf( "Any HTML passed to `%s` gets executed. Please make sure it's properly escaped.", $tokens[ $stackPtr ]['content'] ), $stackPtr, 'Found' );
+		$message = "Any HTML passed to `%s` gets executed. Please make sure it's properly escaped.";
+		$data    = [ $tokens[ $stackPtr ]['content'] ];
+		$phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 	}
 
 }

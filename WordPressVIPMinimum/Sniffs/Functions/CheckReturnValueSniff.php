@@ -63,6 +63,13 @@ class CheckReturnValueSniff implements Sniff {
 	];
 
 	/**
+	 * The file where the token was found.
+	 *
+	 * @var File
+	 */
+	private $_phpcsFile;
+
+	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
 	 * @return array(int)
@@ -74,9 +81,9 @@ class CheckReturnValueSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-	 * @param int                         $stackPtr  The position in the stack where
-	 *                                               the token was found.
+	 * @param File $phpcsFile The file where the token was found.
+	 * @param int  $stackPtr  The position in the stack where
+	 *                        the token was found.
 	 *
 	 * @return void
 	 */
@@ -188,7 +195,9 @@ class CheckReturnValueSniff implements Sniff {
 		$next      = $phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
 			if ( true === in_array( $tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
-				$phpcsFile->addError( sprintf( "`%s`'s return type must be checked before calling `%s` using that value", $tokens[ $next ]['content'], $functionName ), $next, 'DirectFunctionCall' );
+				$message = "`%s`'s return type must be checked before calling `%s` using that value.";
+				$data    = [ $tokens[ $next ]['content'], $functionName ];
+				$phpcsFile->addError( $message, $next, 'DirectFunctionCall', $data );
 			}
 			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true );
 		}
@@ -296,7 +305,7 @@ class CheckReturnValueSniff implements Sniff {
 			if ( true === in_array( $tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
 				&& $tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of `%s` must be checked before calling `%s()` using that variable', $variableName, $callee ), $nextFunctionCallWithVariable, 'NonCheckedVariable' );
+				$this->addNonCheckedVariableError( $nextFunctionCallWithVariable, $variableName, $callee );
 				return;
 			}
 
@@ -305,7 +314,7 @@ class CheckReturnValueSniff implements Sniff {
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {
-				$phpcsFile->addError( sprintf( 'Type of `%s` must be checked before calling `%s()` using that variable', $variableName, $callee ), $next, 'NonCheckedVariable' );
+				$this->addNonCheckedVariableError( $next, $variableName, $callee );
 				return;
 			}
 		}
@@ -321,6 +330,19 @@ class CheckReturnValueSniff implements Sniff {
 	 */
 	public function reduce_array( $carry, $item ) {
 		return $carry .= $item['content'];
+	}
+
+	/**
+	 * Consolidated violation.
+	 *
+	 * @param int    $stackPtr     The position in the stack where the token was found.
+	 * @param string $variableName Variable name.
+	 * @param string $callee       Function name.
+	 */
+	private function addNonCheckedVariableError( $stackPtr, $variableName, $callee ) {
+		$message = 'Type of `%s` must be checked before calling `%s()` using that variable.';
+		$data    = [ $variableName, $callee ];
+		$this->_phpcsFile->addError( $message, $stackPtr, 'NonCheckedVariable', $data );
 	}
 
 }

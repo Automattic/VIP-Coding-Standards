@@ -84,12 +84,16 @@ class ProperEscapingFunctionSniff implements Sniff {
 			return;
 		}
 
+		$data = [ $function_name ];
+
 		if ( 'esc_url' !== $function_name && $this->is_href_or_src( $tokens[ $html ]['content'] ) ) {
-			$phpcsFile->addError( sprintf( 'Wrong escaping function. href and src attributes should be escaped by `esc_url()`, not by `%s()`', $function_name ), $stackPtr, 'hrefSrcEscUrl' );
+			$message = 'Wrong escaping function. href and src attributes should be escaped by `esc_url()`, not by `%s()`.';
+			$phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
 		if ( 'esc_html' === $function_name && $this->is_html_attr( $tokens[ $html ]['content'] ) ) {
-			$phpcsFile->addError( sprintf( 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`', $function_name ), $stackPtr, 'htmlAttrNotByEscHTML' );
+			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
+			$phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
 		}
 	}

@@ -53,7 +53,7 @@ class RemoteRequestTimeoutSniff extends \WordPress\AbstractArrayAssignmentRestri
 	 *                       with custom error message passed to ->process().
 	 */
 	public function callback( $key, $val, $line, $group ) {
-		if ( intval( $val ) > 3 ) {
+		if ( (int) $val > 3 ) {
 			return 'Detected high remote request timeout. `%s` is set to `%d`.';
 		}
 	}

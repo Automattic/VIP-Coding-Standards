@@ -47,9 +47,8 @@ class MergeConflictSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token in the
-	 *                                               stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
@@ -65,20 +64,39 @@ class MergeConflictSniff implements Sniff {
 			if ( T_STRING !== $tokens[ $nextToken ]['code'] || '<<< HEAD' !== substr( $tokens[ $nextToken ]['content'], 0, 8 ) ) {
 				return;
 			}
-			$phpcsFile->addError( 'Merge conflict detected. Found "<<<<<<< HEAD" string.', $stackPtr, 'Start' );
+
+			$message = 'Merge conflict detected. Found "<<<<<<< HEAD" string.';
+			$phpcsFile->addError( $message, $stackPtr, 'Start' );
+
 			return;
 		} elseif ( T_ENCAPSED_AND_WHITESPACE === $tokens[ $stackPtr ]['code'] ) {
 			if ( '=======' === substr( $tokens[ $stackPtr ]['content'], 0, 7 ) ) {
-				$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'Separator' );
+				$this->addSeparatorError( $phpcsFile, $stackPtr );
+
 				return;
 			} elseif ( '>>>>>>>' === substr( $tokens[ $stackPtr ]['content'], 0, 7 ) ) {
-				$phpcsFile->addError( sprintf( 'Merge conflict detected. Found "%s" string.', trim( $tokens[ $stackPtr ]['content'] ) ), $stackPtr, 'End' );
+				$message = 'Merge conflict detected. Found "%s" string.';
+				$data    = [ trim( $tokens[ $stackPtr ]['content'] ) ];
+				$phpcsFile->addError( $message, $stackPtr, 'End', $data );
+
 				return;
 			}
 		} elseif ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ ( $stackPtr + 1 ) ]['code'] ) {
-			$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'Separator' );
+			$this->addSeparatorError( $phpcsFile, $stackPtr );
+
 			return;
 		}
+	}
+
+	/**
+	 * Consolidated violation.
+	 *
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 */
+	private function addSeparatorError( File $phpcsFile, $stackPtr ) {
+		$message = 'Merge conflict detected. Found "=======" string.';
+		$phpcsFile->addError( $message, $stackPtr, 'Separator' );
 	}
 
 }

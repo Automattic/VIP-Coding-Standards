@@ -45,9 +45,7 @@ class CreateFunctionSniff implements Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens    = $phpcsFile->getTokens();
-		$phpcsFile = $phpcsFile;
-		$stackPtr  = $stackPtr;
+		$tokens = $phpcsFile->getTokens();
 
 		$functionName = $phpcsFile->findNext(
 			T_STRING,
@@ -79,10 +77,7 @@ class CreateFunctionSniff implements Sniff {
 			return;
 		}
 
-		$phpcsFile->addError(
-			'create_function() is deprecated as of PHP 7.2.0.',
-			$functionName,
-			'CreateFunction'
-		);
+		$message = 'create_function() is deprecated as of PHP 7.2.0.';
+		$phpcsFile->addError( $message, $functionName, 'CreateFunction' );
 	}
 }

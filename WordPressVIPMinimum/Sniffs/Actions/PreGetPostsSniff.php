@@ -243,10 +243,10 @@ class PreGetPostsSniff implements Sniff {
 				}
 			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
 				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
-					$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
+					$this->addPreGetPostsWarning( $wpQueryVarUsed );
 				}
 			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
-				$this->_phpcsFile->addWarning( 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.', $wpQueryVarUsed, 'PreGetPosts' );
+				$this->addPreGetPostsWarning( $wpQueryVarUsed );
 			}
 			$wpQueryVarUsed = $this->_phpcsFile->findNext(
 				[ T_VARIABLE ], // types.
@@ -257,6 +257,16 @@ class PreGetPostsSniff implements Sniff {
 				false // local.
 			);
 		}
+	}
+
+	/**
+	 * Consolidated violation.
+	 *
+	 * @param int $stackPtr The position in the stack where the token was found.
+	 */
+	private function addPreGetPostsWarning( $stackPtr ) {
+		$message = 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.';
+		$this->_phpcsFile->addWarning( $message, $stackPtr, 'PreGetPosts' );
 	}
 
 	/**

@@ -231,12 +231,9 @@ class AlwaysReturnSniff implements Sniff {
 				$outsideConditionalReturn++;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
-				$this->phpcsFile->addError(
-					'Please, make sure that a callback to `%s` filter is returning void intentionally.',
-					$functionBodyScopeStart,
-					'VoidReturn',
-					[ $filterName ]
-				);
+				$message = 'Please, make sure that a callback to `%s` filter is returning void intentionally.';
+				$data    = [ $filterName ];
+				$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'VoidReturn', $data );
 			}
 			$returnTokenPtr = $this->phpcsFile->findNext(
 				[ T_RETURN ], // types.
@@ -249,12 +246,10 @@ class AlwaysReturnSniff implements Sniff {
 		}
 
 		if ( 0 <= $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
-			$this->phpcsFile->addError(
-				'Please, make sure that a callback to `%s` filter is always returning some value.',
-				$functionBodyScopeStart,
-				'MissingReturnStatement',
-				[ $filterName ]
-			);
+			$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
+			$data    = [ $filterName ];
+			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
+
 		}
 	}
 

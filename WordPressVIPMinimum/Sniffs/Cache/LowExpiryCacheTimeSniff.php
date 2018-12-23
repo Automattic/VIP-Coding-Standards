@@ -81,11 +81,9 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( $time < 300 ) {
-			$this->phpcsFile->addWarning(
-				sprintf( 'Low cache expiry time of "%s", it is recommended to have 300 seconds or more.', $parameters[4]['raw'] ),
-				$stackPtr,
-				'LowCacheTime'
-			);
+			$message = 'Low cache expiry time of "%s", it is recommended to have 300 seconds or more.';
+			$data    = [ $parameters[4]['raw'] ];
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'LowCacheTime', $data );
 		}
 	}
 }

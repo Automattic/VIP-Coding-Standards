@@ -63,35 +63,27 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		if ( 'filter_input' === $matched_content ) {
 			if ( 2 === count( $parameters ) ) {
-				$this->phpcsFile->addWarning(
-					sprintf( 'Missing third parameter for "%s".', $matched_content ),
-					$stackPtr,
-					'MissingThirdParameter'
-				);
+				$message = 'Missing third parameter for "%s".';
+				$data    = [ $matched_content ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingThirdParameter', $data );
 			}
 
 			if ( isset( $parameters[3] ) && isset( $this->restricted_filters[ $parameters[3]['raw'] ] ) ) {
-				$this->phpcsFile->addWarning(
-					sprintf( 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.', strtoupper( $parameters[3]['raw'] ) ),
-					$stackPtr,
-					'RestrictedFilter'
-				);
+				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
+				$data    = [ strtoupper( $parameters[3]['raw'] ) ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		} else {
 			if ( 1 === count( $parameters ) ) {
-				$this->phpcsFile->addWarning(
-					sprintf( 'Missing second parameter for "%s".', $matched_content ),
-					$stackPtr,
-					'MissingSecondParameter'
-				);
+				$message = 'Missing second parameter for "%s".';
+				$data    = [ $matched_content ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingSecondParameter', $data );
 			}
 
 			if ( isset( $parameters[2] ) && isset( $this->restricted_filters[ $parameters[2]['raw'] ] ) ) {
-				$this->phpcsFile->addWarning(
-					sprintf( 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see http://php.net/manual/en/filter.filters.sanitize.php.', strtoupper( $parameters[2]['raw'] ) ),
-					$stackPtr,
-					'RestrictedFilter'
-				);
+				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see http://php.net/manual/en/filter.filters.sanitize.php.';
+				$data    = [ strtoupper( $parameters[2]['raw'] ) ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		}
 	}
