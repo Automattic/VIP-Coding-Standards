@@ -57,12 +57,12 @@ class UnescapedOutputMustacheSniff implements Sniff {
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{{' ) || false !== strpos( $tokens[ $stackPtr ]['content'], '}}}' ) ) {
 			// Mustache unescaped output notation.
-			$phpcsFile->addWarning( 'Found Mustache unescaped output notation: "{{{}}}".', $stackPtr, '{{{' );
+			$phpcsFile->addWarning( 'Found Mustache unescaped output notation: "{{{}}}".', $stackPtr, 'OutputNotation' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{&' ) ) {
 			// Mustache unescaped variable notation.
-			$phpcsFile->addWarning( 'Found Mustache unescape variable notation: "{{&".', $stackPtr, '{{&' );
+			$phpcsFile->addWarning( 'Found Mustache unescape variable notation: "{{&".', $stackPtr, 'VariableNotation' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{=' ) ) {
