@@ -113,7 +113,11 @@ jobs:
       php: 7.2
       env: PHPCS_BRANCH="3.2.3"
 
-    # Only use PHPCS_BRANCH="dev-master" from this point.
+    # Only use PHPCS_BRANCH="dev-master" from this point, because PHPCS 3.3.1+ is needed to support PHP 7.3+
+    - stage: test
+      php: 7.3
+      env: PHPCS_BRANCH="dev-master"
+
     - stage: test
       php: nightly
       env: PHPCS_BRANCH="dev-master"
