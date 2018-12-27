@@ -22,13 +22,13 @@ class CheckReturnValueUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			5  => 1,
 			9  => 1,
 			16 => 1,
 			19 => 1,
 			23 => 1,
-		);
+		];
 	}
 
 	/**
@@ -37,7 +37,7 @@ class CheckReturnValueUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

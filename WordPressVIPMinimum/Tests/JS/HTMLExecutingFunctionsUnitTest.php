@@ -22,7 +22,7 @@ class HTMLExecutingFunctionsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -31,14 +31,14 @@ class HTMLExecutingFunctionsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
+		return [
 			5  => 1,
 			6  => 1,
 			7  => 1,
 			9  => 1,
 			11 => 1,
 			12 => 1,
-		);
+		];
 	}
 
 }

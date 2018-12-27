@@ -127,7 +127,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 				return;
 			}
 
-			$nextNextToken = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_COMMENT ) ), ( $nextToken + 1 ), null, true, null, true );
+			$nextNextToken = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMENT ] ), ( $nextToken + 1 ), null, true, null, true );
 			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) && T_OPEN_PARENTHESIS !== $tokens[ $nextNextToken ]['code'] ) {
 				// The construct is using custom constant, which needs manual inspection.
 				$this->phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'UsingCustomConstant' );

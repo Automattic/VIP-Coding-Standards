@@ -24,19 +24,19 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $option_functions = array(
+	public $option_functions = [
 		'get_option',
 		'add_option',
 		'update_option',
 		'delete_option',
-	);
+	];
 
 	/**
 	 * List of possible variable names holding term ID.
 	 *
 	 * @var array
 	 */
-	public $taxonomy_term_patterns = array(
+	public $taxonomy_term_patterns = [
 		'category_id',
 		'cat_id',
 		'cat',
@@ -44,7 +44,7 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 		'term',
 		'tag_id',
 		'tag',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

@@ -22,9 +22,9 @@ class StringConcatUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			4 => 2,
-		);
+		];
 	}
 
 	/**
@@ -33,7 +33,7 @@ class StringConcatUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

@@ -25,9 +25,9 @@ class StrippingTagsSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'JS',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -35,9 +35,9 @@ class StrippingTagsSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_STRING,
-		);
+		];
 	}
 
 

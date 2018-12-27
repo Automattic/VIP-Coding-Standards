@@ -24,10 +24,10 @@ class UnescapedOutputMustacheSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'JS',
 		'PHP',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -35,12 +35,12 @@ class UnescapedOutputMustacheSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CONSTANT_ENCAPSED_STRING,
 			T_STRING,
 			T_INLINE_HTML,
 			T_HEREDOC,
-		);
+		];
 	}
 
 	/**
@@ -67,7 +67,7 @@ class UnescapedOutputMustacheSniff implements Sniff {
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{=' ) ) {
 			// Mustache delimiter change.
-			$new_delimiter = trim( str_replace( array( '{{=', '=}}' ), '', substr( $tokens[ $stackPtr ]['content'], 0, ( strpos( $tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) ) );
+			$new_delimiter = trim( str_replace( [ '{{=', '=}}' ], '', substr( $tokens[ $stackPtr ]['content'], 0, ( strpos( $tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) ) );
 			$phpcsFile->addWarning( sprintf( 'Found Mustache delimiter change notation. New delimiter is: %s', $new_delimiter ), $stackPtr, 'delimiterChange' );
 		}
 

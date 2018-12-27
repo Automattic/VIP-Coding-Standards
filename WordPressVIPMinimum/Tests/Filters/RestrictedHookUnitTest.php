@@ -23,7 +23,7 @@ class RestrictedHookUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -32,7 +32,7 @@ class RestrictedHookUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
+		return [
 			7  => 1,
 			8  => 1,
 			9  => 1,
@@ -46,7 +46,7 @@ class RestrictedHookUnitTest extends AbstractSniffUnitTest {
 			19 => 1,
 			20 => 1,
 			21 => 1,
-		);
+		];
 	}
 
 }

@@ -25,9 +25,9 @@ class WPQueryParamsSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CONSTANT_ENCAPSED_STRING,
-		);
+		];
 	}
 
 	/**
@@ -44,7 +44,7 @@ class WPQueryParamsSniff implements Sniff {
 
 		if ( 'suppress_filters' === trim( $tokens[ $stackPtr ]['content'], '\'' ) ) {
 
-			$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, array( T_EQUAL, T_CLOSE_SQUARE_BRACKET, T_DOUBLE_ARROW ) ), ( $stackPtr + 1 ), null, true );
+			$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_EQUAL, T_CLOSE_SQUARE_BRACKET, T_DOUBLE_ARROW ] ), ( $stackPtr + 1 ), null, true );
 
 			if ( T_TRUE === $tokens[ $next_token ]['code'] ) {
 				// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/uncached-functions/.
