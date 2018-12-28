@@ -1,6 +1,6 @@
 <?php
 /**
- * WordPress-VIP-Minimum Coding Standard.
+ * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
