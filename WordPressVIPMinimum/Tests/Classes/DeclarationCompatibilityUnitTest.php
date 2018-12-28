@@ -22,7 +22,7 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			4   => 1,
 			7   => 1,
 			10  => 1,
@@ -46,7 +46,7 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 			112 => 1,
 			119 => 1,
 			128 => 1,
-		);
+		];
 	}
 
 	/**
@@ -55,7 +55,7 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

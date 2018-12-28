@@ -25,9 +25,9 @@ class ConstantStringSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_STRING,
-		);
+		];
 	}
 
 	/**
@@ -42,7 +42,7 @@ class ConstantStringSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		if ( false === in_array( $tokens[ $stackPtr ]['content'], array( 'define', 'defined' ), true ) ) {
+		if ( false === in_array( $tokens[ $stackPtr ]['content'], [ 'define', 'defined' ], true ) ) {
 			return;
 		}
 

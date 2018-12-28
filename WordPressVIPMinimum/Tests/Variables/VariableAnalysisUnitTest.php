@@ -22,7 +22,7 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array();
+		return [];
 	}
 
 	/**

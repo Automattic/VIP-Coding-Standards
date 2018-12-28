@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="VIP Coding Standards">
-	<description>The Coding standard for the VIP Coding Standards itself.</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="VIP Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+	<description>The custom ruleset for the VIP Coding Standards itself.</description>
 
 	<file>.</file>
 	<!-- Exclude Composer vendor directory. -->
@@ -31,6 +31,9 @@
 	</rule>
 
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
+
+	<!-- Disallow long array syntax -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
 	<!-- Check code for cross-version PHP compatibility. -->
 	<config name="testVersion" value="5.6-"/>

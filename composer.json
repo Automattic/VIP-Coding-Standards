@@ -20,17 +20,16 @@
 		"wp-coding-standards/wpcs": "1.*"
 	},
 	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
 		"phpcompatibility/php-compatibility": "^9",
 		"phpunit/phpunit": "*"
 	},
 	"suggest": {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.5 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
 	},
 	"minimum-stability": "RC",
 	"scripts": {
-		"post-install-cmd": "@install-codestandards",
-		"post-update-cmd": "@install-codestandards",
-		"install-codestandards": "\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility",
+		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"integration": "bin/integration-test",
 		"lint": [
 			"bin/php-lint",

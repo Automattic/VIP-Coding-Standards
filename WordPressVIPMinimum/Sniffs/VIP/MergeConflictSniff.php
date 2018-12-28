@@ -25,11 +25,11 @@ class MergeConflictSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'PHP',
 		'JS',
 		'CSS',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -37,11 +37,11 @@ class MergeConflictSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_SL,
 			T_ENCAPSED_AND_WHITESPACE,
 			T_IS_IDENTICAL,
-		);
+		];
 	}
 
 
@@ -66,18 +66,18 @@ class MergeConflictSniff implements Sniff {
 			if ( T_STRING !== $tokens[ $nextToken ]['code'] || '<<< HEAD' !== substr( $tokens[ $nextToken ]['content'], 0, 8 ) ) {
 				return;
 			}
-			$phpcsFile->addError( 'Merge conflict detected. Found "<<<<<<< HEAD" string.', $stackPtr, 'HEAD' );
+			$phpcsFile->addError( 'Merge conflict detected. Found "<<<<<<< HEAD" string.', $stackPtr, 'Start' );
 			return;
 		} elseif ( T_ENCAPSED_AND_WHITESPACE === $tokens[ $stackPtr ]['code'] ) {
 			if ( '=======' === substr( $tokens[ $stackPtr ]['content'], 0, 7 ) ) {
-				$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'DELIMITER' );
+				$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'Separator' );
 				return;
 			} elseif ( '>>>>>>>' === substr( $tokens[ $stackPtr ]['content'], 0, 7 ) ) {
-				$phpcsFile->addError( sprintf( 'Merge conflict detected. Found "%s" string.', trim( $tokens[ $stackPtr ]['content'] ) ), $stackPtr, 'DELIMITER' );
+				$phpcsFile->addError( sprintf( 'Merge conflict detected. Found "%s" string.', trim( $tokens[ $stackPtr ]['content'] ) ), $stackPtr, 'End' );
 				return;
 			}
 		} elseif ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ ( $stackPtr + 1 ) ]['code'] ) {
-			$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'DELIMITER' );
+			$phpcsFile->addError( 'Merge conflict detected. Found "=======" string.', $stackPtr, 'Separator' );
 			return;
 		}
 	}

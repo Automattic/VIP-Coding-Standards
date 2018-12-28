@@ -22,7 +22,7 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			3  => 1,
 			5  => 1,
 			15 => 1,
@@ -31,7 +31,7 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			33 => 1,
 			37 => 1,
-		);
+		];
 	}
 
 	/**
@@ -40,7 +40,7 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

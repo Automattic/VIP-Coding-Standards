@@ -26,15 +26,15 @@ class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {
 	 * @return array
 	 */
 	public function getGroups() {
-		return array(
-			'wp_cli' => array(
+		return [
+			'wp_cli' => [
 				'type'    => 'warning',
 				'message' => 'We recommend extending `WPCOM_VIP_CLI_Command` instead of `WP_CLI_Command` and using the helper functions available in it (such as `stop_the_insanity()`), see https://vip.wordpress.com/documentation/writing-bin-scripts/ for more information.',
-				'classes' => array(
+				'classes' => [
 					'WP_CLI_Command',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 	/**

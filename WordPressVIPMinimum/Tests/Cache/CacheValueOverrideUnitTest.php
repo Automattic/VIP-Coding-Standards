@@ -22,9 +22,9 @@ class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			5 => 1,
-		);
+		];
 	}
 
 	/**
@@ -33,7 +33,7 @@ class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

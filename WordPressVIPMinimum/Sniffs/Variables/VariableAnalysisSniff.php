@@ -861,10 +861,10 @@ class VariableAnalysisSniff implements Sniff {
 		if ( ( $tokens[$classNamePtr]['code'] === T_SELF ) ||
 			( $tokens[$classNamePtr]['code'] === T_STATIC ) ) {
 			if ( $tokens[$classNamePtr]['code'] === T_SELF ) {
-				$err_class = 'SelfOutsideClass';
+				$err_prefix = 'Self';
 				$err_desc  = 'self::';
 			} else {
-				$err_class = 'StaticOutsideClass';
+				$err_prefix = 'Static';
 				$err_desc  = 'static::';
 			}
 			if ( !empty( $token['conditions'] ) ) {
@@ -873,7 +873,7 @@ class VariableAnalysisSniff implements Sniff {
 					//  Note: have to fetch code from $tokens, T_CLOSURE isn't set for conditions codes.
 					if ( $tokens[$scopePtr]['code'] === T_CLOSURE ) {
 						$phpcsFile->addError( "Use of `{$err_desc}%s` inside closure.", $stackPtr,
-							$err_class,
+							$err_prefix . 'InsideClosure',
 							array( "\${$varName}" )
 						);
 						return true;
@@ -884,7 +884,7 @@ class VariableAnalysisSniff implements Sniff {
 				}
 			}
 			$phpcsFile->addError( "Use of `{$err_desc}%s` outside class definition.", $stackPtr,
-				$err_class,
+				$err_prefix . 'OutsideClass',
 				array( "\${$varName}" )
 			);
 			return true;

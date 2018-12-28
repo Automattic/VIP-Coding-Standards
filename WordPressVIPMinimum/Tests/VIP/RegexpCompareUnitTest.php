@@ -22,12 +22,12 @@ class RegexpCompareUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			10 => 1,
 			15 => 1,
 			30 => 1,
 			34 => 1,
-		);
+		];
 	}
 
 	/**
@@ -36,7 +36,7 @@ class RegexpCompareUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

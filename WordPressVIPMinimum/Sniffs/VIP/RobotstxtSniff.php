@@ -49,7 +49,7 @@ class RobotstxtSniff implements Sniff {
 		}
 
 		$actionNamePtr = $phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
+			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ), // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.

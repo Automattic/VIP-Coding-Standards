@@ -31,7 +31,7 @@ class PHPFilterFunctionsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
+		return [
 			18 => 1,
 			19 => 1,
 			20 => 1,
@@ -44,7 +44,7 @@ class PHPFilterFunctionsUnitTest extends AbstractSniffUnitTest {
 			27 => 1,
 			28 => 1,
 			29 => 1,
-		);
+		];
 	}
 
 }

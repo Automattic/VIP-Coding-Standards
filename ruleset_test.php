@@ -18,8 +18,8 @@
 namespace WordPressVIPMinimum;
 
 // Expected values.
-$expected = array(
-	'errors'   => array(
+$expected = [
+	'errors'   => [
 		4   => 1,
 		9   => 1,
 		16  => 1,
@@ -51,8 +51,8 @@ $expected = array(
 		170 => 1,
 		174 => 1,
 		178 => 1,
-	),
-	'warnings' => array(
+	],
+	'warnings' => [
 		9   => 1,
 		19  => 1,
 		23  => 1,
@@ -77,13 +77,13 @@ $expected = array(
 		164 => 1,
 		168 => 1,
 		172 => 1,
-	),
-	'messages' => array(
-		129 => array(
+	],
+	'messages' => [
+		129 => [
 			'`get_children()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `get_children()` will do a -1 query by default, a maximum of 100 should be used.',
-		),
-	),
-);
+		],
+	],
+];
 
 /**
  * Class PHPCS_Ruleset_Test
@@ -95,21 +95,21 @@ class PHPCS_Ruleset_Test {
 	 *
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * Numbers of Warnings for each line.
 	 *
 	 * @var array
 	 */
-	private $warnings = array();
+	private $warnings = [];
 
 	/**
 	 * Messages reported by PHPCS.
 	 *
 	 * @var array
 	 */
-	private $messages = array();
+	private $messages = [];
 
 	/**
 	 * Number of found issues.
@@ -123,14 +123,14 @@ class PHPCS_Ruleset_Test {
 	 *
 	 * @var array
 	 */
-	public $expected = array();
+	public $expected = [];
 
 	/**
 	 * Init the object by processing the test file.
 	 *
 	 * @param array $expected The array of expected errors, warnings and messages.
 	 */
-	public function __construct( $expected = array() ) {
+	public function __construct( $expected = [] ) {
 		$this->expected = $expected;
 
 		// Travis support.
@@ -157,7 +157,7 @@ class PHPCS_Ruleset_Test {
 				} else {
 					$this->warnings[ $issue['line'] ] = ( isset( $this->warnings[ $issue['line'] ] ) ) ? $this->warnings[ $issue['line'] ]++ : 1;
 				}
-				$this->messages[ $issue['line'] ] = ( false === isset( $this->messages[ $issue['line'] ] ) || false === is_array( $this->messages[ $issue['line'] ] ) ) ? array( $issue['message'] ) : array_merge( $this->messages[ $issue['line'] ], array( $issue['message'] ) );
+				$this->messages[ $issue['line'] ] = ( false === isset( $this->messages[ $issue['line'] ] ) || false === is_array( $this->messages[ $issue['line'] ] ) ) ? [ $issue['message'] ] : array_merge( $this->messages[ $issue['line'] ], [ $issue['message'] ] );
 			}
 		}
 	}
@@ -203,7 +203,7 @@ class PHPCS_Ruleset_Test {
 	 * Check whether there are no unexpected numbers of errors and warnings.
 	 */
 	private function check_unexpected_values() {
-		foreach ( array( 'errors', 'warnings' ) as $type ) {
+		foreach ( [ 'errors', 'warnings' ] as $type ) {
 			foreach ( $this->$type as $line => $number ) {
 				if ( false === isset( $expected[ $type ][ $line ] ) ) {
 					$this->error_warning_message( 0, $type, $number, $line );

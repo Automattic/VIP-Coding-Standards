@@ -22,11 +22,11 @@ class ConstantRestrictionsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			11 => 1,
 			13 => 1,
 			15 => 1,
-		);
+		];
 	}
 
 	/**
@@ -35,10 +35,10 @@ class ConstantRestrictionsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
+		return [
 			3 => 1,
 			7 => 2,
-		);
+		];
 	}
 
 }

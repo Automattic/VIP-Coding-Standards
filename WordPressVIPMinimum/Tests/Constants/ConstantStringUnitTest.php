@@ -22,10 +22,10 @@ class ConstantStringUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			7 => 1,
 			8 => 1,
-		);
+		];
 	}
 
 	/**
@@ -34,7 +34,7 @@ class ConstantStringUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 
 }

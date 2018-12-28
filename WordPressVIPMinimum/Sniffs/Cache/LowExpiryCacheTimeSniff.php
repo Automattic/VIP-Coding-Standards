@@ -44,14 +44,14 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @var array
 	 */
-	protected $wp_time_constants = array(
+	protected $wp_time_constants = [
 		'MINUTE_IN_SECONDS' => 60,
 		'HOUR_IN_SECONDS'   => 3600,
 		'DAY_IN_SECONDS'    => 86400,
 		'WEEK_IN_SECONDS'   => 604800,
 		'MONTH_IN_SECONDS'  => 2592000,
 		'YEAR_IN_SECONDS'   => 31536000,
-	);
+	];
 
 	/**
 	 * Process the parameters of a matched function.

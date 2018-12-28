@@ -24,10 +24,10 @@ class UnescapedOutputTwigSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $supportedTokenizers = array(
+	public $supportedTokenizers = [
 		'JS',
 		'PHP',
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -35,11 +35,11 @@ class UnescapedOutputTwigSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CONSTANT_ENCAPSED_STRING,
 			T_INLINE_HTML,
 			T_HEREDOC,
-		);
+		];
 	}
 
 	/**
@@ -56,7 +56,7 @@ class UnescapedOutputTwigSniff implements Sniff {
 
 		if ( 1 === preg_match( '/autoescape\s+false/', $tokens[ $stackPtr ]['content'] ) ) {
 			// Twig autoescape disabled.
-			$phpcsFile->addWarning( 'Found Twig autoescape disabling notation.', $stackPtr, 'autoescape false' );
+			$phpcsFile->addWarning( 'Found Twig autoescape disabling notation.', $stackPtr, 'AutoescapeFalse' );
 		}
 
 		if ( 1 === preg_match( '/\|\s*raw/', $tokens[ $stackPtr ]['content'] ) ) {

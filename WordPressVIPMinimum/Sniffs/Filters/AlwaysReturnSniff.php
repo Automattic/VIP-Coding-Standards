@@ -70,7 +70,7 @@ class AlwaysReturnSniff implements Sniff {
 		}
 
 		$this->filterNamePtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, array( T_OPEN_PARENTHESIS ) ), // types.
+			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ), // types.
 			$stackPtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -84,7 +84,7 @@ class AlwaysReturnSniff implements Sniff {
 		}
 
 		$callbackPtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, array( T_COMMA ) ), // types.
+			array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), // types.
 			$this->filterNamePtr + 1, // start.
 			null, // end.
 			true, // exclude.
@@ -174,7 +174,7 @@ class AlwaysReturnSniff implements Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( $functionStackPtr = $this->phpcsFile->findNext( array( T_FUNCTION ), $offset, $end, false, null, false ) ) {
+		while ( $functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false ) ) {
 			$functionNamePtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
 			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] ) {
 				if ( $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
@@ -193,13 +193,27 @@ class AlwaysReturnSniff implements Sniff {
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
+		$argPtr = $this->phpcsFile->findNext(
+			array_merge( Tokens::$emptyTokens, [ T_STRING, T_OPEN_PARENTHESIS ] ), // types.
+			$stackPtr + 1, // start.
+			null, // end.
+			true, // exclude.
+			null, // value.
+			true // local.
+		);
+
+		// If arg is being passed by reference, we can skip.
+		if ( T_BITWISE_AND === $this->tokens[ $argPtr ]['code'] ) {
+			return;
+		}
+
 		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
 		$returnTokenPtr = $this->phpcsFile->findNext(
-			array( T_RETURN ), // types.
+			[ T_RETURN ], // types.
 			( $functionBodyScopeStart + 1 ), // start.
 			$functionBodyScopeEnd, // end.
 			false, // exclude.
@@ -217,10 +231,15 @@ class AlwaysReturnSniff implements Sniff {
 				$outsideConditionalReturn++;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
-				$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is returning void intentionally.', $filterName ), $functionBodyScopeStart, 'voidReturn' );
+				$this->phpcsFile->addError(
+					'Please, make sure that a callback to `%s` filter is returning void intentionally.',
+					$functionBodyScopeStart,
+					'voidReturn',
+					[ $filterName ]
+				);
 			}
 			$returnTokenPtr = $this->phpcsFile->findNext(
-				array( T_RETURN ), // types.
+				[ T_RETURN ], // types.
 				( $returnTokenPtr + 1 ), // start.
 				$functionBodyScopeEnd, // end.
 				false, // exclude.
@@ -230,7 +249,12 @@ class AlwaysReturnSniff implements Sniff {
 		}
 
 		if ( 0 <= $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
-			$this->phpcsFile->AddWarning( sprintf( 'Please, make sure that a callback to `%s` filter is always returning some value.', $filterName ), $functionBodyScopeStart, 'missingReturnStatement' );
+			$this->phpcsFile->addError(
+				'Please, make sure that a callback to `%s` filter is always returning some value.',
+				$functionBodyScopeStart,
+				'missingReturnStatement',
+				[ $filterName ]
+			);
 		}
 	}
 
@@ -280,7 +304,7 @@ class AlwaysReturnSniff implements Sniff {
 	private function isReturningVoid( $stackPtr ) {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
-			array( Tokens::$emptyTokens ), // types.
+			[ Tokens::$emptyTokens ], // types.
 			( $stackPtr + 1 ), // start.
 			null, // end.
 			true, // exclude.

@@ -22,7 +22,7 @@ class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -31,7 +31,7 @@ class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array(
+		return [
 			8  => 1,
 			11 => 1,
 			29 => 1,
@@ -39,7 +39,7 @@ class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 			52 => 1,
 			57 => 1,
 			87 => 1,
-		);
+		];
 	}
 
 }
