@@ -74,12 +74,12 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				],
 			],
 			'flush_rules' => [
-				'type'      => 'error',
-				'message'   => '`%s` should not be used in any normal circumstances in the theme code.',
-				'functions' => [
+				'type'       => 'error',
+				'message'    => '`%s` should not be used in any normal circumstances in the theme code.',
+				'functions'  => [
 					'flush_rules',
 				],
-				'class'     => [
+				'object_var' => [
 					'$wp_rewrite' => true,
 				],
 			],
@@ -102,7 +102,8 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			'switch_to_blog' => [
 				'type'      => 'error',
 				'message'   => '%s() is not something you should ever need to do in a VIP theme context. Instead use an API (XML-RPC, REST) to interact with other sites if needed.',
-				'functions' => [ 'switch_to_blog',
+				'functions' => [
+					'switch_to_blog',
 				],
 			],
 			'get_page_by_title' => [
@@ -260,7 +261,11 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	}
 
 	/**
-	 * Verify the current token is a function call.
+	 * Verify the current token is a function call or a method call on a specific object variable.
+	 *
+	 * This differs to the parent class method that it overrides, by also checking to see if the
+	 * function call is actually a method call on a specific object variable. This works best with global objects,
+	 * such as the `flush_rules()` method on the `$wp_rewrite` object.
 	 *
 	 * @param int $stackPtr The position of the current token in the stack.
 	 *
@@ -271,15 +276,18 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 		if ( \T_STRING === $this->tokens[ $stackPtr ]['code'] && isset( $this->tokens[ ( $stackPtr - 1 ) ] ) ) {
 			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 			if ( false !== $prev ) {
-				// Check to see if function is part of specific classes.
-				if ( ! empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['class'] ) ) {
+
+				// Start difference to parent class method.
+				// Check to see if function is a method on a specific object variable.
+				if ( ! empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'] ) ) {
 					$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 2 ), null, true );
-					if ( \T_OBJECT_OPERATOR === $this->tokens[ $prev ]['code'] && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['class'][ $this->tokens[ $prevPrev ]['content'] ] ) ) {
+					if ( \T_OBJECT_OPERATOR === $this->tokens[ $prev ]['code'] && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] ) ) {
 						return true;
 					} else {
 						return false;
 					}
-				}
+				} // End difference to parent class method.
+
 				// Skip sniffing if calling a same-named method, or on function definitions.
 				$skipped = [
 					\T_FUNCTION        => \T_FUNCTION,
