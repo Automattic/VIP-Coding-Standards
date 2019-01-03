@@ -9,7 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
 
-use WordPress\AbstractVariableRestrictionsSniff;
+use WordPressVIPMinimum\Sniffs\AbstractVariableRestrictionsSniff;
 
 /**
  * Restricts usage of some variables in VIP context.
