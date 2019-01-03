@@ -1,8 +1,9 @@
 <?php
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
+ * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
  */
 
 namespace WordPressVIPMinimum\Sniffs\VIP;
@@ -12,8 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
- *
  * Looks for merge conflict residues in files.
  *
  * @package VIPCS\WordPressVIPMinimum
