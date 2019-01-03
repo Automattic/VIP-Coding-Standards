@@ -62,7 +62,7 @@ class UnescapedOutputUnderscorejsSniff implements Sniff {
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], 'interpolate' ) ) {
 			// Underscore.js unescaped output.
-			$phpcsFile->addWarning( 'Found Underscore.js delimiter change notation.', $stackPtr, 'interpolate' );
+			$phpcsFile->addWarning( 'Found Underscore.js delimiter change notation.', $stackPtr, 'InterpolateFound' );
 		}
 	}
 

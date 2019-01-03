@@ -41,7 +41,7 @@ class ErrorControlSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		$phpcsFile->addError( sprintf( 'The code shouldn\'t use error control operators (`%s`). The call should be wrapped in appropriate checks.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'ErrorControl' );
+		$phpcsFile->addError( sprintf( 'The code shouldn\'t use error control operators (`%s`). The call should be wrapped in appropriate checks.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'ErrorSilencingSignFound' );
 	}
 
 }

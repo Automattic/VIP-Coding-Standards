@@ -84,7 +84,7 @@ class InnerHTMLSniff implements Sniff {
 		}
 
 		if ( true === $foundVariable ) {
-			$phpcsFile->addWarning( sprintf( 'Any HTML passed to `%s` gets executed. Consider using `.textContent` or make sure that used variables are properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, $tokens[ $stackPtr ]['content'] );
+			$phpcsFile->addWarning( sprintf( 'Any HTML passed to `%s` gets executed. Consider using `.textContent` or make sure that used variables are properly escaped.', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'Found' );
 		}
 	}
 
