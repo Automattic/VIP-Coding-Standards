@@ -31,6 +31,13 @@
 	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition"/>
 	<rule ref="WordPress.PHP.StrictInArray"/>
 	<rule ref="WordPress.PHP.DontExtract"/>
+	<rule ref="WordPress.WP.CronInterval">
+		<properties>
+			<!-- Set to 900 (= 15 minutes), which is the requirement for the VIP platform. -->
+			<property name="min_interval" value="900"/>
+		</properties>
+	</rule>
+
 
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
