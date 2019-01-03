@@ -9,6 +9,7 @@ namespace WordPressVIPMinimum\Sniffs\VIP;
 
 use WordPress\AbstractFunctionRestrictionsSniff;
 use WordPress\AbstractFunctionRestrictionSniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Restricts usage of some functions in VIP context.
@@ -28,7 +29,9 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			'wp_cache_get_multi' => [
 				'type'      => 'error',
 				'message'   => '`%s` is not supported on the WordPress.com VIP platform.',
-				'functions' => [ 'wp_cache_get_multi' ],
+				'functions' => [
+					'wp_cache_get_multi',
+				],
 			],
 			'opcache' => [
 				'type'      => 'error',
@@ -63,11 +66,21 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				],
 			],
 			// @link WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#flush_rewrite_rules
-			'rewrite_rules' => [
+			'flush_rewrite_rules' => [
 				'type'      => 'error',
 				'message'   => '`%s` should not be used in any normal circumstances in the theme code.',
 				'functions' => [
 					'flush_rewrite_rules',
+				],
+			],
+			'flush_rules' => [
+				'type'       => 'error',
+				'message'    => '`%s` should not be used in any normal circumstances in the theme code.',
+				'functions'  => [
+					'flush_rules',
+				],
+				'object_var' => [
+					'$wp_rewrite' => true,
 				],
 			],
 			'attachment_url_to_postid' => [
@@ -89,7 +102,9 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			'switch_to_blog' => [
 				'type'      => 'error',
 				'message'   => '%s() is not something you should ever need to do in a VIP theme context. Instead use an API (XML-RPC, REST) to interact with other sites if needed.',
-				'functions' => [ 'switch_to_blog' ],
+				'functions' => [
+					'switch_to_blog',
+				],
 			],
 			'get_page_by_title' => [
 				'type'      => 'error',
@@ -243,5 +258,57 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 		}
 
 		return $groups;
+	}
+
+	/**
+	 * Verify the current token is a function call or a method call on a specific object variable.
+	 *
+	 * This differs to the parent class method that it overrides, by also checking to see if the
+	 * function call is actually a method call on a specific object variable. This works best with global objects,
+	 * such as the `flush_rules()` method on the `$wp_rewrite` object.
+	 *
+	 * @param int $stackPtr The position of the current token in the stack.
+	 *
+	 * @return bool
+	 */
+	public function is_targetted_token( $stackPtr ) {
+		// Exclude function definitions, class methods, and namespaced calls.
+		if ( \T_STRING === $this->tokens[ $stackPtr ]['code'] && isset( $this->tokens[ ( $stackPtr - 1 ) ] ) ) {
+			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+			if ( false !== $prev ) {
+
+				// Start difference to parent class method.
+				// Check to see if function is a method on a specific object variable.
+				if ( ! empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'] ) ) {
+					$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 2 ), null, true );
+					if ( \T_OBJECT_OPERATOR === $this->tokens[ $prev ]['code'] && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] ) ) {
+						return true;
+					} else {
+						return false;
+					}
+				} // End difference to parent class method.
+
+				// Skip sniffing if calling a same-named method, or on function definitions.
+				$skipped = [
+					\T_FUNCTION        => \T_FUNCTION,
+					\T_CLASS           => \T_CLASS,
+					\T_AS              => \T_AS, // Use declaration alias.
+					\T_DOUBLE_COLON    => \T_DOUBLE_COLON,
+					\T_OBJECT_OPERATOR => \T_OBJECT_OPERATOR,
+				];
+				if ( isset( $skipped[ $this->tokens[ $prev ]['code'] ] ) ) {
+					return false;
+				}
+				// Skip namespaced functions, ie: \foo\bar() not \bar().
+				if ( \T_NS_SEPARATOR === $this->tokens[ $prev ]['code'] ) {
+					$pprev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $prev - 1 ), null, true );
+					if ( false !== $pprev && \T_STRING === $this->tokens[ $pprev ]['code'] ) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }
