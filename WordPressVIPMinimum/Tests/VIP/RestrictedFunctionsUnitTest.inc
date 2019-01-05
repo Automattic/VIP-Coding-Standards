@@ -137,3 +137,30 @@ get_category_by_slug(); // Ok - non-deprecated version of wpcom_vip_get_category
 wpcom_vip_get_category_by_slug(); // Warning - deprecated.
 wpcom_vip_get_term_by(); // Warning - deprecated.
 wpcom_vip_get_term_link(); // Warning - deprecated.
+
+session_abort(); // Error.
+session_cache_expire(); // Error.
+session_cache_limiter(); // Error.
+session_commit(); // Error.
+session_create_id(); // Error.
+session_decode(); // Error.
+session_destroy(); // Error.
+session_encode(); // Error.
+session_gc(); // Error.
+session_get_cookie_params(); // Error.
+session_id(); // Error.
+session_is_registered(); // Error.
+session_module_name(); // Error.
+session_name(); // Error.
+session_regenerate_id(); // Error.
+session_register_shutdown(); // Error.
+session_register(); // Error.
+session_reset(); // Error.
+session_save_path(); // Error.
+session_set_cookie_params(); // Error.
+session_set_save_handler(); // Error.
+session_start(); // Error.
+session_status(); // Error.
+session_unregister(); // Error.
+session_unset(); // Error.
+session_write_close(); // Error.
