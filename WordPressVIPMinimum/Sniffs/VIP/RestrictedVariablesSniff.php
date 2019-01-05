@@ -48,7 +48,7 @@ class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 			],
 			'session' => [
 				'type'      => 'error',
-				'message'   => 'Due to using Batcache, server side based client related logic will not work, use JS instead.',
+				'message'   => 'Usage of $_SESSION variable is prohibited.',
 				'variables' => [
 					'$_SESSION',
 				],
