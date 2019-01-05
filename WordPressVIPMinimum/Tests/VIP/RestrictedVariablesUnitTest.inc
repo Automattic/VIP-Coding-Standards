@@ -32,3 +32,6 @@ EOD;
 $query = "SELECT * FROM $wpdb->usermeta"; // Error.
 
 // phpcs:set WordPress.VIP.RestrictedFunctions exclude false
+
+foo( $_SESSION ); // Error.
+foo( $_SESSION['bar'] ); // Error.

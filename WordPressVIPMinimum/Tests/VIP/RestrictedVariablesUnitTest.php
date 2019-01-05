@@ -31,6 +31,8 @@ class RestrictedVariablesUnitTest extends AbstractSniffUnitTest {
 			7  => 1,
 			9  => 1,
 			23 => 1,
+			36 => 1,
+			37 => 1,
 		];
 	}
 
