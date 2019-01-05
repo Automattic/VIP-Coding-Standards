@@ -164,8 +164,3 @@ session_status(); // Error.
 session_unregister(); // Error.
 session_unset(); // Error.
 session_write_close(); // Error.
-
-// phpcs:set WordPressVIPMinimum.VIP.SessionFunctionsUsage exclude session
-session_start(); // Error.
-
-// phpcs:set WordPressVIPMinimum.VIP.SessionFunctionsUsage exclude false
