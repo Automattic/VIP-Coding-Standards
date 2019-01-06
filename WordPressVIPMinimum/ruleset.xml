@@ -9,6 +9,11 @@
 	<autoload>./PHPCSCompatibility.php</autoload>
 
 	<rule ref="Generic.PHP.Syntax"/>
+	<rule ref="Generic.PHP.NoSilencedErrors">
+		<properties>
+			<property name="error" value="true"/>
+		</properties>
+	</rule>
 
 	<rule ref="WordPressVIPMinimum.TemplatingEngines.UnescapedOutputTwig">
 		<include-pattern>*.twig</include-pattern>
@@ -37,7 +42,6 @@
 			<property name="min_interval" value="900"/>
 		</properties>
 	</rule>
-
 
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>

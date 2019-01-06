@@ -92,7 +92,7 @@ $my_theme_options = get_option( 'my_theme', false );
 if ( array_key_exists( 'key', $my_theme_options ) ) { // Error.
 }
 
-// WordPressVIPMinimum.VIP.ErrorControl + WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents
+// Generic.PHP>NoSilencedErrors + WordPressVIPMinimum.VIP.RestrictedFunctions.file_get_contents_file_get_contents
 @file_get_contents( $foo ); // Error + Warning.
 
 // WordPressVIPMinimum.VIP.RegexpCompare + WordPress.VIP.SlowDBQuery
