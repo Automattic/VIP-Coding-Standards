@@ -49,12 +49,14 @@ class WPQueryParamsSniff implements Sniff {
 			if ( T_TRUE === $tokens[ $next_token ]['code'] ) {
 				// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/uncached-functions/.
 				// VIP Go: https://vip.wordpress.com/documentation/vip-go/uncached-functions/.
-				$phpcsFile->addError( 'Setting `suppress_filters` to `true` is prohibited.', $stackPtr, 'SuppressFiltersTrue' );
+				$message = 'Setting `suppress_filters` to `true` is prohibited.';
+				$phpcsFile->addError( $message, $stackPtr, 'SuppressFiltersTrue' );
 			}
 		}
 
 		if ( 'post__not_in' === trim( $tokens[ $stackPtr ]['content'], '\'' ) ) {
-			$phpcsFile->addWarning( 'Using `post__not_in` should be done with caution, see https://vip.wordpress.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.', $stackPtr, 'PostNotIn' );
+			$message = 'Using `post__not_in` should be done with caution, see https://vip.wordpress.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.';
+			$phpcsFile->addWarning( $message, $stackPtr, 'PostNotIn' );
 		}
 	}
 

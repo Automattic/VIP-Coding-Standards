@@ -430,16 +430,13 @@ class VariableAnalysisSniff implements Sniff {
 				//  Note: we check off scopeType not firstDeclared, this is so that
 				//    we catch declarations that come after implicit declarations like
 				//    use of a variable as a local.
-				$this->currentFile->addWarning(
-					"Redeclaration of %s %s as %s.",
-					$stackPtr,
-					'VariableRedeclaration',
-					array(
-						VariableInfo::$scopeTypeDescriptions[$varInfo->scopeType],
-						"\${$varName}",
-						VariableInfo::$scopeTypeDescriptions[$scopeType],
-					)
-				);
+				$message = 'Redeclaration of %s %s as %s.';
+				$data    = [
+					VariableInfo::$scopeTypeDescriptions[$varInfo->scopeType],
+					"\${$varName}",
+					VariableInfo::$scopeTypeDescriptions[$scopeType],
+				];
+				$this->currentFile->addWarning( $message, $stackPtr, 'VariableRedeclaration', $data );
 			}
 		}
 		$varInfo->scopeType = $scopeType;
@@ -484,18 +481,15 @@ class VariableAnalysisSniff implements Sniff {
 		return true;
 	}
 
-	function markVariableReadAndWarnIfUndefined( $phpcsFile, $varName, $stackPtr, $currScope ) {
+	function markVariableReadAndWarnIfUndefined( File $phpcsFile, $varName, $stackPtr, $currScope ) {
 
 		$this->markVariableRead( $varName, $stackPtr, $currScope );
 
 		if ( $this->isVariableUndefined( $varName, $stackPtr, $currScope ) === true ) {
 			// We haven't been defined by this point.
-			$phpcsFile->addWarning(
-				"Variable %s is undefined.",
-				$stackPtr,
-				'UndefinedVariable',
-				array( "\${$varName}" )
-			);
+			$message = 'Variable %s is undefined.';
+			$data    = [ "\${$varName}" ];
+			$phpcsFile->addWarning( $message, $stackPtr, 'UndefinedVariable', $data );
 		}
 		return true;
 	}
@@ -726,10 +720,9 @@ class VariableAnalysisSniff implements Sniff {
 			$this->markVariableRead( $varName, $stackPtr, $currScope );
 			if ( $this->isVariableUndefined( $varName, $stackPtr, $currScope ) === true ) {
 				// We haven't been defined by this point.
-				$phpcsFile->addWarning( "Variable `%s` is undefined.", $stackPtr,
-					'UndefinedVariable',
-					array( "\${$varName}" )
-				);
+				$message = 'Variable `%s` is undefined.';
+				$data    = [ "\${$varName}" ];
+				$phpcsFile->addWarning( $message, $stackPtr, 'UndefinedVariable', $data );
 				return true;
 			}
 			// $functionPtr is at the use, we need the function keyword for start of scope.
@@ -872,10 +865,9 @@ class VariableAnalysisSniff implements Sniff {
 					//  self within a closure is invalid
 					//  Note: have to fetch code from $tokens, T_CLOSURE isn't set for conditions codes.
 					if ( $tokens[$scopePtr]['code'] === T_CLOSURE ) {
-						$phpcsFile->addError( "Use of `{$err_desc}%s` inside closure.", $stackPtr,
-							$err_prefix . 'InsideClosure',
-							array( "\${$varName}" )
-						);
+						$message = "Use of `{$err_desc}%s` inside closure.";
+						$data    = [ "\${$varName}" ];
+						$phpcsFile->addError( $message, $stackPtr,$err_prefix . 'InsideClosure', $data );
 						return true;
 					}
 					if ( $scopeCode === T_CLASS ) {
@@ -883,10 +875,10 @@ class VariableAnalysisSniff implements Sniff {
 					}
 				}
 			}
-			$phpcsFile->addError( "Use of `{$err_desc}%s` outside class definition.", $stackPtr,
-				$err_prefix . 'OutsideClass',
-				array( "\${$varName}" )
-			);
+
+			$message = "Use of `{$err_desc}%s` outside class definition.";
+			$data    = [ "\${$varName}" ];
+			$phpcsFile->addError( $message, $stackPtr,$err_prefix . 'OutsideClass', $data );
 			return true;
 		}
 
@@ -1413,27 +1405,18 @@ class VariableAnalysisSniff implements Sniff {
 				// of "unused variable" warnings.
 				continue;
 			}
+
+			$message = 'Unused %s `%s`.';
+			$data    = [
+				VariableInfo::$scopeTypeDescriptions[$varInfo->scopeType],
+				"\${$varInfo->name}",
+			];
+
 			if ( isset( $varInfo->firstDeclared ) ) {
-				$phpcsFile->addWarning(
-					"Unused %s `%s`.",
-					$varInfo->firstDeclared,
-					'UnusedVariable',
-					array(
-						VariableInfo::$scopeTypeDescriptions[$varInfo->scopeType],
-						"\${$varInfo->name}",
-					)
-				);
+				$phpcsFile->addWarning( $message, $varInfo->firstDeclared, 'UnusedVariable', $data );
 			}
 			if ( isset( $varInfo->firstInitialized ) ) {
-				$phpcsFile->addWarning(
-					"Unused %s `%s`.",
-					$varInfo->firstInitialized,
-					'UnusedVariable',
-					array(
-						VariableInfo::$scopeTypeDescriptions[$varInfo->scopeType],
-						"\${$varInfo->name}",
-					)
-				);
+				$phpcsFile->addWarning( $message, $varInfo->firstInitialized, 'UnusedVariable', $data );
 			}
 		}
 	}

@@ -67,13 +67,12 @@ class ServerVariablesSniff implements Sniff {
 		$variableName    = str_replace( [ "'", '"' ], '', $tokens[ $variableNamePtr ]['content'] );
 
 		if ( isset( $this->restrictedVariables['authVariables'][ $variableName ] ) ) {
-			$phpcsFile->addError( 'Basic authentication should not be handled via PHP code.', $stackPtr, 'BasicAuthentication' );
+			$message = 'Basic authentication should not be handled via PHP code.';
+			$phpcsFile->addError( $message, $stackPtr, 'BasicAuthentication' );
 		} elseif ( isset( $this->restrictedVariables['userControlledVariables'][ $variableName ] ) ) {
-			$phpcsFile->addError(
-				sprintf( 'Header "%s" is user-controlled and should be properly validated before use.', $variableName ),
-				$stackPtr,
-				'UserControlledHeaders'
-			);
+			$message = 'Header "%s" is user-controlled and should be properly validated before use.';
+			$data    = [ $variableName ];
+			$phpcsFile->addError( $message, $stackPtr, 'UserControlledHeaders', $data );
 		}
 	}
 

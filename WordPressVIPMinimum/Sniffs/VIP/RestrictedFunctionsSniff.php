@@ -53,7 +53,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			],
 			'get_super_admins' => [
 				'type'      => 'error',
-				'message'   => '`%s` is prohibited on the WordPress.com VIP platform',
+				'message'   => '`%s` is prohibited on the WordPress.com VIP platform.',
 				'functions' => [
 					'get_super_admins',
 				],
@@ -125,7 +125,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			// @link VIP Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#custom-roles
 			'custom_role' => [
 				'type'      => 'error',
-				'message'   => 'Use wpcom_vip_add_role() instead of %s()',
+				'message'   => 'Use wpcom_vip_add_role() instead of %s().',
 				'functions' => [
 					'add_role',
 				],
@@ -265,7 +265,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			// @todo Introduce a sniff specific to get_posts() that checks for suppress_filters=>false being supplied.
 			'get_posts' => [
 				'type'      => 'warning',
-				'message'   => '%s() is uncached unless the "suppress_filters" parameter is set to false. If the suppress_filter parameter is set to false this can be safely ignored. More Info: https://vip.wordpress.com/documentation/vip-go/uncached-functions/',
+				'message'   => '%s() is uncached unless the "suppress_filters" parameter is set to false. If the suppress_filter parameter is set to false this can be safely ignored. More Info: https://vip.wordpress.com/documentation/vip-go/uncached-functions/.',
 				'functions' => [
 					'get_posts',
 					'wp_get_recent_posts',

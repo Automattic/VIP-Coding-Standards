@@ -54,8 +54,9 @@ class UnescapedOutputVuejsSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], 'v-html' ) ) {
-			// Twig autoescape disabled.
-			$phpcsFile->addWarning( 'Found Vue.js non-escaped (raw) HTML directive.', $stackPtr, 'RawHTMLDirectiveFound' );
+			// Vue autoescape disabled.
+			$message = 'Found Vue.js non-escaped (raw) HTML directive.';
+			$phpcsFile->addWarning( $message, $stackPtr, 'RawHTMLDirectiveFound' );
 		}
 	}
 

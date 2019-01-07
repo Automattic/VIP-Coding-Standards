@@ -225,7 +225,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( true === $error ) {
-			$this->phpcsFile->addError( 'Removal of admin bar is prohibited.', $stackPtr, 'RemovalDetected' );
+			$message = 'Removal of admin bar is prohibited.';
+			$this->phpcsFile->addError( $message, $stackPtr, 'RemovalDetected' );
 		}
 	}
 
@@ -315,7 +316,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 					}
 
 					if ( true === $error ) {
-						$this->phpcsFile->addError( 'Hiding of the admin bar is not allowed.', $stackPtr, 'HidingDetected' );
+						$this->addHidingDetectedError( $stackPtr );
 					}
 				}
 			}
@@ -366,11 +367,21 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 					}
 
 					if ( true === $error ) {
-						$this->phpcsFile->addError( 'Hiding of the admin bar is not allowed.', $stackPtr, 'HidingDetected' );
+						$this->addHidingDetectedError( $stackPtr );
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Consolidated violation.
+	 *
+	 * @param int $stackPtr  The position of the current token in the stack passed in $tokens.
+	 */
+	private function addHidingDetectedError( $stackPtr ) {
+		$message = 'Hiding of the admin bar is not allowed.';
+		$this->phpcsFile->addError( $message, $stackPtr, 'HidingDetected' );
 	}
 
 	/**

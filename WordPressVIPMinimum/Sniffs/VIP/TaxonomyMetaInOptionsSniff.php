@@ -82,7 +82,7 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 		if ( T_DOUBLE_QUOTED_STRING === $tokens[ $param_ptr ]['code'] ) {
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
 				if ( false !== strpos( $tokens[ $param_ptr ]['content'], $taxonomy_term_pattern ) ) {
-					$this->addWarning( $phpcsFile, $stackPtr );
+					$this->addPossibleTermMetaInOptionsWarning( $phpcsFile, $stackPtr );
 					return;
 				}
 			}
@@ -100,7 +100,7 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
 				if ( false !== strpos( $tokens[ $variable_name ]['content'], $taxonomy_term_pattern ) ) {
-					$this->addWarning( $phpcsFile, $stackPtr );
+					$this->addPossibleTermMetaInOptionsWarning( $phpcsFile, $stackPtr );
 					return;
 				}
 			}
@@ -117,7 +117,7 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
 				if ( false !== strpos( $tokens[ $object_property ]['content'], $taxonomy_term_pattern ) ) {
-					$this->addWarning( $phpcsFile, $stackPtr );
+					$this->addPossibleTermMetaInOptionsWarning( $phpcsFile, $stackPtr );
 					return;
 				}
 			}
@@ -127,13 +127,13 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 	/**
 	 * Helper method for composing the Warnign for all possible cases.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr The position of the current token in the stack passed in $tokens.
-	 * @param string                      $type The warning type.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void.
+	 * @return void
 	 */
-	public function addWarning( $phpcsFile, $stackPtr, $type = 'PossibleTermMetaInOptions' ) {
-		$phpcsFile->addWarning( sprintf( 'Possible detection of storing taxonomy term meta in options table. Needs manual inspection. All such data should be stored in term_meta.' ), $stackPtr, $type );
+	public function addPossibleTermMetaInOptionsWarning( File $phpcsFile, $stackPtr ) {
+		$message = 'Possible detection of storing taxonomy term meta in options table. Needs manual inspection. All such data should be stored in term_meta.';
+		$phpcsFile->addWarning( $message, $stackPtr, 'PossibleTermMetaInOptions' );
 	}
 }

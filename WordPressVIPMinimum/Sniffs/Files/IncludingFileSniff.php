@@ -106,7 +106,9 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 		}
 
 		if ( T_VARIABLE === $tokens[ $nextToken ]['code'] ) {
-			$this->phpcsFile->addWarning( sprintf( 'File inclusion using variable (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'UsingVariable' );
+			$message = 'File inclusion using variable (`%s`). Probably needs manual inspection.';
+			$data    = [ $tokens[ $nextToken ]['content'] ];
+			$this->phpcsFile->addWarning( $message, $nextToken, 'UsingVariable', $data );
 			return;
 		}
 
@@ -123,19 +125,25 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
 			if ( true === in_array( $tokens[ $nextToken ]['content'], array_keys( $this->restrictedConstants ), true ) ) {
 				// The construct is using one of the restricted constants.
-				$this->phpcsFile->addError( sprintf( '`%s` constant might not be defined or available. Use `%s()` instead.', $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ), $nextToken, 'RestrictedConstant' );
+				$message = '`%s` constant might not be defined or available. Use `%s()` instead.';
+				$data    = [ $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ];
+				$this->phpcsFile->addError( $message, $nextToken, 'RestrictedConstant', $data );
 				return;
 			}
 
 			$nextNextToken = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMENT ] ), ( $nextToken + 1 ), null, true, null, true );
 			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) && T_OPEN_PARENTHESIS !== $tokens[ $nextNextToken ]['code'] ) {
 				// The construct is using custom constant, which needs manual inspection.
-				$this->phpcsFile->addWarning( sprintf( 'File inclusion using custom constant (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'UsingCustomConstant' );
+				$message = 'File inclusion using custom constant (`%s`). Probably needs manual inspection.';
+				$data    = [ $tokens[ $nextToken ]['content'] ];
+				$this->phpcsFile->addWarning( $message, $nextToken, 'UsingCustomConstant', $data );
 				return;
 			}
 
 			if ( 0 === strpos( $tokens[ $nextToken ]['content'], '$' ) ) {
-				$this->phpcsFile->addWarning( sprintf( 'File inclusion using variable (`%s`). Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'UsingVariable' );
+				$message = 'File inclusion using variable (`%s`). Probably needs manual inspection.';
+				$data    = [ $tokens[ $nextToken ]['content'] ];
+				$this->phpcsFile->addWarning( $message, $nextToken, 'UsingVariable', $data );
 				return;
 			}
 
@@ -145,19 +153,24 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 			}
 
 			if ( $this->is_targetted_token( $nextToken ) ) {
-				$this->phpcsFile->addWarning( sprintf( 'File inclusion using custom function ( `%s()` ). Must return local file source, as external URLs are prohibited on WordPress VIP. Probably needs manual inspection.', $tokens[ $nextToken ]['content'] ), $nextToken, 'UsingCustomFunction' );
+				$message = 'File inclusion using custom function ( `%s()` ). Must return local file source, as external URLs are prohibited on WordPress VIP. Probably needs manual inspection.';
+				$data    = [ $tokens[ $nextToken ]['content'] ];
+				$this->phpcsFile->addWarning( $message, $nextToken, 'UsingCustomFunction', $data );
 				return;
 			}
 
-			$this->phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'NotAbsolutePath' );
+			$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
+			$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
 			return;
 		} else {
 			if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && filter_var( str_replace( [ '"', "'" ], '', $tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
-				$this->phpcsFile->addError( 'Include path must be local file source, external URLs are prohibited on WordPress VIP.', $nextToken, 'ExternalURL' );
+				$message = 'Include path must be local file source, external URLs are prohibited on WordPress VIP.';
+				$this->phpcsFile->addError( $message, $nextToken, 'ExternalURL' );
 				return;
 			}
 
-			$this->phpcsFile->addError( 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.', $nextToken, 'NotAbsolutePath' );
+			$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
+			$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
 			return;
 		}
 	}

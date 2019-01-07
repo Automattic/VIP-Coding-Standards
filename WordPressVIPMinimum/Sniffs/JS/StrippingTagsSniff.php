@@ -74,7 +74,8 @@ class StrippingTagsSniff implements Sniff {
 		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $afterFunctionCall + 1 ), null, true, null, true );
 
 		if ( T_STRING === $tokens[ $nextToken ]['code'] && 'text' === $tokens[ $nextToken ]['content'] ) {
-			$phpcsFile->addError( 'Vulnerable tag stripping approach detected', $stackPtr, 'VulnerableTagStripping' );
+			$message = 'Vulnerable tag stripping approach detected.';
+			$phpcsFile->addError( $message, $stackPtr, 'VulnerableTagStripping' );
 		}
 	}
 

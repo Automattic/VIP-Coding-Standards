@@ -96,7 +96,9 @@ class CacheValueOverrideSniff implements Sniff {
 		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ( $rightAfterNextVariableOccurence + 1 ), null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
-			$phpcsFile->addError( sprintf( 'Obtained cached value in `%s` is being overriden. Disabling caching?', $variableName ), $nextVariableOccurrence, 'CacheValueOverride' );
+			$message = 'Obtained cached value in `%s` is being overridden. Disabling caching?';
+			$data    = [ $variableName ];
+			$phpcsFile->addError( $message, $nextVariableOccurrence, 'CacheValueOverride', $data );
 		}
 	}
 

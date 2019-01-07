@@ -52,6 +52,9 @@ class ExitAfterRedirectSniff implements Sniff {
 
 		$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_SEMICOLON, T_CLOSE_PARENTHESIS ] ), ( $tokens[ $openBracket ]['parenthesis_closer'] + 1 ), null, true );
 
+		$message = '`%s()` should almost always be followed by a call to `exit;`.';
+		$data    = [ $tokens[ $stackPtr ]['content'] ];
+
 		if ( T_OPEN_CURLY_BRACKET === $tokens[ $next_token ]['code'] ) {
 			$is_exit_in_scope = false;
 			for ( $i = $tokens[ $next_token ]['scope_opener']; $i <= $tokens[ $next_token ]['scope_closer']; $i++ ) {
@@ -60,10 +63,10 @@ class ExitAfterRedirectSniff implements Sniff {
 				}
 			}
 			if ( false === $is_exit_in_scope ) {
-				$phpcsFile->addError( sprintf( '`%s()` should almost always be followed by a call to `exit;`', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExitInConditional' );
+				$phpcsFile->addError( $message, $stackPtr, 'NoExitInConditional', $data );
 			}
 		} elseif ( T_EXIT !== $tokens[ $next_token ]['code'] ) {
-			$phpcsFile->addError( sprintf( '`%s()` should almost always be followed by a call to `exit;`', $tokens[ $stackPtr ]['content'] ), $stackPtr, 'NoExit' );
+			$phpcsFile->addError( $message, $stackPtr, 'NoExit', $data );
 		}
 	}
 }

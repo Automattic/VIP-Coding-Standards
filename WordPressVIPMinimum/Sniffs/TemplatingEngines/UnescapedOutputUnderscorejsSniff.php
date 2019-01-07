@@ -57,12 +57,14 @@ class UnescapedOutputUnderscorejsSniff implements Sniff {
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '<%=' ) ) {
 			// Underscore.js unescaped output.
-			$phpcsFile->addWarning( 'Found Underscore.js unescaped output notation: "<%=".', $stackPtr, 'OutputNotation' );
+			$message = 'Found Underscore.js unescaped output notation: "<%=".';
+			$phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );
 		}
 
 		if ( false !== strpos( $tokens[ $stackPtr ]['content'], 'interpolate' ) ) {
 			// Underscore.js unescaped output.
-			$phpcsFile->addWarning( 'Found Underscore.js delimiter change notation.', $stackPtr, 'InterpolateFound' );
+			$message = 'Found Underscore.js delimiter change notation.';
+			$phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );
 		}
 	}
 

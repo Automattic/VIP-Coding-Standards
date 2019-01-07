@@ -44,9 +44,8 @@ class StringConcatSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token in the
-	 *                                               stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
@@ -57,7 +56,8 @@ class StringConcatSniff implements Sniff {
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] ) {
 			if ( false !== strpos( $tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $tokens[ $nextToken ]['content'] ) ) {
-				$phpcsFile->addError( sprintf( 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s', '+' . $tokens[ $nextToken ]['content'] ), $stackPtr, 'Found' );
+				$data = [ '+' . $tokens[ $nextToken ]['content'] ];
+				$this->addFoundError( $phpcsFile, $stackPtr, $data );
 			}
 		}
 
@@ -65,9 +65,22 @@ class StringConcatSniff implements Sniff {
 
 		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] ) {
 			if ( false !== strpos( $tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $tokens[ $prevToken ]['content'] ) ) {
-				$phpcsFile->addError( sprintf( 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s', $tokens[ $prevToken ]['content'] . '+' ), $stackPtr, 'Found' );
+				$data = [ $tokens[ $nextToken ]['content'] . '+' ];
+				$this->addFoundError( $phpcsFile, $stackPtr, $data );
 			}
 		}
+	}
+
+	/**
+	 * Consolidated violation.
+	 *
+	 * @param File  $phpcsFile The file being scanned.
+	 * @param int   $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param array $data     Replacements for the error message.
+	 */
+	private function addFoundError( File $phpcsFile, $stackPtr, array $data ) {
+		$message = 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s.';
+		$phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 	}
 
 }

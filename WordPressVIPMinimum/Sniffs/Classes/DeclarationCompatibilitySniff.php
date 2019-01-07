@@ -299,7 +299,9 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
 
-		$phpcsFile->addError( sprintf( 'Declaration of `%s` should be compatible with `%s`', $currentSignature, $parentSignature ), $stackPtr, 'DeclarationCompatibility' );
+		$message = 'Declaration of `%s` should be compatible with `%s`.';
+		$data    = [ $currentSignature, $parentSignature ];
+		$phpcsFile->addError( $message, $stackPtr, 'DeclarationCompatibility', $data );
 	}
 
 	/**
