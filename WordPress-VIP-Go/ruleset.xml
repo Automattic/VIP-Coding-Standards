@@ -296,7 +296,10 @@
 		<type>warning</type>
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.ErrorControl.ErrorControl">
+	<rule ref="Generic.PHP.NoSilencedErrors.Forbidden">
+		<severity>1</severity>
+	</rule>
+	<rule ref="Generic.PHP.NoSilencedErrors.Discouraged">
 		<severity>1</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.is_multi_author_is_multi_author">
