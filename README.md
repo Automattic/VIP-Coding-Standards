@@ -1,4 +1,4 @@
-# VIP-Coding-Standards 
+# VIP-Coding-Standards  
 
 This project maintains the minimum ruleset of [PHP_CodeSniffer rules](https://github.com/squizlabs/PHP_CodeSniffer) (sniffs) to validate code developed for [WordPress.com VIP](https://vip.wordpress.com/).
 
