@@ -7,7 +7,7 @@
 
 
 	<!-- Things that probably won't work and needs a dev to review -->
-	<rule ref="WordPressVIPMinimum.VIP.FileSystemWritesDisallow.file_ops_fwrite">
+	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_ops_fwrite">
 		<type>error</type>
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>

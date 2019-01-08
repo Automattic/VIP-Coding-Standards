@@ -164,3 +164,41 @@ session_status(); // Error.
 session_unregister(); // Error.
 session_unset(); // Error.
 session_write_close(); // Error.
+
+file_put_contents( $file, $text, FILE_APPEND ); // Error.
+
+$fp = fopen( $file, 'a+' ); // Ok.
+stream_set_blocking( $fp, 0 ); // Ok.
+
+while ( $count > $loop ) {
+	if ( flock( $fp, LOCK_EX ) ) { // Error.
+		fwrite( $fp, $text ); // Error.
+	}
+	flock( $fp, LOCK_UN ); // Error.
+}
+
+fclose( $fp ); // Ok.
+
+delete(); // Error.
+fputcsv(); // Error.
+fputs(); // Error.
+ftruncate(); // Error.
+is_writable(); // Error.
+is_writeable(); // Error.
+link(); // Error.
+rename(); // Error.
+symlink(); // Error.
+tempnam(); // Error.
+touch(); // Error.
+unlink(); // Error.
+mkdir(); // Error.
+rmdir(); // Error.
+chgrp(); // Error.
+chown(); // Error.
+chmod(); // Error.
+lchgrp(); // Error.
+lchown(); // Error.
+
+use Fieldmanager_Link as Link; // Ok.
+namespace Fieldmanager\Link\Something; // Ok.
+namespace Fieldmanager\Link; // Ok.
