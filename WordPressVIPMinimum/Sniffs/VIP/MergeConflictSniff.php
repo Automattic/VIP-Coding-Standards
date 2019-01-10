@@ -47,7 +47,7 @@ class MergeConflictSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The file being scanned.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
@@ -91,7 +91,7 @@ class MergeConflictSniff implements Sniff {
 	/**
 	 * Consolidated violation.
 	 *
-	 * @param File $phpcsFile The file being scanned.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 */
 	private function addSeparatorError( File $phpcsFile, $stackPtr ) {

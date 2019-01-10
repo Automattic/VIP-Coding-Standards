@@ -31,8 +31,8 @@ class FetchingRemoteDataSniff implements Sniff {
 	/**
 	 * Process this test when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile  The file being scanned.
-	 * @param int                         $stackPtr   The position of the current token in the stack passed in $tokens.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */

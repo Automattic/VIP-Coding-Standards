@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * This sniff enforces checking the return value of a function before passing it to anoher one.
+ * This sniff enforces checking the return value of a function before passing it to another one.
  *
  * An example of a not checking return value is:
  *
@@ -44,9 +44,8 @@ class CacheValueOverrideSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-	 * @param int                         $stackPtr  The position in the stack where
-	 *                                               the token was found.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+	 * @param int  $stackPtr  The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */
