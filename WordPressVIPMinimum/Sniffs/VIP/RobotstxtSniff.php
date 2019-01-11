@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * This sniff searches for `do_robotstxt` action hooked callback and thows an internal reminder
- * for VIP devs to flush related caches in order to make the change actually happen in production
+ * for VIP engineers to flush related caches in order to make the change actually happen in production
  */
 class RobotstxtSniff implements Sniff {
 
@@ -31,10 +31,8 @@ class RobotstxtSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file where the token
-	 *                                        was found.
-	 * @param int                  $stackPtr  The position in the stack
-	 *                                        where the token was found.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+	 * @param int  $stackPtr  The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */

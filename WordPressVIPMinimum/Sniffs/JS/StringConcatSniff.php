@@ -44,7 +44,7 @@ class StringConcatSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The file being scanned.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
@@ -74,9 +74,9 @@ class StringConcatSniff implements Sniff {
 	/**
 	 * Consolidated violation.
 	 *
-	 * @param File  $phpcsFile The file being scanned.
+	 * @param File  $phpcsFile The PHP_CodeSniffer file where the token was found.
 	 * @param int   $stackPtr  The position of the current token in the stack passed in $tokens.
-	 * @param array $data     Replacements for the error message.
+	 * @param array $data      Replacements for the error message.
 	 */
 	private function addFoundError( File $phpcsFile, $stackPtr, array $data ) {
 		$message = 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s.';

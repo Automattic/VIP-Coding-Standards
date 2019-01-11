@@ -63,7 +63,7 @@ class CheckReturnValueSniff implements Sniff {
 	];
 
 	/**
-	 * The file where the token was found.
+	 * The PHP_CodeSniffer file where the token was found.
 	 *
 	 * @var File
 	 */
@@ -81,7 +81,7 @@ class CheckReturnValueSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param File $phpcsFile The file where the token was found.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
 	 * @param int  $stackPtr  The position in the stack where
 	 *                        the token was found.
 	 *
@@ -292,7 +292,7 @@ class CheckReturnValueSniff implements Sniff {
 		// Find previous non-empty token, which is not an open parenthesis, comma nor variable.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_OPEN_PARENTHESIS;
-		// This allows us to check for variables which are passed as second paramt of a function. Eg.: array_key_exists.
+		// This allows us to check for variables which are passed as second parameter of a function e.g.: array_key_exists.
 		$search[] = T_COMMA;
 		$search[] = T_VARIABLE;
 		$search[] = T_CONSTANT_ENCAPSED_STRING;

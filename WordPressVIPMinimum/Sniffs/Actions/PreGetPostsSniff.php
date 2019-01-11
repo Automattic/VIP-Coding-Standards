@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * This sniff validates a propper usage of pre_get_posts action callback
+ * This sniff validates a proper usage of pre_get_posts action callback.
  *
  * It looks for cases when the WP_Query object is being modified without checking for WP_Query::is_main_query().
  *
@@ -28,9 +28,9 @@ class PreGetPostsSniff implements Sniff {
 	private $_tokens;
 
 	/**
-	 * The phpcsFile.
+	 * The PHP_CodeSniffer file where the token was found.
 	 *
-	 * @var phpcsFile
+	 * @var File
 	 */
 	private $_phpcsFile;
 
@@ -47,9 +47,8 @@ class PreGetPostsSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-	 * @param int                         $stackPtr  The position in the stack where
-	 *                                               the token was found.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+	 * @param int  $stackPtr  The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */
@@ -81,7 +80,7 @@ class PreGetPostsSniff implements Sniff {
 		}
 
 		if ( 'pre_get_posts' !== substr( $this->_tokens[ $actionNamePtr ]['content'], 1, -1 ) ) {
-			// This is not setting a callback for pre_gest_posts action.
+			// This is not setting a callback for pre_get_posts action.
 			return;
 		}
 
@@ -180,7 +179,7 @@ class PreGetPostsSniff implements Sniff {
 			[ T_FUNCTION ], // types.
 			$wpQueryObjectNamePtr - 1, // start.
 			null, // end.
-			false, // exlcude.
+			false, // exclude.
 			null, // value.
 			false // local.
 		);

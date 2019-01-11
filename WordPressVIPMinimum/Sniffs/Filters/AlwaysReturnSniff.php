@@ -26,9 +26,9 @@ class AlwaysReturnSniff implements Sniff {
 	private $tokens;
 
 	/**
-	 * The phpcsFile.
+	 * The PHP_CodeSniffer file where the token was found.
 	 *
-	 * @var phpcsFile
+	 * @var File
 	 */
 	private $phpcsFile;
 
@@ -51,9 +51,8 @@ class AlwaysReturnSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-	 * @param int                         $stackPtr  The position in the stack where
-	 *                                               the token was found.
+	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+	 * @param int  $stackPtr  The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */

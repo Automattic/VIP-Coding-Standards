@@ -1,7 +1,7 @@
 <?php
 // @codingStandardsIgnoreStart
 /**
- * This file is part of the VariableAnalysis addon for PHP_CodeSniffer.
+ * This file is part of the VariableAnalysis add-on for PHP_CodeSniffer.
  *
  * PHP version 5
  *
