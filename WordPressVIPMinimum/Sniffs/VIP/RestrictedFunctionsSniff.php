@@ -118,7 +118,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'message'   => '%s() is prohibited, please use wpcom_vip_url_to_postid() instead.',
 				'functions' => [
 					'url_to_postid',
-					'url_to_post_id',
 				],
 			],
 			// @link WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#custom-roles
