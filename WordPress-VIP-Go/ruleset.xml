@@ -14,21 +14,21 @@
 		<type>error</type>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.file_ops_fwrite">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite">
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.cookies_setcookie">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie">
 		<type>error</type>
 		<severity>6</severity>
 		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedVariables.cache_constraints___COOKIE">
+	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE">
 		<type>error</type>
 		<severity>6</severity>
 		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__">
+	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__">
 		<type>error</type>
 		<severity>6</severity>
 		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
@@ -60,7 +60,7 @@
 	<rule ref="WordPressVIPMinimum.JS.HTMLExecutingFunctions.append">
 		<type>error</type>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.FetchingRemoteData.FileGetContentsUnknown">
+	<rule ref="WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown">
 		<type>error</type>
 		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
@@ -80,56 +80,56 @@
 	<rule ref="WordPress.WP.PostsPerPage.posts_per_page_posts_per_page">
 		<message>Having more than 100 posts returned per page can lead to severe performance problems.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Filters.RestrictedHook.UploadMimes">
+	<rule ref="WordPressVIPMinimum.Hooks.RestrictedHook.UploadMimes">
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.PHPFilterFunctions.MissingSecondParameter">
+	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.MissingSecondParameter">
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.PHPFilterFunctions.MissingThirdParameter">
+	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.MissingThirdParameter">
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.PHPFilterFunctions.RestrictedFilter">
+	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.RestrictedFilter">
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.dbDelta_dbdelta">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.dbDelta_dbdelta">
 		<type>warning</type>
 		<severity>7</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.wp_mail_wp_mail">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail">
 		<severity>7</severity>
 	</rule>
 
 
 	<!-- VIP Uncached warnings -->
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid">
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_attachment_url_to_postid() instead.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_get_adjacent_post() instead.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_page_by_title_get_page_by_title">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_title_get_page_by_title">
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_get_page_by_title() instead.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_children">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>
 		<severity>3</severity>
 		<message>%s() is uncached and performs a no limit query. Please use get_posts or WP_Query instead. More Info: https://vip.wordpress.com/documentation/vip-go/uncached-functions/</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_get_posts">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_posts">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.get_posts_wp_get_recent_posts">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_wp_get_recent_posts">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.url_to_postid_url_to_postid">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.url_to_postid_url_to_postid">
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_url_to_postid() instead.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect">
 		<type>warning</type>
 		<message>%s() is uncached, please use wpcom_vip_old_slug_redirect() instead.</message>
 	</rule>
@@ -185,7 +185,7 @@
 		<severity>3</severity>
 		<message>Stylesheets must be registered/enqueued via `wp_enqueue_style`. This can improve the site's performance due to styles concatenation</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Cache.LowExpiryCacheTime.LowCacheTime">
+	<rule ref="WordPressVIPMinimum.Performance.LowExpiryCacheTime.LowCacheTime">
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Files.IncludingFile">
@@ -198,10 +198,10 @@
 	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable">
 		<severity>1</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.AdminBarRemoval.HidingDetected">
+	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval.HidingDetected">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.AdminBarRemoval.RemovalDetected">
+	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval.RemovalDetected">
 		<severity>3</severity>
 	</rule>
 	<rule ref="Generic.PHP.NoSilencedErrors.Forbidden">
@@ -210,19 +210,19 @@
 	<rule ref="Generic.PHP.NoSilencedErrors.Discouraged">
 		<severity>1</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.ProperEscapingFunction.htmlAttrNotByEscHTML">
+	<rule ref="WordPressVIPMinimum.Security.ProperEscapingFunction.htmlAttrNotByEscHTML">
 		<!-- This is still safe, just sub-optimal-->
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.is_multi_author_is_multi_author">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.is_multi_author_is_multi_author">
 		<severity>1</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.switch_to_blog_switch_to_blog">
 		<type>warning</type>
 		<severity>3</severity>
 		<message>Switch to blog may not work as you expect. It only changes the database context for the blog. It doesn't load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.WPQueryParams.PostNotIn">
+	<rule ref="WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn">
 		<severity>3</severity>
 	</rule>
 
@@ -232,23 +232,23 @@
 		<!-- We are silencing this one because VIP Go has a combined index on meta_key, meta_value-->
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Cache.BatcacheWhitelistedParams">
+	<rule ref="WordPressVIPMinimum.Performance.BatcacheWhitelistedParams">
 		<!-- We are silencing this one because VIP Go does not use Batcache-->
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_add_user_meta">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_add_user_meta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_delete_user_meta">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_delete_user_meta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_get_user_meta">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_get_user_meta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedFunctions.user_meta_update_user_meta">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_update_user_meta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.VIP.RestrictedVariables.user_meta__wpdb__usermeta">
+	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta">
 		<severity>0</severity>
 	</rule>
 

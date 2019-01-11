@@ -5,16 +5,17 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-namespace WordPressVIPMinimum\Tests\Constants;
+namespace WordPressVIPMinimum\Tests\Hooks;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
-
 /**
- * Unit test class for the ConstantRestrictions sniff.
+ * Unit test class for the Filters/RestrictedHook sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @since 0.4.0
  */
-class RestrictedConstantsUnitTest extends AbstractSniffUnitTest {
+class RestrictedHookUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -22,11 +23,7 @@ class RestrictedConstantsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return [
-			11 => 1,
-			13 => 1,
-			15 => 1,
-		];
+		return [];
 	}
 
 	/**
@@ -36,8 +33,19 @@ class RestrictedConstantsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			3 => 1,
-			7 => 2,
+			7  => 1,
+			8  => 1,
+			9  => 1,
+			10 => 1,
+			11 => 1,
+			12 => 1,
+			13 => 1,
+			14 => 1,
+			15 => 1,
+			16 => 1,
+			19 => 1,
+			20 => 1,
+			21 => 1,
 		];
 	}
 

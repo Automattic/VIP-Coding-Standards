@@ -3,18 +3,18 @@
  * Unit test class for WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link    https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://github.com/Automattic/VIP-Coding-Standards/blob/master/LICENSE.md GPL v2 or later.
  */
 
-namespace WordPressVIPMinimum\Tests\Constants;
+namespace WordPressVIPMinimum\Sniffs\Compatibility;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the ConstantRestrictions sniff.
- *
- * @package VIPCS\WordPressVIPMinimum
+ * Unit test class for the RobotstxtSniff sniff.
  */
-class RestrictedConstantsUnitTest extends AbstractSniffUnitTest {
+class RobotstxtSniffUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -22,11 +22,7 @@ class RestrictedConstantsUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return [
-			11 => 1,
-			13 => 1,
-			15 => 1,
-		];
+		return [];
 	}
 
 	/**
@@ -36,9 +32,8 @@ class RestrictedConstantsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			3 => 1,
-			7 => 2,
+			9 => 1,
+			7 => 1,
 		];
 	}
-
 }
