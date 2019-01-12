@@ -80,7 +80,7 @@
 	<rule ref="WordPress.WP.PostsPerPage.posts_per_page_posts_per_page">
 		<message>Having more than 100 posts returned per page can lead to severe performance problems.</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Hooks.RestrictedHook.UploadMimes">
+	<rule ref="WordPressVIPMinimum.Hooks.RestrictedHooks.UploadMimes">
 		<severity>10</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.MissingSecondParameter">

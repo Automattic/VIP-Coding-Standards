@@ -311,9 +311,9 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'get_children',
 				],
 			],
-			'deprecated' => [
+			'create_function' => [
 				'type'      => 'warning',
-				'message'   => '%s() is deprecated as of PHP 7.2.',
+				'message'   => '%s() is highly discouraged, as it can execute arbritary code (additionally, it\'s deprecated as of PHP 7.2): https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#eval-and-create_function. )',
 				'functions' => [
 					'create_function',
 				],

@@ -95,12 +95,12 @@ if ( array_key_exists( 'key', $my_theme_options ) ) { // Error.
 // Generic.PHP>NoSilencedErrors + WordPressVIPMinimum.Functions.RestrictedFunctions.file_get_contents_file_get_contents
 @file_get_contents( $foo ); // Error + Warning.
 
-// WordPressVIPMinimum.Performance.RegexpCompare + WordPress.VIP.SlowDBQuery
+// WordPressVIPMinimum.Performance.RegexpCompare + WordPress.DB.SlowDBQuery
 $query_args = array(
 	'posts_per_page' => 1,
 	'post_status' => 'draft',
-	'meta_key' => 'my_awesome_meta_key', // WordPress.VIP.SlowDBQuery. // Warning.
-	'meta_value' => "(^|\n|\r\n)99999($|\n|\r\n)", // WordPress.VIP.SlowDBQuery. // Warning.
+	'meta_key' => 'my_awesome_meta_key', // WordPress.DB.SlowDBQuery. // Warning.
+	'meta_value' => "(^|\n|\r\n)99999($|\n|\r\n)", // WordPress.DB.SlowDBQuery. // Warning.
 	'meta_compare' => 'REGEXP', // Error.
 );
 

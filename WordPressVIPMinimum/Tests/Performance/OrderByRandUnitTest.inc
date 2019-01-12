@@ -12,7 +12,7 @@ $query_args['orderby'] = 'rand'; // Bad.
 
 $query_args['orderby'] = 'date'; // Ok.
 
-// phpcs:set WordPress.VIP.OrderByRand exclude something
+// phpcs:set WordPressVIPMinimum.Performance.OrderByRand exclude something
 $query_args['orderby'] = 'rand'; // Bad.
 
-// phpcs:set WordPress.VIP.OrderByRand exclude false
+// phpcs:set WordPressVIPMinimum.Performance.OrderByRand exclude false

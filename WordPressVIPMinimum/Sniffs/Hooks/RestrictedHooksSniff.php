@@ -16,7 +16,7 @@ use WordPress\AbstractFunctionParameterSniff;
  *
  * @since 0.4.0
  */
-class RestrictedHookSniff extends AbstractFunctionParameterSniff {
+class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 
 	/**
 	 * The group name for this group of functions.

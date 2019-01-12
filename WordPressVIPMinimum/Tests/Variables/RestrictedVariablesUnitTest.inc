@@ -28,10 +28,10 @@ $phrase = <<<EOD
 Your user-agent is {$_SERVER['HTTP_USER_AGENT']}
 EOD;
 
-// phpcs:set WordPress.VIP.RestrictedVariables exclude user_meta
+// phpcs:set WordPressVIPMinimum.Variables.RestrictedVariables exclude user_meta
 $query = "SELECT * FROM $wpdb->usermeta"; // Error.
 
-// phpcs:set WordPress.VIP.RestrictedFunctions exclude false
+// phpcs:set WordPressVIPMinimum.Functions.RestrictedFunctions exclude false
 
 foo( $_SESSION ); // Error.
 foo( $_SESSION['bar'] ); // Error.

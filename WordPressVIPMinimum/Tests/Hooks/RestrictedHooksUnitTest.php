@@ -9,13 +9,13 @@ namespace WordPressVIPMinimum\Tests\Hooks;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
- * Unit test class for the Filters/RestrictedHook sniff.
+ * Unit test class for the Filters/RestrictedHooks sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  *
  * @since 0.4.0
  */
-class RestrictedHookUnitTest extends AbstractSniffUnitTest {
+class RestrictedHooksUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
