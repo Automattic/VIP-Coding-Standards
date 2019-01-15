@@ -260,6 +260,14 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'lchown',
 				],
 			],
+			'site_option' => [
+				'type'      => 'error',
+				'message'   => '%s() will overwrite network option values, please use the `*_option()` equivalent instead (e.g. `update_option()`).',
+				'functions' => [
+					'update_site_option',
+					'delete_site_option',
+				],
+			],
 			'wp_mail' => [
 				'type'      => 'warning',
 				'message'   => '`%s` should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
