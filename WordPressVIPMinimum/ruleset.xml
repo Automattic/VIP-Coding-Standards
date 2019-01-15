@@ -106,6 +106,12 @@
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_dl">
 		<type>error</type>
 	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec">
+		<type>error</type>
+	</rule>
 
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#commented-out-code-debug-code-or-output -->
 	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#commented-out-code-debug-code-or-output -->
