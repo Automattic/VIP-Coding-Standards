@@ -251,5 +251,11 @@
 	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta">
 		<severity>0</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_update_site_option">
+		<severity>0</severity>
+	</rule>
 
 </ruleset>
