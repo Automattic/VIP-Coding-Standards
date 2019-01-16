@@ -162,7 +162,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 
 		if ( 'css' === $file_extension ) {
 			if ( \T_STYLE === $this->tokens[ $stackPtr ]['code'] ) {
-				return $this->process_css_style( $stackPtr );
+				$this->process_css_style( $stackPtr );
+				return;
 			}
 		} elseif ( isset( $this->string_tokens[ $this->tokens[ $stackPtr ]['code'] ] ) ) {
 			/*
@@ -176,10 +177,12 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				$this->in_target_selector[ $file_name ] = false;
 			}
 
-			return $this->process_text_for_style( $stackPtr, $file_name );
+			$this->process_text_for_style( $stackPtr, $file_name );
+			return;
 
 		} else {
-			return parent::process_token( $stackPtr );
+			parent::process_token( $stackPtr );
+			return;
 		}
 	}
 

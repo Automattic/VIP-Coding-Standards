@@ -350,18 +350,22 @@ class VariableAnalysisSniff implements Sniff {
 		}
 
 		if ( $token['code'] === T_VARIABLE ) {
-			return $this->processVariable( $phpcsFile, $stackPtr );
+			$this->processVariable( $phpcsFile, $stackPtr );
+			return;
 		}
 		if ( ( $token['code'] === T_DOUBLE_QUOTED_STRING) ||
 			( $token['code'] === T_HEREDOC) ) {
-			return $this->processVariableInString( $phpcsFile, $stackPtr );
+			$this->processVariableInString( $phpcsFile, $stackPtr );
+			return;
 		}
 		if ( ( $token['code'] === T_STRING) && ( $token['content'] === 'compact' ) ) {
-			return $this->processCompact( $phpcsFile, $stackPtr );
+			$this->processCompact( $phpcsFile, $stackPtr );
+			return;
 		}
 		if ( ( $token['code'] === T_CLOSE_CURLY_BRACKET) &&
 			isset( $token['scope_condition'] ) ) {
-			return $this->processScopeClose( $phpcsFile, $token['scope_condition'] );
+			$this->processScopeClose( $phpcsFile, $token['scope_condition'] );
+			return;
 		}
 	}
 
