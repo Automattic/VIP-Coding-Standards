@@ -10,11 +10,63 @@
 
 
 	<!-- Things that probably won't work and needs a dev to review -->
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
-		<type>error</type>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_flock">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputcsv">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputs">
+		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_ftruncate">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writable">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writeable">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_link">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_rename">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_symlink">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_tempname">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_touch">
+		<severity>6</severity>
+		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_unlink">
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>

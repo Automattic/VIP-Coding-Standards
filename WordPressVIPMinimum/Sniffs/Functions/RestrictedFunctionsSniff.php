@@ -221,7 +221,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			],
 			'file_ops' => [
 				'type'      => 'error',
-				'message'   => 'Filesystem writes are forbidden, you should not be using %s().',
+				'message'   => 'Filesystem writes are forbidden, please do not use %s().',
 				'functions' => [
 					'delete',
 					'file_put_contents',
@@ -242,7 +242,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			],
 			'directory' => [
 				'type'      => 'error',
-				'message'   => 'Filesystem writes are forbidden, you should not be using %s().',
+				'message'   => 'Filesystem writes are forbidden, please do not use %s().',
 				'functions' => [
 					'mkdir',
 					'rmdir',
@@ -250,7 +250,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			],
 			'chmod' => [
 				'type'      => 'error',
-				'message'   => 'Filesystem writes are forbidden, you should not be using %s().',
+				'message'   => 'Filesystem writes are forbidden, please do not use %s().',
 				'functions' => [
 					'chgrp',
 					'chown',

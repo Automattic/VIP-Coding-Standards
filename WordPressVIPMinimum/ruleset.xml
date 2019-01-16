@@ -157,4 +157,14 @@
 		</properties>
 	</rule>
 
+	<!-- Silence is golden -->
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
+		<!-- We are silencing this because we have WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents">
+		<!-- We are silencing this because we have WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents -->
+		<severity>0</severity>
+	</rule>
+
 </ruleset>
