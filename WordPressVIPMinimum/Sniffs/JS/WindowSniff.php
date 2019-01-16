@@ -52,7 +52,6 @@ class WindowSniff implements Sniff {
 			'host'     => true,
 			'hostname' => true,
 			'pathname' => true,
-			'protocol' => true,
 			'search'   => true,
 			'hash'     => true,
 			'username' => true,
