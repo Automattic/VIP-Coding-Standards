@@ -411,4 +411,32 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		}
 	}
 
+	/**
+	 * Check if a content string contains a specific HTML open tag.
+	 *
+	 * @param string $tag_name The name of the HTML tag without brackets. So if
+	 *                         searching for '<span...', this would be 'span'.
+	 * @param int    $stackPtr Optional. The position of the current token in the
+	 *                         token stack.
+	 *                         This parameter needs to be passed if no $content is
+	 *                         passed.
+	 * @param string $content  Optionally, the current content string, might be a
+	 *                         substring of the original string.
+	 *                         Defaults to `false` to distinguish between a passed
+	 *                         empty string and not passing the $content string.
+	 *
+	 * @return bool True if the string contains an <tag_name> open tag, false otherwise.
+	 */
+	public function has_html_open_tag( $tag_name, $stackPtr = null, $content = null ) {
+		if ( null === $content && isset( $stackPtr ) ) {
+			$content = $this->tokens[ $stackPtr ]['content'];
+		}
+
+		if ( ! empty( $content ) && false !== strpos( $content, '<' . $tag_name ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
 }
