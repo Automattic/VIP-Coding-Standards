@@ -37,8 +37,7 @@ class ZoninatorSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		$tokens    = $phpcsFile->getTokens();
-		$phpcsFile = $phpcsFile;
+		$tokens = $phpcsFile->getTokens();
 
 		if ( 'wpcom_vip_load_plugin' !== $tokens[ $stackPtr ]['content'] ) {
 			return;
