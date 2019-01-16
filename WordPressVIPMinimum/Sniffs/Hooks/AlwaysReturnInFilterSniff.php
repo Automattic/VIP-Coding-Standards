@@ -173,8 +173,9 @@ class AlwaysReturnInFilterSniff implements Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( $functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false ) ) {
-			$functionNamePtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
+		while ( false !== $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false ) ) {
+			$functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false );
+			$functionNamePtr  = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
 			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] ) {
 				if ( $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
 					$this->processFunctionBody( $functionStackPtr );

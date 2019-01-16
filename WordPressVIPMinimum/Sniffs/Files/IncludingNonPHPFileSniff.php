@@ -43,7 +43,8 @@ class IncludingNonPHPFileSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 
 		$curStackPtr = $stackPtr;
-		while ( $curStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, ( $curStackPtr + 1 ), null, false, null, true ) ) {
+		while ( false !== $phpcsFile->findNext( Tokens::$stringTokens, ( $curStackPtr + 1 ), null, false, null, true ) ) {
+			$curStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, ( $curStackPtr + 1 ), null, false, null, true );
 
 			if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $curStackPtr ]['code'] ) {
 				$stringWithoutEnclosingQuotationMarks = trim( $tokens[ $curStackPtr ]['content'], "\"'" );
