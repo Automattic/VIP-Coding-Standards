@@ -36,7 +36,16 @@ class VariableAnalysisSniff implements Sniff {
 	 *
 	 * @var File
 	 */
-	protected $currentFile = null;
+	private $phpcsFile;
+
+	/**
+	 * The PHP_CodeSniffer file where the token was found.
+	 *
+	 * Needs consolidating with the previous property.
+	 *
+	 * @var File
+	 */
+	protected $currentFile;
 
 	/**
 	 * A list of scopes encountered so far and the variables within them.

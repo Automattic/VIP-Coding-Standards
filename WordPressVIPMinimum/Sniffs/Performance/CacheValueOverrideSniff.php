@@ -32,6 +32,13 @@ class CacheValueOverrideSniff implements Sniff {
 	private $_tokens = [];
 
 	/**
+	 * The PHP_CodeSniffer file where the token was found.
+	 *
+	 * @var File
+	 */
+	private $_phpcsFile;
+
+	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
 	 * @return array(int)

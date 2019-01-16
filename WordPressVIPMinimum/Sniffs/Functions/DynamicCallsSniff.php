@@ -53,6 +53,27 @@ class DynamicCallsSniff implements Sniff {
 	private $_variables_arr = [];
 
 	/**
+	 * Tokens of the file.
+	 *
+	 * @var array
+	 */
+	private $_tokens = [];
+
+	/**
+	 * The PHP_CodeSniffer file where the token was found.
+	 *
+	 * @var File
+	 */
+	private $_phpcsFile;
+
+	/**
+	 * The position in the stack where the token was found.
+	 *
+	 * @var int
+	 */
+	private $_stackPtr;
+
+	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
 	 * We want everything variable- and function-related.
