@@ -618,7 +618,8 @@ class VariableAnalysisSniff implements Sniff {
 	) {
 		$tokens = $phpcsFile->getTokens();
 
-		if ( $openPtr = $this->findContainingBrackets( $phpcsFile, $stackPtr ) ) {
+		$openPtr = $this->findContainingBrackets( $phpcsFile, $stackPtr );
+		if ( $openPtr ) {
 			// First non-whitespace thing and see if it's a T_STRING function name
 			$functionPtr = $phpcsFile->findPrevious( T_WHITESPACE,
 				$openPtr - 1, null, true, null, true );
