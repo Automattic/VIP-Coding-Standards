@@ -8,7 +8,6 @@
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
 use WordPress\AbstractFunctionRestrictionsSniff;
-use WordPress\AbstractFunctionRestrictionSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**

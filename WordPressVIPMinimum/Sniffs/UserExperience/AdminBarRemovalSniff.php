@@ -10,7 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
 use WordPress\AbstractFunctionParameterSniff;
-use PHP_CodeSniffer_Tokens as Tokens;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Discourages removal of the admin bar.
