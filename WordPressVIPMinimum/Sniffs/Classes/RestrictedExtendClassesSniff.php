@@ -9,8 +9,6 @@ namespace WordPressVIPMinimum\Sniffs\Classes;
 
 use WordPress\AbstractClassRestrictionsSniff;
 
-use PHP_CodeSniffer\Util\Tokens;
-
 /**
  * WordPressVIPMinimum_Sniffs_Classes_RestrictedExtendClassesSniff.
  *

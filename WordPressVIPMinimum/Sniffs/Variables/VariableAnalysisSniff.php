@@ -498,7 +498,6 @@ class VariableAnalysisSniff implements Sniff {
 		$stackPtr
 	) {
 		$tokens = $phpcsFile->getTokens();
-		$token  = $tokens[$stackPtr];
 
 		if ( ( $openPtr = $this->findContainingBrackets( $phpcsFile, $stackPtr ) ) === false ) {
 			return false;
@@ -774,8 +773,7 @@ class VariableAnalysisSniff implements Sniff {
 	protected function checkForThisWithinClass(
 		File $phpcsFile,
 		$stackPtr,
-		$varName,
-		$currScope
+		$varName
 	) {
 		$tokens = $phpcsFile->getTokens();
 		$token  = $tokens[$stackPtr];
@@ -802,11 +800,8 @@ class VariableAnalysisSniff implements Sniff {
 	protected function checkForSuperGlobal(
 		File $phpcsFile,
 		$stackPtr,
-		$varName,
-		$currScope
+		$varName
 	) {
-		$tokens = $phpcsFile->getTokens();
-
 		// Are we a superglobal variable?
 		if ( in_array( $varName, array(
 			'GLOBALS',
@@ -830,8 +825,7 @@ class VariableAnalysisSniff implements Sniff {
 	protected function checkForStaticMember(
 		File $phpcsFile,
 		$stackPtr,
-		$varName,
-		$currScope
+		$varName
 	) {
 		$tokens = $phpcsFile->getTokens();
 		$token  = $tokens[$stackPtr];
@@ -890,8 +884,6 @@ class VariableAnalysisSniff implements Sniff {
 		$varName,
 		$currScope
 	) {
-		$tokens = $phpcsFile->getTokens();
-
 		// Is the next non-whitespace an assignment?
 		if ( ( $assignPtr = $this->isNextThingAnAssign( $phpcsFile, $stackPtr ) ) === false ) {
 			return false;
@@ -1026,8 +1018,6 @@ class VariableAnalysisSniff implements Sniff {
 		$varName,
 		$currScope
 	) {
-		$tokens = $phpcsFile->getTokens();
-
 		// Are we a foreach loop var?
 		if ( ( $openPtr = $this->findContainingBrackets( $phpcsFile, $stackPtr ) ) === false ) {
 			return false;
@@ -1113,7 +1103,6 @@ class VariableAnalysisSniff implements Sniff {
 		$currScope
 	) {
 		$tokens = $phpcsFile->getTokens();
-		$token  = $tokens[$stackPtr];
 
 		// Are we a symbolic object property/function dereference?
 		// Search backwards for first token that isn't whitespace, is it a "->" operator?
@@ -1208,17 +1197,17 @@ class VariableAnalysisSniff implements Sniff {
 		}
 
 		// Are we $this within a class?
-		if ( $this->checkForThisWithinClass( $phpcsFile, $stackPtr, $varName, $currScope ) ) {
+		if ( $this->checkForThisWithinClass( $phpcsFile, $stackPtr, $varName ) ) {
 			return;
 		}
 
 		// Are we a $GLOBALS, $_REQUEST, etc superglobal?
-		if ( $this->checkForSuperGlobal( $phpcsFile, $stackPtr, $varName, $currScope ) ) {
+		if ( $this->checkForSuperGlobal( $phpcsFile, $stackPtr, $varName ) ) {
 			return;
 		}
 
 		// $var part of class::$var static member
-		if ( $this->checkForStaticMember( $phpcsFile, $stackPtr, $varName, $currScope ) ) {
+		if ( $this->checkForStaticMember( $phpcsFile, $stackPtr, $varName ) ) {
 			return;
 		}
 
@@ -1283,10 +1272,10 @@ class VariableAnalysisSniff implements Sniff {
 		foreach ( $matches[1] as $varName ) {
 			$varName = $this->normalizeVarName( $varName );
 			// Are we $this within a class?
-			if ( $this->checkForThisWithinClass( $phpcsFile, $stackPtr, $varName, $currScope ) ) {
+			if ( $this->checkForThisWithinClass( $phpcsFile, $stackPtr, $varName ) ) {
 				continue;
 			}
-			if ( $this->checkForSuperGlobal( $phpcsFile, $stackPtr, $varName, $currScope ) ) {
+			if ( $this->checkForSuperGlobal( $phpcsFile, $stackPtr, $varName ) ) {
 				continue;
 			}
 			$this->markVariableReadAndWarnIfUndefined( $phpcsFile, $varName, $stackPtr, $currScope );
@@ -1355,8 +1344,6 @@ class VariableAnalysisSniff implements Sniff {
 		File $phpcsFile,
 		$stackPtr
 	) {
-		$tokens = $phpcsFile->getTokens();
-
 		$currScope = $this->findVariableScope( $phpcsFile, $stackPtr );
 
 		if ( ( $arguments = $this->findFunctionCallArguments( $phpcsFile, $stackPtr ) ) !== false ) {

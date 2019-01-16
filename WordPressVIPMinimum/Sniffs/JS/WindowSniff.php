@@ -64,15 +64,6 @@ class WindowSniff implements Sniff {
 	];
 
 	/**
-	 * A list of tokens that are allowed in the syntax.
-	 *
-	 * @var array
-	 */
-	private $syntaxTokens = [
-		T_OBJECT_OPERATOR,
-	];
-
-	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
 	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.

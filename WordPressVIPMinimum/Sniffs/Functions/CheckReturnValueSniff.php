@@ -329,7 +329,7 @@ class CheckReturnValueSniff implements Sniff {
 	 * @return string
 	 */
 	public function reduce_array( $carry, $item ) {
-		return $carry .= $item['content'];
+		return $carry . $item['content'];
 	}
 
 	/**
