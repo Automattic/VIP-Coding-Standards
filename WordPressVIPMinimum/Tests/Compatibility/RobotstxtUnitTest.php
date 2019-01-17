@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the RobotstxtSniff sniff.
  */
-class RobotstxtSniffUnitTest extends AbstractSniffUnitTest {
+class RobotstxtUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
