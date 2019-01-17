@@ -22,13 +22,9 @@ class MergeConflictSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'PHP',
-		'JS',
-		'CSS',
-	];
+	public $supportedTokenizers = [ 'CSS', 'JS', 'PHP' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -56,12 +52,12 @@ class MergeConflictSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 
 		if ( T_SL === $tokens[ $stackPtr ]['code'] ) {
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 			if ( T_SL !== $tokens[ $nextToken ]['code'] ) {
 				return;
 			}
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
-			if ( T_STRING !== $tokens[ $nextToken ]['code'] || '<<< HEAD' !== substr( $tokens[ $nextToken ]['content'], 0, 8 ) ) {
+			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+			if ( T_STRING !== $tokens[ $nextToken ]['code'] || 0 !== strpos( $tokens[ $nextToken ]['content'], '<<< HEAD' ) ) {
 				return;
 			}
 
@@ -69,19 +65,23 @@ class MergeConflictSniff implements Sniff {
 			$phpcsFile->addError( $message, $stackPtr, 'Start' );
 
 			return;
-		} elseif ( T_ENCAPSED_AND_WHITESPACE === $tokens[ $stackPtr ]['code'] ) {
-			if ( '=======' === substr( $tokens[ $stackPtr ]['content'], 0, 7 ) ) {
+		}
+
+		if ( T_ENCAPSED_AND_WHITESPACE === $tokens[ $stackPtr ]['code'] ) {
+			if ( 0 === strpos( $tokens[ $stackPtr ]['content'], '=======' ) ) {
 				$this->addSeparatorError( $phpcsFile, $stackPtr );
 
 				return;
-			} elseif ( '>>>>>>>' === substr( $tokens[ $stackPtr ]['content'], 0, 7 ) ) {
+			}
+
+			if ( 0 === strpos( $tokens[ $stackPtr ]['content'], '>>>>>>>' ) ) {
 				$message = 'Merge conflict detected. Found "%s" string.';
 				$data    = [ trim( $tokens[ $stackPtr ]['content'] ) ];
 				$phpcsFile->addError( $message, $stackPtr, 'End', $data );
 
 				return;
 			}
-		} elseif ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ ( $stackPtr + 1 ) ]['code'] ) {
+		} elseif ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ $stackPtr + 1 ]['code'] ) {
 			$this->addSeparatorError( $phpcsFile, $stackPtr );
 
 			return;

@@ -23,11 +23,9 @@ class DangerouslySetInnerHTMLSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-	];
+	public $supportedTokenizers = [ 'JS' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -56,14 +54,14 @@ class DangerouslySetInnerHTMLSniff implements Sniff {
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
 		if ( T_EQUAL !== $tokens[ $nextToken ]['code'] ) {
 			// Not an assignment.
 			return;
 		}
 
-		$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+		$nextNextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 
 		if ( T_OBJECT !== $tokens[ $nextNextToken ]['code'] ) {
 			// Not react syntax.

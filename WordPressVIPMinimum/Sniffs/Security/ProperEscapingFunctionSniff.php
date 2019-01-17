@@ -57,24 +57,24 @@ class ProperEscapingFunctionSniff implements Sniff {
 
 		$function_name = $tokens[ $stackPtr ]['content'];
 
-		$echo_or_string_concat = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+		$echo_or_string_concat = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
 
 		if ( T_ECHO === $tokens[ $echo_or_string_concat ]['code'] ) {
 			// Very likely inline HTML with <?php tag.
-			$php_open = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $echo_or_string_concat - 1 ), null, true );
+			$php_open = $phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
 
 			if ( T_OPEN_TAG !== $tokens[ $php_open ]['code'] ) {
 				return;
 			}
 
-			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $php_open - 1 ), null, true );
+			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, $php_open - 1, null, true );
 
 			if ( T_INLINE_HTML !== $tokens[ $html ]['code'] ) {
 				return;
 			}
 		} elseif ( T_STRING_CONCAT === $tokens[ $echo_or_string_concat ]['code'] ) {
 			// Very likely string concatenation mixing strings and functions/variables.
-			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $echo_or_string_concat - 1 ), null, true );
+			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
 
 			if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $html ]['code'] ) {
 				return;

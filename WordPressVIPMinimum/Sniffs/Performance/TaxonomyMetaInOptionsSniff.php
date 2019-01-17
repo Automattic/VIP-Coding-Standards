@@ -71,7 +71,7 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 			return;
 		}
 
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			return;
@@ -88,12 +88,12 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 			}
 		} elseif ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $param_ptr ]['code'] ) {
 
-			$string_concat = $phpcsFile->findNext( Tokens::$emptyTokens, ( $param_ptr + 1 ), null, true );
+			$string_concat = $phpcsFile->findNext( Tokens::$emptyTokens, $param_ptr + 1, null, true );
 			if ( T_STRING_CONCAT !== $tokens[ $string_concat ]['code'] ) {
 				return;
 			}
 
-			$variable_name = $phpcsFile->findNext( Tokens::$emptyTokens, ( $string_concat + 1 ), null, true );
+			$variable_name = $phpcsFile->findNext( Tokens::$emptyTokens, $string_concat + 1, null, true );
 			if ( T_VARIABLE !== $tokens[ $variable_name ]['code'] ) {
 				return;
 			}
@@ -105,12 +105,12 @@ class TaxonomyMetaInOptionsSniff implements Sniff {
 				}
 			}
 
-			$object_operator = $phpcsFile->findNext( Tokens::$emptyTokens, ( $variable_name + 1 ), null, true );
+			$object_operator = $phpcsFile->findNext( Tokens::$emptyTokens, $variable_name + 1, null, true );
 			if ( T_OBJECT_OPERATOR !== $tokens[ $object_operator ]['code'] ) {
 				return;
 			}
 
-			$object_property = $phpcsFile->findNext( Tokens::$emptyTokens, ( $object_operator + 1 ), null, true );
+			$object_property = $phpcsFile->findNext( Tokens::$emptyTokens, $object_operator + 1, null, true );
 			if ( T_STRING !== $tokens[ $object_property ]['code'] ) {
 				return;
 			}

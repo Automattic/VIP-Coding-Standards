@@ -21,12 +21,9 @@ class UnderscorejsSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-		'PHP',
-	];
+	public $supportedTokenizers = [ 'JS', 'PHP' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

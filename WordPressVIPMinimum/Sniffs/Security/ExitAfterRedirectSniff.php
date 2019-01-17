@@ -44,13 +44,13 @@ class ExitAfterRedirectSniff implements Sniff {
 			return;
 		}
 
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			return;
 		}
 
-		$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_SEMICOLON, T_CLOSE_PARENTHESIS ] ), ( $tokens[ $openBracket ]['parenthesis_closer'] + 1 ), null, true );
+		$next_token = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_SEMICOLON, T_CLOSE_PARENTHESIS ] ), $tokens[ $openBracket ]['parenthesis_closer'] + 1, null, true );
 
 		$message = '`%s()` should almost always be followed by a call to `exit;`.';
 		$data    = [ $tokens[ $stackPtr ]['content'] ];

@@ -47,14 +47,14 @@ class EscapingVoidReturnFunctionsSniff implements Sniff {
 			return;
 		}
 
-		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $next_token ]['code'] ) {
 			// Not a function call.
 			return;
 		}
 
-		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $next_token + 1 ), null, true );
+		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, $next_token + 1, null, true );
 
 		if ( T_STRING !== $tokens[ $next_token ]['code'] ) {
 			// Not what we are looking for.

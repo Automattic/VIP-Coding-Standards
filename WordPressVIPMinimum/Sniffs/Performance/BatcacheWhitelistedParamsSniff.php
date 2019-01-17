@@ -96,7 +96,7 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 			return;
 		}
 
-		$key = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_OPEN_SQUARE_BRACKET ] ), ( $stackPtr + 1 ), null, true );
+		$key = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_OPEN_SQUARE_BRACKET ] ), $stackPtr + 1, null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $key ]['code'] ) {
 			return;

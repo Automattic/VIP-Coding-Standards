@@ -93,11 +93,11 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	public function process_token( $stackPtr ) {
 		$tokens = $this->phpcsFile->getTokens();
 
-		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS === $tokens[ $nextToken ]['code'] ) {
 			// The construct is using parenthesis, grab the next non empty token.
-			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		}
 
 		if ( T_DIR === $tokens[ $nextToken ]['code'] || '__DIR__' === $tokens[ $nextToken ]['content'] ) {
@@ -123,7 +123,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 				return;
 			}
 
-			if ( true === in_array( $tokens[ $nextToken ]['content'], array_keys( $this->restrictedConstants ), true ) ) {
+			if ( true === array_key_exists( $tokens[ $nextToken ]['content'], $this->restrictedConstants ) ) {
 				// The construct is using one of the restricted constants.
 				$message = '`%s` constant might not be defined or available. Use `%s()` instead.';
 				$data    = [ $tokens[ $nextToken ]['content'], $this->restrictedConstants[ $tokens[ $nextToken ]['content'] ] ];
@@ -131,7 +131,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 				return;
 			}
 
-			$nextNextToken = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMENT ] ), ( $nextToken + 1 ), null, true, null, true );
+			$nextNextToken = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMENT ] ), $nextToken + 1, null, true, null, true );
 			if ( 1 === preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $tokens[ $nextToken ]['content'] ) && T_OPEN_PARENTHESIS !== $tokens[ $nextNextToken ]['code'] ) {
 				// The construct is using custom constant, which needs manual inspection.
 				$message = 'File inclusion using custom constant (`%s`). Probably needs manual inspection.';
@@ -162,16 +162,15 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 			$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
 			$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
 			return;
-		} else {
-			if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && filter_var( str_replace( [ '"', "'" ], '', $tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
-				$message = 'Include path must be local file source, external URLs are prohibited on WordPress VIP.';
-				$this->phpcsFile->addError( $message, $nextToken, 'ExternalURL' );
-				return;
-			}
+		}
 
-			$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
-			$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
+		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && filter_var( str_replace( [ '"', "'" ], '', $tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
+			$message = 'Include path must be local file source, external URLs are prohibited on WordPress VIP.';
+			$this->phpcsFile->addError( $message, $nextToken, 'ExternalURL' );
 			return;
 		}
+
+		$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
+		$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
 	}
 }

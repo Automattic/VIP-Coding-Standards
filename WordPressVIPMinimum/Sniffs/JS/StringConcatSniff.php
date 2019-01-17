@@ -23,11 +23,9 @@ class StringConcatSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-	];
+	public $supportedTokenizers = [ 'JS' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -52,22 +50,18 @@ class StringConcatSniff implements Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] ) {
-			if ( false !== strpos( $tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $tokens[ $nextToken ]['content'] ) ) {
-				$data = [ '+' . $tokens[ $nextToken ]['content'] ];
-				$this->addFoundError( $phpcsFile, $stackPtr, $data );
-			}
+		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && false !== strpos( $tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $tokens[ $nextToken ]['content'] ) ) {
+			$data = [ '+' . $tokens[ $nextToken ]['content'] ];
+			$this->addFoundError( $phpcsFile, $stackPtr, $data );
 		}
 
-		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
+		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] ) {
-			if ( false !== strpos( $tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $tokens[ $prevToken ]['content'] ) ) {
-				$data = [ $tokens[ $nextToken ]['content'] . '+' ];
-				$this->addFoundError( $phpcsFile, $stackPtr, $data );
-			}
+		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] && false !== strpos( $tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $tokens[ $prevToken ]['content'] ) ) {
+			$data = [ $tokens[ $nextToken ]['content'] . '+' ];
+			$this->addFoundError( $phpcsFile, $stackPtr, $data );
 		}
 	}
 

@@ -157,7 +157,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		$file_name      = $this->phpcsFile->getFileName();
+		$file_name      = $this->phpcsFile->getFilename();
 		$file_extension = substr( strrchr( $file_name, '.' ), 1 );
 
 		if ( 'css' === $file_extension ) {
@@ -201,10 +201,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		switch ( $matched_content ) {
 			case 'show_admin_bar':
 				$error = true;
-				if ( true === $this->remove_only ) {
-					if ( 'true' === $parameters[1]['raw'] ) {
-						$error = false;
-					}
+				if ( true === $this->remove_only && 'true' === $parameters[1]['raw'] ) {
+					$error = false;
 				}
 				break;
 
@@ -215,10 +213,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				}
 
 				$error = true;
-				if ( true === $this->remove_only && isset( $parameters[2]['raw'] ) ) {
-					if ( '__return_true' === $this->strip_quotes( $parameters[2]['raw'] ) ) {
-						$error = false;
-					}
+				if ( true === $this->remove_only && isset( $parameters[2]['raw'] ) && '__return_true' === $this->strip_quotes( $parameters[2]['raw'] ) ) {
+					$error = false;
 				}
 				break;
 
@@ -261,12 +257,12 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 			if ( false === strpos( $content, '</style>' ) ) {
 				// Make sure we check any content on this line after the opening style tag.
 				$this->in_style[ $file_name ] = true;
-				$content                      = trim( substr( $content, ( strpos( $content, '<style' ) + 6 ) ) );
+				$content                      = trim( substr( $content, strpos( $content, '<style' ) + 6 ) );
 			} else {
 				// Ok, we have open and close style tag on the same line with possibly content within.
 				$start   = ( strpos( $content, '<style' ) + 6 );
 				$end     = strpos( $content, '</style>' );
-				$content = trim( substr( $content, $start, ( $end - $start ) ) );
+				$content = trim( substr( $content, $start, $end - $start ) );
 				unset( $start, $end );
 			}
 		} else {
@@ -307,14 +303,12 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				if ( false !== strpos( $content, $property ) ) {
 					$error = true;
 
-					if ( true === $this->remove_only ) {
-						// Check the value of the CSS property.
-						if ( preg_match( '`' . preg_quote( $property, '`' ) . '\s*:\s*(.+?)\s*(?:!important)?;`', $content, $matches ) > 0 ) {
-							$value = trim( $matches[1] );
-							$valid = $this->validate_css_property_value( $value, $requirements['type'], $requirements['value'] );
-							if ( true === $valid ) {
-								$error = false;
-							}
+					// Check the value of the CSS property.
+					if ( true === $this->remove_only && preg_match( '`' . preg_quote( $property, '`' ) . '\s*:\s*(.+?)\s*(?:!important)?;`', $content, $matches ) > 0 ) {
+						$value = trim( $matches[1] );
+						$valid = $this->validate_css_property_value( $value, $requirements['type'], $requirements['value'] );
+						if ( true === $valid ) {
+							$error = false;
 						}
 					}
 
@@ -352,7 +346,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				}
 			}
 			$start    = ( $i + 1 );
-			$selector = trim( $this->phpcsFile->getTokensAsString( $start, ( $opener - $start ) ) );
+			$selector = trim( $this->phpcsFile->getTokensAsString( $start, $opener - $start ) );
 			unset( $i );
 
 			foreach ( $this->target_css_selectors as $target_selector ) {
@@ -361,7 +355,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 
 					if ( true === $this->remove_only ) {
 						// Check the value of the CSS property.
-						$valuePtr = $this->phpcsFile->findNext( [ \T_COLON, \T_WHITESPACE ], ( $stackPtr + 1 ), null, true );
+						$valuePtr = $this->phpcsFile->findNext( [ \T_COLON, \T_WHITESPACE ], $stackPtr + 1, null, true );
 						$value    = $this->tokens[ $valuePtr ]['content'];
 						$valid    = $this->validate_css_property_value( $value, $css_property['type'], $css_property['value'] );
 						if ( true === $valid ) {
@@ -435,11 +429,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 			$content = $this->tokens[ $stackPtr ]['content'];
 		}
 
-		if ( ! empty( $content ) && false !== strpos( $content, '<' . $tag_name ) ) {
-			return true;
-		}
-
-		return false;
+		return null !== $content && false !== strpos( $content, '<' . $tag_name );
 	}
 
 }

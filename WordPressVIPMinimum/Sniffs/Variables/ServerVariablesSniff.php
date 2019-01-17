@@ -63,7 +63,7 @@ class ServerVariablesSniff implements Sniff {
 			return;
 		}
 
-		$variableNamePtr = $phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], ( $stackPtr + 1 ), null, false, null, true );
+		$variableNamePtr = $phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], $stackPtr + 1, null, false, null, true );
 		$variableName    = str_replace( [ "'", '"' ], '', $tokens[ $variableNamePtr ]['content'] );
 
 		if ( isset( $this->restrictedVariables['authVariables'][ $variableName ] ) ) {
