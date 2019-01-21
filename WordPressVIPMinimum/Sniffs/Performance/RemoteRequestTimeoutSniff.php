@@ -7,12 +7,14 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
+use WordPress\AbstractArrayAssignmentRestrictionsSniff;
+
 /**
  * Flag REGEXP and NOT REGEXP in meta compare
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class RemoteRequestTimeoutSniff extends \WordPress\AbstractArrayAssignmentRestrictionsSniff {
+class RemoteRequestTimeoutSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Groups of variables to restrict.

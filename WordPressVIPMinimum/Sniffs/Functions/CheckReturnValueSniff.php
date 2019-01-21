@@ -113,7 +113,7 @@ class CheckReturnValueSniff implements Sniff {
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -123,13 +123,10 @@ class CheckReturnValueSniff implements Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
-		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
-			// It's a function definition, not a function call.
-			return false;
-		}
+		$previous = $phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
-		return true;
+		// It's a function definition, not a function call, so return false.
+		return ! ( T_FUNCTION === $tokens[ $previous ]['code'] );
 	}
 
 	/**
@@ -147,14 +144,14 @@ class CheckReturnValueSniff implements Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
+		$previous = $phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
 		if ( T_EQUAL !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
 			return false;
 		}
 
-		$previous = $phpcsFile->findPrevious( $search, ( $previous - 1 ), null, true );
+		$previous = $phpcsFile->findPrevious( $search, $previous - 1, null, true );
 
 		if ( T_VARIABLE !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
@@ -186,7 +183,7 @@ class CheckReturnValueSniff implements Sniff {
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
@@ -199,7 +196,7 @@ class CheckReturnValueSniff implements Sniff {
 				$data    = [ $tokens[ $next ]['content'], $functionName ];
 				$phpcsFile->addError( $message, $next, 'DirectFunctionCall', $data );
 			}
-			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, ( $next + 1 ), $closeBracket, false, null, true );
+			$next = $phpcsFile->findNext( Tokens::$functionNameTokens, $next + 1, $closeBracket, false, null, true );
 		}
 	}
 
@@ -252,7 +249,7 @@ class CheckReturnValueSniff implements Sniff {
 		$variableName  = $variableToken['content'];
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
@@ -287,7 +284,7 @@ class CheckReturnValueSniff implements Sniff {
 			}
 		}
 
-		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ( $closeBracket + 1 ), null, false, $variableName, false );
+		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, $closeBracket + 1, null, false, $variableName );
 
 		// Find previous non-empty token, which is not an open parenthesis, comma nor variable.
 		$search   = Tokens::$emptyTokens;
@@ -297,7 +294,7 @@ class CheckReturnValueSniff implements Sniff {
 		$search[] = T_VARIABLE;
 		$search[] = T_CONSTANT_ENCAPSED_STRING;
 
-		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, ( $nextVariableOccurrence - 1 ), null, true );
+		$nextFunctionCallWithVariable = $phpcsFile->findPrevious( $search, $nextVariableOccurrence - 1, null, true );
 
 		foreach ( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : [];
@@ -310,7 +307,7 @@ class CheckReturnValueSniff implements Sniff {
 			}
 
 			$search = array_merge( Tokens::$emptyTokens, [ T_EQUAL ] );
-			$next   = $phpcsFile->findNext( $search, ( $nextVariableOccurrence + 1 ), null, true, null, false );
+			$next   = $phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true );
 			if ( true === in_array( $tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
 				&& $tokens[ $next ]['content'] === $callee
 			) {

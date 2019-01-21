@@ -358,25 +358,22 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	 */
 	public function is_targetted_token( $stackPtr ) {
 		// Exclude function definitions, class methods, and namespaced calls.
-		if ( \T_STRING === $this->tokens[ $stackPtr ]['code'] && isset( $this->tokens[ ( $stackPtr - 1 ) ] ) ) {
+		if ( \T_STRING === $this->tokens[ $stackPtr ]['code'] && isset( $this->tokens[ $stackPtr - 1 ] ) ) {
 			// Check if this is really a function.
-			$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+			$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 			if ( false !== $next && T_OPEN_PARENTHESIS !== $this->tokens[ $next ]['code'] ) {
 				return false;
 			}
 
-			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
 			if ( false !== $prev ) {
 
 				// Start difference to parent class method.
 				// Check to see if function is a method on a specific object variable.
 				if ( ! empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'] ) ) {
-					$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 2 ), null, true );
-					if ( \T_OBJECT_OPERATOR === $this->tokens[ $prev ]['code'] && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] ) ) {
-						return true;
-					} else {
-						return false;
-					}
+					$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 2, null, true );
+
+					return \T_OBJECT_OPERATOR === $this->tokens[ $prev ]['code'] && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] );
 				} // End difference to parent class method.
 
 				// Skip sniffing if calling a same-named method, or on function definitions.
@@ -392,7 +389,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				}
 				// Skip namespaced functions, ie: \foo\bar() not \bar().
 				if ( \T_NS_SEPARATOR === $this->tokens[ $prev ]['code'] ) {
-					$pprev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $prev - 1 ), null, true );
+					$pprev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $prev - 1, null, true );
 					if ( false !== $pprev && \T_STRING === $this->tokens[ $pprev ]['code'] ) {
 						return false;
 					}

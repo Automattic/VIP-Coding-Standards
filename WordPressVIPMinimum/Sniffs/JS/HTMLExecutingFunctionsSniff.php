@@ -35,11 +35,9 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-	];
+	public $supportedTokenizers = [ 'JS' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -68,7 +66,7 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $nextToken ]['code'] ) {
 			// Not a function.
@@ -78,7 +76,7 @@ class HTMLExecutingFunctionsSniff implements Sniff {
 		$parenthesis_closer = $tokens[ $nextToken ]['parenthesis_closer'];
 
 		while ( $nextToken < $parenthesis_closer ) {
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 			if ( T_STRING === $tokens[ $nextToken ]['code'] ) {
 				$message = 'Any HTML passed to `%s` gets executed. Make sure it\'s properly escaped.';
 				$data    = [ $tokens[ $stackPtr ]['content'] ];

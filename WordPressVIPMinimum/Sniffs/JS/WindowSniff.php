@@ -23,11 +23,9 @@ class WindowSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-	];
+	public $supportedTokenizers = [ 'JS' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -78,14 +76,14 @@ class WindowSniff implements Sniff {
 			return;
 		}
 
-		$nextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 		$nextToken    = $tokens[ $nextTokenPtr ]['code'];
 		if ( T_OBJECT_OPERATOR !== $nextToken && T_OPEN_SQUARE_BRACKET !== $nextToken ) {
 			// No . or [' next, bail.
 			return;
 		}
 
-		$nextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextTokenPtr + 1 ), null, true, null, true );
+		$nextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, $nextTokenPtr + 1, null, true, null, true );
 		if ( false === $nextNextTokenPtr ) {
 			// Something went wrong, bail.
 			return;
@@ -97,12 +95,12 @@ class WindowSniff implements Sniff {
 			return;
 		}
 
-		$nextNextNextTokenPtr = $phpcsFile->findNext( array_merge( [ T_CLOSE_SQUARE_BRACKET ], Tokens::$emptyTokens ), ( $nextNextTokenPtr + 1 ), null, true, null, true );
+		$nextNextNextTokenPtr = $phpcsFile->findNext( array_merge( [ T_CLOSE_SQUARE_BRACKET ], Tokens::$emptyTokens ), $nextNextTokenPtr + 1, null, true, null, true );
 		$nextNextNextToken    = $tokens[ $nextNextNextTokenPtr ]['code'];
 
 		$nextNextNextNextToken = false;
 		if ( T_OBJECT_OPERATOR === $nextNextNextToken || T_OPEN_SQUARE_BRACKET === $nextNextNextToken ) {
-			$nextNextNextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextNextNextTokenPtr + 1 ), null, true, null, true );
+			$nextNextNextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, $nextNextNextTokenPtr + 1, null, true, null, true );
 			if ( false === $nextNextNextNextTokenPtr ) {
 				// Something went wrong, bail.
 				return;
@@ -119,7 +117,7 @@ class WindowSniff implements Sniff {
 		$windowProperty .= $nextNextNextNextToken ? $nextNextToken . '.' . $nextNextNextNextToken : $nextNextToken;
 		$data            = [ $windowProperty ];
 
-		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
+		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
 		if ( T_EQUAL === $tokens[ $prevTokenPtr ]['code'] ) {
 			// Variable assignment.

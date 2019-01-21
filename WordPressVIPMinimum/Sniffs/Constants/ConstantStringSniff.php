@@ -47,7 +47,7 @@ class ConstantStringSniff implements Sniff {
 		}
 
 		// Find the next non-empty token.
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $nextToken ]['code'] ) {
 			// Not a function call.
@@ -59,7 +59,7 @@ class ConstantStringSniff implements Sniff {
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 
 		if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $nextToken ]['code'] ) {
 			$message = 'Constant name, as a string, should be used along with `%s()`.';

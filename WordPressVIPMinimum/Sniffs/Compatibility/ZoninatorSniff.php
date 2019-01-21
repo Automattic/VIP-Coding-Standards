@@ -43,36 +43,36 @@ class ZoninatorSniff implements Sniff {
 			return;
 		}
 
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
 			return;
 		}
 
-		$plugin_name = $phpcsFile->findNext( Tokens::$emptyTokens, ( $openBracket + 1 ), null, true );
+		$plugin_name = $phpcsFile->findNext( Tokens::$emptyTokens, $openBracket + 1, null, true );
 
 		if ( 'zoninator' !== $this->remove_wrapping_quotation_marks( $tokens[ $plugin_name ]['content'] ) ) {
 			return;
 		}
 
-		$comma = $phpcsFile->findNext( Tokens::$emptyTokens, ( $plugin_name + 1 ), null, true );
+		$comma = $phpcsFile->findNext( Tokens::$emptyTokens, $plugin_name + 1, null, true );
 
 		if ( ! $comma || 'PHPCS_T_COMMA' !== $tokens[ $comma ]['code'] ) {
 			// We are loading the default version.
 			return;
 		}
 
-		$folder = $phpcsFile->findNext( Tokens::$emptyTokens, ( $comma + 1 ), null, true );
+		$folder = $phpcsFile->findNext( Tokens::$emptyTokens, $comma + 1, null, true );
 
-		$comma = $phpcsFile->findNext( Tokens::$emptyTokens, ( $folder + 1 ), null, true );
+		$comma = $phpcsFile->findNext( Tokens::$emptyTokens, $folder + 1, null, true );
 
 		if ( ! $comma || 'PHPCS_T_COMMA' !== $tokens[ $comma ]['code'] ) {
 			// We are loading the default version.
 			return;
 		}
 
-		$version = $phpcsFile->findNext( Tokens::$emptyTokens, ( $comma + 1 ), null, true );
+		$version = $phpcsFile->findNext( Tokens::$emptyTokens, $comma + 1, null, true );
 		$version = $this->remove_wrapping_quotation_marks( $tokens[ $version ]['content'] );
 
 		if ( true === version_compare( $version, '0.8', '>=' ) ) {

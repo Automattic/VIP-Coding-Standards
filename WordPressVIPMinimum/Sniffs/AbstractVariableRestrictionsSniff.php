@@ -127,7 +127,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 		$token = $this->tokens[ $stackPtr ];
 
-		$this->excluded_groups = $this->merge_custom_array( $this->exclude );
+		$this->excluded_groups = static::merge_custom_array( $this->exclude );
 		if ( array_diff_key( $this->groups_cache, $this->excluded_groups ) === [] ) {
 			// All groups have been excluded.
 			// Don't remove the listener as the exclude property can be changed inline.
@@ -136,8 +136,8 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 		// Check if it is a function not a variable.
 		if ( \in_array( $token['code'], [ \T_OBJECT_OPERATOR, \T_DOUBLE_COLON ], true ) ) { // This only works for object vars and array members.
-			$method               = $this->phpcsFile->findNext( \T_WHITESPACE, ( $stackPtr + 1 ), null, true );
-			$possible_parenthesis = $this->phpcsFile->findNext( \T_WHITESPACE, ( $method + 1 ), null, true );
+			$method               = $this->phpcsFile->findNext( \T_WHITESPACE, $stackPtr + 1, null, true );
+			$possible_parenthesis = $this->phpcsFile->findNext( \T_WHITESPACE, $method + 1, null, true );
 			if ( \T_OPEN_PARENTHESIS === $this->tokens[ $possible_parenthesis ]['code'] ) {
 				return; // So .. it is a function after all !
 			}
@@ -174,7 +174,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 				if ( isset( $token['bracket_closer'] ) ) {
 					$owner  = $this->phpcsFile->findPrevious( \T_VARIABLE, $stackPtr );
-					$inside = $this->phpcsFile->getTokensAsString( $stackPtr, ( $token['bracket_closer'] - $stackPtr + 1 ) );
+					$inside = $this->phpcsFile->getTokensAsString( $stackPtr, $token['bracket_closer'] - $stackPtr + 1 );
 					$var    = implode( '', [ $this->tokens[ $owner ]['content'], $inside ] );
 				}
 			}
@@ -198,7 +198,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 			$this->addMessage(
 				$group['message'],
 				$stackPtr,
-				( 'error' === $group['type'] ),
+				'error' === $group['type'],
 				$this->string_to_errorcode( $groupName . '_' . $match[1] ),
 				[ $var ]
 			);

@@ -73,7 +73,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 
 		if ( false === is_numeric( $time ) ) {
 			// If using time constants, we need to convert to a number.
-			$time = str_replace( array_keys( $this->wp_time_constants ), array_values( $this->wp_time_constants ), $time );
+			$time = str_replace( array_keys( $this->wp_time_constants ), $this->wp_time_constants, $time );
 
 			if ( preg_match( '#^[\s\d+*/-]+$#', $time ) > 0 ) {
 				$time = eval( "return $time;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.

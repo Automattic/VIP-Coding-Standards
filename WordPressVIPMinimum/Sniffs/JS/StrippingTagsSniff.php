@@ -23,11 +23,9 @@ class StrippingTagsSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-	];
+	public $supportedTokenizers = [ 'JS' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -57,20 +55,20 @@ class StrippingTagsSniff implements Sniff {
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $nextToken ]['code'] ) {
 			// Not a function.
 			return;
 		}
 
-		$afterFunctionCall = $phpcsFile->findNext( Tokens::$emptyTokens, ( $tokens[ $nextToken ]['parenthesis_closer'] + 1 ), null, true, null, true );
+		$afterFunctionCall = $phpcsFile->findNext( Tokens::$emptyTokens, $tokens[ $nextToken ]['parenthesis_closer'] + 1, null, true, null, true );
 
 		if ( T_OBJECT_OPERATOR !== $tokens[ $afterFunctionCall ]['code'] ) {
 			return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $afterFunctionCall + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $afterFunctionCall + 1, null, true, null, true );
 
 		if ( T_STRING === $tokens[ $nextToken ]['code'] && 'text' === $tokens[ $nextToken ]['content'] ) {
 			$message = 'Vulnerable tag stripping approach detected.';

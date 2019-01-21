@@ -81,7 +81,7 @@ class RestrictedConstantsSniff implements Sniff {
 		}
 
 		// Find the previous non-empty token.
-		$openBracket = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
+		$openBracket = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -96,7 +96,7 @@ class RestrictedConstantsSniff implements Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ( $openBracket - 1 ), null, true );
+		$previous = $phpcsFile->findPrevious( $search, $openBracket - 1, null, true );
 		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
 			// It's a function definition, not a function call.
 			return;

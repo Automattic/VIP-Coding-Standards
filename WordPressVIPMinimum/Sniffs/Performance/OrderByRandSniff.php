@@ -51,9 +51,9 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		if ( 'rand' === strtolower( $val ) ) {
 			return 'Detected forbidden query_var "%s" of "%s". Use vip_get_random_posts() instead.';
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 }

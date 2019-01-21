@@ -85,21 +85,21 @@ class CacheValueOverrideSniff implements Sniff {
 		$variableName  = $variableToken['content'];
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		// Find the closing bracket.
 		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
 
-		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, ( $closeBracket + 1 ), null, false, $variableName, false );
+		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, $closeBracket + 1, null, false, $variableName );
 
-		$rightAfterNextVariableOccurence = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextVariableOccurrence + 1 ), null, true, null, true );
+		$rightAfterNextVariableOccurence = $phpcsFile->findNext( Tokens::$emptyTokens, $nextVariableOccurrence + 1, null, true, null, true );
 
 		if ( T_EQUAL !== $tokens[ $rightAfterNextVariableOccurence ]['code'] ) {
 			// Not a value override.
 			return;
 		}
 
-		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, ( $rightAfterNextVariableOccurence + 1 ), null, true, null, true );
+		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, $rightAfterNextVariableOccurence + 1, null, true, null, true );
 
 		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
 			$message = 'Obtained cached value in `%s` is being overridden. Disabling caching?';
@@ -125,7 +125,7 @@ class CacheValueOverrideSniff implements Sniff {
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
@@ -135,13 +135,10 @@ class CacheValueOverrideSniff implements Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
-		if ( T_FUNCTION === $tokens[ $previous ]['code'] ) {
-			// It's a function definition, not a function call.
-			return false;
-		}
+		$previous = $phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
-		return true;
+		// It's a function definition, not a function call, so return false.
+		return ! ( T_FUNCTION === $tokens[ $previous ]['code'] );
 	}
 
 	/**
@@ -159,14 +156,14 @@ class CacheValueOverrideSniff implements Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
+		$previous = $phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
 		if ( T_EQUAL !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
 			return false;
 		}
 
-		$previous = $phpcsFile->findPrevious( $search, ( $previous - 1 ), null, true );
+		$previous = $phpcsFile->findPrevious( $search, $previous - 1, null, true );
 
 		if ( T_VARIABLE !== $tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.

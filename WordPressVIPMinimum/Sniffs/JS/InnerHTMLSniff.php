@@ -23,11 +23,9 @@ class InnerHTMLSniff implements Sniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $supportedTokenizers = [
-		'JS',
-	];
+	public $supportedTokenizers = [ 'JS' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -56,20 +54,20 @@ class InnerHTMLSniff implements Sniff {
 			return;
 		}
 
-		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true, null, true );
+		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
 		if ( T_OBJECT_OPERATOR !== $tokens[ $prevToken ]['code'] ) {
 				return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
+		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
 		if ( T_EQUAL !== $tokens[ $nextToken ]['code'] ) {
 			// Not an assignment.
 			return;
 		}
 
-		$nextToken     = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+		$nextToken     = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		$foundVariable = false;
 
 		while ( false !== $nextToken && T_SEMICOLON !== $tokens[ $nextToken ]['code'] ) {
@@ -79,7 +77,7 @@ class InnerHTMLSniff implements Sniff {
 				break;
 			}
 
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, ( $nextToken + 1 ), null, true, null, true );
+			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		}
 
 		if ( true === $foundVariable ) {

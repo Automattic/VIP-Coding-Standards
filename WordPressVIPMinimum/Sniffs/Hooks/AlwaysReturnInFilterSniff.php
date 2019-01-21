@@ -69,12 +69,12 @@ class AlwaysReturnInFilterSniff implements Sniff {
 		}
 
 		$this->filterNamePtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ), // types.
-			$stackPtr + 1, // start.
-			null, // end.
-			true, // exclude.
-			null, // value.
-			true // local.
+			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ),
+			$stackPtr + 1,
+			null,
+			true,
+			null,
+			true
 		);
 
 		if ( ! $this->filterNamePtr ) {
@@ -83,12 +83,12 @@ class AlwaysReturnInFilterSniff implements Sniff {
 		}
 
 		$callbackPtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), // types.
-			$this->filterNamePtr + 1, // start.
-			null, // end.
-			true, // exclude.
-			null, // value.
-			true // local.
+			array_merge( Tokens::$emptyTokens, [ T_COMMA ] ),
+			$this->filterNamePtr + 1,
+			null,
+			true,
+			null,
+			true
 		);
 
 		if ( ! $callbackPtr ) {
@@ -113,12 +113,10 @@ class AlwaysReturnInFilterSniff implements Sniff {
 	private function processArray( $stackPtr ) {
 
 		$previous = $this->phpcsFile->findPrevious(
-			Tokens::$emptyTokens, // types.
-			$this->tokens[ $stackPtr ]['parenthesis_closer'] - 1, // start.
-			null, // end.
-			true, // exclude.
-			null, // value.
-			false // local.
+			Tokens::$emptyTokens,
+			$this->tokens[ $stackPtr ]['parenthesis_closer'] - 1,
+			null,
+			true
 		);
 
 		if ( true === in_array( T_CLASS, $this->tokens[ $stackPtr ]['conditions'], true ) ) {
@@ -145,12 +143,11 @@ class AlwaysReturnInFilterSniff implements Sniff {
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
-			Tokens::$functionNameTokens, // types.
-			$start, // start.
-			$end, // end.
-			false, // exclude.
-			$callbackFunctionName, // value.
-			false // local.
+			Tokens::$functionNameTokens,
+			$start,
+			$end,
+			false,
+			$callbackFunctionName
 		);
 
 		if ( ! $callbackFunctionPtr ) {
@@ -173,14 +170,12 @@ class AlwaysReturnInFilterSniff implements Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( false !== $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false ) ) {
-			$functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end, false, null, false );
+		while ( false !== $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end ) ) {
+			$functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end );
 			$functionNamePtr  = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
-			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] ) {
-				if ( $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
-					$this->processFunctionBody( $functionStackPtr );
-					return;
-				}
+			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] && $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
+				$this->processFunctionBody( $functionStackPtr );
+				return;
 			}
 			$offset = $functionStackPtr + 1;
 		}
@@ -194,12 +189,12 @@ class AlwaysReturnInFilterSniff implements Sniff {
 	private function processFunctionBody( $stackPtr ) {
 
 		$argPtr = $this->phpcsFile->findNext(
-			array_merge( Tokens::$emptyTokens, [ T_STRING, T_OPEN_PARENTHESIS ] ), // types.
-			$stackPtr + 1, // start.
-			null, // end.
-			true, // exclude.
-			null, // value.
-			true // local.
+			array_merge( Tokens::$emptyTokens, [ T_STRING, T_OPEN_PARENTHESIS ] ),
+			$stackPtr + 1,
+			null,
+			true,
+			null,
+			true
 		);
 
 		// If arg is being passed by reference, we can skip.
@@ -213,12 +208,9 @@ class AlwaysReturnInFilterSniff implements Sniff {
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
 		$returnTokenPtr = $this->phpcsFile->findNext(
-			[ T_RETURN ], // types.
-			( $functionBodyScopeStart + 1 ), // start.
-			$functionBodyScopeEnd, // end.
-			false, // exclude.
-			null, // value.
-			false // local.
+			[ T_RETURN ],
+			$functionBodyScopeStart + 1,
+			$functionBodyScopeEnd
 		);
 
 		$insideIfConditionalReturn = 0;
@@ -236,12 +228,9 @@ class AlwaysReturnInFilterSniff implements Sniff {
 				$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'VoidReturn', $data );
 			}
 			$returnTokenPtr = $this->phpcsFile->findNext(
-				[ T_RETURN ], // types.
-				( $returnTokenPtr + 1 ), // start.
-				$functionBodyScopeEnd, // end.
-				false, // exclude.
-				null, // value.
-				false // local.
+				[ T_RETURN ],
+				$returnTokenPtr + 1,
+				$functionBodyScopeEnd
 			);
 		}
 
@@ -299,18 +288,12 @@ class AlwaysReturnInFilterSniff implements Sniff {
 	private function isReturningVoid( $stackPtr ) {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
-			[ Tokens::$emptyTokens ], // types.
-			( $stackPtr + 1 ), // start.
-			null, // end.
-			true, // exclude.
-			null, // value.
-			false // local.
+			[ Tokens::$emptyTokens ],
+			$stackPtr + 1,
+			null,
+			true
 		);
 
-		if ( T_SEMICOLON === $this->tokens[ $nextToReturnTokenPtr ]['code'] ) {
-			return true;
-		}
-
-		return false;
+		return T_SEMICOLON === $this->tokens[ $nextToReturnTokenPtr ]['code'];
 	}
 }

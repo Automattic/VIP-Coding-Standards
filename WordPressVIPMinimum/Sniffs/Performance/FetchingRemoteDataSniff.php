@@ -47,7 +47,7 @@ class FetchingRemoteDataSniff implements Sniff {
 
 		$data = [ $tokens[ $stackPtr ]['content'] ];
 
-		$fileNameStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, ( $stackPtr + 1 ), null, false, null, true );
+		$fileNameStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, $stackPtr + 1, null, false, null, true );
 		if ( false === $fileNameStackPtr ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead. If it\'s for a local file please use WP_Filesystem instead.';
 			$phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsUnknown', $data );

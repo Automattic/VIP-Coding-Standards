@@ -34,7 +34,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * A list of classes and methods to check.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $checkClasses = [
 		'WP_Widget' => [
@@ -170,7 +170,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * List of grouped classes with same methods (as they extend the same parent class)
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $checkClassesGroups = [
 		'Walker' => [
@@ -249,7 +249,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$parentSignature = $this->checkClasses[ $parentClassName ][ $methodName ];
 
 		if ( count( $signatureParams ) > count( $parentSignature ) ) {
-			$extra_params                  = array_slice( $signatureParams, ( count( $parentSignature ) - count( $signatureParams ) ) );
+			$extra_params                  = array_slice( $signatureParams, count( $parentSignature ) - count( $signatureParams ) );
 			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
 				if ( false === array_key_exists( 'default', $extra_param ) || 'true' !== $extra_param['default'] ) {
@@ -269,8 +269,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$i = 0;
 		foreach ( $parentSignature as $key => $param ) {
 			if ( true === is_array( $param ) ) {
-				if ( true === array_key_exists( 'default', $param ) && false === array_key_exists( 'default', $signatureParams[ $i ] )
-					|| true === array_key_exists( 'pass_by_reference', $param ) && $param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
+				if (
+					(
+						true === array_key_exists( 'default', $param ) &&
+						false === array_key_exists( 'default', $signatureParams[ $i ] )
+					) || (
+						true === array_key_exists( 'pass_by_reference', $param ) &&
+						$param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
+					)
 				) {
 					$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
 					return;
