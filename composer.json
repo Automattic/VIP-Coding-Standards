@@ -22,7 +22,7 @@
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
 		"phpcompatibility/php-compatibility": "^9",
-		"phpunit/phpunit": "*"
+		"phpunit/phpunit": "^5 || ^6 || ^7"
 	},
 	"suggest": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
