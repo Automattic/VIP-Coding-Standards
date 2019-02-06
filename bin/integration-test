@@ -8,7 +8,8 @@
 #
 #   ./bin/integration-test
 
-# Set PHPCS_BIN, which is used in the ruleset_test.php file.
+# Set PHPCS_BIN, which is used in the ruleset-test.php file.
 PHPCS_BIN="$(pwd)/vendor/bin/phpcs"
 export PHPCS_BIN
-php ./ruleset_test.php
+php ./WordPressVIPMinimum/ruleset-test.php
+php ./WordPress-VIP-Go/ruleset-test.php

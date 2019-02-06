@@ -55,7 +55,7 @@
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_tempname">
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_tempnam">
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
 	</rule>
@@ -126,13 +126,7 @@
 	<rule ref="WordPressVIPMinimum.Hooks.RestrictedHooks.UploadMimes">
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.MissingSecondParameter">
-		<severity>10</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.MissingThirdParameter">
-		<severity>10</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions.RestrictedFilter">
+	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions">
 		<severity>10</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.dbDelta_dbdelta">

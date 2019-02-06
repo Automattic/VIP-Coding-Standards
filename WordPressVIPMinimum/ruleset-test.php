@@ -141,7 +141,7 @@ class PHPCS_Ruleset_Test {
 
 		// Collect the PHPCS result.
 		// @codingStandardsIgnoreLine
-		$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./ruleset_test.inc' );
+		$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./WordPressVIPMinimum/ruleset-test.inc' );
 
 		$output = json_decode( $output, true );
 
