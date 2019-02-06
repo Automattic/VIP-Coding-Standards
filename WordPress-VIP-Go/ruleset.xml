@@ -3,13 +3,10 @@
 	<description>WordPress VIP Go Coding Standards</description>
 
 	<!-- The rules below are the changes from between the original sniff or parent ruleset, and what should be applied for this Standard. -->
-	<!-- Each group of rules is order alphabetically -->
-
 	<!-- Include the base VIP Minimum ruleset -->
 	<rule ref="WordPressVIPMinimum"/>
 
-
-	<!-- Things that probably won't work and needs a dev to review -->
+	<!-- Things that may be incompatible with the VIP Go infrastructure and needs a dev to review -->
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete">
 		<severity>6</severity>
 		<message>File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as %s() won't work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
@@ -95,12 +92,6 @@
 	</rule>
 	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped"/>
 	<!-- Should fix all of them but it doesn't need a manual review -->
-	<rule ref="WordPress.Security.EscapeOutput.UnsafePrintingFunction"/>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents">
-		<type>error</type>
-		<severity>5</severity>
-		<message>%s() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it's used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
-	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
 		<type>error</type>
 		<message>File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: %s(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/</message>
@@ -130,7 +121,7 @@
 		<severity>10</severity>
 	</rule>
 	<rule ref="WordPress.WP.PostsPerPage.posts_per_page_posts_per_page">
-		<message>Having more than 100 posts returned per page can lead to severe performance problems.</message>
+		<message>Having more than 100 posts returned per page may lead to severe performance problems.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Hooks.RestrictedHooks.UploadMimes">
 		<severity>10</severity>
@@ -160,7 +151,18 @@
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_adjacent_post">
 		<type>warning</type>
-		<message>%s() is uncached, please use wpcom_vip_get_adjacent_post() instead.</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_previous_post">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_previous_post_link">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_next_post">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_next_post_link">
+		<type>warning</type>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_title_get_page_by_title">
 		<type>warning</type>
@@ -183,25 +185,14 @@
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect">
 		<type>warning</type>
-		<message>%s() is uncached, please use wpcom_vip_old_slug_redirect() instead.</message>
 	</rule>
-
 
 	<!-- Miscellaneous sub-optimal things -->
 	<rule ref="Internal.LineEndings.Mixed">
 		<severity>1</severity>
 	</rule>
-	<rule ref="Generic.PHP.NoSilencedErrors.Discouraged">
-		<severity>1</severity>
-	</rule>
-	<rule ref="Generic.PHP.NoSilencedErrors.Forbidden">
-		<severity>1</severity>
-	</rule>
 	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
 		<severity>1</severity>
-	</rule>
-	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_error_log">
-		<message>%s() should not be used in production environments.</message>
 	</rule>
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode">
 		<severity>3</severity>
@@ -215,11 +206,7 @@
 	<rule ref="WordPress.PHP.StrictInArray.MissingTrueStrict">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.Security.EscapeOutput._e">
-		<!-- We trust that translations are safe on VIP Go -->
-		<severity>1</severity>
-	</rule>
-	<rule ref="WordPress.Security.EscapeOutput._ex">
+	<rule ref="WordPress.Security.EscapeOutput.UnsafePrintingFunction">
 		<!-- We trust that translations are safe on VIP Go -->
 		<severity>1</severity>
 	</rule>
@@ -230,12 +217,12 @@
 	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedScript">
 		<type>warning</type>
 		<severity>3</severity>
-		<message>Scripts must be registered/enqueued via `wp_enqueue_script`. This can improve the site's performance due to script concatenation</message>
+		<message>Scripts should be registered/enqueued via `wp_enqueue_script`. This can improve the site's performance due to script concatenation.</message>
 	</rule>
 	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet">
 		<type>warning</type>
 		<severity>3</severity>
-		<message>Stylesheets must be registered/enqueued via `wp_enqueue_style`. This can improve the site's performance due to styles concatenation</message>
+		<message>Stylesheets should be registered/enqueued via `wp_enqueue_style`. This can improve the site's performance due to styles concatenation.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Performance.LowExpiryCacheTime.LowCacheTime">
 		<severity>3</severity>
@@ -250,16 +237,10 @@
 	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable">
 		<severity>1</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval.HidingDetected">
+	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval.RemovalDetected">
-		<severity>3</severity>
-	</rule>
-	<rule ref="Generic.PHP.NoSilencedErrors.Forbidden">
-		<severity>1</severity>
-	</rule>
-	<rule ref="Generic.PHP.NoSilencedErrors.Discouraged">
+	<rule ref="Generic.PHP.NoSilencedErrors">
 		<severity>1</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Security.ProperEscapingFunction.htmlAttrNotByEscHTML">
@@ -272,12 +253,11 @@
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.switch_to_blog_switch_to_blog">
 		<type>warning</type>
 		<severity>3</severity>
-		<message>Switch to blog may not work as you expect. It only changes the database context for the blog. It doesn't load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.</message>
+		<message>Switch to blog may not work as expected since it only changes the database context for the blog and does not load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn">
 		<severity>3</severity>
 	</rule>
-
 
 	<!-- Silence is golden, these don't affect us on VIP Go -->
 	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">
