@@ -30,7 +30,7 @@
 	"minimum-stability": "RC",
 	"scripts": {
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-		"integration": "bin/integration-test",
+		"ruleset": "bin/ruleset-tests",
 		"lint": [
 			"bin/php-lint",
 			"bin/xml-lint"
@@ -39,7 +39,7 @@
 		"phpunit": "bin/unit-tests",
 		"test": [
 			"@lint",
-			"@integration",
+			"@ruleset",
 			"@phpunit",
 			"@phpcs"
 		]
