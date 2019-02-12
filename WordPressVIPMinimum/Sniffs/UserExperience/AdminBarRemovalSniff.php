@@ -217,10 +217,6 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 					$error = false;
 				}
 				break;
-
-			default:
-				// Left empty on purpose.
-				break;
 		}
 
 		if ( true === $error ) {
@@ -402,10 +398,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 
 			case '>':
 				return $value > $compare_value;
-
-			default:
-				return false;
 		}
+		return false;
 	}
 
 	/**
