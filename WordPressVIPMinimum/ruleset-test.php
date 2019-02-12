@@ -1,16 +1,11 @@
 <?php
 /**
- * Minimum viable integration test for the WordPressVIPMinimum ruleset
+ * Ruleset test for the WordPressVIPMinimum ruleset
  *
- * To run the test, make sure you have the PHPCS, including the WordPressVIPMinimum standard, installed and executable
- * using the `phpcs --standard=WordPressVIPMinimum` command.
+ * The expected errors, warnings, and messages listed here, should match what is expected to be reported
+ * when ruleset-test.inc is run against PHP_CodeSniffer and the WordPressVIPMinimum standard.
  *
- * To run the integration test, simply execute this file using the PHP CLI and check the output:
- *
- * ```
- * $ php ruleset_test.php
- * No issues found. All tests passed!
- * ```
+ * To run the test, see ../bin/ruleset-tests.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
@@ -85,184 +80,14 @@ $expected = [
 	],
 ];
 
-/**
- * Class PHPCS_Ruleset_Test
- */
-class PHPCS_Ruleset_Test {
-
-	/**
-	 * Numbers of errors for each line.
-	 *
-	 * @var array
-	 */
-	private $errors = [];
-
-	/**
-	 * Numbers of Warnings for each line.
-	 *
-	 * @var array
-	 */
-	private $warnings = [];
-
-	/**
-	 * Messages reported by PHPCS.
-	 *
-	 * @var array
-	 */
-	private $messages = [];
-
-	/**
-	 * Number of found issues.
-	 *
-	 * @var int
-	 */
-	private $total_issues = 0;
-
-	/**
-	 * Expected errors, warnings and messages.
-	 *
-	 * @var array
-	 */
-	public $expected = [];
-
-	/**
-	 * Init the object by processing the test file.
-	 *
-	 * @param array $expected The array of expected errors, warnings and messages.
-	 */
-	public function __construct( $expected = [] ) {
-		$this->expected = $expected;
-
-		// Travis support.
-		if ( false === getenv( 'PHPCS_BIN' ) ) {
-			// @codingStandardsIgnoreLine
-			putenv( 'PHPCS_BIN=phpcs' );
-		}
-
-		// Collect the PHPCS result.
-		// @codingStandardsIgnoreLine
-		$output = shell_exec( '$PHPCS_BIN --standard=WordPressVIPMinimum --report=json ./WordPressVIPMinimum/ruleset-test.inc' );
-
-		$output = json_decode( $output, true );
-
-		if ( false === is_array( $output ) || true === empty( $output ) ) {
-			printf( 'The PHPCS command checking the ruleset haven\'t returned any issues. Bailing ...' . PHP_EOL ); // XSS OK.
-			exit( 1 ); // Die early, if we don't have any output.
-		}
-
-		foreach ( $output['files'] as $file => $issues ) {
-			foreach ( $issues['messages'] as $issue ) {
-				if ( 'ERROR' === $issue['type'] ) {
-					$this->errors[ $issue['line'] ] = ( isset( $this->errors[ $issue['line'] ] ) ) ? $this->errors[ $issue['line'] ]++ : 1;
-				} else {
-					$this->warnings[ $issue['line'] ] = ( isset( $this->warnings[ $issue['line'] ] ) ) ? $this->warnings[ $issue['line'] ]++ : 1;
-				}
-				$this->messages[ $issue['line'] ] = ( false === isset( $this->messages[ $issue['line'] ] ) || false === is_array( $this->messages[ $issue['line'] ] ) ) ? [ $issue['message'] ] : array_merge( $this->messages[ $issue['line'] ], [ $issue['message'] ] );
-			}
-		}
-	}
-
-	/**
-	 * Run all the tests.
-	 *
-	 * @return int
-	 */
-	public function run() {
-		// Check for missing expected values.
-		$this->check_missing_expected_values();
-		// Check for extra values which were not expected.
-		$this->check_unexpected_values();
-		// Check for expected messages.
-		$this->check_messages();
-
-		return $this->total_issues;
-	}
-
-	/**
-	 * Check whether all expected numbers of errors and warnings are present.
-	 */
-	private function check_missing_expected_values() {
-		foreach ( $this->expected as $type => $lines ) {
-			if ( 'messages' === $type ) {
-				continue;
-			}
-			foreach ( $lines as $line => $number ) {
-				if ( false === isset( $this->{$type}[ $line ] ) ) {
-					$this->error_warning_message( $number, $type, 0, $line );
-					$this->total_issues ++;
-				} elseif ( $this->{$type}[ $line ] !== $number ) {
-					$this->error_warning_message( $number, $type, $this->{$type}[ $line ], $line );
-					$this->total_issues ++;
-				}
-				unset( $this->{$type}[ $line ] );
-			}
-		}
-	}
-
-	/**
-	 * Check whether there are no unexpected numbers of errors and warnings.
-	 */
-	private function check_unexpected_values() {
-		foreach ( [ 'errors', 'warnings' ] as $type ) {
-			foreach ( $this->$type as $line => $number ) {
-				if ( false === isset( $expected[ $type ][ $line ] ) ) {
-					$this->error_warning_message( 0, $type, $number, $line );
-					$this->total_issues ++;
-				} elseif ( $number !== $expected[ $type ][ $line ] ) {
-					$this->error_warning_message( $expected[ $type ][ $line ], $type, $number, $line );
-					$this->total_issues ++;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Check whether all expected messages are present and whether there are no unexpected messages.
-	 *
-	 * @return void
-	 */
-	private function check_messages() {
-		foreach ( $this->expected['messages'] as $line => $messages ) {
-			foreach ( $messages as $message ) {
-				if ( false === isset( $this->messages[ $line ] ) ) {
-					printf( 'Expected "%s" but found no message for line %d' . PHP_EOL, $message, $line ); // XSS OK.
-					$this->total_issues ++;
-				} elseif ( false === in_array( $message, $this->messages[ $line ], true ) ) {
-					printf( 'Expected message "%s" was not found for line %d' . PHP_EOL, $message, $line ); // XSS OK.
-					$this->total_issues ++;
-				}
-			}
-		}
-		foreach ( $this->messages as $line => $messages ) {
-			foreach ( $messages as $message ) {
-				if ( true === isset( $this->expected['messages'][ $line ] ) ) {
-					if ( false === in_array( $message, $this->expected['messages'][ $line ], true ) ) {
-						printf( 'Unexpected message "%s" was found for line %d' . PHP_EOL, $message, $line ); // XSS OK.
-						$this->total_issues ++;
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Print out the message reporting found issues.
-	 *
-	 * @param int    $expected Expected number of issues.
-	 * @param string $type The type of the issue.
-	 * @param int    $number Real number of issues.
-	 * @param int    $line Line number.
-	 */
-	private function error_warning_message( $expected, $type, $number, $line ) {
-		printf( 'Expected %d %s, found %d on line %d' . PHP_EOL, $expected, $type, $number, $line ); // XSS OK.
-	}
-}
+require __DIR__ . '/../tests/RulesetTest.php';
 
 // Run the tests!
-$test = new PHPCS_Ruleset_Test( $expected );
-if ( 0 === $test->run() ) {
-	printf( 'No issues found. All tests passed!' . PHP_EOL ); // XSS OK.
+$test = new RulesetTest( 'WordPressVIPMinimum', $expected );
+if ( $test->passes() ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL );
 	exit( 0 );
-} else {
-	exit( 1 );
 }
+
+exit( 1 );

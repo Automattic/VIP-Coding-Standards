@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# Run ruleset tests.
+#
+# This will check that each ruleset correctly includes the expected sniffs from this and other packages. If a sniff
+# reference has changed (moved category, or been renamed, etc.) then the expected errors, warnings, and messages will
+# not match what the output is, when the ruleset-test.inc is checked with PHPCS against the relevant ruleset.
+#
+# To run the tests, make sure you have the PHPCS, including the WordPressVIPMinimum standard, installed and executable
+# * using the `phpcs --standard=WordPressVIPMinimum` command.
+#
+# From the root of this VIP-Coding-Standards package, you can then run:
+#
+#   ./bin/ruleset-tests
+
+# Set PHPCS_BIN, which is used in the tests/RulesetTest.php files.
+PHPCS_BIN="$(pwd)/vendor/bin/phpcs"
+export PHPCS_BIN
+
+php ./WordPressVIPMinimum/ruleset-test.php
+php ./WordPress-VIP-Go/ruleset-test.php

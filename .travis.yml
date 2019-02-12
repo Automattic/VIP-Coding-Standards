@@ -23,8 +23,8 @@ script:
   # Run the unit tests.
   - ./bin/unit-tests
 
-  # Run integration test.
-  - ./bin/integration-test
+  # Run ruleset tests.
+  - ./bin/ruleset-tests
 
 # Rather than a `matrix` property, we use build stages. This allows early
 # build failure for basic linting and sniffing issues.
@@ -43,7 +43,7 @@ stages:
   - test
 
 jobs:
-  allow_failure:
+  allow_failures:
     - php: nightly
   fast_finish: true
   include:
