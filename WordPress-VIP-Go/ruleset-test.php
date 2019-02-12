@@ -173,9 +173,6 @@ $expected = [
 		56  => [
 			'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
 		],
-		62  => [
-			'This is currently deprecated in PHP 7.0 and will be removed in the future. This will cause a fatal error on newer versions of PHP and should be fixed.',
-		],
 		80  => [
 			'File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: fclose(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
 		],
