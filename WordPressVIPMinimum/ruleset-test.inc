@@ -179,4 +179,13 @@ add_filter( 'cron_schedules', 'my_add_weekly' ); // Error. 6 min.
 
 thisisasyntaxerror! // Error.
 
+// WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option
+add_site_option( 'foo', $bar ); // Error.
+
+// WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_update_site_option
+update_site_option( $bar, $foo, true ); // Error.
+
+// WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option
+delete_site_option( $foo ); // Error.
+
 ?> <!-- closing PHP tag should be omitted -->

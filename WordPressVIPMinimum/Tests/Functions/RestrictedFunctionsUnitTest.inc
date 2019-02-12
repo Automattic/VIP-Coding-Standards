@@ -215,3 +215,9 @@ $c->create_function = 'bar' . ( 1 === 1 ?? 'foo' ); // Ok.
 $wp_random_testing = create_function2( '$a, $b', 'return ( $b / $a ); '); // Ok.
 $wp_random_testing = create_function3( '$a, $b', 'return ( $b / $a ); '); // Ok.
 
+add_site_option( $foo, 'bar' ); // Warning.
+add_option( $foo, 'bar' ); // Ok.
+update_site_option(  $bar, 'foo' ); // Warning.
+update_option( 'foo', $bar ); // Ok.
+delete_site_option( $foo   ); // Warning.
+delete_option(  $bar ); // Ok.
