@@ -327,4 +327,7 @@ delete_site_option( $foo ); // Ok.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_update_site_option
 update_site_option( $bar, $foo, true ); // Ok.
 
+// WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option
+add_site_option( 'foo', $bar ); // Ok.
+
 ?> <!-- closing PHP tag should be omitted -->

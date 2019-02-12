@@ -263,6 +263,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'type'      => 'error',
 				'message'   => '%s() will overwrite network option values, please use the `*_option()` equivalent instead (e.g. `update_option()`).',
 				'functions' => [
+					'add_site_option',
 					'update_site_option',
 					'delete_site_option',
 				],

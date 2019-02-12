@@ -281,5 +281,8 @@
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_update_site_option">
 		<severity>0</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option">
+		<severity>0</severity>
+	</rule>
 
 </ruleset>
