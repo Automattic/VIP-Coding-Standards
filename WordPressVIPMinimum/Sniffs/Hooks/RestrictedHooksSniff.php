@@ -39,30 +39,37 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	];
 
 	/**
-	 * List of restricted filter names.
+	 * List of restricted filters by groups.
 	 *
 	 * @var array
 	 */
-	private $restricted_hooks = [
+	private $restricted_hook_groups = [
 		'upload_mimes' => [
 			// TODO: This error message needs a link to the VIP Documentation, see https://github.com/Automattic/VIP-Coding-Standards/issues/235.
-			'type' => 'Warning',
-			'msg'  => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
-			'code' => 'UploadMimes',
+			'type'  => 'Warning',
+			'msg'   => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
+			'hooks' => [
+				'upload_mimes',
+			],
 		],
-		'http_request_timeout' => [
+		'http_request' => [
 			// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.
 			// VIP Go: https://vip.wordpress.com/documentation/vip-go/fetching-remote-data/.
-			'type' => 'Warning',
-			'msg'  => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
-			'code' => 'HighTimeout',
+			'type'  => 'Warning',
+			'msg'   => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
+			'hooks' => [
+				'http_request_timeout',
+				'http_request_args',
+			],
 		],
-		'http_request_args' => [
-			// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.
-			// VIP Go: https://vip.wordpress.com/documentation/vip-go/fetching-remote-data/.
-			'type' => 'Warning',
-			'msg'  => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
-			'code' => 'HighTimeout',
+		'robotstxt' => [
+			// WordPress.com + VIP Go: https://vip.wordpress.com/documentation/robots-txt/.
+			'type'  => 'Warning',
+			'msg'   => 'Don\'t forget to flush the robots.txt cache by going to Settings > Reading and toggling the privacy settings.',
+			'hooks' => [
+				'do_robotstxt',
+				'robots_txt',
+			],
 		],
 	];
 
@@ -77,10 +84,12 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		foreach ( $this->restricted_hooks as $restricted_hook => $hook_args ) {
-			if ( $this->normalize_hook_name_from_parameter( $parameters[1] ) === $restricted_hook ) {
-				$addMethod = 'add' . $hook_args['type'];
-				$this->phpcsFile->{$addMethod}( $hook_args['msg'], $stackPtr, $hook_args['code'] );
+		foreach ( $this->restricted_hook_groups as $group => $group_args ) {
+			foreach ( $group_args['hooks'] as $hook ) {
+				if ( $this->normalize_hook_name_from_parameter( $parameters[1] ) === $hook ) {
+					$addMethod = 'add' . $group_args['type'];
+					$this->phpcsFile->{$addMethod}( $group_args['msg'], $stackPtr, $hook );
+				}
 			}
 		}
 	}

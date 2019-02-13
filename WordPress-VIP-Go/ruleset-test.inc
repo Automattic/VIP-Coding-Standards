@@ -115,7 +115,7 @@ _query_posts( 'posts_per_page=999' ); // Warning.
 $query_args['posts_per_page'] = 999; // Warning.
 $query_args['posts_per_page'] = 1; // OK.
 
-// WordPressVIPMinimum.Hooks.RestrictedHooks.UploadMimes
+// WordPressVIPMinimum.Hooks.RestrictedHooks.upload_mimes
 add_filter( 'upload_mimes', 'foo' ); // Warning.
 
 // WordPressVIPMinimum.Security.PHPFilterFunctions
