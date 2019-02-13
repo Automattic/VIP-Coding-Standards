@@ -56,14 +56,6 @@ $x = isset( $_COOKIE['bar'] ) ? sanitize_key( $_COOKIE['bar'] ) : ''; // Error.
 if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) { // Error.
 }
 
-// Generic.NamingConventions.ConstructorName.OldStyle
-class OldClass
-{
-    function OldClass() // Error.
-    {
-    }
-}
-
 // WordPress.Security.EscapeOutput.OutputNotEscaped
 echo $foo; // Error.
 echo 'Some Raw String';  // Ok.
