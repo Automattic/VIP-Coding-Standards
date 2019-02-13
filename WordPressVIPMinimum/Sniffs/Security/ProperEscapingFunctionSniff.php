@@ -8,8 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -17,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class ProperEscapingFunctionSniff implements Sniff {
+class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
 	 * List of escaping functions which are being tested.
@@ -42,41 +41,38 @@ class ProperEscapingFunctionSniff implements Sniff {
 	/**
 	 * Process this test when one of its tokens is encountered
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
+	public function process_token( $stackPtr ) {
 
-		$tokens = $phpcsFile->getTokens();
-
-		if ( false === in_array( $tokens[ $stackPtr ]['content'], $this->escaping_functions, true ) ) {
+		if ( false === in_array( $this->tokens[ $stackPtr ]['content'], $this->escaping_functions, true ) ) {
 			return;
 		}
 
-		$function_name = $tokens[ $stackPtr ]['content'];
+		$function_name = $this->tokens[ $stackPtr ]['content'];
 
-		$echo_or_string_concat = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
+		$echo_or_string_concat = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
 
-		if ( T_ECHO === $tokens[ $echo_or_string_concat ]['code'] ) {
+		if ( T_ECHO === $this->tokens[ $echo_or_string_concat ]['code'] ) {
 			// Very likely inline HTML with <?php tag.
-			$php_open = $phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
+			$php_open = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
 
-			if ( T_OPEN_TAG !== $tokens[ $php_open ]['code'] ) {
+			if ( T_OPEN_TAG !== $this->tokens[ $php_open ]['code'] ) {
 				return;
 			}
 
-			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, $php_open - 1, null, true );
+			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $php_open - 1, null, true );
 
-			if ( T_INLINE_HTML !== $tokens[ $html ]['code'] ) {
+			if ( T_INLINE_HTML !== $this->tokens[ $html ]['code'] ) {
 				return;
 			}
-		} elseif ( T_STRING_CONCAT === $tokens[ $echo_or_string_concat ]['code'] ) {
+		} elseif ( T_STRING_CONCAT === $this->tokens[ $echo_or_string_concat ]['code'] ) {
 			// Very likely string concatenation mixing strings and functions/variables.
-			$html = $phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
+			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
 
-			if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $html ]['code'] ) {
+			if ( T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $html ]['code'] ) {
 				return;
 			}
 		} else {
@@ -86,14 +82,14 @@ class ProperEscapingFunctionSniff implements Sniff {
 
 		$data = [ $function_name ];
 
-		if ( 'esc_url' !== $function_name && $this->is_href_or_src( $tokens[ $html ]['content'] ) ) {
+		if ( 'esc_url' !== $function_name && $this->is_href_or_src( $this->tokens[ $html ]['content'] ) ) {
 			$message = 'Wrong escaping function. href and src attributes should be escaped by `esc_url()`, not by `%s()`.';
-			$phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
+			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
-		if ( 'esc_html' === $function_name && $this->is_html_attr( $tokens[ $html ]['content'] ) ) {
+		if ( 'esc_html' === $function_name && $this->is_html_attr( $this->tokens[ $html ]['content'] ) ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
-			$phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
+			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
 		}
 	}

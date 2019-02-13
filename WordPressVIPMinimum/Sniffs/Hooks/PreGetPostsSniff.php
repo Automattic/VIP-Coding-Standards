@@ -7,8 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -18,21 +17,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class PreGetPostsSniff implements Sniff {
-
-	/**
-	 * The tokens of the phpcsFile.
-	 *
-	 * @var array
-	 */
-	private $_tokens;
-
-	/**
-	 * The PHP_CodeSniffer file where the token was found.
-	 *
-	 * @var File
-	 */
-	private $_phpcsFile;
+class PreGetPostsSniff extends Sniff {
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -43,29 +28,23 @@ class PreGetPostsSniff implements Sniff {
 		return Tokens::$functionNameTokens;
 	}
 
-
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position in the stack where the token was found.
+	 * @param int $stackPtr The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
+	public function process_token( $stackPtr ) {
 
-		$this->_tokens = $phpcsFile->getTokens();
-
-		$this->_phpcsFile = $phpcsFile;
-
-		$functionName = $this->_tokens[ $stackPtr ]['content'];
+		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		if ( 'add_action' !== $functionName ) {
 			// We are interested in add_action calls only.
 			return;
 		}
 
-		$actionNamePtr = $this->_phpcsFile->findNext(
+		$actionNamePtr = $this->phpcsFile->findNext(
 			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ),
 			$stackPtr + 1,
 			null,
@@ -79,12 +58,12 @@ class PreGetPostsSniff implements Sniff {
 			return;
 		}
 
-		if ( 'pre_get_posts' !== substr( $this->_tokens[ $actionNamePtr ]['content'], 1, -1 ) ) {
+		if ( 'pre_get_posts' !== substr( $this->tokens[ $actionNamePtr ]['content'], 1, -1 ) ) {
 			// This is not setting a callback for pre_get_posts action.
 			return;
 		}
 
-		$callbackPtr = $this->_phpcsFile->findNext(
+		$callbackPtr = $this->phpcsFile->findNext(
 			array_merge( Tokens::$emptyTokens, [ T_COMMA ] ),
 			$actionNamePtr + 1,
 			null,
@@ -98,11 +77,11 @@ class PreGetPostsSniff implements Sniff {
 			return;
 		}
 
-		if ( 'PHPCS_T_CLOSURE' === $this->_tokens[ $callbackPtr ]['code'] ) {
+		if ( 'PHPCS_T_CLOSURE' === $this->tokens[ $callbackPtr ]['code'] ) {
 			$this->processClosure( $callbackPtr );
-		} elseif ( 'T_ARRAY' === $this->_tokens[ $callbackPtr ]['type'] ) {
+		} elseif ( 'T_ARRAY' === $this->tokens[ $callbackPtr ]['type'] ) {
 			$this->processArray( $callbackPtr );
-		} elseif ( true === in_array( $this->_tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
+		} elseif ( true === in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
 		}
 	}
@@ -114,9 +93,9 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function processArray( $stackPtr ) {
 
-		$previous = $this->_phpcsFile->findPrevious(
+		$previous = $this->phpcsFile->findPrevious(
 			Tokens::$emptyTokens,
-			$this->_tokens[ $stackPtr ]['parenthesis_closer'] - 1,
+			$this->tokens[ $stackPtr ]['parenthesis_closer'] - 1,
 			null,
 			true
 		);
@@ -131,9 +110,9 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function processString( $stackPtr ) {
 
-		$callbackFunctionName = substr( $this->_tokens[ $stackPtr ]['content'], 1, -1 );
+		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
-		$callbackFunctionPtr = $this->_phpcsFile->findNext(
+		$callbackFunctionPtr = $this->phpcsFile->findNext(
 			Tokens::$functionNameTokens,
 			0,
 			null,
@@ -156,7 +135,7 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function processFunction( $stackPtr ) {
 
-		$wpQueryObjectNamePtr = $this->_phpcsFile->findNext(
+		$wpQueryObjectNamePtr = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
 			$stackPtr + 1,
 			null,
@@ -170,9 +149,9 @@ class PreGetPostsSniff implements Sniff {
 			return;
 		}
 
-		$wpQueryObjectVariableName = $this->_tokens[ $wpQueryObjectNamePtr ]['content'];
+		$wpQueryObjectVariableName = $this->tokens[ $wpQueryObjectNamePtr ]['content'];
 
-		$functionDefinitionPtr = $this->_phpcsFile->findPrevious( [ T_FUNCTION ], $wpQueryObjectNamePtr - 1 );
+		$functionDefinitionPtr = $this->phpcsFile->findPrevious( [ T_FUNCTION ], $wpQueryObjectNamePtr - 1 );
 
 		if ( ! $functionDefinitionPtr ) {
 			// Something is wrong.
@@ -189,7 +168,7 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function processClosure( $stackPtr ) {
 
-		$wpQueryObjectNamePtr = $this->_phpcsFile->findNext(
+		$wpQueryObjectNamePtr = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
 			$stackPtr + 1,
 			null,
@@ -203,7 +182,7 @@ class PreGetPostsSniff implements Sniff {
 			return;
 		}
 
-		$this->processFunctionBody( $stackPtr, $this->_tokens[ $wpQueryObjectNamePtr ]['content'] );
+		$this->processFunctionBody( $stackPtr, $this->tokens[ $wpQueryObjectNamePtr ]['content'] );
 	}
 
 	/**
@@ -214,10 +193,10 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function processFunctionBody( $stackPtr, $variableName ) {
 
-		$functionBodyScopeStart = $this->_tokens[ $stackPtr ]['scope_opener'];
-		$functionBodyScopeEnd   = $this->_tokens[ $stackPtr ]['scope_closer'];
+		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
+		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
 
-		$wpQueryVarUsed = $this->_phpcsFile->findNext(
+		$wpQueryVarUsed = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
 			$functionBodyScopeStart + 1,
 			$functionBodyScopeEnd,
@@ -236,7 +215,7 @@ class PreGetPostsSniff implements Sniff {
 			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
 				$this->addPreGetPostsWarning( $wpQueryVarUsed );
 			}
-			$wpQueryVarUsed = $this->_phpcsFile->findNext(
+			$wpQueryVarUsed = $this->phpcsFile->findNext(
 				[ T_VARIABLE ],
 				$wpQueryVarUsed + 1,
 				$functionBodyScopeEnd,
@@ -253,7 +232,7 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function addPreGetPostsWarning( $stackPtr ) {
 		$message = 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.';
-		$this->_phpcsFile->addWarning( $message, $stackPtr, 'PreGetPosts' );
+		$this->phpcsFile->addWarning( $message, $stackPtr, 'PreGetPosts' );
 	}
 
 	/**
@@ -265,36 +244,36 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function isParentConditionalCheckingMainQuery( $stackPtr ) {
 
-		if ( false === array_key_exists( 'conditions', $this->_tokens[ $stackPtr ] )
-			|| false === is_array( $this->_tokens[ $stackPtr ]['conditions'] )
-			|| true === empty( $this->_tokens[ $stackPtr ]['conditions'] )
+		if ( false === array_key_exists( 'conditions', $this->tokens[ $stackPtr ] )
+			|| false === is_array( $this->tokens[ $stackPtr ]['conditions'] )
+			|| true === empty( $this->tokens[ $stackPtr ]['conditions'] )
 		) {
 			return false;
 		}
 
-		$conditionStackPtrs    = array_keys( $this->_tokens[ $stackPtr ]['conditions'] );
+		$conditionStackPtrs    = array_keys( $this->tokens[ $stackPtr ]['conditions'] );
 		$lastConditionStackPtr = array_pop( $conditionStackPtrs );
 
-		while ( T_IF === $this->_tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ] ) {
+		while ( T_IF === $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ] ) {
 
-			$next = $this->_phpcsFile->findNext(
+			$next = $this->phpcsFile->findNext(
 				[ T_VARIABLE ],
 				$lastConditionStackPtr + 1,
 				null,
 				false,
-				$this->_tokens[ $stackPtr ]['content'],
+				$this->tokens[ $stackPtr ]['content'],
 				true
 			);
 			while ( $next ) {
 				if ( true === $this->isWPQueryMethodCall( $next, 'is_main_query' ) ) {
 					return true;
 				}
-				$next = $this->_phpcsFile->findNext(
+				$next = $this->phpcsFile->findNext(
 					[ T_VARIABLE ],
 					$next + 1,
 					null,
 					false,
-					$this->_tokens[ $stackPtr ]['content'],
+					$this->tokens[ $stackPtr ]['content'],
 					true
 				);
 			}
@@ -319,21 +298,21 @@ class PreGetPostsSniff implements Sniff {
 			return false;
 		}
 
-		if ( false === array_key_exists( 'nested_parenthesis', $this->_tokens[ $stackPtr ] )
-			|| true === empty( $this->_tokens[ $stackPtr ]['nested_parenthesis'] )
+		if ( false === array_key_exists( 'nested_parenthesis', $this->tokens[ $stackPtr ] )
+			|| true === empty( $this->tokens[ $stackPtr ]['nested_parenthesis'] )
 		) {
 			return false;
 		}
 
-		$nestedParenthesisEnd = array_shift( $this->_tokens[ $stackPtr ]['nested_parenthesis'] );
-		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->_tokens[ $stackPtr ]['conditions'], true ) ) {
-			$nestedParenthesisEnd = array_shift( $this->_tokens[ $stackPtr ]['nested_parenthesis'] );
+		$nestedParenthesisEnd = array_shift( $this->tokens[ $stackPtr ]['nested_parenthesis'] );
+		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->tokens[ $stackPtr ]['conditions'], true ) ) {
+			$nestedParenthesisEnd = array_shift( $this->tokens[ $stackPtr ]['nested_parenthesis'] );
 		}
 
-		$next = $this->_phpcsFile->findNext(
+		$next = $this->phpcsFile->findNext(
 			[ T_RETURN ],
-			$this->_tokens[ $this->_tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['scope_opener'],
-			$this->_tokens[ $this->_tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['scope_closer'],
+			$this->tokens[ $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['scope_opener'],
+			$this->tokens[ $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['scope_closer'],
 			false,
 			'return',
 			true
@@ -355,7 +334,7 @@ class PreGetPostsSniff implements Sniff {
 	 * @return bool
 	 */
 	private function isWPQueryMethodCall( $stackPtr, $method = null ) {
-		$next = $this->_phpcsFile->findNext(
+		$next = $this->phpcsFile->findNext(
 			Tokens::$emptyTokens,
 			$stackPtr + 1,
 			null,
@@ -364,7 +343,7 @@ class PreGetPostsSniff implements Sniff {
 			true
 		);
 
-		if ( ! $next || 'T_OBJECT_OPERATOR' !== $this->_tokens[ $next ]['type'] ) {
+		if ( ! $next || 'T_OBJECT_OPERATOR' !== $this->tokens[ $next ]['type'] ) {
 			return false;
 		}
 
@@ -372,7 +351,7 @@ class PreGetPostsSniff implements Sniff {
 			return true;
 		}
 
-		$next = $this->_phpcsFile->findNext(
+		$next = $this->phpcsFile->findNext(
 			Tokens::$emptyTokens,
 			$next + 1,
 			null,
@@ -381,7 +360,7 @@ class PreGetPostsSniff implements Sniff {
 			true
 		);
 
-		return $next && true === in_array( $this->_tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) && $method === $this->_tokens[ $next ]['content'];
+		return $next && true === in_array( $this->tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) && $method === $this->tokens[ $next ]['content'];
 	}
 
 	/**
@@ -393,11 +372,11 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function isPartOfIfConditional( $stackPtr ) {
 
-		if ( true === array_key_exists( 'nested_parenthesis', $this->_tokens[ $stackPtr ] )
-			&& true === is_array( $this->_tokens[ $stackPtr ]['nested_parenthesis'] )
-			&& false === empty( $this->_tokens[ $stackPtr ]['nested_parenthesis'] )
+		if ( true === array_key_exists( 'nested_parenthesis', $this->tokens[ $stackPtr ] )
+			&& true === is_array( $this->tokens[ $stackPtr ]['nested_parenthesis'] )
+			&& false === empty( $this->tokens[ $stackPtr ]['nested_parenthesis'] )
 		) {
-			$previousLocalIf = $this->_phpcsFile->findPrevious(
+			$previousLocalIf = $this->phpcsFile->findPrevious(
 				[ T_IF ],
 				$stackPtr - 1,
 				null,
@@ -406,8 +385,8 @@ class PreGetPostsSniff implements Sniff {
 				true
 			);
 			if ( false !== $previousLocalIf
-				&& $this->_tokens[ $previousLocalIf ]['parenthesis_opener'] < $stackPtr
-				&& $this->_tokens[ $previousLocalIf ]['parenthesis_closer'] > $stackPtr
+				&& $this->tokens[ $previousLocalIf ]['parenthesis_opener'] < $stackPtr
+				&& $this->tokens[ $previousLocalIf ]['parenthesis_closer'] > $stackPtr
 			) {
 				return true;
 			}
@@ -424,13 +403,13 @@ class PreGetPostsSniff implements Sniff {
 	 */
 	private function isInsideIfConditonal( $stackPtr ) {
 
-		if ( true === array_key_exists( 'conditions', $this->_tokens[ $stackPtr ] )
-			&& true === is_array( $this->_tokens[ $stackPtr ]['conditions'] )
-			&& false === empty( $this->_tokens[ $stackPtr ]['conditions'] )
+		if ( true === array_key_exists( 'conditions', $this->tokens[ $stackPtr ] )
+			&& true === is_array( $this->tokens[ $stackPtr ]['conditions'] )
+			&& false === empty( $this->tokens[ $stackPtr ]['conditions'] )
 		) {
-			$conditionStackPtrs    = array_keys( $this->_tokens[ $stackPtr ]['conditions'] );
+			$conditionStackPtrs    = array_keys( $this->tokens[ $stackPtr ]['conditions'] );
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
-			return T_IF === $this->_tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ];
+			return T_IF === $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ];
 		}
 		return false;
 	}

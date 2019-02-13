@@ -8,7 +8,7 @@
 namespace WordPressVIPMinimum\Sniffs\JS;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -18,7 +18,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class WindowSniff implements Sniff {
+class WindowSniff extends Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -63,50 +63,48 @@ class WindowSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
+	public function process_token( $stackPtr ) {
 
-		if ( 'window' !== $tokens[ $stackPtr ]['content'] ) {
+		if ( 'window' !== $this->tokens[ $stackPtr ]['content'] ) {
 			// Doesn't begin with 'window', bail.
 			return;
 		}
 
-		$nextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
-		$nextToken    = $tokens[ $nextTokenPtr ]['code'];
+		$nextTokenPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
+		$nextToken    = $this->tokens[ $nextTokenPtr ]['code'];
 		if ( T_OBJECT_OPERATOR !== $nextToken && T_OPEN_SQUARE_BRACKET !== $nextToken ) {
 			// No . or [' next, bail.
 			return;
 		}
 
-		$nextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, $nextTokenPtr + 1, null, true, null, true );
+		$nextNextTokenPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextTokenPtr + 1, null, true, null, true );
 		if ( false === $nextNextTokenPtr ) {
 			// Something went wrong, bail.
 			return;
 		}
 
-		$nextNextToken = str_replace( [ '"', "'" ], '', $tokens[ $nextNextTokenPtr ]['content'] );
+		$nextNextToken = str_replace( [ '"', "'" ], '', $this->tokens[ $nextNextTokenPtr ]['content'] );
 		if ( ! isset( $this->windowProperties[ $nextNextToken ] ) ) {
 			// Not in $windowProperties, bail.
 			return;
 		}
 
-		$nextNextNextTokenPtr = $phpcsFile->findNext( array_merge( [ T_CLOSE_SQUARE_BRACKET ], Tokens::$emptyTokens ), $nextNextTokenPtr + 1, null, true, null, true );
-		$nextNextNextToken    = $tokens[ $nextNextNextTokenPtr ]['code'];
+		$nextNextNextTokenPtr = $this->phpcsFile->findNext( array_merge( [ T_CLOSE_SQUARE_BRACKET ], Tokens::$emptyTokens ), $nextNextTokenPtr + 1, null, true, null, true );
+		$nextNextNextToken    = $this->tokens[ $nextNextNextTokenPtr ]['code'];
 
 		$nextNextNextNextToken = false;
 		if ( T_OBJECT_OPERATOR === $nextNextNextToken || T_OPEN_SQUARE_BRACKET === $nextNextNextToken ) {
-			$nextNextNextNextTokenPtr = $phpcsFile->findNext( Tokens::$emptyTokens, $nextNextNextTokenPtr + 1, null, true, null, true );
+			$nextNextNextNextTokenPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextNextNextTokenPtr + 1, null, true, null, true );
 			if ( false === $nextNextNextNextTokenPtr ) {
 				// Something went wrong, bail.
 				return;
 			}
 
-			$nextNextNextNextToken = str_replace( [ '"', "'" ], '', $tokens[ $nextNextNextNextTokenPtr ]['content'] );
+			$nextNextNextNextToken = str_replace( [ '"', "'" ], '', $this->tokens[ $nextNextNextNextTokenPtr ]['content'] );
 			if ( ! isset( $this->windowProperties[ $nextNextToken ][ $nextNextNextNextToken ] ) ) {
 				// Not in $windowProperties, bail.
 				return;
@@ -117,18 +115,18 @@ class WindowSniff implements Sniff {
 		$windowProperty .= $nextNextNextNextToken ? $nextNextToken . '.' . $nextNextNextNextToken : $nextNextToken;
 		$data            = [ $windowProperty ];
 
-		$prevTokenPtr = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
+		$prevTokenPtr = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_EQUAL === $tokens[ $prevTokenPtr ]['code'] ) {
+		if ( T_EQUAL === $this->tokens[ $prevTokenPtr ]['code'] ) {
 			// Variable assignment.
 			$message = 'Data from JS global "%s" may contain user-supplied values and should be checked.';
-			$phpcsFile->addWarning( $message, $stackPtr, 'VarAssignment', $data );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'VarAssignment', $data );
 
 			return;
 		}
 
 		$message = 'Data from JS global "%s" may contain user-supplied values and should be sanitized before output to prevent XSS.';
-		$phpcsFile->addError( $message, $stackPtr, $nextNextToken, $data );
+		$this->phpcsFile->addError( $message, $stackPtr, $nextNextToken, $data );
 	}
 
 }

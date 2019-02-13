@@ -8,8 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -17,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class EscapingVoidReturnFunctionsSniff implements Sniff {
+class EscapingVoidReturnFunctionsSniff extends Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -33,38 +32,35 @@ class EscapingVoidReturnFunctionsSniff implements Sniff {
 	/**
 	 * Process this test when one of its tokens is encountered
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
+	public function process_token( $stackPtr ) {
 
-		$tokens = $phpcsFile->getTokens();
-
-		if ( 0 !== strpos( $tokens[ $stackPtr ]['content'], 'esc_' ) && 0 !== strpos( $tokens[ $stackPtr ]['content'], 'wp_kses' ) ) {
+		if ( 0 !== strpos( $this->tokens[ $stackPtr ]['content'], 'esc_' ) && 0 !== strpos( $this->tokens[ $stackPtr ]['content'], 'wp_kses' ) ) {
 			// Not what we are looking for.
 			return;
 		}
 
-		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
+		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $tokens[ $next_token ]['code'] ) {
+		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $next_token ]['code'] ) {
 			// Not a function call.
 			return;
 		}
 
-		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, $next_token + 1, null, true );
+		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $next_token + 1, null, true );
 
-		if ( T_STRING !== $tokens[ $next_token ]['code'] ) {
+		if ( T_STRING !== $this->tokens[ $next_token ]['code'] ) {
 			// Not what we are looking for.
 			return;
 		}
 
-		if ( 0 === strpos( $tokens[ $next_token ]['content'], '_e' ) ) {
+		if ( 0 === strpos( $this->tokens[ $next_token ]['content'], '_e' ) ) {
 			$message = 'Attempting to escape `%s()` which is printing its output.';
-			$data    = [ $tokens[ $next_token ]['content'] ];
-			$phpcsFile->addError( $message, $stackPtr, 'Found', $data );
+			$data    = [ $this->tokens[ $next_token ]['content'] ];
+			$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 			return;
 		}
 	}

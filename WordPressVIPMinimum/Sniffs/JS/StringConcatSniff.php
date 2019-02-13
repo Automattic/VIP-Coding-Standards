@@ -7,8 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -18,7 +17,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class StringConcatSniff implements Sniff {
+class StringConcatSniff extends Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -42,39 +41,36 @@ class StringConcatSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
+	public function process_token( $stackPtr ) {
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
+		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $nextToken ]['code'] && false !== strpos( $tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $tokens[ $nextToken ]['content'] ) ) {
-			$data = [ '+' . $tokens[ $nextToken ]['content'] ];
-			$this->addFoundError( $phpcsFile, $stackPtr, $data );
+		if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $nextToken ]['code'] && false !== strpos( $this->tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $this->tokens[ $nextToken ]['content'] ) ) {
+			$data = [ '+' . $this->tokens[ $nextToken ]['content'] ];
+			$this->addFoundError( $stackPtr, $data );
 		}
 
-		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
+		$prevToken = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $prevToken ]['code'] && false !== strpos( $tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $tokens[ $prevToken ]['content'] ) ) {
-			$data = [ $tokens[ $nextToken ]['content'] . '+' ];
-			$this->addFoundError( $phpcsFile, $stackPtr, $data );
+		if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $prevToken ]['code'] && false !== strpos( $this->tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $this->tokens[ $prevToken ]['content'] ) ) {
+			$data = [ $this->tokens[ $nextToken ]['content'] . '+' ];
+			$this->addFoundError( $stackPtr, $data );
 		}
 	}
 
 	/**
 	 * Consolidated violation.
 	 *
-	 * @param File  $phpcsFile The PHP_CodeSniffer file where the token was found.
 	 * @param int   $stackPtr  The position of the current token in the stack passed in $tokens.
 	 * @param array $data      Replacements for the error message.
 	 */
-	private function addFoundError( File $phpcsFile, $stackPtr, array $data ) {
+	private function addFoundError( $stackPtr, array $data ) {
 		$message = 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s.';
-		$phpcsFile->addError( $message, $stackPtr, 'Found', $data );
+		$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 	}
 
 }

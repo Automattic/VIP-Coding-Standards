@@ -8,15 +8,14 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Looks for instances of unescaped output for Mustache templating engine and Handlebars.js.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class MustacheSniff implements Sniff {
+class MustacheSniff extends Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -42,38 +41,36 @@ class MustacheSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
+	public function process_token( $stackPtr ) {
 
-		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{{' ) || false !== strpos( $tokens[ $stackPtr ]['content'], '}}}' ) ) {
+		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '{{{' ) || false !== strpos( $this->tokens[ $stackPtr ]['content'], '}}}' ) ) {
 			// Mustache unescaped output notation.
 			$message = 'Found Mustache unescaped output notation: "{{{}}}".';
-			$phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );
 		}
 
-		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{&' ) ) {
+		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '{{&' ) ) {
 			// Mustache unescaped variable notation.
 			$message = 'Found Mustache unescape variable notation: "{{&".';
-			$phpcsFile->addWarning( $message, $stackPtr, 'VariableNotation' );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'VariableNotation' );
 		}
 
-		if ( false !== strpos( $tokens[ $stackPtr ]['content'], '{{=' ) ) {
+		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '{{=' ) ) {
 			// Mustache delimiter change.
-			$new_delimiter = trim( str_replace( [ '{{=', '=}}' ], '', substr( $tokens[ $stackPtr ]['content'], 0, strpos( $tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) );
+			$new_delimiter = trim( str_replace( [ '{{=', '=}}' ], '', substr( $this->tokens[ $stackPtr ]['content'], 0, strpos( $this->tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) );
 			$message       = 'Found Mustache delimiter change notation. New delimiter is: %s.';
 			$data          = [ $new_delimiter ];
-			$phpcsFile->addWarning( $message, $stackPtr, 'DelimiterChange', $data );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'DelimiterChange', $data );
 		}
 
-		if ( false !== strpos( $tokens[ $stackPtr ]['content'], 'SafeString' ) ) {
+		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], 'SafeString' ) ) {
 			// Handlebars.js Handlebars.SafeString does not get escaped.
 			$message = 'Found Handlebars.SafeString call which does not get escaped.';
-			$phpcsFile->addWarning( $message, $stackPtr, 'SafeString' );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'SafeString' );
 		}
 	}
 
