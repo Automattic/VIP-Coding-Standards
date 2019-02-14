@@ -19,3 +19,6 @@ add_filter( 'upload_mimes', function() { // Anonymous callback.
 add_action( 'upload_mimes', 'bad_example_function' ); // Check `add_action()`, which is an alias for `add_filter()`.
 add_filter( 'http_request_timeout', 'bad_example_function' ); // Simple string.
 add_filter('http_request_args', 'bad_example_function' ); // Simple string + incorrect spacing.
+add_action( 'do_robotstxt', 'my_do_robotstxt'); // Simple string.
+add_filter( 'robots_txt', function() { // Anonymous callback.
+} );
