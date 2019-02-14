@@ -8,8 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -17,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class FetchingRemoteDataSniff implements Sniff {
+class FetchingRemoteDataSniff extends Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -31,34 +30,31 @@ class FetchingRemoteDataSniff implements Sniff {
 	/**
 	 * Process this test when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
+	public function process_token( $stackPtr ) {
 
-		$tokens = $phpcsFile->getTokens();
-
-		$functionName = $tokens[ $stackPtr ]['content'];
+		$functionName = $this->tokens[ $stackPtr ]['content'];
 		if ( 'file_get_contents' !== $functionName ) {
 			return;
 		}
 
-		$data = [ $tokens[ $stackPtr ]['content'] ];
+		$data = [ $this->tokens[ $stackPtr ]['content'] ];
 
-		$fileNameStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, $stackPtr + 1, null, false, null, true );
+		$fileNameStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $stackPtr + 1, null, false, null, true );
 		if ( false === $fileNameStackPtr ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead. If it\'s for a local file please use WP_Filesystem instead.';
-			$phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsUnknown', $data );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsUnknown', $data );
 		}
 
-		$fileName = $tokens[ $fileNameStackPtr ]['content'];
+		$fileName = $this->tokens[ $fileNameStackPtr ]['content'];
 
 		$isRemoteFile = ( false !== strpos( $fileName, '://' ) );
 		if ( true === $isRemoteFile ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead.';
-			$phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsRemoteFile', $data );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsRemoteFile', $data );
 		}
 	}
 

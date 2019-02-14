@@ -8,7 +8,7 @@
 namespace WordPressVIPMinimum\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class IncludingNonPHPFileSniff implements Sniff {
+class IncludingNonPHPFileSniff extends Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -34,22 +34,19 @@ class IncludingNonPHPFileSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
-
+	public function process_token( $stackPtr ) {
 		$curStackPtr = $stackPtr;
-		while ( false !== $phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true ) ) {
-			$curStackPtr = $phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true );
+		while ( false !== $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true ) ) {
+			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true );
 
-			if ( T_CONSTANT_ENCAPSED_STRING === $tokens[ $curStackPtr ]['code'] ) {
-				$stringWithoutEnclosingQuotationMarks = trim( $tokens[ $curStackPtr ]['content'], "\"'" );
+			if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $curStackPtr ]['code'] ) {
+				$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
 			} else {
-				$stringWithoutEnclosingQuotationMarks = $tokens[ $curStackPtr ]['content'];
+				$stringWithoutEnclosingQuotationMarks = $this->tokens[ $curStackPtr ]['content'];
 			}
 
 			$isFileName = preg_match( '/.*(\.[a-z]{2,})$/i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
@@ -64,7 +61,7 @@ class IncludingNonPHPFileSniff implements Sniff {
 			}
 
 			$message = 'Local non-PHP file should be loaded via `file_get_contents` rather than via `%s`.';
-			$data    = [ $tokens[ $stackPtr ]['content'] ];
+			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 			$code    = 'IncludingNonPHPFile';
 
 			if ( true === in_array( $extension, [ '.svg', '.css' ], true ) ) {
@@ -73,7 +70,7 @@ class IncludingNonPHPFileSniff implements Sniff {
 				$code    = 'IncludingSVGCSSFile';
 			}
 
-			$phpcsFile->addError( $message, $curStackPtr, $code, $data );
+			$this->phpcsFile->addError( $message, $curStackPtr, $code, $data );
 		}
 	}
 

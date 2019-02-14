@@ -7,8 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -16,21 +15,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class AlwaysReturnInFilterSniff implements Sniff {
-
-	/**
-	 * The tokens of the phpcsFile.
-	 *
-	 * @var array
-	 */
-	private $tokens;
-
-	/**
-	 * The PHP_CodeSniffer file where the token was found.
-	 *
-	 * @var File
-	 */
-	private $phpcsFile;
+class AlwaysReturnInFilterSniff extends Sniff {
 
 	/**
 	 * Filter name pointer.
@@ -51,16 +36,11 @@ class AlwaysReturnInFilterSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position in the stack where the token was found.
+	 * @param int $stackPtr The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-
-		$this->tokens = $phpcsFile->getTokens();
-
-		$this->phpcsFile = $phpcsFile;
+	public function process_token( $stackPtr ) {
 
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 

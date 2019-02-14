@@ -7,8 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -22,21 +21,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class CacheValueOverrideSniff implements Sniff {
-
-	/**
-	 * Tokens of the file.
-	 *
-	 * @var array
-	 */
-	private $_tokens = [];
-
-	/**
-	 * The PHP_CodeSniffer file where the token was found.
-	 *
-	 * @var File
-	 */
-	private $_phpcsFile;
+class CacheValueOverrideSniff extends Sniff {
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -51,18 +36,13 @@ class CacheValueOverrideSniff implements Sniff {
 	/**
 	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position in the stack where the token was found.
+	 * @param int $stackPtr The position in the stack where the token was found.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
+	public function process_token( $stackPtr ) {
 
-		$this->_tokens    = $phpcsFile->getTokens();
-		$tokens           = $phpcsFile->getTokens();
-		$this->_phpcsFile = $phpcsFile;
-
-		$functionName = $tokens[ $stackPtr ]['content'];
+		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		if ( 'wp_cache_get' !== $functionName ) {
 			// Not a function we are looking for.
@@ -81,30 +61,30 @@ class CacheValueOverrideSniff implements Sniff {
 			return;
 		}
 
-		$variableToken = $tokens[ $variablePos ];
+		$variableToken = $this->tokens[ $variablePos ];
 		$variableName  = $variableToken['content'];
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
+		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		// Find the closing bracket.
-		$closeBracket = $tokens[ $openBracket ]['parenthesis_closer'];
+		$closeBracket = $this->tokens[ $openBracket ]['parenthesis_closer'];
 
-		$nextVariableOccurrence = $phpcsFile->findNext( T_VARIABLE, $closeBracket + 1, null, false, $variableName );
+		$nextVariableOccurrence = $this->phpcsFile->findNext( T_VARIABLE, $closeBracket + 1, null, false, $variableName );
 
-		$rightAfterNextVariableOccurence = $phpcsFile->findNext( Tokens::$emptyTokens, $nextVariableOccurrence + 1, null, true, null, true );
+		$rightAfterNextVariableOccurence = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextVariableOccurrence + 1, null, true, null, true );
 
-		if ( T_EQUAL !== $tokens[ $rightAfterNextVariableOccurence ]['code'] ) {
+		if ( T_EQUAL !== $this->tokens[ $rightAfterNextVariableOccurence ]['code'] ) {
 			// Not a value override.
 			return;
 		}
 
-		$valueAfterEqualSign = $phpcsFile->findNext( Tokens::$emptyTokens, $rightAfterNextVariableOccurence + 1, null, true, null, true );
+		$valueAfterEqualSign = $this->phpcsFile->findNext( Tokens::$emptyTokens, $rightAfterNextVariableOccurence + 1, null, true, null, true );
 
-		if ( T_FALSE === $tokens[ $valueAfterEqualSign ]['code'] ) {
+		if ( T_FALSE === $this->tokens[ $valueAfterEqualSign ]['code'] ) {
 			$message = 'Obtained cached value in `%s` is being overridden. Disabling caching?';
 			$data    = [ $variableName ];
-			$phpcsFile->addError( $message, $nextVariableOccurrence, 'CacheValueOverride', $data );
+			$this->phpcsFile->addError( $message, $nextVariableOccurrence, 'CacheValueOverride', $data );
 		}
 	}
 
@@ -117,17 +97,14 @@ class CacheValueOverrideSniff implements Sniff {
 	 */
 	private function isFunctionCall( $stackPtr ) {
 
-		$tokens    = $this->_tokens;
-		$phpcsFile = $this->_phpcsFile;
-
-		if ( false === in_array( $tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) ) {
+		if ( false === in_array( $this->tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) ) {
 			return false;
 		}
 
 		// Find the next non-empty token.
-		$openBracket = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
+		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $tokens[ $openBracket ]['code'] ) {
+		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
 			// Not a function call.
 			return false;
 		}
@@ -135,10 +112,10 @@ class CacheValueOverrideSniff implements Sniff {
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
+		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
 		// It's a function definition, not a function call, so return false.
-		return ! ( T_FUNCTION === $tokens[ $previous ]['code'] );
+		return ! ( T_FUNCTION === $this->tokens[ $previous ]['code'] );
 	}
 
 	/**
@@ -150,22 +127,19 @@ class CacheValueOverrideSniff implements Sniff {
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
-		$tokens    = $this->_tokens;
-		$phpcsFile = $this->_phpcsFile;
-
 		// Find the previous non-empty token.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
-		$previous = $phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
+		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
-		if ( T_EQUAL !== $tokens[ $previous ]['code'] ) {
+		if ( T_EQUAL !== $this->tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
 			return false;
 		}
 
-		$previous = $phpcsFile->findPrevious( $search, $previous - 1, null, true );
+		$previous = $this->phpcsFile->findPrevious( $search, $previous - 1, null, true );
 
-		if ( T_VARIABLE !== $tokens[ $previous ]['code'] ) {
+		if ( T_VARIABLE !== $this->tokens[ $previous ]['code'] ) {
 			// It's not a variable assignment.
 			return false;
 		}

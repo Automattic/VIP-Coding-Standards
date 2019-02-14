@@ -8,8 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\VersionControl;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -17,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class MergeConflictSniff implements Sniff {
+class MergeConflictSniff extends Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -43,46 +42,44 @@ class MergeConflictSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
+	public function process_token( $stackPtr ) {
 
-		if ( T_SL === $tokens[ $stackPtr ]['code'] ) {
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
-			if ( T_SL !== $tokens[ $nextToken ]['code'] ) {
+		if ( T_SL === $this->tokens[ $stackPtr ]['code'] ) {
+			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
+			if ( T_SL !== $this->tokens[ $nextToken ]['code'] ) {
 				return;
 			}
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
-			if ( T_STRING !== $tokens[ $nextToken ]['code'] || 0 !== strpos( $tokens[ $nextToken ]['content'], '<<< HEAD' ) ) {
+			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+			if ( T_STRING !== $this->tokens[ $nextToken ]['code'] || 0 !== strpos( $this->tokens[ $nextToken ]['content'], '<<< HEAD' ) ) {
 				return;
 			}
 
 			$message = 'Merge conflict detected. Found "<<<<<<< HEAD" string.';
-			$phpcsFile->addError( $message, $stackPtr, 'Start' );
+			$this->phpcsFile->addError( $message, $stackPtr, 'Start' );
 
 			return;
 		}
 
-		if ( T_ENCAPSED_AND_WHITESPACE === $tokens[ $stackPtr ]['code'] ) {
-			if ( 0 === strpos( $tokens[ $stackPtr ]['content'], '=======' ) ) {
-				$this->addSeparatorError( $phpcsFile, $stackPtr );
+		if ( T_ENCAPSED_AND_WHITESPACE === $this->tokens[ $stackPtr ]['code'] ) {
+			if ( 0 === strpos( $this->tokens[ $stackPtr ]['content'], '=======' ) ) {
+				$this->addSeparatorError( $stackPtr );
 
 				return;
 			}
 
-			if ( 0 === strpos( $tokens[ $stackPtr ]['content'], '>>>>>>>' ) ) {
+			if ( 0 === strpos( $this->tokens[ $stackPtr ]['content'], '>>>>>>>' ) ) {
 				$message = 'Merge conflict detected. Found "%s" string.';
-				$data    = [ trim( $tokens[ $stackPtr ]['content'] ) ];
-				$phpcsFile->addError( $message, $stackPtr, 'End', $data );
+				$data    = [ trim( $this->tokens[ $stackPtr ]['content'] ) ];
+				$this->phpcsFile->addError( $message, $stackPtr, 'End', $data );
 
 				return;
 			}
-		} elseif ( T_IS_IDENTICAL === $tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $tokens[ $stackPtr + 1 ]['code'] ) {
-			$this->addSeparatorError( $phpcsFile, $stackPtr );
+		} elseif ( T_IS_IDENTICAL === $this->tokens[ $stackPtr ]['code'] && T_IS_IDENTICAL === $this->tokens[ $stackPtr + 1 ]['code'] ) {
+			$this->addSeparatorError( $stackPtr );
 
 			return;
 		}
@@ -91,12 +88,11 @@ class MergeConflictSniff implements Sniff {
 	/**
 	 * Consolidated violation.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr  The position of the current token in the stack passed in $tokens.
 	 */
-	private function addSeparatorError( File $phpcsFile, $stackPtr ) {
+	private function addSeparatorError( $stackPtr ) {
 		$message = 'Merge conflict detected. Found "=======" string.';
-		$phpcsFile->addError( $message, $stackPtr, 'Separator' );
+		$this->phpcsFile->addError( $message, $stackPtr, 'Separator' );
 	}
 
 }

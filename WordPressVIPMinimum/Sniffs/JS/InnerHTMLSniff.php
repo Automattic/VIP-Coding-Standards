@@ -7,8 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -18,7 +17,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-class InnerHTMLSniff implements Sniff {
+class InnerHTMLSniff extends Sniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -41,49 +40,47 @@ class InnerHTMLSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
+	public function process_token( $stackPtr ) {
 
-		if ( 'innerHTML' !== $tokens[ $stackPtr ]['content'] ) {
+		if ( 'innerHTML' !== $this->tokens[ $stackPtr ]['content'] ) {
 			// Looking for .innerHTML only.
 			return;
 		}
 
-		$prevToken = $phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
+		$prevToken = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_OBJECT_OPERATOR !== $tokens[ $prevToken ]['code'] ) {
+		if ( T_OBJECT_OPERATOR !== $this->tokens[ $prevToken ]['code'] ) {
 				return;
 		}
 
-		$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
+		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_EQUAL !== $tokens[ $nextToken ]['code'] ) {
+		if ( T_EQUAL !== $this->tokens[ $nextToken ]['code'] ) {
 			// Not an assignment.
 			return;
 		}
 
-		$nextToken     = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+		$nextToken     = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		$foundVariable = false;
 
-		while ( false !== $nextToken && T_SEMICOLON !== $tokens[ $nextToken ]['code'] ) {
+		while ( false !== $nextToken && T_SEMICOLON !== $this->tokens[ $nextToken ]['code'] ) {
 
-			if ( T_STRING === $tokens[ $nextToken ]['code'] ) {
+			if ( T_STRING === $this->tokens[ $nextToken ]['code'] ) {
 				$foundVariable = true;
 				break;
 			}
 
-			$nextToken = $phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		}
 
 		if ( true === $foundVariable ) {
 			$message = 'Any HTML passed to `%s` gets executed. Consider using `.textContent` or make sure that used variables are properly escaped.';
-			$data    = [ $tokens[ $stackPtr ]['content'] ];
-			$phpcsFile->addWarning( $message, $stackPtr, 'Found', $data );
+			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'Found', $data );
 		}
 	}
 

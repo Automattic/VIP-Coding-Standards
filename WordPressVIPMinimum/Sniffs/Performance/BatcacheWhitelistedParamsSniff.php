@@ -8,8 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -17,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class BatcacheWhitelistedParamsSniff implements Sniff {
+class BatcacheWhitelistedParamsSniff extends Sniff {
 
 	/**
 	 * List of whitelisted Batcache params.
@@ -83,33 +82,30 @@ class BatcacheWhitelistedParamsSniff implements Sniff {
 	/**
 	 * Process this test when one of its tokens is encountered
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process( File $phpcsFile, $stackPtr ) {
+	public function process_token( $stackPtr ) {
 
-		$tokens = $phpcsFile->getTokens();
-
-		if ( '$_GET' !== $tokens[ $stackPtr ]['content'] ) {
+		if ( '$_GET' !== $this->tokens[ $stackPtr ]['content'] ) {
 			return;
 		}
 
-		$key = $phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_OPEN_SQUARE_BRACKET ] ), $stackPtr + 1, null, true );
+		$key = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_OPEN_SQUARE_BRACKET ] ), $stackPtr + 1, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING !== $tokens[ $key ]['code'] ) {
+		if ( T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $key ]['code'] ) {
 			return;
 		}
 
-		$variable_name = $tokens[ $key ]['content'];
+		$variable_name = $this->tokens[ $key ]['content'];
 
 		$variable_name = substr( $variable_name, 1, -1 );
 
 		if ( true === in_array( $variable_name, $this->whitelistes_batcache_params, true ) ) {
 			$message = 'Batcache whitelisted GET param, `%s`, found. Batcache whitelisted parameters get stripped and are not available in PHP.';
 			$data    = [ $variable_name ];
-			$phpcsFile->addWarning( $message, $stackPtr, 'StrippedGetParam', $data );
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'StrippedGetParam', $data );
 
 			return;
 		}
