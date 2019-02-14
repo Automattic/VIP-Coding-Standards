@@ -25,7 +25,7 @@ After `composer install`, you can do:
      - `composer lint`: Just run PHP and XML linters.
      - `composer phpcs`: Just run PHPCS against this package.
      - `composer phpunit`: Just run the unit tests.
-     - `composer integration`: Just run the integration test.
+     - `composer ruleset`: Just run the ruleset tests.
 
 ## Branches
 
@@ -168,3 +168,13 @@ FOUND 2 ERRORS AND 2 WARNINGS AFFECTING 4 LINES
 You'll see the line number and number of ERRORs we need to return in the `getErrorList()` method.
 
 The `--sniffs=...` directive limits the output to the sniff you are testing.
+
+## Ruleset Tests
+
+The ruleset tests, previously named here as _integration tests_, are our way of ensuring that _rulesets_ do check for the violations we expect them to.
+
+An example where it might not would be when a ruleset references a local sniff or a sniff from upstream (WPCS or PHPCS), but that the violation code, sniff name or category name has changed. Without a ruleset test, this would go unnoticed.
+
+The `composer test` or `composer ruleset` commands run the `ruleset-test.php` files (one for each standard), which internally run `phpcs` against the "dirty" test files (`ruleset-test.inc`), and looks out for a known number of errors, warnings, and messages on each line. This is then compared against the expected errors, warnings and messages to see if there are any missing or unexpected violations or difference in messages.
+
+When adding or changing a sniff, the ruleset test files should be updated to match.
