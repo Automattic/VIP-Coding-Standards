@@ -44,7 +44,7 @@ stages:
 
 jobs:
   allow_failures:
-    - php: nightly
+    - php: "7.4snapshot"
   fast_finish: true
   include:
 
@@ -119,5 +119,5 @@ jobs:
       env: PHPCS_BRANCH="dev-master"
 
     - stage: test
-      php: nightly
+      php: "7.4snapshot"
       env: PHPCS_BRANCH="dev-master"
