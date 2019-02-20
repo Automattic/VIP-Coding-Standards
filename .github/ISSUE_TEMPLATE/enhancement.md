@@ -17,7 +17,7 @@ A clear and concise description of what you want to happen.
 
 ## What code should be reported as a violation?
 
-## What could should *not* be reported as a violation?
+## What code should *not* be reported as a violation?
 
 ## Additional context
 <!-- Add any other context or screenshots about the feature request here. -->
