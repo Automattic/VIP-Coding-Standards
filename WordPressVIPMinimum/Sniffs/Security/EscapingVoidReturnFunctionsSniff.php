@@ -12,7 +12,9 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Flag suspicious WP_Query and get_posts params.
+ * Flag functions that don't return anything, yet are wrapped in an escaping function call.
+ *
+ * E.g. esc_html( _e( 'foo' ) );
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
@@ -57,7 +59,7 @@ class EscapingVoidReturnFunctionsSniff extends Sniff {
 			return;
 		}
 
-		if ( 0 === strpos( $this->tokens[ $next_token ]['content'], '_e' ) ) {
+		if ( isset( $this->printingFunctions[ $this->tokens[ $next_token ]['content'] ] ) ) {
 			$message = 'Attempting to escape `%s()` which is printing its output.';
 			$data    = [ $this->tokens[ $next_token ]['content'] ];
 			$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );

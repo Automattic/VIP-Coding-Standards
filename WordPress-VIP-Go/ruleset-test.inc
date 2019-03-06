@@ -322,4 +322,20 @@ update_site_option( $bar, $foo, true ); // Ok.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option
 add_site_option( 'foo', $bar ); // Ok.
 
+// WordPressVIPMinimum.Security.EscapingVoidReturnFunctions.Found
+esc_js( _deprecated_argument() ); // Error.
+esc_js( _deprecated_constructor() ); // Error.
+esc_js( _deprecated_file() ); // Error.
+esc_js( _deprecated_function() ); // Error.
+esc_js( _deprecated_hook() ); // Error.
+esc_js( _doing_it_wrong() ); // Error.
+esc_html( _e( 'foo', 'bar' ) ); // Error.
+esc_html( _ex( 'foo', 'bar' ) ); // Error.
+esc_attr( printf( 'foo', [] ) ); // Error.
+esc_attr( trigger_error( 'foo' ) ); // Error (+ warning due to trigger_error() call).
+esc_attr( user_error( 'foo', '' ) ); // Error.
+esc_attr( vprintf( 'foo', [] ) ); // Error.
+esc_attr( wp_die( 'foo' ) ); // Error.
+esc_attr( wp_dropdown_pages() ); // Error.
+
 ?> <!-- closing PHP tag should be omitted -->
