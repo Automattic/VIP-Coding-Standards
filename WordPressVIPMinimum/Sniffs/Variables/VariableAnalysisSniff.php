@@ -785,7 +785,7 @@ class VariableAnalysisSniff extends Sniff {
 		// TODO: not sure this is our business or should be some other sniff.
 		if ( ( $this->tokens[$classNamePtr]['code'] === T_SELF ) ||
 			( $this->tokens[$classNamePtr]['code'] === T_STATIC ) ) {
-			if ( $tokens[$classNamePtr]['code'] === T_SELF ) {
+			if ( $this->tokens[$classNamePtr]['code'] === T_SELF ) {
 				$err_prefix = 'Self';
 				$err_desc  = 'self::';
 			} else {
