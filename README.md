@@ -15,8 +15,11 @@ Go to https://vip.wordpress.com/documentation/phpcs-review-feedback/ to learn ab
 
 ## Installation
 
+### Note
 
-First, make sure you have WPCS 1.* and PHPCS v3+ installed. If you do not, please refer to the [installation instructions for installing PHP CodeSniffer for WordPress.com VIP](https://vip.wordpress.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/). Note that VIPCS does not currently work with the `develop` branch of WPCS.
+Currently, the VIP Go Coding Standards are built on top of the WordPress Coding Standards 1.* release. If you are using `master` here, you will need to checkout [1.2.1 tag](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases/tag/1.2.1).
+
+First, make sure you have WPCS 1.* and PHPCS v3+ installed. If you do not, please refer to the [installation instructions for installing PHP CodeSniffer for WordPress.com VIP](https://vip.wordpress.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/). Note that VIPCS does not currently work with the `develop` or `master` branch of WPCS.
 
 You will also find additional information at the [WordPress Coding Standards for PHP_CodeSniffer project](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards#installation).
 
