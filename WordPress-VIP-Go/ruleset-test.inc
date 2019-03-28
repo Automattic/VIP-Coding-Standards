@@ -50,7 +50,7 @@ unlink( $file ); // Error.
 setcookie( 'cookie[three]', 'cookiethree' ); // Error. 
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
-$x = isset( $_COOKIE['bar'] ) ? sanitize_key( $_COOKIE['bar'] ) : ''; // Error.
+$x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__
 if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) { // Error.
@@ -321,21 +321,5 @@ update_site_option( $bar, $foo, true ); // Ok.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option
 add_site_option( 'foo', $bar ); // Ok.
-
-// WordPressVIPMinimum.Security.EscapingVoidReturnFunctions.Found
-esc_js( _deprecated_argument() ); // Error.
-esc_js( _deprecated_constructor() ); // Error.
-esc_js( _deprecated_file() ); // Error.
-esc_js( _deprecated_function() ); // Error.
-esc_js( _deprecated_hook() ); // Error.
-esc_js( _doing_it_wrong() ); // Error.
-esc_html( _e( 'foo', 'bar' ) ); // Error.
-esc_html( _ex( 'foo', 'bar' ) ); // Error.
-esc_attr( printf( 'foo', [] ) ); // Error.
-esc_attr( trigger_error( 'foo' ) ); // Error (+ warning due to trigger_error() call).
-esc_attr( user_error( 'foo', '' ) ); // Error.
-esc_attr( vprintf( 'foo', [] ) ); // Error.
-esc_attr( wp_die( 'foo' ) ); // Error.
-esc_attr( wp_dropdown_pages() ); // Error.
 
 ?> <!-- closing PHP tag should be omitted -->
