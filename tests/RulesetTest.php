@@ -188,7 +188,7 @@ class RulesetTest {
 	 * @param int $line Line number.
 	 */
 	private function add_error_for_line( $line ) {
-		$this->errors[ $line ] = isset( $this->errors[ $line ] ) ? $this->errors[ $line ]++ : 1;
+		$this->errors[ $line ] = isset( $this->errors[ $line ] ) ? ++$this->errors[ $line ] : 1;
 	}
 
 	/**
@@ -197,7 +197,7 @@ class RulesetTest {
 	 * @param int $line Line number.
 	 */
 	private function add_warning_for_line( $line ) {
-		$this->warnings[ $line ] = isset( $this->warnings[ $line ] ) ? $this->warnings[ $line ]++ : 1;
+		$this->warnings[ $line ] = isset( $this->warnings[ $line ] ) ? ++$this->warnings[ $line ] : 1;
 	}
 
 	/**
