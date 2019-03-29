@@ -1,86 +1,74 @@
 <?php
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete
-delete( $file ); // Error.
+delete( $file ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
-file_put_contents( 'file.txt', '', FILE_APPEND ); // Error.
+file_put_contents( 'file.txt', '', FILE_APPEND ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_flock
-if ( flock( $fp, LOCK_EX ) ) { // Error.
+if ( flock( $fp, LOCK_EX ) ) { // Error + Message.
 }
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputcsv
-fputcsv( $fp, $array ); // Error.
+fputcsv( $fp, $array ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputs
-fputs( $fp, 'test' ); // Error.
+fputs( $fp, 'test' ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite
-fwrite( $fp, 'test' ); // Error.
+fwrite( $fp, 'test' ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_ftruncate
-ftruncate( $fp, 1 ); // Error.
+ftruncate( $fp, 1 ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writable
-is_writable( 'file.txt' ); // Error.
+is_writable( 'file.txt' ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writeable
-is_writeable( $file ); // Error.
+is_writeable( $file ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_link
-link( 'file.txt', 'newfile.txt' ); // Error.
+link( 'file.txt', 'newfile.txt' ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_rename
-rename( 'oldfile.txt', $file ); // Error.
+rename( 'oldfile.txt', $file ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_symlink
-symlink( $file, 'file.txt' ); // Error.
+symlink( $file, 'file.txt' ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_tempname
-tempnam( $dir, 'pre' ); // Error.
+tempnam( $dir, 'pre' ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_touch
-touch( $file ); // Error.
+touch( $file ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_unlink
-unlink( $file ); // Error.
+unlink( $file ); // Error + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
-setcookie( 'cookie[three]', 'cookiethree' ); // Error. 
+setcookie( 'cookie[three]', 'cookiethree' ); // EError + Message.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
-$x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error.
+$x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error + Message.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__
-if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) { // Error.
+if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) { // Error + Message.
 }
 
-// WordPress.Security.EscapeOutput.OutputNotEscaped
-echo $foo; // Error.
-echo 'Some Raw String';  // Ok.
-echo esc_html( $good . $better ) . $foo; // Error.
-echo esc_html( $food . 'include'  ); // Ok.
-echo esc_html( strtoupper( $ok ) ) . ' ' . esc_html( strtolower( $ok ) ); // Ok.
-echo filter_var( $bar, FILTER_VALIDATE_EMAIL ); // Ok.
-echo filter_input( INPUT_GET, $bar, FILTER_SANITIZE_SPECIAL_CHARS ); // Ok.
-echo ent2ncr( $text ); // Error.
-echo empty( $foo ) ? 'no foo' : $foo; // Error.
-echo $foo ? esc_html( $foo ) : 'no foo'; // Ok.
-
 // WordPress.WP.AlternativeFunctions.file_system_read_fclose
-fclose( $fp ); // Error.
+fclose( $fp ); // Error + Message.
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fopen
-fopen( 'file.txt', 'r' ); // Error.
+fopen( 'file.txt', 'r' ); // Error + Message.
 
 // WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
-$external_resource = file_get_contents( $test ); // Error.
+$external_resource = file_get_contents( $test ); // Error + Message.
 $file_content = file_get_contents( 'my-file.svg' ); // Ok.
 wpcom_vip_file_get_contents( $bar ); // Ok.
 
 // WordPress.Security.NonceVerification.NoNonceVerification
-function bar() {
+function bar_foo() {
 	if ( ! isset( $_POST['test'] ) ) { // Warning.
 		return;
 	}
@@ -99,12 +87,12 @@ if ( isset( $_POST['foo2'] ) ) {
 
 // WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
 $args = array(
-	'posts_per_page' => 999, // Warning.
+	'posts_per_page' => 999, // Warning + Message.
 	'posts_per_page' => 1, // OK.
 	'posts_per_page' => '1', // OK.
 );
-_query_posts( 'posts_per_page=999' ); // Warning.
-$query_args['posts_per_page'] = 999; // Warning.
+_query_posts( 'posts_per_page=999' ); // Warning + Message.
+$query_args['posts_per_page'] = 999; // Warning + Message.
 $query_args['posts_per_page'] = 1; // OK.
 
 // WordPressVIPMinimum.Hooks.RestrictedHooks.upload_mimes
@@ -132,7 +120,7 @@ mail(); // Warning.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid
 wpcom_vip_attachment_url_to_postid( $url ); // Ok.
-attachment_url_to_postid( $url ); // Warning.
+attachment_url_to_postid( $url ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_adjacent_post
 wpcom_vip_get_adjacent_post(); // Ok.
@@ -144,11 +132,11 @@ get_next_post_link(); // Warning.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_title_get_page_by_title
 wpcom_vip_get_page_by_title(); // Ok.
-get_page_by_title( $page_title ); // Warning.
+get_page_by_title( $page_title ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children
 get_child(); // Ok.
-get_children(); // Warning.
+get_children(); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_posts
 get_posts(); // Warning.
@@ -159,7 +147,7 @@ wp_get_recent_posts(); // Warning.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.url_to_postid_url_to_postid
 wpcom_vip_url_to_postid( $url ); // Ok.
-url_to_postid( $url ); // Warning.
+url_to_postid( $url ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.wp_old_slug_redirect_wp_old_slug_redirect
 wpcom_vip_old_slug_redirect(); // Ok.
@@ -200,12 +188,12 @@ $wpdb = 'test'; // Error.
 $GLOBALS['domain']['subkey'] = 'something else'; // Error.
 
 // WordPress.WP.EnqueuedResources.NonEnqueuedScript
-echo wp_kses( '<script src="' . esc_url( $script ) . '">', [ 'script' => [ 'src' => [], ], ] ); // Warning.
-?> <script src="http://someurl/somefile.js"></script> <!-- Warning. -->
+echo wp_kses( '<script src="' . esc_url( $script ) . '">', [ 'script' => [ 'src' => [], ], ] ); // Warning + Message.
+?> <script src="http://someurl/somefile.js"></script> <!-- Warning + Message. -->
 
 <!-- WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -->
-<link rel="stylesheet" href="http://someurl/somefile.css"> <!-- Warning. -->
-<?php echo '<link rel="stylesheet" src="' . esc_url( SOMESCRIPT ) . '">'; // Warning.
+<link rel="stylesheet" href="http://someurl/somefile.css"> <!-- Warning + Message. -->
+<?php echo '<link rel="stylesheet" src="' . esc_url( SOMESCRIPT ) . '">'; // Warning + Message.
 
 // WordPressVIPMinimum.Performance.LowExpiryCacheTime.LowCacheTime
 wp_cache_set( 'test', $data, $group, 100 ); // Warning.
@@ -278,7 +266,7 @@ is_multi_author(); // Warning.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.switch_to_blog_switch_to_blog
 switch_blog(); // Ok.
-switch_to_blog( $blogid ); // Warning.
+switch_to_blog( $blogid ); // Warning + Message.
 
 // WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn
 $args( [
@@ -287,6 +275,7 @@ $args( [
 ] );
 
 /* Rules that are being silenced and should NOT be flagged. */
+
 // WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 $query = new WP_Query( [
 	'meta_key' => 'foo', // Ok.
@@ -305,10 +294,10 @@ add_user_meta( 123, $foo, $bar ); // Ok.
 delete_user_meta( $foo, $bar, '123' ); // Ok.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_get_user_meta
-get_user_meta();
+get_user_meta(); // Ok.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_update_user_meta
-update_user_meta( $bar, '123', $foo );
+update_user_meta( $bar, '123', $foo ); // Ok.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta
 $query = "SELECT * FROM $wpdb->usermeta"; // Ok.
@@ -322,4 +311,268 @@ update_site_option( $bar, $foo, true ); // Ok.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option
 add_site_option( 'foo', $bar ); // Ok.
 
-?> <!-- closing PHP tag should be omitted -->
+/* The below rules are inherited from WordPressVIPMinimum */
+
+// WordPressVIPMinimum.Classes.DeclarationCompatibility
+class MyWidget extends WP_Widget {
+	function widget() { // Error.
+	}
+}
+
+// WordPressVIPMinimum.Classes.RestrictedExtendClasses
+class BadTestClass extends WP_CLI_Command { } // Warning.
+
+// WordPressVIPMinimum.Compatibility.ZoninatorSniff
+wpcom_vip_load_plugin( 'zoninator', 'plugins', '0.8' ); // Warning.
+
+// WordPressVIPMinimum.Constants.ConstantString
+define( WPCOM_VIP ); // Error.
+
+// WordPressVIPMinimum.Constants.RestrictedConstants
+if ( A8C_PROXIED_REQUEST === true ) { // Warning.
+}
+define( 'JETPACK_DEV_DEBUG', true ); // Error.
+
+// WordPressVIPMinimum.Files.IncludingNonPHPFile
+require_once __DIR__ . "/my_file.svg"; // Error.
+
+// WordPressVIPMinimum.Functions.CheckReturnValue
+$my_theme_options = get_option( 'my_theme', false );
+if ( array_key_exists( 'key', $my_theme_options ) ) { } // Error.
+echo '<a href="' . esc_url( get_term_link( $link ) ) . '">My term link</a>'; // Error.
+
+// WordPressVIPMinimum.Functions.DynamicCalls
+$my_notokay_func = 'extract';
+$my_notokay_func(); // Error.
+
+// WordPressVIPMinimum.Functions.RestrictedFunctions
+wp_cache_get_multi(); // Error.
+opcache_reset(); // Error.
+opcache_invalidate( 'test_script.php' ); // Error.
+opcache_compile_file( $test_script ); // Error.
+opcache_​is_​script_​cached( 'test_script.php' ); // Error.
+opcache_​get_​status(); // Error.
+opcache_​get_​configuration(); // Error.
+get_super_admins(); // Error.
+wpcom_vip_irc(); // Error.
+flush_rewrite_rules(); // Error.
+$wp_rewrite->flush_rules(); // Error.
+\add_role(); // Error.
+term_exists(); // Error.
+count_user_posts(); // Error.
+get_intermediate_image_sizes(); // Error.
+wp_is_mobile(); // Error.
+session_abort(); // Error.
+session_cache_expire(); // Error.
+session_cache_limiter(); // Error.
+session_commit(); // Error.
+session_create_id(); // Error.
+session_decode(); // Error.
+session_destroy(); // Error.
+session_encode(); // Error.
+session_gc(); // Error.
+session_get_cookie_params(); // Error.
+session_id(); // Error.
+session_is_registered(); // Error.
+session_module_name(); // Error.
+session_name(); // Error.
+session_regenerate_id(); // Error.
+session_register_shutdown(); // Error.
+session_register(); // Error.
+session_reset(); // Error.
+session_save_path(); // Error.
+session_set_cookie_params(); // Error.
+session_set_save_handler(); // Error.
+session_start(); // Error.
+session_status(); // Error.
+session_unregister(); // Error.
+session_unset(); // Error.
+session_write_close(); // Error.
+delete(); // Error.
+file_put_contents( $file, $text, FILE_APPEND ); // Error.
+while ( $count > $loop ) {
+	if ( flock( $fp, LOCK_EX ) ) { // Error.
+		fwrite( $fp, $text ); // Error.
+	}
+}
+fputcsv(); // Error.
+fputs(); // Error.
+ftruncate(); // Error.
+is_writable(); // Error.
+is_writeable(); // Error.
+link(); // Error.
+rename(); // Error.
+symlink(); // Error.
+tempnam(); // Error.
+touch(); // Error.
+unlink(); // Error.
+mkdir(); // Error.
+rmdir(); // Error.
+chgrp(); // Error.
+chown(); // Error.
+chmod(); // Error.
+lchgrp(); // Error.
+lchown(); // Error.
+the_sub_field( 'field' ); // Warning.
+the_field( 'field' ); // Warning.
+wp_remote_get( $url ); // Warning.
+get_posts(); // Warning.
+function test_function( $a, $b ) {
+	return create_function( '$a, $b', 'return ( $b / $a ); '); // Warning.
+}
+wpcom_vip_get_term_link(); // Warning.
+wpcom_vip_get_term_by(); // Warning.
+wpcom_vip_get_category_by_slug(); // Warning.
+
+// WordPressVIPMinimum.Functions.StripTagsSniff
+strip_tags( 'Test', $html ); // Warning.
+
+// WordPressVIPMinimum.Hooks.AlwaysReturnInFilter
+function bad_example_function_thing() { // Error.
+	if ( 1 === 0  ) {
+		if ( 1 === 1 ) {
+			return 'ahoj';
+		} else {
+			return 'hello';
+		}
+	}
+}
+add_filter( 'bad_example_function_filter', 'bad_example_function_thing' );
+add_filter( 'another_bad_example_closure', function() { // Error.
+	return;
+} );
+
+// WordPressVIPMinimum.Hooks.PreGetPosts
+add_action( 'pre_get_posts', function( $wp_query ) {
+	if ( ! $wp_query->is_search() ) {
+		$wp_query->set( 'cat', '-5' ); // Warning.
+	}
+} );
+
+// WordPressVIPMinimum.Hooks.RestrictedHooks
+add_action( 'http_request_timeout', 'bad_example_function' ); // Warning.
+add_filter('http_request_args', 'bad_example_function' ); // Warning.
+add_action( 'do_robotstxt', 'my_do_robotstxt'); // Warning.
+add_filter( 'robots_txt', function() { // Warning.
+	return 'test';
+} );
+
+// WordPressVIPMinimum.Performance.CacheValueOverride
+$bad_wp_users = wp_cache_get( md5( self::CACHE_KEY . '_wp_users'), self::CACHE_GROUP );
+$bad_wp_users = false; // Error.
+
+// WordPressVIPMinimum.Performance.NoPaging
+$args = array(
+	'nopaging'       => true, // Error.
+);
+_query_posts( 'nopaging=true' ); // Error.
+
+// WordPressVIPMinimum.Performance.OrderByRand
+$args = array(
+	"orderby" => "RAND", // Error.
+);
+$query_args['orderby'] = 'rand'; // Error.
+
+// WordPressVIPMinimum.Performance.RegexpCompare 
+$query_args = array(
+	'posts_per_page' => 1,
+	'post_status' => 'draft',
+	'meta_compare' => 'REGEXP', // Error.
+);
+$query_args = [
+	'post_status' => 'publish',
+	'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		[
+			'compare' => 'REGEXP', // Error.
+		]
+	]
+];
+
+// WordPressVIPMinimum.Performance.RemoteRequestTimeout
+wp_remote_post( $this->endpoint, array(
+        'method'      => 'POST',
+        'timeout'     => 45, // Error.
+        'httpversion' => '1.1',
+        'blocking'    => false,
+        'body'        => wp_json_encode( $this->logs, JSON_UNESCAPED_SLASHES ),
+    )
+);
+
+// WordPressVIPMinimum.Performance.TaxonomyMetaInOptions
+get_option( "taxonomy_rating_$obj->term_id" ); // Warning.
+update_option( 'taxonomy_rating_' . $category_id ); // Warning.
+
+// WordPressVIPMinimum.Performance.WPQueryParams
+$query_args = array(
+	'suppress_filters' => true, // Error.
+);
+
+// WordPressVIPMinimum.Security.EscapingVoidReturnFunctions.Found
+esc_js( _deprecated_argument() ); // Error.
+esc_js( _deprecated_constructor() ); // Error.
+esc_js( _deprecated_file() ); // Error.
+esc_js( _deprecated_function() ); // Error.
+esc_js( _deprecated_hook() ); // Error.
+esc_js( _doing_it_wrong() ); // Error.
+esc_html( printf( 'foo', [] ) ); // Error.
+esc_attr( user_error( 'foo', '' ) ); // Error.
+esc_attr( vprintf( 'foo', [] ) ); // Error.
+esc_attr( wp_die( 'foo' ) ); // Error.
+esc_attr( wp_dropdown_pages() ); // Error.
+
+// WordPressVIPMinimum.Security.ExitAfterRedirect
+function redirect_test() {
+	wp_safe_redirect( 'https.//vip.wordpress.com' ); // Error.
+}
+wp_redirect( 'https://vip.wordpress.com' ); // Error.
+
+// WordPressVIPMinimum.Security.Mustache
+echo '<a href="{{href}}">{{{data}}}</div></a>'; // Warning.
+?>
+<script type="text/html" id="tmpl-example">
+{{=<% %>=}} <!-- Warning. -->
+</script>
+<script>
+	andlebars.registerHelper('link', function(text, url) {
+		text = 'test';
+		url  = Handlebars.Utils.escapeExpression(url);
+		var result = '<a href="' + url + '">' + text + '</a>';
+		return new Handlebars.SafeString(result); // Warning.
+	});
+</script> <?php
+
+// WordPressVIPMinimum.Security.StaticStrreplace
+str_replace( 'foo', array( 'bar', 'foo' ), 'foobar' ); // Error.
+
+// WordPressVIPMinimum.Security.Underscorejs
+echo "<script>
+ _.templateSettings = { 
+	interpolate: /\{\{(.+?)\}\}/g" . // Warning.
+"};
+ </script>";
+
+// WordPressVIPMinimum.Security.Vuejs
+?> <article v-for="post in posts" class="listing-post">
+	<a v-bind:href="'/research'+post.permalink" class="column-4"><h4 v-html="post.title"></h4></a> <!-- Warning. -->
+</article> <?php
+
+// WordPressVIPMinimum.Variables.RestrictedVariables
+foo( $_SESSION['bar'] ); // Error.
+
+// WordPressVIPMinimum.Variables.ServerVariables
+// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+$test = $_SERVER['PHP_AUTH_PW']; // Error.
+bar( $_SERVER['HTTP_X_IP_TRAIL'] ); // Error.
+$_SERVER['HTTP_X_FORWARDED_FOR']; // Error.
+$_SERVER["REMOTE_ADDR"]; // Error.
+// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+// WordPressVIPMinimum.VersionControl.MergeConflict
+function is_prime( $n ) {
+	if ( 2 === $n  ) {
+	}
+//phpcs:ignore Generic.PHP.Syntax.PHPSyntax
+======= // Error.
+	if ( $n % 2 === 0 ) {
+	}
+}
