@@ -271,15 +271,12 @@ switch_to_blog( $blogid ); // Warning + Message.
 // WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn
 $args( [
 	'post__not_in' => array( 1, 2, 3 ), // Warning.
-	'posts_per_page' => 1,
 ] );
 
 /* Rules that are being silenced and should NOT be flagged. */
 
 // WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-$query = new WP_Query( [
-	'meta_key' => 'foo', // Ok.
-] );
+$query = new WP_Query( ['meta_key' => 'foo' ] ); // Ok.
 $args = 'foo=bar&meta_key=foo'; // Ok.
 
 // WordPressVIPMinimum.Performance.BatcacheWhitelistedParams
@@ -311,16 +308,19 @@ update_site_option( $bar, $foo, true ); // Ok.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option
 add_site_option( 'foo', $bar ); // Ok.
 
+// Generic.PHP.DisallowShortOpenTag.EchoFound
+?> <?= esc_html( $var ); // Ok. ?> <?php
+
 /* The below rules are inherited from WordPressVIPMinimum */
 
 // WordPressVIPMinimum.Classes.DeclarationCompatibility
 class MyWidget extends WP_Widget {
-	function widget() { // Error.
-	}
+	function widget() { } // Error.
 }
 
 // WordPressVIPMinimum.Classes.RestrictedExtendClasses
-class BadTestClass extends WP_CLI_Command { } // Warning.
+class BadTestClass extends WP_CLI_Command { // Warning.
+}
 
 // WordPressVIPMinimum.Compatibility.ZoninatorSniff
 wpcom_vip_load_plugin( 'zoninator', 'plugins', '0.8' ); // Warning.
