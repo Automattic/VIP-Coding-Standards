@@ -7,7 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Classes;
 
-use WordPress\AbstractClassRestrictionsSniff;
+use WordPressCS\WordPress\AbstractClassRestrictionsSniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_Classes_RestrictedExtendClassesSniff.

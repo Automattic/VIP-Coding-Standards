@@ -9,7 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPress\AbstractArrayAssignmentRestrictionsSniff;
+use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
  * Flag returning high or infinite posts_per_page.

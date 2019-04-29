@@ -9,7 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
-use WordPress\AbstractFunctionParameterSniff;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**

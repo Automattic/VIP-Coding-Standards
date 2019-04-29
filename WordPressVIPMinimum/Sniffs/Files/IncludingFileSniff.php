@@ -7,7 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use WordPress\AbstractFunctionRestrictionsSniff;
+use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**

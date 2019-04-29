@@ -9,7 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPress\AbstractArrayAssignmentRestrictionsSniff;
+use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
  * Flag using orderby => rand.
