@@ -6,8 +6,6 @@
 		https://wpvip.com/documentation/vip-go/understanding-codebase-differences/
 		for the differences between the platforms -->
 
-	<autoload>./PHPCSCompatibility.php</autoload>
-
 	<rule ref="Generic.PHP.Syntax"/>
 	<rule ref="Generic.PHP.NoSilencedErrors">
 		<properties>
