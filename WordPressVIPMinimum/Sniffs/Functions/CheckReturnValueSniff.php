@@ -7,7 +7,6 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use PHP_CodeSniffer\Files\File;
 use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
@@ -21,13 +20,6 @@ use PHP_CodeSniffer\Util\Tokens;
  * </code>
  */
 class CheckReturnValueSniff extends Sniff {
-
-	/**
-	 * Tokens of the whole file.
-	 *
-	 * @var array
-	 */
-	private $_tokens = [];
 
 	/**
 	 * Pairs we are about to check.

@@ -22,14 +22,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 *
 	 * @var string
 	 */
-	private $_currentClass = '';
+	private $currentClass = '';
 
 	/**
 	 * A list of functions in the current class.
 	 *
 	 * @var string[]
 	 */
-	private $_functionList = [];
+	private $functionList = [];
 
 	/**
 	 * A list of classes and methods to check.
@@ -204,9 +204,9 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		$className = $phpcsFile->getDeclarationName( $currScope );
 
-		if ( $className !== $this->_currentClass ) {
+		if ( $className !== $this->currentClass ) {
 			$this->loadFunctionNamesInScope( $phpcsFile, $currScope );
-			$this->_currentClass = $className;
+			$this->currentClass = $className;
 		}
 
 		$methodName = $phpcsFile->getDeclarationName( $stackPtr );
@@ -300,7 +300,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 */
 	private function addError( $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature, $phpcsFile, $stackPtr ) {
 
-		$currentSignature = sprintf( '%s::%s(%s)', $this->_currentClass, $methodName, implode( ', ', $this->generateParamList( $currentMethodSignature ) ) );
+		$currentSignature = sprintf( '%s::%s(%s)', $this->currentClass, $methodName, implode( ', ', $this->generateParamList( $currentMethodSignature ) ) );
 
 		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
 
@@ -354,16 +354,16 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 * @return void
 	 */
 	protected function loadFunctionNamesInScope( File $phpcsFile, $currScope ) {
-		$this->_functionList = [];
-		$tokens              = $phpcsFile->getTokens();
+		$this->functionList = [];
+		$tokens             = $phpcsFile->getTokens();
 
 		for ( $i = ( $tokens[ $currScope ]['scope_opener'] + 1 ); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
 			if ( T_FUNCTION !== $tokens[ $i ]['code'] ) {
 				continue;
 			}
 
-			$next                  = $phpcsFile->findNext( T_STRING, $i );
-			$this->_functionList[] = trim( $tokens[ $next ]['content'] );
+			$next                 = $phpcsFile->findNext( T_STRING, $i );
+			$this->functionList[] = trim( $tokens[ $next ]['content'] );
 		}
 	}
 
