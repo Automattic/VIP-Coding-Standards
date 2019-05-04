@@ -23,6 +23,7 @@
 		<exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash"/>
 	</rule>
 	<rule ref="WordPress.Security.PluginMenuSlug"/>
+	<rule ref="WordPress.PHP.IniSet"/>
 	<rule ref="WordPress.WP.EnqueuedResources"/>
 	<rule ref="WordPress.WP.PostsPerPage"/>
 	<rule ref="WordPress.WP.TimezoneChange"/>
@@ -71,12 +72,6 @@
 		</properties>
 	</rule>
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting">
-		<type>error</type>
-	</rule>
-	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set">
-		<type>error</type>
-	</rule>
-	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_alter">
 		<type>error</type>
 	</rule>
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_restore">
