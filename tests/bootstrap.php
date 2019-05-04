@@ -52,6 +52,4 @@ https://is.gd/contributing2WPCS
 	die( 1 );
 }
 
-// Load our class aliases.
-require_once dirname( __DIR__ ) . $ds . 'WordPressVIPMinimum' . $ds . 'PHPCSCompatibility.php';
 unset( $ds, $phpcsDir );
