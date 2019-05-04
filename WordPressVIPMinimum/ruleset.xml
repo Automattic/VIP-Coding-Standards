@@ -68,7 +68,9 @@
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
 		<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/pull/633#issuecomment-266634811 -->
 		<properties>
-			<property name="exclude" value="obfuscation"/>
+			<property name="exclude" type="array">
+				<element value="obfuscation"/>
+			</property>
 		</properties>
 	</rule>
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting">
