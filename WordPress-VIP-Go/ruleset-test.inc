@@ -1,53 +1,53 @@
 <?php
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete
-delete( $file ); // Error + Message.
+delete( $file ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
-file_put_contents( 'file.txt', '', FILE_APPEND ); // Error + Message.
+file_put_contents( 'file.txt', '', FILE_APPEND ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_flock
-if ( flock( $fp, LOCK_EX ) ) { // Error + Message.
+if ( flock( $fp, LOCK_EX ) ) { // Warning + Message.
 }
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputcsv
-fputcsv( $fp, $array ); // Error + Message.
+fputcsv( $fp, $array ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputs
-fputs( $fp, 'test' ); // Error + Message.
+fputs( $fp, 'test' ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite
-fwrite( $fp, 'test' ); // Error + Message.
+fwrite( $fp, 'test' ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_ftruncate
-ftruncate( $fp, 1 ); // Error + Message.
+ftruncate( $fp, 1 ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writable
-is_writable( 'file.txt' ); // Error + Message.
+is_writable( 'file.txt' ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writeable
-is_writeable( $file ); // Error + Message.
+is_writeable( $file ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_link
-link( 'file.txt', 'newfile.txt' ); // Error + Message.
+link( 'file.txt', 'newfile.txt' ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_rename
-rename( 'oldfile.txt', $file ); // Error + Message.
+rename( 'oldfile.txt', $file ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_symlink
-symlink( $file, 'file.txt' ); // Error + Message.
+symlink( $file, 'file.txt' ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_tempname
-tempnam( $dir, 'pre' ); // Error + Message.
+tempnam( $dir, 'pre' ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_touch
-touch( $file ); // Error + Message.
+touch( $file ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_unlink
-unlink( $file ); // Error + Message.
+unlink( $file ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
-setcookie( 'cookie[three]', 'cookiethree' ); // EError + Message.
+setcookie( 'cookie[three]', 'cookiethree' ); // Error + Message.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 $x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error + Message.
@@ -57,13 +57,13 @@ if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) { // Error + Message.
 }
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fclose
-fclose( $fp ); // Error + Message.
+fclose( $fp ); // Warning + Message.
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fopen
-fopen( 'file.txt', 'r' ); // Error + Message.
+fopen( 'file.txt', 'r' ); // Warning + Message.
 
 // WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
-$external_resource = file_get_contents( $test ); // Error + Message.
+$external_resource = file_get_contents( $test ); // Warning + Message.
 $file_content = file_get_contents( 'my-file.svg' ); // Ok.
 wpcom_vip_file_get_contents( $bar ); // Ok.
 
@@ -388,24 +388,24 @@ session_status(); // Error.
 session_unregister(); // Error.
 session_unset(); // Error.
 session_write_close(); // Error.
-delete(); // Error.
-file_put_contents( $file, $text, FILE_APPEND ); // Error.
+delete(); // Warning.
+file_put_contents( $file, $text, FILE_APPEND ); // Warning.
 while ( $count > $loop ) {
-	if ( flock( $fp, LOCK_EX ) ) { // Error.
-		fwrite( $fp, $text ); // Error.
+	if ( flock( $fp, LOCK_EX ) ) { // Warning.
+		fwrite( $fp, $text ); // Warning.
 	}
 }
-fputcsv(); // Error.
-fputs(); // Error.
-ftruncate(); // Error.
-is_writable(); // Error.
-is_writeable(); // Error.
-link(); // Error.
-rename(); // Error.
-symlink(); // Error.
-tempnam(); // Error.
-touch(); // Error.
-unlink(); // Error.
+fputcsv(); // Warning.
+fputs(); // Warning.
+ftruncate(); // Warning.
+is_writable(); // Warning.
+is_writeable(); // Warning.
+link(); // Warning.
+rename(); // Warning.
+symlink(); // Warning.
+tempnam(); // Warning.
+touch(); // Warning.
+unlink(); // Warning.
 mkdir(); // Error.
 rmdir(); // Error.
 chgrp(); // Error.

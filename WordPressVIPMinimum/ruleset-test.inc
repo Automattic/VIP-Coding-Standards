@@ -365,24 +365,24 @@ session_status(); // Error.
 session_unregister(); // Error.
 session_unset(); // Error.
 session_write_close(); // Error.
-delete(); // Error.
-file_put_contents( $file, $text, FILE_APPEND ); // Error.
+delete(); // Warning.
+file_put_contents( $file, $text, FILE_APPEND ); // Warning.
 while ( $count > $loop ) {
-	if ( flock( $fp, LOCK_EX ) ) { // Error.
-		fwrite( $fp, $text ); // Error.
+	if ( flock( $fp, LOCK_EX ) ) { // Warning.
+		fwrite( $fp, $text ); // Warning.
 	}
 }
-fputcsv(); // Error.
-fputs(); // Error.
-ftruncate(); // Error.
-is_writable(); // Error.
-is_writeable(); // Error.
-link(); // Error.
-rename(); // Error.
-symlink(); // Error.
-tempnam(); // Error.
-touch(); // Error.
-unlink(); // Error.
+fputcsv(); // Warning.
+fputs(); // Warning.
+ftruncate(); // Warning.
+is_writable(); // Warning.
+is_writeable(); // Warning.
+link(); // Warning.
+rename(); // Warning.
+symlink(); // Warning.
+tempnam(); // Warning.
+touch(); // Warning.
+unlink(); // Warning.
 mkdir(); // Error.
 rmdir(); // Error.
 chgrp(); // Error.

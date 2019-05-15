@@ -219,9 +219,10 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'session_write_close',
 				],
 			],
+			// @link VIP Go: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/
 			'file_ops' => [
-				'type'      => 'error',
-				'message'   => 'Filesystem writes are forbidden, please do not use %s().',
+				'type'      => 'warning',
+				'message'   => 'Filesystem functions like %s() must be used with the VIP stream. Make sure you are getting the proper stream base directory using wp_upload_dir()',
 				'functions' => [
 					'delete',
 					'file_put_contents',
@@ -229,6 +230,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'fputcsv',
 					'fputs',
 					'fwrite',
+					'fclose',
 					'ftruncate',
 					'is_writable',
 					'is_writeable',
