@@ -31,7 +31,7 @@ Alternatively, we recommend the [PHP_CodeSniffer Standards Composer Installer Pl
 
 ### Minimal requirements
 
-* [PHPCS 3+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
+* [PHPCS 3.3.1+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
 * [WPCS 1.*](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
 
 ### Setup note
