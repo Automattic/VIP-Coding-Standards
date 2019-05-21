@@ -16,7 +16,7 @@
 	],
 	"require": {
 		"php": ">=5.6",
-		"squizlabs/php_codesniffer": "^3.2.3",
+		"squizlabs/php_codesniffer": "^3.3.1",
 		"wp-coding-standards/wpcs": "1.*"
 	},
 	"require-dev": {
