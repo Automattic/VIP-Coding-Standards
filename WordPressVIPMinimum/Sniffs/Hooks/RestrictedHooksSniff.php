@@ -63,7 +63,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 			],
 		],
 		'robotstxt' => [
-			// WordPress.com + VIP Go: https://wpvip.com/documentation/robots-txt/
+			// WordPress.com + VIP Go: https://wpvip.com/documentation/robots-txt/.
 			'type'  => 'Warning',
 			'msg'   => 'Don\'t forget to flush the robots.txt cache by going to Settings > Reading and toggling the privacy settings.',
 			'hooks' => [
