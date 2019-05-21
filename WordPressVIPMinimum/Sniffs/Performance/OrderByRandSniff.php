@@ -14,7 +14,7 @@ use WordPress\AbstractArrayAssignmentRestrictionsSniff;
 /**
  * Flag using orderby => rand.
  *
- * @link https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#order-by-rand
+ * @link https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#order-by-rand
  *
  * @package VIPCS\WordPressVIPMinimum
  *

@@ -241,49 +241,49 @@ $expected = [
 	],
 	'messages' => [
 		4   => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as delete() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as delete() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		7   => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as file_put_contents() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as file_put_contents() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		10  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as flock() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as flock() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		14  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as fputcsv() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as fputcsv() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		17  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as fputs() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as fputs() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		20  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as fwrite() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as fwrite() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		23  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as ftruncate() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as ftruncate() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		26  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as is_writable() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as is_writable() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		29  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as is_writeable() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as is_writeable() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		32  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as link() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as link() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		35  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as rename() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as rename() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		38  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as symlink() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as symlink() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		41  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as tempnam() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as tempnam() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		44  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as touch() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as touch() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		47  => [
-			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as unlink() won\'t work or will return unexpected results. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File system writes only work in /tmp/ and inside the /uploads/ folder on VIP Go. To do filesystem writes you must use the WP_Filesystem class, using functions such as unlink() won\'t work or will return unexpected results. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		50  => [
 			'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
@@ -295,13 +295,13 @@ $expected = [
 			'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
 		],
 		60  => [
-			'File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: fclose(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: fclose(). Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		63  => [
-			'File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: fopen(). Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'File operations should use WP_Filesystem methods instead of direct PHP filesystem calls. Found: fopen(). Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		66  => [
-			'file_get_contents() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it\'s used for a local file please use WP_Filesystem instead. Read more here: https://vip.wordpress.com/documentation/using-wp_filesystem-instead-of-direct-file-access-functions/',
+			'file_get_contents() is uncached. If this is being used to query a remote file please use wpcom_vip_file_get_contents() instead. If it\'s used for a local file please use WP_Filesystem instead. Read more here: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		90 => [
 			'Having more than 100 posts returned per page may lead to severe performance problems.',
@@ -319,7 +319,7 @@ $expected = [
 			'get_page_by_title() is uncached, please use wpcom_vip_get_page_by_title() instead.',
 		],
 		139 => [
-			'get_children() is uncached and performs a no limit query. Please use get_posts or WP_Query instead. More Info: https://vip.wordpress.com/documentation/vip-go/uncached-functions/',
+			'get_children() is uncached and performs a no limit query. Please use get_posts or WP_Query instead. More Info: https://wpvip.com/documentation/vip-go/uncached-functions/',
 		],
 		150 => [
 			'url_to_postid() is uncached, please use wpcom_vip_url_to_postid() instead.',
