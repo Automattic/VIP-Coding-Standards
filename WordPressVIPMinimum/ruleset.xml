@@ -138,10 +138,6 @@
 		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
 		<!-- This is already covered in WordPressVIPMinimum.Functions.StripTags.StripTagsOneParameter -->
 		<exclude name="WordPress.WP.AlternativeFunctions.strip_tags_strip_tags"/>
-		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
-		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_fwrite"/>
-		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
-		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents"/>
 	</rule>
 	<!-- VIP recommends other functions -->
 	<rule ref="WordPress.WP.AlternativeFunctions.curl_curl_init">

@@ -16,9 +16,6 @@ fputcsv( $fp, $array ); // Error + Message.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputs
 fputs( $fp, 'test' ); // Error + Message.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite
-fwrite( $fp, 'test' ); // Error + Message.
-
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_ftruncate
 ftruncate( $fp, 1 ); // Error + Message.
 
@@ -473,7 +470,7 @@ $args = array(
 );
 $query_args['orderby'] = 'rand'; // Error.
 
-// WordPressVIPMinimum.Performance.RegexpCompare 
+// WordPressVIPMinimum.Performance.RegexpCompare
 $query_args = array(
 	'posts_per_page' => 1,
 	'post_status' => 'draft',
@@ -546,7 +543,7 @@ str_replace( 'foo', array( 'bar', 'foo' ), 'foobar' ); // Error.
 
 // WordPressVIPMinimum.Security.Underscorejs
 echo "<script>
- _.templateSettings = { 
+ _.templateSettings = {
 	interpolate: /\{\{(.+?)\}\}/g" . // Warning.
 "};
  </script>";
