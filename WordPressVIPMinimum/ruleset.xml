@@ -3,7 +3,7 @@
 	<description>WordPress VIP Minimum Coding Standards</description>
 
 	<!-- Link references are platform-specific. See
-		https://vip.wordpress.com/documentation/vip-go/understanding-codebase-differences/
+		https://wpvip.com/documentation/vip-go/understanding-codebase-differences/
 		for the differences between the platforms -->
 
 	<autoload>./PHPCSCompatibility.php</autoload>
@@ -58,14 +58,14 @@
 	<rule ref="Squiz.PHP.CommentedOutCode"/>
 
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#eval-create_function -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#eval-and-create_function -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#eval-and-create_function -->
 	<rule ref="Squiz.PHP.Eval.Discouraged">
 		<type>error</type>
 		<message>`eval()` is a security risk, please refrain from using it.</message>
 	</rule>
 
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#settings-alteration -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#settings-alteration -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#settings-alteration -->
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
 		<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/pull/633#issuecomment-266634811 -->
 		<properties>
@@ -113,13 +113,13 @@
 	</rule>
 
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#commented-out-code-debug-code-or-output -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#commented-out-code-debug-code-or-output -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#commented-out-code-debug-code-or-output -->
 	<rule ref="WordPress.PHP.DevelopmentFunctions">
 		<!-- This is already covered in WordPress.PHP.DiscouragedPHPFunctions sniff -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting"/>
 	</rule>
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#settings-alteration -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#settings-alteration -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#settings-alteration -->
 	<rule ref="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_phpinfo">
 		<type>error</type>
 	</rule>
@@ -130,9 +130,9 @@
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_json_encode-over-json_encode -->
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#filesystem-writes -->
 	<!-- WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#remote-calls -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#use-wp_json_encode-over-json_encode -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#filesystem-operations -->
-	<!-- VIP-Go: https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#remote-calls -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#use-wp_json_encode-over-json_encode -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#filesystem-operations -->
+	<!-- VIP-Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#remote-calls -->
 	<rule ref="WordPress.WP.AlternativeFunctions">
 		<!-- This is already covered in WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown -->
 		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
