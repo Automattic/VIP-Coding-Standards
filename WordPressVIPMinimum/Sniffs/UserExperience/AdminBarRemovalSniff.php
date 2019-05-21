@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * Discourages removal of the admin bar.
  *
- * @link https://vip.wordpress.com/documentation/vip-go/code-review-blockers-warnings-notices/#removing-the-admin-bar
+ * @link https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#removing-the-admin-bar
  *
  * @package VIPCS\WordPressVIPMinimum
  *

@@ -29,9 +29,9 @@ After `composer install`, you can do:
 
 ## Branches
 
-Ongoing development will be done in features branches then pulled against the `master` branch, with work for VIP Go currently done in the `vip-go` branch.
+Ongoing development will be done in feature branches then pulled against the `develop` branch and follows a typical _git-flow_ approach, where merges to `master` only happen when a new release is made.
 
-To contribute an improvement to this project, fork the repo and open a pull request to the relevant branch. Alternatively, if you have push access to this repo, create a feature branch prefixed by `feature/` and then open an intra-repo PR from that branch to the right branch.
+To contribute an improvement to this project, fork the repo and open a pull request to the relevant branch. Alternatively, if you have push access to this repo, create a feature branch prefixed by `fix/` (followed by the issue number) or `add/` and then open a PR from that branch to the default (`develop`) branch.
 
 ## Code Standards for this project
 

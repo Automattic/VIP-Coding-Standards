@@ -44,14 +44,14 @@ class WPQueryParamsSniff extends Sniff {
 
 			if ( T_TRUE === $this->tokens[ $next_token ]['code'] ) {
 				// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/uncached-functions/.
-				// VIP Go: https://vip.wordpress.com/documentation/vip-go/uncached-functions/.
+				// VIP Go: https://wpvip.com/documentation/vip-go/uncached-functions/.
 				$message = 'Setting `suppress_filters` to `true` is prohibited.';
 				$this->phpcsFile->addError( $message, $stackPtr, 'SuppressFiltersTrue' );
 			}
 		}
 
 		if ( 'post__not_in' === trim( $this->tokens[ $stackPtr ]['content'], '\'' ) ) {
-			$message = 'Using `post__not_in` should be done with caution, see https://vip.wordpress.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.';
+			$message = 'Using `post__not_in` should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'PostNotIn' );
 		}
 	}
