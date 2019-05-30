@@ -24,16 +24,23 @@ script:
   # Run ruleset tests.
   - ./bin/ruleset-tests
 
+env:
+  # `master` is now 3.x.
+  - PHPCS_BRANCH="dev-master"
+  # Lowest supported release in the 3.x series with which VIPCS is compatible.
+  - PHPCS_BRANCH="3.3.1"
+
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+  - "7.4snapshot"
+
 # Rather than a `matrix` property, we use build stages. This allows early
 # build failure for basic linting and sniffing issues.
 # @link https://docs.travis-ci.com/user/build-stages/
-#
-# PHP >= 7.3 & PHPCS < 3.3.1 is known to fail.
-# @link https://github.com/squizlabs/PHP_CodeSniffer/issues/2086.
-#
-# We can't use Matrix Expansion here, since we need to exclude jobs for the known failures,
-# which Matrix Expansion does not yet support. We list each combination instead.
-# @link https://docs.travis-ci.com/user/conditional-builds-stages-jobs/#conditional-jobs
 
 stages:
   - lint
@@ -43,11 +50,10 @@ stages:
 jobs:
   allow_failures:
     - php: "7.4snapshot"
-  fast_finish: true
   include:
 
     - stage: lint
-      php: 7.2
+      php: 7.3
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
       install: false
@@ -70,7 +76,7 @@ jobs:
             - libxml2-utils
 
     - stage: sniff
-      php: 7.2
+      php: 7.3
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
       install: composer install --dev --no-suggest
@@ -78,44 +84,4 @@ jobs:
         # Run PHPCS against VIPCS.
         - ./bin/phpcs
 
-    # PHPCS 3.2.3 is the lowest supported release
-    - stage: test
-      php: 5.6
-      env: PHPCS_BRANCH="dev-master"
 
-    - stage: test
-      php: 5.6
-      env: PHPCS_BRANCH="3.2.3"
-
-    - stage: test
-      php: 7.0
-      env: PHPCS_BRANCH="dev-master"
-
-    - stage: test
-      php: 7.0
-      env: PHPCS_BRANCH="3.2.3"
-
-    - stage: test
-      php: 7.1
-      env: PHPCS_BRANCH="dev-master"
-
-    - stage: test
-      php: 7.1
-      env: PHPCS_BRANCH="3.2.3"
-
-    - stage: test
-      php: 7.2
-      env: PHPCS_BRANCH="dev-master"
-
-    - stage: test
-      php: 7.2
-      env: PHPCS_BRANCH="3.2.3"
-
-    # Only use PHPCS_BRANCH="dev-master" from this point, because PHPCS 3.3.1+ is needed to support PHP 7.3+
-    - stage: test
-      php: 7.3
-      env: PHPCS_BRANCH="dev-master"
-
-    - stage: test
-      php: "7.4snapshot"
-      env: PHPCS_BRANCH="dev-master"

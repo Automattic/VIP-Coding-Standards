@@ -7,7 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPress\AbstractFunctionParameterSniff;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * This sniff throws a warning when low cache times are set.

@@ -31,7 +31,7 @@ class DynamicCallsSniff extends Sniff {
 	 *
 	 * @var array
 	 */
-	private $_blacklisted_functions = [
+	private $blacklisted_functions = [
 		'assert',
 		'compact',
 		'extract',
@@ -49,14 +49,14 @@ class DynamicCallsSniff extends Sniff {
 	 *
 	 * @var array
 	 */
-	private $_variables_arr = [];
+	private $variables_arr = [];
 
 	/**
 	 * The position in the stack where the token was found.
 	 *
 	 * @var int
 	 */
-	private $_stackPtr;
+	private $stackPtr;
 
 	/**
 	 * Returns the token types that this sniff is interested in.
@@ -77,7 +77,7 @@ class DynamicCallsSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
-		$this->_stackPtr = $stackPtr;
+		$this->stackPtr = $stackPtr;
 
 		// First collect all variables encountered and their values.
 		$this->collect_variables();
@@ -101,13 +101,13 @@ class DynamicCallsSniff extends Sniff {
 
 		if (
 			'T_VARIABLE' !==
-				$this->tokens[ $this->_stackPtr ]['type']
+				$this->tokens[ $this->stackPtr ]['type']
 		) {
 			return;
 		}
 
 		$current_var_name = $this->tokens[
-			$this->_stackPtr
+			$this->stackPtr
 		]['content'];
 
 		/*
@@ -118,7 +118,7 @@ class DynamicCallsSniff extends Sniff {
 
 		$t_item_key = $this->phpcsFile->findNext(
 			[ T_WHITESPACE ],
-			$this->_stackPtr + 1,
+			$this->stackPtr + 1,
 			null,
 			true,
 			null,
@@ -162,7 +162,7 @@ class DynamicCallsSniff extends Sniff {
 		$current_var_value =
 			$this->tokens[ $t_item_key ]['content'];
 
-		$this->_variables_arr[ $current_var_name ] =
+		$this->variables_arr[ $current_var_name ] =
 			str_replace( "'", '', $current_var_value );
 	}
 
@@ -179,7 +179,7 @@ class DynamicCallsSniff extends Sniff {
 		 * anything
 		 */
 
-		if ( empty( $this->_variables_arr ) ) {
+		if ( empty( $this->variables_arr ) ) {
 			return;
 		}
 
@@ -189,7 +189,7 @@ class DynamicCallsSniff extends Sniff {
 
 		if (
 			'T_VARIABLE' !==
-				$this->tokens[ $this->_stackPtr ]['type']
+				$this->tokens[ $this->stackPtr ]['type']
 		) {
 			return;
 		}
@@ -202,8 +202,8 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if ( ! isset(
-			$this->_variables_arr[
-				$this->tokens[ $this->_stackPtr ]['content']
+			$this->variables_arr[
+				$this->tokens[ $this->stackPtr ]['content']
 			]
 		) ) {
 			return;
@@ -221,20 +221,20 @@ class DynamicCallsSniff extends Sniff {
 		} while (
 			'T_WHITESPACE' ===
 				$this->tokens[
-					$this->_stackPtr + $i
+					$this->stackPtr + $i
 				]['type']
 		);
 
 		if (
 			'T_OPEN_PARENTHESIS' !==
 				$this->tokens[
-					$this->_stackPtr + $i
+					$this->stackPtr + $i
 				]['type']
 		) {
 			return;
 		}
 
-		$t_item_key = $this->_stackPtr + $i;
+		$t_item_key = $this->stackPtr + $i;
 
 		/*
 		 * We have a variable match, but make sure it contains name
@@ -242,10 +242,10 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if ( ! in_array(
-			$this->_variables_arr[
-				$this->tokens[ $this->_stackPtr ]['content']
+			$this->variables_arr[
+				$this->tokens[ $this->stackPtr ]['content']
 			],
-			$this->_blacklisted_functions,
+			$this->blacklisted_functions,
 			true
 		) ) {
 			return;
@@ -253,7 +253,7 @@ class DynamicCallsSniff extends Sniff {
 
 		// We do, so report.
 		$message = 'Dynamic calling is not recommended in the case of %s.';
-		$data    = [ $this->_variables_arr[ $this->tokens[ $this->_stackPtr ]['content'] ] ];
+		$data    = [ $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ];
 		$this->phpcsFile->addError( $message, $t_item_key, 'DynamicCalls', $data );
 	}
 }

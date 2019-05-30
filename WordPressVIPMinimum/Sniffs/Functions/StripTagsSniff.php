@@ -7,7 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use WordPress\AbstractFunctionParameterSniff;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * This sniff ensures proper tag stripping.

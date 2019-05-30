@@ -7,7 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
-use WordPress\AbstractFunctionParameterSniff;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * This sniff restricts usage of some action and filter hooks.

@@ -1,43 +1,42 @@
-# VIP-Coding-Standards
+# VIP Coding Standards
 
-This project maintains the minimum ruleset of [PHP_CodeSniffer rules](https://github.com/squizlabs/PHP_CodeSniffer) (sniffs) to validate code developed for [WordPress.com VIP](https://wpvip.com/).
+This project contains [PHP_CodeSniffer (PHPCS) sniffs and rulesets](https://github.com/squizlabs/PHP_CodeSniffer) to validate code developed for [WordPress.com VIP](https://wpvip.com/).
 
-This project contains 2 PHP Codesniffer rulesets:
+This project contains two rulesets:
 
- - `WordPressVIPMinimum` - for use on WordPress.com projects
- - `WordPress-VIP-Go` - for use on VIP Go projects
+ - `WordPressVIPMinimum` - for use with projects on the (older) WordPress.com VIP platform.
+ - `WordPress-VIP-Go` - for use with projects on the (newer) VIP Go platform.
 
-These rulesets contain only the rules which are considered being "blockers" and "warnings" according to the [WordPress VIP Go documentation](https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/)
+These rulesets contain only the rules which are considered to be "errors" and "warnings" according to the [WordPress VIP Go documentation](https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/)
 
-The ruleset takes advantage of existing rules in the [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) project.
+The rulesets use rules from the [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) (WPCS) project.
 
-Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why various things are flagged as errors vs warnings and what the levels mean for us.
+Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why violations are flagged as errors vs warnings and what the levels mean.
+
+## Minimal requirements
+
+* [PHPCS 3.3.1+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
+* [WPCS 2.*](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
 
 ## Installation
 
-### Note
+`composer require automattic/vipwpcs`, or `composer g require automattic/vipwpcs` if installing globally. 
 
-Currently, the VIP Go Coding Standards are built on top of the WordPress Coding Standards 1.* release. If you are using `master` here, you will need to checkout [1.2.1 tag](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases/tag/1.2.1).
+This will install the latest compatible versions of PHPCS and WPCS. 
 
-First, make sure you have WPCS 1.* and PHPCS v3+ installed. If you do not, please refer to the [installation instructions for installing PHP CodeSniffer for WordPress.com VIP](https://vip.wordpress.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/). Note that VIPCS does not currently work with the `develop` or `master` branch of WPCS.
 
-You will also find additional information at the [WordPress Coding Standards for PHP_CodeSniffer project](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards#installation).
+Please refer to the [installation instructions for installing PHP_CodeSniffer for WordPress.com VIP](https://wpvip.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/) for more details.
 
-Then, clone this repo to your local machine, and add the standard to PHPCodeSniffer by appending the folder you cloned into to the end of the installed paths. e.g.
+We recommend the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer), which handles the registration of all of the installed standards, so there is no need to set the `installed_paths` config value manually, for single or multiple standards.
+
+Alternatively, you should register the standard to PHPCS by appending the VIPCS directory to the end of the installed paths. e.g.
 
 `phpcs --config-set installed_paths [/path/to/wpcsstandard],[path/to/vipcsstandard],etc`
 
-Alternatively, we recommend the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer), which handles the registration of all of the installed standards, so there is no need to set the `installed_paths` config value manually, for single or multiple standards.
+## Contribution
 
-### Minimal requirements
+Please see [CONTRIBUTION.md](CONTRIBUTING.md).
 
-* [PHPCS 3+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
-* [WPCS 1.*](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
+## License
 
-### Setup note
-
-Should you wish to run both standards (WordPress.com VIP minimum standard & WordPress.com VIP coding standard), you can add both to PHPCS by running the following configuration command:
-
-`phpcs --config-set installed_paths [/path/to/standard],[path/to/standard]`
-
-Note the comma separating each standard.
+Licensed under [GPL-2.0-or-later](LICENSE.md).

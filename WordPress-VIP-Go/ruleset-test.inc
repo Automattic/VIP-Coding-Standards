@@ -69,7 +69,7 @@ wpcom_vip_file_get_contents( $bar ); // Ok.
 
 // WordPress.Security.NonceVerification.NoNonceVerification
 function bar_foo() {
-	if ( ! isset( $_POST['test'] ) ) { // Warning.
+	if ( ! isset( $_POST['test'] ) ) { // Error.
 		return;
 	}
 }
@@ -80,7 +80,7 @@ function foo_bar() {
 }
 
 // WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-do_something( $_POST ); // Ok.
+do_something( $_POST ); // Error.
 if ( isset( $_POST['foo2'] ) ) {
 	bar( wp_unslash( $_POST['foo2'] ) ); // Warning.
 }
@@ -473,7 +473,7 @@ $args = array(
 );
 $query_args['orderby'] = 'rand'; // Error.
 
-// WordPressVIPMinimum.Performance.RegexpCompare 
+// WordPressVIPMinimum.Performance.RegexpCompare
 $query_args = array(
 	'posts_per_page' => 1,
 	'post_status' => 'draft',

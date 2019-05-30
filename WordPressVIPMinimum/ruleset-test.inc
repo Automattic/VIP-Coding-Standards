@@ -50,10 +50,10 @@ $b = function () {
 	$listofthings = wp_cache_get( $listofthings );
 	if ( ! $listofthings ) {
 		$foo = "column = 'test'";
-		
+
 		$listofthings = $wpdb->query( 'SELECT something FROM somewhere WHERE ' . $foo ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Error.
 		wp_cache_set( 'foo', $listofthings );
-	} 
+	}
 };
 
 // WordPress.DB.DirectDatabaseQuery
@@ -124,7 +124,7 @@ class TestClass extends MyClass {
 ?> <?= esc_html( $var ); // Error.
 
 // Squiz.PHP.CommentedOutCode <!-- Warning. -->
-// if (empty($this)) {echo 'This is will not work';} 
+// if (empty($this)) {echo 'This is will not work';}
 
 // Squiz.PHP.Eval
 eval('$var = 4;'); // Error + Message.
@@ -145,12 +145,6 @@ $handle = popen( '/bin/ls', 'r' ); // Warning.
 
 // WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting
 error_reporting(); // Error.
-
-// WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set
-ini_set(); // Error.
-
-// WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_alter
-ini_alter(); // Error.
 
 // WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_restore
 ini_restore(); // Error.
@@ -198,12 +192,58 @@ phpinfo(); // Error.
 // WordPress.PHP.DevelopmentFunctions.error_log_error_log
 error_log(); // Error.
 
+// WordPress.PHP.IniSet
+ini_set( 'auto_detect_line_endings', true ); // Ok.
+ini_set( 'highlight.bg', '#000000' ); // Ok.
+ini_set( 'highlight.comment', '#000000' ); // Ok.
+ini_set( 'highlight.default', '#000000' ); // Ok.
+ini_set( 'highlight.html', '#000000' ); // Ok.
+ini_set( 'highlight.keyword', '#000000' ); // Ok.
+ini_set( 'highlight.string', '#000000' ); // Ok.
+ini_set( 'short_open_tag', 1 ); // Ok.
+ini_set( 'bcmath.scale', 1 ); // Error.
+ini_set( 'display_errors', 1 ); // Error.
+ini_set( 'error_reporting', 1 ); // Error.
+ini_set( 'filter.default', 1 ); // Error.
+ini_set( 'filter.default_flags', 1 ); // Error.
+ini_set( 'iconv.input_encoding', 1 ); // Error.
+ini_set( 'iconv.internal_encoding', 1 ); // Error.
+ini_set( 'iconv.output_encoding', 1 ); // Error.
+ini_set( 'ignore_user_abort', 1 ); // Error.
+ini_set( 'log_errors', 1 ); // Error.
+ini_set( 'max_execution_time', 1 ); // Error.
+ini_set( 'memory_limit', 1 ); // Error.
+ini_set( 'short_open_tag', 'off' ); // Error.
+ini_set( 'foo', true ); // Warning.
+ini_alter( 'auto_detect_line_endings', true ); // Ok.
+ini_alter( 'highlight.bg', '#000000' ); // Ok.
+ini_alter( 'highlight.comment', '#000000' ); // Ok.
+ini_alter( 'highlight.default', '#000000' ); // Ok.
+ini_alter( 'highlight.html', '#000000' ); // Ok.
+ini_alter( 'highlight.keyword', '#000000' ); // Ok.
+ini_alter( 'highlight.string', '#000000' ); // Ok.
+ini_alter( 'short_open_tag', 1 ); // Ok.
+ini_alter( 'bcmath.scale', 1 ); // Error.
+ini_alter( 'display_errors', 1 ); // Error.
+ini_alter( 'error_reporting', 1 ); // Error.
+ini_alter( 'filter.default', 1 ); // Error.
+ini_alter( 'filter.default_flags', 1 ); // Error.
+ini_alter( 'iconv.input_encoding', 1 ); // Error.
+ini_alter( 'iconv.internal_encoding', 1 ); // Error.
+ini_alter( 'iconv.output_encoding', 1 ); // Error.
+ini_alter( 'ignore_user_abort', 1 ); // Error.
+ini_alter( 'log_errors', 1 ); // Error.
+ini_alter( 'max_execution_time', 1 ); // Error.
+ini_alter( 'memory_limit', 1 ); // Error.
+ini_alter( 'short_open_tag', 'off' ); // Error.
+ini_alter( 'foo', true ); // Warning.
+
 // WordPress.WP.AlternativeFunctions
 curl_init(); // Warning + Message.
 curl_close( $ch ); // Warning + Message.
 CURL_getinfo(); // Warning + Message.
-parse_url( 'http://example.com/' ); // Warning + Message.
-$json = json_encode( $thing ); // Warning + Message.
+parse_url( 'http://example.com/' ); // Warning.
+$json = json_encode( $thing ); // Warning.
 readfile(); // Warning.
 fclose(); // Warning.
 fopen(); // Warning.
@@ -430,7 +470,7 @@ $args = array(
 );
 $query_args['orderby'] = 'rand'; // Error.
 
-// WordPressVIPMinimum.Performance.RegexpCompare 
+// WordPressVIPMinimum.Performance.RegexpCompare
 $query_args = array(
 	'posts_per_page' => 1,
 	'post_status' => 'draft',

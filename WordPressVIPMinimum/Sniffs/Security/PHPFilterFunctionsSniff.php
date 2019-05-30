@@ -7,7 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use WordPress\AbstractFunctionParameterSniff;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * This sniff ensures that proper sanitization is occurring when PHP's filter_* functions are used.

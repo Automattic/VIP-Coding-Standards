@@ -16,5 +16,5 @@ namespace WordPressVIPMinimum\Sniffs;
  *
  * @package VIPCS\WordPressVIPMinimum
  */
-abstract class Sniff extends \WordPress\Sniff {
+abstract class Sniff extends \WordPressCS\WordPress\Sniff {
 }
