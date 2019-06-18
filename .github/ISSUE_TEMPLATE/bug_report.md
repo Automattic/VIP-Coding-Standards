@@ -4,6 +4,9 @@ about: Create a report to help us improve
 
 ---
 
+<!-- ATTENTION: :wave: Just a quick reminder that this is a public repo. Please don't include any internal links or sensitive data (like PII, private code, client names, site URLs, etc. If you're not sure if something is safe to share, please just ask! -->
+
+
 <!-- Before requesting this, consider if this bug is specific to sniffs in VIPCS, or whether the source of the bug is in the WordPress Coding Standards: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/ -->
 
 ## Bug Description
