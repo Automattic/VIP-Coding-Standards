@@ -136,8 +136,6 @@
 		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
 		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_fwrite"/>
 		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
-		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_fclose"/>
-		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
 		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents"/>
 	</rule>
 	<!-- VIP recommends other functions -->
