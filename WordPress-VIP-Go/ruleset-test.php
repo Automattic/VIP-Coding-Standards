@@ -296,7 +296,7 @@ $expected = [
 			'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
 		],
 		60  => [
-			'File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as unlink(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
+			'File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as fclose(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
 		],
 		63  => [
 			'File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as fopen(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/',
