@@ -8,62 +8,77 @@
 
 	<!-- Things that may be incompatible with the VIP Go infrastructure and needs a dev to review -->
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_flock">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputcsv">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputs">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_ftruncate">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writable">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writeable">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_link">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_rename">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_symlink">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_tempnam">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_touch">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_unlink">
+		<type>warning</type>
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
