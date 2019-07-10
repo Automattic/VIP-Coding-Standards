@@ -104,10 +104,6 @@
 	 -->
 	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped"/>
 	<!-- Should fix all of them but it doesn't need a manual review -->
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read">
-		<type>warning</type>
-		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
-	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
 		<type>warning</type>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
