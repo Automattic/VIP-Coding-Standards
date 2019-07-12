@@ -10,7 +10,7 @@ This release switches from having WPCS `1.*` as a dependency, to WPCS `2.*`. It 
 
 The sniffs in WPCS `2.*` are more accurate, so you may see new violations there weren't being reported before, and a reduction in violations for false positives.  
 
-## Added
+### Added
 
 - Switch to using WPCS `2.*`.
 	- Remove reference to WPCS's `PHPAliases.php`.
@@ -21,9 +21,9 @@ The sniffs in WPCS `2.*` are more accurate, so you may see new violations there 
 	- Update ruleset test for WPCS security sniffs.
 	- Update `DiscouragedPHPFunctions` group exclusion in `WordPressVIPMinimum` ruleset.
 	
-## Changed 
+### Changed 
 
-- Downgrade use of file operation functions to Warning:
+- Downgrade use of file operation functions from Error to Warning:
 	- `delete`
 	- `file_put_contents`
 	- `flock`
@@ -42,7 +42,7 @@ The sniffs in WPCS `2.*` are more accurate, so you may see new violations there 
 	- `fclose`
 	- `fopen`
 	- `file_get_contents`
-- Simplify Travis config
+- Simplify Travis config.
 - Switch references from `vip.wordpress.com` to `wpvip.com`.
 - Documentation updates.
 - Switch development to a `git-flow` workflow.
