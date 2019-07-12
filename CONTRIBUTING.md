@@ -99,13 +99,13 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 
 Expected output:
 ```
-PHPUnit 7.2.6 by Sebastian Bergmann and contributors.
+PHPUnit 7.5.12 by Sebastian Bergmann and contributors.
 
-.................................                                 33 / 33 (100%)
+...........................................                       43 / 43 (100%)
 
-Tests generated 29 unique error codes; 0 were fixable (0%)
+44 sniff test files generated 119 unique error codes; 0 were fixable (0%)
 
-Time: 268 ms, Memory: 30.00MB
+Time: 380 ms, Memory: 30.00MB
 ```
 
 ### Unit Testing conventions

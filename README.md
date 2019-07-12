@@ -9,7 +9,7 @@ This project contains two rulesets:
 
 These rulesets contain only the rules which are considered to be "errors" and "warnings" according to the [WordPress VIP Go documentation](https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/)
 
-The rulesets use rules from the [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) (WPCS) project.
+The rulesets use rules from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) (WPCS) project.
 
 Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why violations are flagged as errors vs warnings and what the levels mean.
 

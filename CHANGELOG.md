@@ -4,6 +4,53 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2019-07-12
+
+This release switches from having WPCS `1.*` as a dependency, to WPCS `2.*`. It is not compatible with WPCS `1.*`.
+
+The sniffs in WPCS `2.*` are more accurate, so you may see new violations there weren't being reported before, and a reduction in violations for false positives.  
+
+## Added
+
+- Switch to using WPCS `2.*`.
+	- Remove reference to WPCS's `PHPAliases.php`.
+	- Remove WPCS `1.*`'s `WordPress.VIP` references from rulesets.
+	- Bump PHPCS minimum required version to 3.3.1.
+	- Update the WPCS namespace.
+	- Update ruleset and ruleset test to account for WPCS 2's switch to `WordPress.PHP.IniSet` sniff.
+	- Update ruleset test for WPCS security sniffs.
+	- Update `DiscouragedPHPFunctions` group exclusion in `WordPressVIPMinimum` ruleset.
+	
+## Changed 
+
+- Downgrade use of file operation functions to Warning:
+	- `delete`
+	- `file_put_contents`
+	- `flock`
+	- `fputcsv`
+	- `fputs`
+	- `fwrite`
+	- `ftruncate`
+	- `is_writable`
+	- `is_writeable`
+	- `link`
+	- `rename`
+	- `symlink`
+	- `tempnam`
+	- `touch`
+	- `unlink`
+	- `fclose`
+	- `fopen`
+	- `file_get_contents`
+- Simplify Travis config
+- Switch references from `vip.wordpress.com` to `wpvip.com`.
+- Documentation updates.
+- Switch development to a `git-flow` workflow.
+
+## Fixed
+
+- Fixed CS violations in VIPCS code.
+
 ## [1.0.0] - 2019-04-24
 
 This release contains many breaking changes.
@@ -320,4 +367,5 @@ This release contains breaking changes.
  - `wpcom_vip_get_page_by_path` from `WordPressVIPMinimum.VIP.RestrictedFunctions`
  - Version check for PHP 7 or less in `WordPressVIPMinimum.Variables.VariableAnalysis` unit test since tests are not failing anymore.
 
+[2.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/1.0.0...2.0.0
 [1.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/0.4.0...1.0.0
