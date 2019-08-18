@@ -522,9 +522,9 @@ esc_attr( wp_dropdown_pages() ); // Error.
 
 // WordPressVIPMinimum.Security.ExitAfterRedirect
 function redirect_test() {
-	wp_safe_redirect( 'https.//vip.wordpress.com' ); // Error.
+	wp_safe_redirect( 'https.//wpvip.com' ); // Error + Warning.
 }
-wp_redirect( 'https://vip.wordpress.com' ); // Error.
+wp_redirect( 'https://wpvip.com' ); // Error + Warning.
 
 // WordPressVIPMinimum.Security.Mustache
 echo '<a href="{{href}}">{{{data}}}</div></a>'; // Warning.
