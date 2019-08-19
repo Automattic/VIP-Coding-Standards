@@ -295,7 +295,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			// @link VIP Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#remote-calls
 			'wp_remote_get' => [
 				'type'      => 'warning',
-				'message'   => '%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.',
+				'message'   => '%s() is highly discouraged. Please use vip_safe_wp_remote_get() instead which is designed to more gracefully handle failure than wp_remote_get() does.',
 				'functions' => [
 					'wp_remote_get',
 				],
