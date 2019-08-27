@@ -55,7 +55,13 @@ class ConstantStringSniff extends Sniff {
 			return;
 		}
 
-		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+		$nextToken     = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+		$nextNextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+
+		if ( T_NS_C === $this->tokens[ $nextToken ]['code'] && T_STRING_CONCAT === $this->tokens[ $nextNextToken ]['code'] ) {
+			// Namespacing being used, skip to next.
+			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextNextToken + 1, null, true, null, true );
+		}
 
 		if ( $this->tokens[ $nextToken ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
 			$message = 'Constant name, as a string, should be used along with `%s()`.';
