@@ -82,6 +82,16 @@
 		<severity>6</severity>
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://wpvip.com/documentation/vip-go/writing-files-on-vip-go/</message>
 	</rule>
+	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval.RemovalDetected">
+		<type>warning</type>
+		<severity>6</severity>
+		<message>Removal of admin bar is highly discouraged for user roles of "administrator" and "vip_support" -- if these roles are already excluded, this warning can be ignored.</message>
+	</rule>
+	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval.HidingDetected">
+		<type>warning</type>
+		<severity>6</severity>
+		<message>Hiding of admin bar is highly discouraged for user roles of "administrator" and "vip_support" -- if these roles are already excluded, this warning can be ignored.</message>
+	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie">
 		<type>error</type>
 		<severity>6</severity>
