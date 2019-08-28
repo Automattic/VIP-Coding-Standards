@@ -218,11 +218,11 @@ function foo_bar_foo() {
 }
 
 // WordPressVIPMinimum.UserExperience.AdminBarRemoval
-add_filter( 'show_admin_bar', '__return_false' ); // Error.
+add_filter( 'show_admin_bar', '__return_false' ); // Warning.
 add_filter( 'show_admin_bar', '__return_true' ); // Ok.
-show_admin_bar( false ); // Error.
+show_admin_bar( false ); // Warning.
 show_admin_bar( true ); // Ok.
-add_filter( 'show_admin_bar', 'my_own_return_false' ); // Error.
+add_filter( 'show_admin_bar', 'my_own_return_false' ); // Warning.
 echo '<style type="text/css">
 #wpadminbar {
 	visibility: hidden; /* Error. */
@@ -232,9 +232,9 @@ echo '<style type="text/css">
 </style>';
 ?> <style type="text/css">
 #wpadminbar {
-	visibility: hidden; /* Error. */
-	display: none; /* Error. */
-	opacity: 0; /* Error. */
+	visibility: hidden; /* Warning. */
+	display: none; /* Warning. */
+	opacity: 0; /* Warning. */
 }
 #not-wpadminbar {
 	visibility: hidden; /* OK. */
@@ -242,9 +242,9 @@ echo '<style type="text/css">
 	opacity: 0; /* OK. */
 }
 .show-admin-bar {
-	visibility: hidden; /* Error. */
-	display: none; /* Error. */
-	opacity: 0; /* Error. */
+	visibility: hidden; /* Warning. */
+	display: none; /* Warning. */
+	opacity: 0; /* Warning. */
 }
 </style> <?php
 
