@@ -32,10 +32,6 @@ class LowExpiryCacheTimeUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			27 => 1,
-			28 => 1,
-			29 => 1,
-			30 => 1,
 			32 => 1,
 			33 => 1,
 			34 => 1,
@@ -44,6 +40,14 @@ class LowExpiryCacheTimeUnitTest extends AbstractSniffUnitTest {
 			38 => 1,
 			39 => 1,
 			40 => 1,
+			42 => 1,
+			43 => 1,
+			44 => 1,
+			45 => 1,
+			47 => 1,
+			48 => 1,
+			49 => 1,
+			50 => 1,
 		];
 	}
 }
