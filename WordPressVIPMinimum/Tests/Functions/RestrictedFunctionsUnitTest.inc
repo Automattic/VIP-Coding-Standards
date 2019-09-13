@@ -221,3 +221,6 @@ update_site_option(  $bar, 'foo' ); // Warning.
 update_option( 'foo', $bar ); // Ok.
 delete_site_option( $foo   ); // Warning.
 delete_option(  $bar ); // Ok.
+
+wpcom_vip_get_page_by_path(); // Ok - VIP recommended version of get_page_by_path().
+get_page_by_path( $page_path ); // Warning.
