@@ -244,10 +244,10 @@
 		<type>warning</type>
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable">
+	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable">
+	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
 		<severity>1</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval">

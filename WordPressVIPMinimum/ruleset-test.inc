@@ -2,7 +2,7 @@
 
 
 <?php // Error - Squiz.WhiteSpace.SuperfluousWhitespace.
-
+$hello = ''; $posts_not_in = ''; $listofthings = ''; $cachedlistofthings = ''; $title = ''; $ch = ''; $thing = ''; $descriptorspec = ''; $pipes = ''; $cwd = ''; $env = ''; $page_title = ''; $menu_title = ''; $capability = ''; $function = ''; $icon_url = ''; $position = ''; $wpdb = ''; $file = ''; $fp = ''; $dir = ''; $test = ''; $post = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $query = ''; $page_title = ''; $true = true; $some_nasty_var = ''; $data = ''; $group = ''; $testing = ''; $this = new stdClass(); $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $a = ''; $b = ''; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
 // Generic.PHP.Syntax
 while { // Error.
 }
@@ -47,7 +47,7 @@ date_default_timezone_set( 'FooBar' ); // Error.
 // WordPress.DB.PreparedSQL
 $b = function () {
 	global $wpdb;
-	$listofthings = wp_cache_get( $listofthings );
+	$listofthings = wp_cache_get( 'foo' );
 	if ( ! $listofthings ) {
 		$foo = "column = 'test'";
 
@@ -258,7 +258,7 @@ mt_rand(); // Warning.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children
 get_children(); // Error + Message.
 
-// WordPressVIPMinimum.Variables.VariableAnalysis
+// VariableAnalysis.CodeAnalysis.VariableAnalysis
 function foo() {
 	$a = 'Hello';
 	$c = compact( $a, $b ); // Warning x 2.
@@ -301,7 +301,7 @@ require_once __DIR__ . "/my_file.svg"; // Error.
 // WordPressVIPMinimum.Functions.CheckReturnValue
 $my_theme_options = get_option( 'my_theme', false );
 if ( array_key_exists( 'key', $my_theme_options ) ) { } // Error.
-echo '<a href="' . esc_url( get_term_link( $link ) ) . '">My term link</a>'; // Error.
+echo '<a href="' . esc_url( get_term_link( $var ) ) . '">My term link</a>'; // Error.
 
 // WordPressVIPMinimum.Functions.DynamicCalls
 $my_notokay_func = 'extract';
@@ -311,7 +311,7 @@ $my_notokay_func(); // Error.
 wp_cache_get_multi(); // Error.
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error.
-opcache_compile_file( $test_script ); // Error.
+opcache_compile_file( $var ); // Error.
 opcache_​is_​script_​cached( 'test_script.php' ); // Error.
 opcache_​get_​status(); // Error.
 opcache_​get_​configuration(); // Error.
@@ -409,7 +409,7 @@ wpcom_vip_get_category_by_slug(); // Warning.
 
 // WordPressVIPMinimum.Functions.StripTagsSniff
 strip_tags( 'Testing' ); // Warning.
-strip_tags( 'Test', $html ); // Warning.
+strip_tags( 'Test', $text ); // Warning.
 
 // WordPressVIPMinimum.Hooks.AlwaysReturnInFilter
 function bad_example_function_thing() { // Error.
@@ -501,7 +501,7 @@ update_option( 'taxonomy_rating_' . $category_id ); // Warning.
 
 // WordPressVIPMinimum.Performance.WPQueryParams
 $query_args = array(
-	'post__not_in' => $posts_not_in, // Warning.
+	'post__not_in'     => $posts_not_in, // Warning.
 	'suppress_filters' => true, // Error.
 );
 
@@ -597,11 +597,14 @@ $_SERVER['HTTP_X_FORWARDED_FOR']; // Error.
 $_SERVER["REMOTE_ADDR"]; // Error.
 // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
+class MyClass {
+	function my_function() {
+		return function() {
+			$this->my_callback(); // OK - new VariableAnalysis doesn't flag $this as undefined in closure.
+		};
+	}
 
-// WordPressVIPMinimum.Variables.VariableAnalysis
-function foo() {
-	$a = 'Hello';
-	$c = compact( $a, $b ); // Warning x 2.
+	function my_callback() {}
 }
 
 // Generic.VersionControl.GitMergeConflict

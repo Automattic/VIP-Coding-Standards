@@ -1,5 +1,5 @@
 <?php
-
+$file = ''; $fp = ''; $dir = ''; $test = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $query = ''; $page_title = ''; $true = true; $some_nasty_var = ''; $data = ''; $group = ''; $testing = ''; $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $a = ''; $b = ''; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete
 delete( $file ); // Warning + Message.
 
@@ -163,7 +163,7 @@ rawurlencode(); // Ok.
 
 // WordPress.PHP.DontExtract
 extract( array( 'a' => 1 ) ); // Error.
-$this->extract(); // Ok.
+$obj->extract(); // Ok.
 
 // WordPress.PHP.StrictComparisons.LooseComparison
 true == $true; // Warning.
@@ -188,7 +188,7 @@ $wpdb = 'test'; // Error.
 $GLOBALS['domain']['subkey'] = 'something else'; // Error.
 
 // WordPress.WP.EnqueuedResources.NonEnqueuedScript
-echo wp_kses( '<script src="' . esc_url( $script ) . '">', [ 'script' => [ 'src' => [], ], ] ); // Warning + Message.
+echo wp_kses( '<script src="' . esc_url( $url ) . '">', [ 'script' => [ 'src' => [], ], ] ); // Warning + Message.
 ?> <script src="http://someurl/somefile.js"></script> <!-- Warning + Message. -->
 
 <!-- WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -->
@@ -207,12 +207,12 @@ require_once "my_file.php"; // Warning.
 require '../../my_file.php'; // Warning.
 include("http://www.google.com/bad_file.php"); // Warning.
 
-// WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable
+// VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 function foo_bar_bar() {
 	$b . 'test'; // Warning.
 }
 
-// WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable
+// VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 function foo_bar_foo() {
 	$a = 'Hello'; // Warning
 }
@@ -339,7 +339,7 @@ require_once __DIR__ . "/my_file.svg"; // Error.
 // WordPressVIPMinimum.Functions.CheckReturnValue
 $my_theme_options = get_option( 'my_theme', false );
 if ( array_key_exists( 'key', $my_theme_options ) ) { } // Error.
-echo '<a href="' . esc_url( get_term_link( $link ) ) . '">My term link</a>'; // Error.
+echo '<a href="' . esc_url( get_term_link( $var ) ) . '">My term link</a>'; // Error.
 
 // WordPressVIPMinimum.Functions.DynamicCalls
 $my_notokay_func = 'extract';
@@ -349,7 +349,7 @@ $my_notokay_func(); // Error.
 wp_cache_get_multi(); // Error.
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error.
-opcache_compile_file( $test_script ); // Error.
+opcache_compile_file( $var ); // Error.
 opcache_​is_​script_​cached( 'test_script.php' ); // Error.
 opcache_​get_​status(); // Error.
 opcache_​get_​configuration(); // Error.
@@ -425,7 +425,7 @@ wpcom_vip_get_term_by(); // Warning.
 wpcom_vip_get_category_by_slug(); // Warning.
 
 // WordPressVIPMinimum.Functions.StripTagsSniff
-strip_tags( 'Test', $html ); // Warning.
+strip_tags( 'Test', $text ); // Warning.
 
 // WordPressVIPMinimum.Hooks.AlwaysReturnInFilter
 function bad_example_function_thing() { // Error.
@@ -489,12 +489,12 @@ $query_args = [
 ];
 
 // WordPressVIPMinimum.Performance.RemoteRequestTimeout
-wp_remote_post( $this->endpoint, array(
+wp_remote_post( $obj->endpoint, array(
         'method'      => 'POST',
         'timeout'     => 45, // Error.
         'httpversion' => '1.1',
         'blocking'    => false,
-        'body'        => wp_json_encode( $this->logs, JSON_UNESCAPED_SLASHES ),
+        'body'        => wp_json_encode( $obj->logs, JSON_UNESCAPED_SLASHES ),
     )
 );
 
