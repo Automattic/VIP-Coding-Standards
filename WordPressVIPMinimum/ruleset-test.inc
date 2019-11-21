@@ -41,7 +41,7 @@ $args = array(
 _query_posts( 'posts_per_page=999' ); // Warning.
 $query_args['posts_per_page'] = 999; // Warning.
 
-// WordPress.WP.TimezoneChange
+// WordPress.DateTime.RestrictedFunctions
 date_default_timezone_set( 'FooBar' ); // Error.
 
 // WordPress.DB.PreparedSQL

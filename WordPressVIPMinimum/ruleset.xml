@@ -26,7 +26,7 @@
 	<rule ref="WordPress.PHP.IniSet"/>
 	<rule ref="WordPress.WP.EnqueuedResources"/>
 	<rule ref="WordPress.WP.PostsPerPage"/>
-	<rule ref="WordPress.WP.TimezoneChange"/>
+	<rule ref="WordPress.DateTime.RestrictedFunctions"/>
 	<rule ref="WordPress.DB.PreparedSQL"/>
 	<rule ref="WordPress.DB.DirectDatabaseQuery"/>
 	<rule ref="WordPress.DB.SlowDBQuery"/>
