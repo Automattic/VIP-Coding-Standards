@@ -326,6 +326,13 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'create_function',
 				],
 			],
+			'get_page_by_path' => [
+				'type'      => 'warning',
+				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_get_page_by_path() instead.',
+				'functions' => [
+					'get_page_by_path',
+				],
+			],
 		];
 
 		$deprecated_vip_helpers = [
