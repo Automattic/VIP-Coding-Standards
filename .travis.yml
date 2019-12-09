@@ -18,7 +18,8 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - "7.4snapshot"
+  - 7.4
+  - "nightly"
 
 # Rather than a `matrix` property, we use build stages. This allows early
 # build failure for basic linting and sniffing issues.
@@ -31,7 +32,7 @@ stages:
 
 jobs:
   allow_failures:
-    - php: "7.4snapshot"
+    - php: "nightly"
   include:
 
     - stage: lint
@@ -73,9 +74,20 @@ before_install:
   # https://twitter.com/kelunik/status/954242454676475904
   - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
 
+  # On stable PHPCS versions, allow for PHP deprecation notices.
+  # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" && $PHPCS_BRANCH != "dev-master" ]]; then
+      echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    fi
+
 install:
   - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
-  - composer install --dev --no-suggest
+  - |
+    # Don't need dev dependencies for running `php -l`.
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Lint" ]]; then
+      composer install --dev --no-suggest
+    fi
 
 script:
   # Run the unit tests.
