@@ -268,6 +268,13 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'delete_site_option',
 				],
 			],
+			'stats_get_csv' => [
+				'type'      => 'error',
+				'message'   => 'Using `%s` outside of Jetpack context pollutes the stats_cache entry in the wp_options table. We recommend building a custom function instead.',
+				'functions' => [
+					'stats_get_csv',
+				]
+			],
 			'wp_mail' => [
 				'type'      => 'warning',
 				'message'   => '`%s` should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',

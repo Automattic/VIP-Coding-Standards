@@ -224,3 +224,6 @@ delete_option(  $bar ); // Ok.
 
 wpcom_vip_get_page_by_path(); // Ok - VIP recommended version of get_page_by_path().
 get_page_by_path( $page_path ); // Warning.
+
+$popular = stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] ); // Error.
+$popular = custom_stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] ); // Ok.
