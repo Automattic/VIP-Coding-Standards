@@ -31,7 +31,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 		'get_stylesheet_directory',
 		'get_template_directory',
 		'locate_template',
-		'get_parent_theme_file_path'
+		'get_parent_theme_file_path',
 	];
 
 	/**

@@ -12,6 +12,7 @@ require dirname( __FILE__ ) . '/my_file.php' );
 require dirname( __FILE__, 2 ) . '/my_file.php' );
 require dirname( dirname( __FILE__ ) ) . '/my_file.php' );
 require dirname( dirname( __DIR__ ) ) . '/my_file.php' );
+require_once( get_parent_theme_file_path( '/my_file.php' ); );
 
 // Warnings.
 include ( MY_CONSTANT . "my_file.php" ); // Custom constant.
