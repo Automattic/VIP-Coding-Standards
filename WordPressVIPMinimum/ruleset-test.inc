@@ -41,7 +41,7 @@ $args = array(
 _query_posts( 'posts_per_page=999' ); // Warning.
 $query_args['posts_per_page'] = 999; // Warning.
 
-// WordPress.WP.TimezoneChange
+// WordPress.DateTime.RestrictedFunctions
 date_default_timezone_set( 'FooBar' ); // Error.
 
 // WordPress.DB.PreparedSQL
@@ -50,10 +50,10 @@ $b = function () {
 	$listofthings = wp_cache_get( $listofthings );
 	if ( ! $listofthings ) {
 		$foo = "column = 'test'";
-		
+
 		$listofthings = $wpdb->query( 'SELECT something FROM somewhere WHERE ' . $foo ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Error.
 		wp_cache_set( 'foo', $listofthings );
-	} 
+	}
 };
 
 // WordPress.DB.DirectDatabaseQuery
@@ -124,7 +124,7 @@ class TestClass extends MyClass {
 ?> <?= esc_html( $var ); // Error.
 
 // Squiz.PHP.CommentedOutCode <!-- Warning. -->
-// if (empty($this)) {echo 'This is will not work';} 
+// if (empty($this)) {echo 'This is will not work';}
 
 // Squiz.PHP.Eval
 eval('$var = 4;'); // Error + Message.
@@ -430,7 +430,7 @@ $args = array(
 );
 $query_args['orderby'] = 'rand'; // Error.
 
-// WordPressVIPMinimum.Performance.RegexpCompare 
+// WordPressVIPMinimum.Performance.RegexpCompare
 $query_args = array(
 	'posts_per_page' => 1,
 	'post_status' => 'draft',
@@ -515,7 +515,7 @@ str_replace( 'foo', array( 'bar', 'foo' ), 'foobar' ); // Error.
 
 // WordPressVIPMinimum.Security.Underscorejs
 echo "<script>
- _.templateSettings = { 
+ _.templateSettings = {
 	interpolate: /\{\{(.+?)\}\}/g" . // Warning.
 "};
  </script>";
