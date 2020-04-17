@@ -38,8 +38,8 @@ jobs:
       php: 7.3
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-      install: false
-      cache: false
+      install: skip
+      cache: skip
       script:
         # Lint the PHP files against parse errors.
         - ./bin/php-lint
