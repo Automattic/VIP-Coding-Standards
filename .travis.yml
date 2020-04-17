@@ -1,34 +1,16 @@
+language: php
+os: linux
 dist: xenial
-
-cache:
-  directories:
-    - $HOME/.cache/composer/files
-
-language:
-  - php
-
-before_install:
-  # Speed up build time by disabling Xdebug.
-  # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
-  # https://twitter.com/kelunik/status/954242454676475904
-  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-
-install:
-  - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
-  - composer install --dev --no-suggest
-
-script:
-  # Run the unit tests.
-  - ./bin/unit-tests
-
-  # Run ruleset tests.
-  - ./bin/ruleset-tests
 
 env:
   # `master` is now 3.x.
   - PHPCS_BRANCH="dev-master"
   # Lowest supported release in the 3.x series with which VIPCS is compatible.
   - PHPCS_BRANCH="3.3.1"
+
+cache:
+  directories:
+    - $HOME/.cache/composer/files
 
 php:
   - 5.6
@@ -85,3 +67,19 @@ jobs:
         - ./bin/phpcs
 
 
+before_install:
+  # Speed up build time by disabling Xdebug.
+  # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
+  # https://twitter.com/kelunik/status/954242454676475904
+  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+
+install:
+  - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
+  - composer install --dev --no-suggest
+
+script:
+  # Run the unit tests.
+  - ./bin/unit-tests
+
+  # Run ruleset tests.
+  - ./bin/ruleset-tests
