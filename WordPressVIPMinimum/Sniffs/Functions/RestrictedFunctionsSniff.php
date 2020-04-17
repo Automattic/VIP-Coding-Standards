@@ -273,7 +273,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'message'   => 'Using `%s` outside of Jetpack context pollutes the stats_cache entry in the wp_options table. We recommend building a custom function instead.',
 				'functions' => [
 					'stats_get_csv',
-				]
+				],
 			],
 			'wp_mail' => [
 				'type'      => 'warning',
