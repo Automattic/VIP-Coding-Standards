@@ -305,6 +305,9 @@
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_add_site_option">
 		<severity>0</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_super_admins_get_super_admins">
+		<severity>0</severity>
+	</rule>
 	<rule ref="Generic.PHP.DisallowShortOpenTag.EchoFound">
 		<severity>0</severity>
 	</rule>
