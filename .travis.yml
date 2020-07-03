@@ -6,7 +6,7 @@ env:
   # `master` is now 3.x.
   - PHPCS_BRANCH="dev-master"
   # Lowest supported release in the 3.x series with which VIPCS is compatible.
-  - PHPCS_BRANCH="3.3.1"
+  - PHPCS_BRANCH="3.5.5"
 
 cache:
   directories:
