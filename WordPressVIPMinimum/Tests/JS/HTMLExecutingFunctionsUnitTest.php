@@ -56,6 +56,8 @@ class HTMLExecutingFunctionsUnitTest extends AbstractSniffUnitTest {
 			39 => 1,
 			41 => 1,
 			43 => 1,
+			46 => 1,
+			48 => 1,
 		];
 	}
 

@@ -42,3 +42,7 @@
 	$( variable )
 		.		replaceAll( el ); // Warning.
 })();
+
+	$( foo_that_contains_script_element() ).appendTo( el ); // Warning.
+	var $foo = $( '.my-selector' );
+	$foo.appendTo( el ); // Warning.

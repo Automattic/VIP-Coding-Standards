@@ -88,7 +88,7 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 
 			while ( $nextToken < $parenthesis_closer ) {
 				$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
-				if ( T_STRING === $this->tokens[ $nextToken ]['code'] ) { // Contains a variable.
+				if ( T_STRING === $this->tokens[ $nextToken ]['code'] ) { // Contains a variable, function call or something else dynamic.
 					$message = 'Any HTML passed to `%s` gets executed. Make sure it\'s properly escaped.';
 					$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 					$this->phpcsFile->addWarning( $message, $stackPtr, $this->tokens[ $stackPtr ]['content'], $data );
@@ -106,14 +106,21 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 			$prevPrevToken = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $prevToken - 1, null, true, null, true );
 
 			if ( T_CLOSE_PARENTHESIS !== $this->tokens[ $prevPrevToken ]['code'] ) {
+				// Not a function call, but may be a variable containing an element reference, so just
+				// flag all remaining instances of these target HTML executing functions.
+				$message = 'Any HTML used with `%s` gets executed. Make sure it\'s properly escaped.';
+				$data    = [ $this->tokens[ $stackPtr ]['content'] ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, $this->tokens[ $stackPtr ]['content'], $data );
+
 				return;
 			}
 
+			// Check if it's a function call (typically $() ) that contains a dynamic part.
 			$parenthesis_opener = $this->tokens[ $prevPrevToken ]['parenthesis_opener'];
 
 			while ( $prevPrevToken > $parenthesis_opener ) {
 				$prevPrevToken = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $prevPrevToken - 1, null, true, null, true );
-				if ( T_STRING === $this->tokens[ $prevPrevToken ]['code'] ) { // Contains a variable.
+				if ( T_STRING === $this->tokens[ $prevPrevToken ]['code'] ) { // Contains a variable, function call or something else dynamic.
 					$message = 'Any HTML used with `%s` gets executed. Make sure it\'s properly escaped.';
 					$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 					$this->phpcsFile->addWarning( $message, $stackPtr, $this->tokens[ $stackPtr ]['content'], $data );
