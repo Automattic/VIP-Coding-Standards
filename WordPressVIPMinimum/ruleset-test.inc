@@ -604,15 +604,12 @@ function foo() {
 	$c = compact( $a, $b ); // Warning x 2.
 }
 
-// WordPressVIPMinimum.VersionControl.MergeConflict
-function is_prime( $n ) {
-	if ( 2 === $n  ) {
-	}
-//phpcs:ignore Generic.PHP.Syntax.PHPSyntax
-======= // Error.
-	if ( $n % 2 === 0 ) {
-	}
-}
+// Generic.VersionControl.GitMergeConflict
+?>
+<<<<<<< HEAD // Error.
+
+>>>>>>> // Error.
+<?php
 
 // Squiz.WhiteSpace.SuperfluousWhitespace
 // Error. ?>
