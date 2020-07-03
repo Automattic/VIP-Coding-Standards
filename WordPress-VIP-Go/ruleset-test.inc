@@ -353,7 +353,7 @@ opcache_compile_file( $test_script ); // Error.
 opcache_​is_​script_​cached( 'test_script.php' ); // Error.
 opcache_​get_​status(); // Error.
 opcache_​get_​configuration(); // Error.
-get_super_admins(); // Error.
+get_super_admins(); // OK.
 wpcom_vip_irc(); // Error.
 flush_rewrite_rules(); // Error.
 $wp_rewrite->flush_rules(); // Error.
