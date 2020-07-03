@@ -42,6 +42,7 @@
 		</properties>
 	</rule>
 
+	<rule ref="Generic.VersionControl.GitMergeConflict"/>
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
 	<!-- Covers rule: Omitting the closing PHP tag at the end of a file is preferred. -->

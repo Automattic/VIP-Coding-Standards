@@ -567,12 +567,8 @@ $_SERVER['HTTP_X_FORWARDED_FOR']; // Error.
 $_SERVER["REMOTE_ADDR"]; // Error.
 // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-// WordPressVIPMinimum.VersionControl.MergeConflict
-function is_prime( $n ) {
-	if ( 2 === $n  ) {
-	}
-//phpcs:ignore Generic.PHP.Syntax.PHPSyntax
-======= // Error.
-	if ( $n % 2 === 0 ) {
-	}
-}
+// Generic.VersionControl.GitMergeConflict
+?>
+<<<<<<< HEAD // Error.
+
+>>>>>>> // Error.
