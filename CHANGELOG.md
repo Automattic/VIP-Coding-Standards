@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2020-07-07
+
+Bumps requirements to PHPCS 3.5.5+ and WPCS 2.3.0+.
+
+### Added
+
+- `get_page_by_path()` restricted function warning, to suggest `wpcom_vip_get_page_by_path()` function.
+- `stats_get_csv()` restricted function error, since this is a Jetpack-only function.
+- Expanded list of HTMLExecutingFunctions to include `after`, `appendTo`, `before`, `insertAfter`, `insertBefore`, `prepend`, `prependTo`, `replaceAll` and `replaceWith`.
+- Support PHP 5.4+ (down from 5.6+).
+- PHP 8 nightly testing.
+
+### Changed
+
+- Expand message for `wp_remote_get()` usage.
+- Downgrade `append()` usage violation from Error to Warning for VIP Go, to be consistent with the other HTMLExecutingFunctions.
+- Downgrade AdminBarRemoval sniff from Error to Warning for VIP Go.
+- Add `get_parent_theme_file_path()` to safelist of path functions for `WordPressVIPMinimum.Files.IncludingFile` sniff.
+- Allow short array syntax and fix tests within the VIPCS own coding standards.
+- Update issue templates.
+
+### Fixed
+
+- Use new `WordPress.DateTime.RestrictedFunctions` sniff instead of deprecated `WordPress.WP.TimezoneChange`.
+- Fixed warnings and information items in Travis.
+
+### Removed
+
+- `get_super_admins()` restricted function rule for VIP Go.
+- `WordPressVIPMinimum.VersionControl.MergeConflict` sniff in favour of `Generic.VersionControl.GitMergeConflict`.
+
 ## [2.0.0] - 2019-07-12
 
 This release switches from having WPCS `1.*` as a dependency, to WPCS `2.*`. It is not compatible with WPCS `1.*`.
@@ -367,5 +398,6 @@ This release contains breaking changes.
  - `wpcom_vip_get_page_by_path` from `WordPressVIPMinimum.VIP.RestrictedFunctions`
  - Version check for PHP 7 or less in `WordPressVIPMinimum.Variables.VariableAnalysis` unit test since tests are not failing anymore.
 
+[2.1.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/1.0.0...2.0.0
 [1.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/0.4.0...1.0.0
