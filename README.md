@@ -15,6 +15,7 @@ Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why 
 
 ## Minimal requirements
 
+* PHP 5.4+
 * [PHPCS 3.3.1+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
 * [WPCS 2.*](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
 
