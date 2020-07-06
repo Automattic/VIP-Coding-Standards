@@ -11,7 +11,7 @@ assignees: GaryJones, rebeccahum
 
 Please do add approvals if you agree.
 
-PR for tracking changes for the 2.1.0 release. Target release date: Tuesday July 7.
+PR for tracking changes for the 2.x.y release. Target release date: DOW DD MMMM.
 
 - [ ] Add changelog for this release.
 - [ ] Merge this PR.
