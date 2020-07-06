@@ -1,6 +1,6 @@
 language: php
 os: linux
-dist: xenial
+dist: trusty
 
 env:
   # `master` is now 3.x.
@@ -13,6 +13,8 @@ cache:
     - $HOME/.cache/composer/files
 
 php:
+  - 5.4
+  - 5.5
   - 5.6
   - 7.0
   - 7.1
@@ -36,7 +38,7 @@ jobs:
   include:
 
     - stage: lint
-      php: 7.3
+      php: 7.4
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
       install: skip
@@ -59,7 +61,7 @@ jobs:
             - libxml2-utils
 
     - stage: sniff
-      php: 7.3
+      php: 7.4
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
       install: composer install --dev --no-suggest
