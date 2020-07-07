@@ -15,8 +15,9 @@ Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why 
 
 ## Minimal requirements
 
-* [PHPCS 3.3.1+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
-* [WPCS 2.*](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
+* PHP 5.4+
+* [PHPCS 3.5.5+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
+* [WPCS 2.3.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
 
 ## Installation
 
@@ -31,7 +32,7 @@ We recommend the [PHP_CodeSniffer Standards Composer Installer Plugin](https://g
 
 Alternatively, you should register the standard to PHPCS by appending the VIPCS directory to the end of the installed paths. e.g.
 
-`phpcs --config-set installed_paths [/path/to/wpcsstandard],[path/to/vipcsstandard],etc`
+`phpcs --config-set installed_paths /path/to/wpcsstandard,path/to/vipcsstandard,etc.`
 
 ## Contribution
 

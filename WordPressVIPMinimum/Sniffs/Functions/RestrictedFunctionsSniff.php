@@ -268,6 +268,13 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'delete_site_option',
 				],
 			],
+			'stats_get_csv' => [
+				'type'      => 'error',
+				'message'   => 'Using `%s` outside of Jetpack context pollutes the stats_cache entry in the wp_options table. We recommend building a custom function instead.',
+				'functions' => [
+					'stats_get_csv',
+				],
+			],
 			'wp_mail' => [
 				'type'      => 'warning',
 				'message'   => '`%s` should be used sparingly. For any bulk emailing should be handled by a 3rd party service, in order to prevent domain or IP addresses being flagged as spam.',
@@ -295,7 +302,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			// @link VIP Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#remote-calls
 			'wp_remote_get' => [
 				'type'      => 'warning',
-				'message'   => '%s() is highly discouraged, please use vip_safe_wp_remote_get() instead.',
+				'message'   => '%s() is highly discouraged. Please use vip_safe_wp_remote_get() instead which is designed to more gracefully handle failure than wp_remote_get() does.',
 				'functions' => [
 					'wp_remote_get',
 				],
@@ -324,6 +331,13 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'message'   => '%s() is highly discouraged, as it can execute arbritary code (additionally, it\'s deprecated as of PHP 7.2): https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#eval-and-create_function. )',
 				'functions' => [
 					'create_function',
+				],
+			],
+			'get_page_by_path' => [
+				'type'      => 'warning',
+				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_get_page_by_path() instead.',
+				'functions' => [
+					'get_page_by_path',
 				],
 			],
 		];

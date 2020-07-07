@@ -1,6 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
@@ -50,3 +53,4 @@ Use `php -v` and `composer show` to get versions.
 ## Tested Against `master` branch?
 
 - [ ] I have verified the issue still exists in the `master` branch of VIPCS.
+- [ ] I have verified the issue still exists in the `develop` branch of VIPCS.

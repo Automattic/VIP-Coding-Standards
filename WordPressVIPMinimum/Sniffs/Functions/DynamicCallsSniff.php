@@ -106,9 +106,7 @@ class DynamicCallsSniff extends Sniff {
 			return;
 		}
 
-		$current_var_name = $this->tokens[
-			$this->stackPtr
-		]['content'];
+		$current_var_name = $this->tokens[ $this->stackPtr ]['content'];
 
 		/*
 		 * Find assignments ( $foo = "bar"; )
@@ -202,9 +200,7 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if ( ! isset(
-			$this->variables_arr[
-				$this->tokens[ $this->stackPtr ]['content']
-			]
+			$this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ]
 		) ) {
 			return;
 		}
@@ -220,16 +216,12 @@ class DynamicCallsSniff extends Sniff {
 			$i++;
 		} while (
 			'T_WHITESPACE' ===
-				$this->tokens[
-					$this->stackPtr + $i
-				]['type']
+				$this->tokens[ $this->stackPtr + $i ]['type']
 		);
 
 		if (
 			'T_OPEN_PARENTHESIS' !==
-				$this->tokens[
-					$this->stackPtr + $i
-				]['type']
+				$this->tokens[ $this->stackPtr + $i ]['type']
 		) {
 			return;
 		}
@@ -242,9 +234,7 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if ( ! in_array(
-			$this->variables_arr[
-				$this->tokens[ $this->stackPtr ]['content']
-			],
+			$this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ],
 			$this->blacklisted_functions,
 			true
 		) ) {

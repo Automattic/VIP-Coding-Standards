@@ -41,7 +41,7 @@ $args = array(
 _query_posts( 'posts_per_page=999' ); // Warning.
 $query_args['posts_per_page'] = 999; // Warning.
 
-// WordPress.WP.TimezoneChange
+// WordPress.DateTime.RestrictedFunctions
 date_default_timezone_set( 'FooBar' ); // Error.
 
 // WordPress.DB.PreparedSQL
@@ -180,7 +180,7 @@ $output = shell_exec( 'ls -lart' ); // Error.
 var_dump(); // Warning.
 var_export(); // Warning.
 print_r(); // Warning.
-trigger_error(); // Warning.
+// trigger_error(); // Warning.
 set_error_handler(); // Warning.
 debug_backtrace(); // Warning.
 debug_print_backtrace(); // Warning.
@@ -508,7 +508,7 @@ $query_args = array(
 // WordPressVIPMinimum.Security.EscapingVoidReturnFunctions.Found
 esc_js( _deprecated_argument() ); // Error.
 esc_js( _deprecated_constructor() ); // Error.
-esc_js( _deprecated_file() ); // Error.
+// esc_js( _deprecated_file() ); // Error.
 esc_js( _deprecated_function() ); // Error.
 esc_js( _deprecated_hook() ); // Error.
 esc_js( _doing_it_wrong() ); // Error.
@@ -604,15 +604,12 @@ function foo() {
 	$c = compact( $a, $b ); // Warning x 2.
 }
 
-// WordPressVIPMinimum.VersionControl.MergeConflict
-function is_prime( $n ) {
-	if ( 2 === $n  ) {
-	}
-//phpcs:ignore Generic.PHP.Syntax.PHPSyntax
-======= // Error.
-	if ( $n % 2 === 0 ) {
-	}
-}
+// Generic.VersionControl.GitMergeConflict
+?>
+<<<<<<< HEAD // Error.
+
+>>>>>>> // Error.
+<?php
 
 // Squiz.WhiteSpace.SuperfluousWhitespace
 // Error. ?>

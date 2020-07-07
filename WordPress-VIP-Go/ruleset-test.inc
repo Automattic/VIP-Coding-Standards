@@ -218,11 +218,11 @@ function foo_bar_foo() {
 }
 
 // WordPressVIPMinimum.UserExperience.AdminBarRemoval
-add_filter( 'show_admin_bar', '__return_false' ); // Error.
+add_filter( 'show_admin_bar', '__return_false' ); // Warning.
 add_filter( 'show_admin_bar', '__return_true' ); // Ok.
-show_admin_bar( false ); // Error.
+show_admin_bar( false ); // Warning.
 show_admin_bar( true ); // Ok.
-add_filter( 'show_admin_bar', 'my_own_return_false' ); // Error.
+add_filter( 'show_admin_bar', 'my_own_return_false' ); // Warning.
 echo '<style type="text/css">
 #wpadminbar {
 	visibility: hidden; /* Error. */
@@ -232,9 +232,9 @@ echo '<style type="text/css">
 </style>';
 ?> <style type="text/css">
 #wpadminbar {
-	visibility: hidden; /* Error. */
-	display: none; /* Error. */
-	opacity: 0; /* Error. */
+	visibility: hidden; /* Warning. */
+	display: none; /* Warning. */
+	opacity: 0; /* Warning. */
 }
 #not-wpadminbar {
 	visibility: hidden; /* OK. */
@@ -242,9 +242,9 @@ echo '<style type="text/css">
 	opacity: 0; /* OK. */
 }
 .show-admin-bar {
-	visibility: hidden; /* Error. */
-	display: none; /* Error. */
-	opacity: 0; /* Error. */
+	visibility: hidden; /* Warning. */
+	display: none; /* Warning. */
+	opacity: 0; /* Warning. */
 }
 </style> <?php
 
@@ -353,7 +353,7 @@ opcache_compile_file( $test_script ); // Error.
 opcache_​is_​script_​cached( 'test_script.php' ); // Error.
 opcache_​get_​status(); // Error.
 opcache_​get_​configuration(); // Error.
-get_super_admins(); // Error.
+get_super_admins(); // OK.
 wpcom_vip_irc(); // Error.
 flush_rewrite_rules(); // Error.
 $wp_rewrite->flush_rules(); // Error.
@@ -510,7 +510,7 @@ $query_args = array(
 // WordPressVIPMinimum.Security.EscapingVoidReturnFunctions.Found
 esc_js( _deprecated_argument() ); // Error.
 esc_js( _deprecated_constructor() ); // Error.
-esc_js( _deprecated_file() ); // Error.
+// esc_js( _deprecated_file() ); // Error.
 esc_js( _deprecated_function() ); // Error.
 esc_js( _deprecated_hook() ); // Error.
 esc_js( _doing_it_wrong() ); // Error.
@@ -567,12 +567,8 @@ $_SERVER['HTTP_X_FORWARDED_FOR']; // Error.
 $_SERVER["REMOTE_ADDR"]; // Error.
 // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-// WordPressVIPMinimum.VersionControl.MergeConflict
-function is_prime( $n ) {
-	if ( 2 === $n  ) {
-	}
-//phpcs:ignore Generic.PHP.Syntax.PHPSyntax
-======= // Error.
-	if ( $n % 2 === 0 ) {
-	}
-}
+// Generic.VersionControl.GitMergeConflict
+?>
+<<<<<<< HEAD // Error.
+
+>>>>>>> // Error.

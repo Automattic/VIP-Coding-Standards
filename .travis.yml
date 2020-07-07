@@ -1,42 +1,27 @@
-dist: xenial
-
-cache:
-  directories:
-    - $HOME/.cache/composer/files
-
-language:
-  - php
-
-before_install:
-  # Speed up build time by disabling Xdebug.
-  # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
-  # https://twitter.com/kelunik/status/954242454676475904
-  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-
-install:
-  - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --update-no-dev --no-suggest --no-scripts
-  - composer install --dev --no-suggest
-
-script:
-  # Run the unit tests.
-  - ./bin/unit-tests
-
-  # Run ruleset tests.
-  - ./bin/ruleset-tests
+language: php
+os: linux
+dist: trusty
 
 env:
   # `master` is now 3.x.
   - PHPCS_BRANCH="dev-master"
   # Lowest supported release in the 3.x series with which VIPCS is compatible.
-  - PHPCS_BRANCH="3.3.1"
+  - PHPCS_BRANCH="3.5.5"
+
+cache:
+  directories:
+    - $HOME/.cache/composer/files
 
 php:
+  - 5.4
+  - 5.5
   - 5.6
   - 7.0
   - 7.1
   - 7.2
   - 7.3
-  - "7.4snapshot"
+  - 7.4
+  - "nightly"
 
 # Rather than a `matrix` property, we use build stages. This allows early
 # build failure for basic linting and sniffing issues.
@@ -49,15 +34,15 @@ stages:
 
 jobs:
   allow_failures:
-    - php: "7.4snapshot"
+    - php: "nightly"
   include:
 
     - stage: lint
-      php: 7.3
+      php: 7.4
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-      install: false
-      cache: false
+      install: skip
+      cache: skip
       script:
         # Lint the PHP files against parse errors.
         - ./bin/php-lint
@@ -76,12 +61,42 @@ jobs:
             - libxml2-utils
 
     - stage: sniff
-      php: 7.3
+      php: 7.4
       env: PHPCS_BRANCH="dev-master"
       before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-      install: composer install --dev --no-suggest
+      install: composer install --no-suggest
       script:
         # Run PHPCS against VIPCS.
         - ./bin/phpcs
 
 
+before_install:
+  # Speed up build time by disabling Xdebug.
+  # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
+  # https://twitter.com/kelunik/status/954242454676475904
+  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+
+  # On stable PHPCS versions, allow for PHP deprecation notices.
+  # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" && $PHPCS_BRANCH != "dev-master" ]]; then
+      echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    fi
+
+install:
+  - composer require squizlabs/php_codesniffer:"$PHPCS_BRANCH" --no-update --no-suggest --no-scripts
+  - |
+    if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+        # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
+        # requirements to get PHPUnit 7.x to install on nightly.
+        composer install --ignore-platform-reqs --no-suggest
+    else
+      composer install --no-suggest
+    fi
+
+script:
+  # Run the unit tests.
+  - ./bin/unit-tests
+
+  # Run ruleset tests.
+  - ./bin/ruleset-tests

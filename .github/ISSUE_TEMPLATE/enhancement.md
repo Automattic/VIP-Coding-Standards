@@ -1,6 +1,9 @@
 ---
 name: Enhancement
 about: Suggest an improvement for this project
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
