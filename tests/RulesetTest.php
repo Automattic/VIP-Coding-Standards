@@ -68,6 +68,13 @@ class RulesetTest {
 	private $ruleset;
 
 	/**
+	 * Path to the PHPCS executable.
+	 *
+	 * @var string
+	 */
+	private $phpcs_bin = 'phpcs';
+
+	/**
 	 * String returned by PHP_CodeSniffer report for an Error.
 	 */
 	const ERROR_TYPE = 'ERROR';
@@ -82,17 +89,20 @@ class RulesetTest {
 		$this->ruleset  = $ruleset;
 		$this->expected = $expected;
 
-		// Travis support.
-		if ( false === getenv( 'PHPCS_BIN' ) ) {
+		// Travis and Windows support.
+		$phpcs_bin = getenv( 'PHPCS_BIN' );
+		if ( false === $phpcs_bin ) {
 			// phpcs:ignore
 			putenv( 'PHPCS_BIN=phpcs' );
+		} else {
+			$this->phpcs_bin = realpath( $phpcs_bin );
 		}
 
 		$output = $this->collect_phpcs_result();
 
 		if ( ! is_object( $output ) || empty( $output ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			printf( 'The PHPCS command checking the ruleset haven\'t returned any issues. Bailing ...' . PHP_EOL );
+			printf( 'The PHPCS command checking the ruleset hasn\'t returned any issues. Bailing ...' . PHP_EOL );
 			exit( 1 ); // Die early, if we don't have any output.
 		}
 
@@ -128,7 +138,7 @@ class RulesetTest {
 	 * @return array Returns an associative array with keys of `totals` and `files`.
 	 */
 	private function collect_phpcs_result() {
-		$shell = sprintf( '$PHPCS_BIN --severity=1 --standard=%1$s --report=json ./%1$s/ruleset-test.inc', $this->ruleset );
+		$shell = sprintf( '%1$s --severity=1 --standard=%2$s --report=json ./%2$s/ruleset-test.inc', $this->phpcs_bin, $this->ruleset );
 		// phpcs:ignore
 		$output = shell_exec( $shell );
 
