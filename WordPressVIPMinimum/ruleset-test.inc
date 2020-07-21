@@ -2,9 +2,9 @@
 
 
 <?php // Error - Squiz.WhiteSpace.SuperfluousWhitespace.
-$hello = ''; $posts_not_in = ''; $listofthings = ''; $cachedlistofthings = ''; $title = ''; $ch = ''; $thing = ''; $descriptorspec = ''; $pipes = ''; $cwd = ''; $env = ''; $page_title = ''; $menu_title = ''; $capability = ''; $function = ''; $icon_url = ''; $position = ''; $wpdb = ''; $file = ''; $fp = ''; $dir = ''; $test = ''; $post = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $query = ''; $page_title = ''; $true = true; $some_nasty_var = ''; $data = ''; $group = ''; $testing = ''; $this = new stdClass(); $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $a = ''; $b = ''; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
+$hello = ''; $posts_not_in = ''; $listofthings = ''; $cachedlistofthings = ''; $title = ''; $ch = ''; $thing = ''; $descriptorspec = ''; $pipes = ''; $cwd = ''; $env = ''; $page_title = ''; $menu_title = ''; $capability = ''; $function = ''; $icon_url = ''; $position = ''; $wpdb = ''; $file = ''; $fp = ''; $dir = ''; $test = ''; $post = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $query = ''; $page_title = ''; $true = true; $some_nasty_var = ''; $data = ''; $group = ''; $testing = ''; $stdClass = new stdClass(); $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $a = ''; $b = ''; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
 // Generic.PHP.Syntax
-while { // Error.
+foreach() { // Error.
 }
 
 // Generic.PHP.NoSilencedErrors
@@ -486,12 +486,12 @@ $query_args = [
 ];
 
 // WordPressVIPMinimum.Performance.RemoteRequestTimeout
-wp_remote_post( $this->endpoint, array(
+wp_remote_post( $stdClass->endpoint, array(
         'method'      => 'POST',
         'timeout'     => 45, // Error.
         'httpversion' => '1.1',
         'blocking'    => false,
-        'body'        => wp_json_encode( $this->logs, JSON_UNESCAPED_SLASHES ),
+        'body'        => wp_json_encode( $stdClass->logs, JSON_UNESCAPED_SLASHES ),
     )
 );
 
