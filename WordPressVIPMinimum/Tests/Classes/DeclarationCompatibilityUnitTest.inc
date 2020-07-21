@@ -127,4 +127,13 @@ class MyWalker extends Walker {
 
 	function unset_children( $el, $children_elements ) {
 	} // Bad. $children_elements should be passed by reference
+	
+	function walk( $elements, $max_depth, ...$args ) {
+	} // Ok.
+	
+	function paged_walk( $elements, $max_depth, $page_num, $per_page ) {
+	} // Bad. Missing $args.
+
+	function paged_walk( $elements, $max_depth, $page_num, $per_page, $args ) {
+	} // Bad. $args is not variadic.
 }

@@ -148,12 +148,18 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			'walk'                        => [
 				'elements',
 				'max_depth',
+				'args' => [
+					'variable_length' => true,
+				],
 			],
 			'paged_walk'                  => [
 				'elements',
 				'max_depth',
 				'page_num',
 				'per_page',
+				'args' => [
+					'variable_length' => true,
+				],
 			],
 			'get_number_of_root_elements' => [
 				'elements',
@@ -276,6 +282,9 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					) || (
 						true === array_key_exists( 'pass_by_reference', $param ) &&
 						$param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
+					) || (
+						true === array_key_exists( 'variable_length', $param ) &&
+						$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
 					)
 				) {
 					$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
@@ -329,6 +338,10 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				$paramName = $options['name'];
 			} else {
 				$paramName .= $param;
+			}
+
+			if ( true === array_key_exists( 'variable_length', $options ) && true === $options['variable_length'] ) {
+				$paramName = '...' . $paramName;
 			}
 
 			if ( true === array_key_exists( 'pass_by_reference', $options ) && true === $options['pass_by_reference'] ) {
