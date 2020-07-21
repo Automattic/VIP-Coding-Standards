@@ -36,7 +36,7 @@ Alternatively, you should register the standard to PHPCS by appending the VIPCS 
 
 ## Contribution
 
-Please see [CONTRIBUTION.md](CONTRIBUTING.md).
+Please see [CONTRIBUTION.md](.github/CONTRIBUTING.md).
 
 ## License
 
