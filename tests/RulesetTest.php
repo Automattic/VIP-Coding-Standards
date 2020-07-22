@@ -138,7 +138,17 @@ class RulesetTest {
 	 * @return array Returns an associative array with keys of `totals` and `files`.
 	 */
 	private function collect_phpcs_result() {
-		$shell = sprintf( '%1$s --severity=1 --standard=%2$s --report=json ./%2$s/ruleset-test.inc', $this->phpcs_bin, $this->ruleset );
+		$php = '';
+		if ( \PHP_BINARY && in_array( \PHP_SAPI, [ 'cgi-fcgi', 'cli', 'cli-server', 'phpdbg' ], true ) ) {
+			$php = \PHP_BINARY . ' ';
+		}
+
+		$shell = sprintf(
+			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
+			$php, // Current PHP executable if avaiable.
+			$this->phpcs_bin,
+			$this->ruleset
+		);
 		// phpcs:ignore
 		$output = shell_exec( $shell );
 
