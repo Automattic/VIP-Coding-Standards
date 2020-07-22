@@ -230,6 +230,10 @@ class RulesetTest {
 			}
 
 			foreach ( $lines as $line_number => $expected_count_of_type_violations ) {
+				if ( 0 === $expected_count_of_type_violations ) {
+					continue;
+				}
+
 				if ( ! isset( $this->{$type}[ $line_number ] ) ) {
 					$this->error_warning_message( $expected_count_of_type_violations, $type, 0, $line_number );
 				} elseif ( $this->{$type}[ $line_number ] !== $expected_count_of_type_violations ) {
@@ -247,6 +251,10 @@ class RulesetTest {
 	private function check_unexpected_values() {
 		foreach ( [ 'errors', 'warnings' ] as $type ) {
 			foreach ( $this->$type as $line_number => $actual_count_of_type_violations ) {
+				if ( 0 === $actual_count_of_type_violations ) {
+					continue;
+				}
+
 				if ( ! isset( $this->expected[ $type ][ $line_number ] ) ) {
 					$this->error_warning_message( 0, $type, $actual_count_of_type_violations, $line_number );
 				} elseif ( $actual_count_of_type_violations !== $this->expected[ $type ][ $line_number ] ) {

@@ -17,5 +17,4 @@
 PHPCS_BIN="$(pwd)/vendor/bin/phpcs"
 export PHPCS_BIN
 
-php ./WordPressVIPMinimum/ruleset-test.php
-php ./WordPress-VIP-Go/ruleset-test.php
+php ./WordPressVIPMinimum/ruleset-test.php && php ./WordPress-VIP-Go/ruleset-test.php
