@@ -510,7 +510,7 @@ $query_args = array(
 // WordPressVIPMinimum.Security.EscapingVoidReturnFunctions.Found
 esc_js( _deprecated_argument() ); // Error.
 esc_js( _deprecated_constructor() ); // Error.
-// esc_js( _deprecated_file() ); // Error.
+esc_js( _deprecated_file( 'filename' ) ); // Error.
 esc_js( _deprecated_function() ); // Error.
 esc_js( _deprecated_hook() ); // Error.
 esc_js( _doing_it_wrong() ); // Error.
