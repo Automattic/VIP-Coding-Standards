@@ -5,7 +5,7 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-namespace WordPress\Tests\Variables;
+namespace WordPressVIPMinimum\Tests\Variables;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
