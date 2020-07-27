@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Run the unit tests with code coverage.
+#
+# This ensures that the logic in the VIP sniffs is covered by unit tests.
+#
+# EXAMPLE TO RUN LOCALLY:
+#
+#   ./bin/unit-tests-coverage
+#
+
+"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php"

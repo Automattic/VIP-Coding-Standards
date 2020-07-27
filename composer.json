@@ -38,6 +38,7 @@
 		],
 		"phpcs": "bin/phpcs",
 		"phpunit": "bin/unit-tests",
+		"coverage": "bin/unit-tests-coverage",
 		"test": [
 			"@lint",
 			"@ruleset",
