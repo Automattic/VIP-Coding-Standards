@@ -398,6 +398,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					\T_AS              => \T_AS, // Use declaration alias.
 					\T_DOUBLE_COLON    => \T_DOUBLE_COLON,
 					\T_OBJECT_OPERATOR => \T_OBJECT_OPERATOR,
+					\T_NEW             => \T_NEW,
 				];
 				if ( isset( $skipped[ $this->tokens[ $prev ]['code'] ] ) ) {
 					return false;
