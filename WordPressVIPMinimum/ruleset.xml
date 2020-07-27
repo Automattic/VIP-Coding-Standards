@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPressVIPMinimum" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>WordPress VIP Minimum Coding Standards</description>
+
+	<!--
+		 Trigger error if PHPCSUtils cannot be found.
+		 PHPCSUtils does not contain any sniffs, so this rule isn't strictly necessary, but
+		 by having this here anyway, if PHPCSUtils is missing, the user will get a
+		 descriptive error message during the loading of the ruleset instead of
+		 a fatal "class not found" error once the sniffs start running.
+	-->
+	<rule ref="PHPCSUtils"/>
+
 	<rule ref="Generic.PHP.Syntax"/>
 	<rule ref="Generic.PHP.NoSilencedErrors">
 		<properties>
