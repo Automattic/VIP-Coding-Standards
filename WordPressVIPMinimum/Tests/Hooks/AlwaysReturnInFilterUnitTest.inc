@@ -137,3 +137,38 @@ function bad_example_arg( $test ) { // Error.
 	// Missing universal return.
 }
 add_filter( 'bad_example_filter', 'bad_example_arg' );
+
+class good_example_class_short_array { // Ok.
+	public function __construct() {
+		add_filter( 'good_example_class_filter', [ $this, 'class_filter' ] );
+	}
+
+	public function class_filter( $param ) {
+		if ( 1 === 1 ) {
+			if ( 1 === 0 ) {
+				return 'whoops';
+			} else {
+				return 'here!';
+			}
+		}
+		return 'This is Okay';
+	}
+}
+
+class bad_example_class_short_array { // Error.
+	public function __construct() {
+		add_filter( 'bad_example_class_filter', [ $this, 'class_filter' ] );
+	}
+
+	public function class_filter( $param ) {
+		if ( 1 === 1 ) {
+			if ( 1 === 0 ) {
+				return 'whoops';
+			} else {
+				return 'here!';
+			}
+		}
+		// Missing universal return.
+	}
+}
+
