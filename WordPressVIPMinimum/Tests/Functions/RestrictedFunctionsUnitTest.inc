@@ -227,3 +227,6 @@ get_page_by_path( $page_path ); // Warning.
 
 $popular = stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] ); // Error.
 $popular = custom_stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] ); // Ok.
+
+$foo = new Link; // OK, class, not function.
+$foo = new Mail(); // OK, class, not function.
