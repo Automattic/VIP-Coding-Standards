@@ -13,24 +13,29 @@
  * @license gpl-2.0-or-later
  */
 
-if ( ! \defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
+if ( ! defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
 	define( 'PHP_CODESNIFFER_IN_TESTS', true );
 }
 
 $ds = DIRECTORY_SEPARATOR;
 
 // Get the PHPCS dir from an environment variable.
-$phpcsDir = getenv( 'PHPCS_DIR' );
+$phpcsDir          = getenv( 'PHPCS_DIR' );
+$composerPHPCSPath = dirname( __DIR__ ) . $ds . 'vendor' . $ds . 'squizlabs' . $ds . 'php_codesniffer';
 
 // This may be a Composer install.
-if ( false === $phpcsDir && is_dir( dirname( __DIR__ ) . $ds . 'vendor' . $ds . 'squizlabs' . $ds . 'php_codesniffer' ) ) {
-	$phpcsDir = dirname( __DIR__ ) . $ds . 'vendor' . $ds . 'squizlabs' . $ds . 'php_codesniffer';
+if ( false === $phpcsDir && is_dir( $composerPHPCSPath ) ) {
+	$phpcsDir = $composerPHPCSPath;
 } elseif ( false !== $phpcsDir ) {
+	// PHPCS in a custom directory.
 	$phpcsDir = realpath( $phpcsDir );
 }
 
 // Try and load the PHPCS autoloader.
-if ( false !== $phpcsDir && file_exists( $phpcsDir . $ds . 'autoload.php' ) ) {
+if ( false !== $phpcsDir
+	&& file_exists( $phpcsDir . $ds . 'autoload.php' )
+	&& file_exists( $phpcsDir . $ds . 'tests' . $ds . 'bootstrap.php' )
+) {
 	require_once $phpcsDir . $ds . 'autoload.php';
 
 	/*
@@ -39,17 +44,42 @@ if ( false !== $phpcsDir && file_exists( $phpcsDir . $ds . 'autoload.php' ) ) {
 	 */
 	require_once $phpcsDir . $ds . 'tests' . $ds . 'bootstrap.php';
 } else {
-	echo 'Uh oh... can\'t find PHPCS. Are you sure you are using PHPCS 3.x ?
+	echo 'Uh oh... can\'t find PHPCS.
 
 If you use Composer, please run `composer install`.
 Otherwise, make sure you set a `PHPCS_DIR` environment variable in your phpunit.xml file
 pointing to the PHPCS directory.
 
 Please read the contributors guidelines for more information:
-https://is.gd/contributing2WPCS
+https://github.com/Automattic/VIP-Coding-Standards/blob/develop/.github/CONTRIBUTING.md
 ';
 
 	die( 1 );
 }
 
-unset( $ds, $phpcsDir );
+/*
+ * Set the PHPCS_IGNORE_TEST environment variable to ignore tests from other standards.
+ */
+$vipcsStandards = [
+	'WordPressVIPMinimum' => true,
+];
+
+$allStandards   = PHP_CodeSniffer\Util\Standards::getInstalledStandards();
+$allStandards[] = 'Generic';
+
+$standardsToIgnore = [];
+foreach ( $allStandards as $standard ) {
+	if ( isset( $vipcsStandards[ $standard ] ) === true ) {
+		continue;
+	}
+
+	$standardsToIgnore[] = $standard;
+}
+
+$standardsToIgnoreString = implode( ',', $standardsToIgnore );
+
+// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv -- This is test code, not production.
+putenv( "PHPCS_IGNORE_TESTS={$standardsToIgnoreString}" );
+
+// Clean up.
+unset( $ds, $phpcsDir, $composerPHPCSPath, $allStandards, $standardsToIgnore, $standard, $standardsToIgnoreString );
