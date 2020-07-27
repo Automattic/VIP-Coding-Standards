@@ -54,6 +54,18 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	];
 
 	/**
+	 * List of random generating number functions.
+	 *
+	 * @var array
+	 */
+	protected $rand_functions = [
+		'wp_rand',
+		'random_int',
+		'mt_rand',
+		'rand',
+	];
+
+	/**
 	 * Process the parameters of a matched function.
 	 *
 	 * @param int    $stackPtr        The position of the current token in the stack.
@@ -69,21 +81,34 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$time = $parameters[4]['raw'];
+		// If using time constants, we need to convert to a number.
+		$time = str_replace( array_keys( $this->wp_time_constants ), $this->wp_time_constants, $parameters[4]['raw'] );
 
-		if ( false === is_numeric( $time ) ) {
-			// If using time constants, we need to convert to a number.
-			$time = str_replace( array_keys( $this->wp_time_constants ), $this->wp_time_constants, $time );
-
-			if ( preg_match( '#^[\s\d+*/-]+$#', $time ) > 0 ) {
-				$time = eval( "return $time;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
+		$rand_function = false;
+		foreach ( $this->rand_functions as $fn ) {
+			if ( false !== strpos( $time, $fn ) ) {
+				$rand_function = $fn;
+				break;
 			}
 		}
 
-		if ( $time < 300 ) {
-			$message = 'Low cache expiry time of "%s", it is recommended to have 300 seconds or more.';
-			$data    = [ $parameters[4]['raw'] ];
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'LowCacheTime', $data );
+		$times = [];
+		if ( false !== $rand_function ) {
+			$times = explode( ',', preg_replace( '/[( )|\(|\)|(' . $rand_function . ')]/', '', $time ) );
+		} else {
+			$times[] = $time;
+		}
+
+		foreach ( $times as $time ) {
+			if ( preg_match( '#^[\s\d+*\/-]+$#', $time ) > 0 ) {
+				$time = eval( "return $time;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
+			}
+			if ( $time < 300 || is_null( $time ) ) {
+				$message = 'Low cache expiry time of "%s", it is recommended to have 300 seconds or more.';
+				$data    = [ $parameters[4]['raw'] ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'LowCacheTime', $data );
+				return;
+			}
 		}
 	}
 }
