@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the CheckReturnValue sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Compatibility\ZoninatorSniff
  */
 class ZoninatorUnitTest extends AbstractSniffUnitTest {
 

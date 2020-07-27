@@ -12,6 +12,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the Hooks/AlwaysReturn sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Hooks\AlwaysReturnInFilterSniff
  */
 class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 

@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the RemoteRequestTimeout sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\RemoteRequestTimeoutSniff
  */
 class RemoteRequestTimeoutUnitTest extends AbstractSniffUnitTest {
 

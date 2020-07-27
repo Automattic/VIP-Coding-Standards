@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the WP_Query params sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Security\PHPFilterFunctionsSniff
  */
 class PHPFilterFunctionsUnitTest extends AbstractSniffUnitTest {
 

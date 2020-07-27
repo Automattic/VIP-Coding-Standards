@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the DynamicCalls sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Functions\DynamicCallsSniff
  */
 class DynamicCallsUnitTest extends AbstractSniffUnitTest {
 

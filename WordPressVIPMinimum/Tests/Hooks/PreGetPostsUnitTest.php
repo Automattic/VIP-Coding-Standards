@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the PreGetPosts sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Hooks\PreGetPostsSniff
  */
 class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 

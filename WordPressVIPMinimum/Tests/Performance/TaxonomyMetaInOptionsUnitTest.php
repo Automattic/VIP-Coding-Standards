@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the TaxonomyMetaInOptions sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\TaxonomyMetaInOptionsSniff
  */
 class TaxonomyMetaInOptionsUnitTest extends AbstractSniffUnitTest {
 

@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the HTML String concatenation in JS sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\JS\WindowSniff
  */
 class WindowUnitTest extends AbstractSniffUnitTest {
 

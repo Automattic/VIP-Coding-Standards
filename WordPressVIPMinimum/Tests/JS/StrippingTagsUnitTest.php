@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for incorrect HTML tags stripping approach in JS sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\JS\StrippingTagsSniff
  */
 class StrippingTagsUnitTest extends AbstractSniffUnitTest {
 
