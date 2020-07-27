@@ -25,7 +25,6 @@ Sniffname starts with | Report to
 `VariableAnalysis` | [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis/issues/)
 `WordPress` | [WordPressCS](https://github.com/WordPress/WordPress-Coding-Standards/issues/)
 `WordPressVIPMinimum` | [VIPCS](https://github.com/Automattic/VIP-Coding-Standards/issues/) (this repo)
-`Generic`, `PSR2` or `Squiz` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
 
 ----
 
