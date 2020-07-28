@@ -106,3 +106,13 @@ class undefined_index_issue_499 {
 		$wp_query->set( 'cat', '-5' );
 	}
 }
+
+add_action('pre_get_posts', 'inline_control_structures', 10, 1);
+
+function inline_control_structures( $query ) {
+	if( !$query->is_main_query() && !is_front_page()) return;
+	if(is_single() || is_search() || is_archive()) return;
+
+	$query->set('meta_query', 'foo');
+	return $query;
+}

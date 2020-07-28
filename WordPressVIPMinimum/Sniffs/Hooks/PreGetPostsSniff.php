@@ -321,6 +321,18 @@ class PreGetPostsSniff extends Sniff {
 
 		$owner = $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'];
 		if ( isset( $this->tokens[ $owner ]['scope_opener'], $this->tokens[ $owner ]['scope_closer'] ) === false ) {
+			// This may be an inline control structure (no braces).
+			$next = $this->phpcsFile->findNext(
+				Tokens::$emptyTokens,
+				( $nestedParenthesisEnd + 1 ),
+				null,
+				true
+			);
+
+			if ( false !== $next && T_RETURN === $this->tokens[ $next ]['code'] ) {
+				return true;
+			}
+
 			return false;
 		}
 
