@@ -79,7 +79,9 @@ class PreGetPostsSniff extends Sniff {
 
 		if ( 'PHPCS_T_CLOSURE' === $this->tokens[ $callbackPtr ]['code'] ) {
 			$this->processClosure( $callbackPtr );
-		} elseif ( 'T_ARRAY' === $this->tokens[ $callbackPtr ]['type'] ) {
+		} elseif ( T_ARRAY === $this->tokens[ $callbackPtr ]['code']
+			|| T_OPEN_SHORT_ARRAY === $this->tokens[ $callbackPtr ]['code']
+		) {
 			$this->processArray( $callbackPtr );
 		} elseif ( true === in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
 			$this->processString( $callbackPtr );
@@ -93,9 +95,14 @@ class PreGetPostsSniff extends Sniff {
 	 */
 	private function processArray( $stackPtr ) {
 
+		$open_close = $this->find_array_open_close( $stackPtr );
+		if ( false === $open_close ) {
+			return;
+		}
+
 		$previous = $this->phpcsFile->findPrevious(
 			Tokens::$emptyTokens,
-			$this->tokens[ $stackPtr ]['parenthesis_closer'] - 1,
+			$open_close['closer'] - 1,
 			null,
 			true
 		);
