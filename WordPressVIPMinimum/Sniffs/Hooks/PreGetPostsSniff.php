@@ -304,9 +304,24 @@ class PreGetPostsSniff extends Sniff {
 			return false;
 		}
 
-		$nestedParenthesisEnd = array_shift( $this->tokens[ $stackPtr ]['nested_parenthesis'] );
-		if ( true === in_array( 'PHPCS_T_CLOSURE', $this->tokens[ $stackPtr ]['conditions'], true ) ) {
-			$nestedParenthesisEnd = array_shift( $this->tokens[ $stackPtr ]['nested_parenthesis'] );
+		$parentheses = $this->tokens[ $stackPtr ]['nested_parenthesis'];
+		do {
+			$nestedParenthesisEnd = array_shift( $parentheses );
+			if ( null === $nestedParenthesisEnd ) {
+				// Nothing left in the array. No parenthesis found with a non-closure owner.
+				return false;
+			}
+
+			if ( isset( $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] )
+				&& T_CLOSURE !== $this->tokens[ $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['code']
+			) {
+				break;
+			}
+		} while ( true );
+
+		$owner = $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'];
+		if ( isset( $this->tokens[ $owner ]['scope_opener'], $this->tokens[ $owner ]['scope_closer'] ) === false ) {
+			return false;
 		}
 
 		$next = $this->phpcsFile->findNext(

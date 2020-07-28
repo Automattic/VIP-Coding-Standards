@@ -90,3 +90,19 @@ add_action( 'pre_get_posts', function( $wp_query ) {
 	}
 
 } );
+
+class undefined_index_issue_499 {
+
+	public function __construct() {
+		add_action( 'pre_get_posts', array( $this, 'pre_get_posts_499' ) );
+	}
+
+	public function pre_get_posts_499( $wp_query ) {
+
+		if ( function() { return ( $wp_query->is_main_query() === false ) }() === false ) {
+			return;
+		}
+
+		$wp_query->set( 'cat', '-5' );
+	}
+}
