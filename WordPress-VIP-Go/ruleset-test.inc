@@ -350,9 +350,9 @@ wp_cache_get_multi(); // Error.
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error.
 opcache_compile_file( $var ); // Error.
-opcache_​is_​script_​cached( 'test_script.php' ); // Error.
-opcache_​get_​status(); // Error.
-opcache_​get_​configuration(); // Error.
+opcache_is_script_cached( 'test_script.php' ); // Error.
+opcache_get_status(); // Error.
+opcache_get_configuration(); // Error.
 get_super_admins(); // OK.
 wpcom_vip_irc(); // Error.
 flush_rewrite_rules(); // Error.
