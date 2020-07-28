@@ -21,17 +21,17 @@ wp_cache_get_multi(); // Error.
 opcache_resets(); // Ok - similarly-named custom function to opcache_reset().
 opcach_invalidate ( $test_script ); // Ok - similarly-named custom function to opcache_invalidate().
 opcache_compil_file(); // Ok - similarly-named custom function to opcache_compile_file().
-okcache_is_​script_​cached( 'test_script.php' ); // Ok - similarly-named custom function to opcache_is_script_cached().
+okcache_is_script_cached( 'test_script.php' ); // Ok - similarly-named custom function to opcache_is_script_cached().
 foo_opcache_get_status( $test_script ); // Ok - similarly-named custom function to opcache_get_status().
 opcache_get_config( $test_script ); // Ok - similary-named custom function to opcache_get_configuration().
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error - one parameter.
 opcache_invalidate( $test_script, true ); // Error - two parameters.
 opcache_compile_file( $test_script ); // Error - one parameter.
-opcache_​is_​script_​cached( 'test_script.php' ); // Error - one parameter.
-opcache_​get_​status(); // Error.
-opcache_​get_​status( false ); // Error.
-opcache_​get_​configuration(); // Error.
+opcache_is_script_cached( 'test_script.php' ); // Error - one parameter.
+opcache_get_status(); // Error.
+opcache_get_status( false ); // Error.
+opcache_get_configuration(); // Error.
 
 get_super_admin(); // Ok - similarly-named function to get_super_admins().
 get_super_admins(); // Error.

@@ -45,9 +45,9 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'type'      => 'error',
 				'message'   => '`%s` is not recommended for use on the WordPress VIP platform due to potential setting changes.',
 				'functions' => [
-					'opcache_​is_​script_​cached',
-					'opcache_​get_​status',
-					'opcache_​get_​configuration',
+					'opcache_is_script_cached',
+					'opcache_get_status',
+					'opcache_get_configuration',
 				],
 			],
 			'get_super_admins' => [
