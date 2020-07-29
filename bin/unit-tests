@@ -9,5 +9,11 @@
 #
 #   ./bin/unit-tests
 #
+# The script allows to pass additional PHPUnit CLI arguments.
+# For instance, if you only want to run the tests for one particular sniff,
+# use the following, replacing "SniffName" with the name of the target sniff:
+#
+#   ./bin/unit-tests --filter SniffName
+#
 
-"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php" --no-coverage
+"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php" --no-coverage $@
