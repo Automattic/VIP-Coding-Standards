@@ -116,3 +116,33 @@ function inline_control_structures( $query ) {
 	$query->set('meta_query', 'foo');
 	return $query;
 }
+
+class short_array_hook_in {
+
+	public function __construct() {
+		add_action( 'pre_get_posts', [ $this, 'short_pre_get_posts' ] );
+	}
+
+	public function short_pre_get_posts( $wp_query ) {
+
+		$wp_query->set( 'cat', '-5' );
+
+		if ( $wp_query->is_main_query() ) {
+			$wp_query->set( 'cat', '-5' );
+		} else if ( $wp_query->is_search() ) {
+			$wp_query->set( 'cat', '-5' );
+		}
+
+		if ( ( ! $wp_query->is_main_query() ) ) {
+			return;
+		}
+
+		$wp_query->set( 'cat', '-5' );
+
+		if ( $wp_query->is_main_query() ) {
+			$wp_query->set( 'cat', '-5' );
+		} else if ( $wp_query->is_search() ) {
+			$wp_query->set( 'cat', '-5' );
+		}
+	}
+}
