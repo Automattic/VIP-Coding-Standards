@@ -53,7 +53,7 @@ setcookie( 'cookie[three]', 'cookiethree' ); // Error + Message.
 $x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error + Message.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__
-if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) { // Error + Message.
+if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'some_value' ) { // Error + Message.
 }
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fclose
