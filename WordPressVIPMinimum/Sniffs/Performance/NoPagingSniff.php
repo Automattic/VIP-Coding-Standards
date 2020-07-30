@@ -51,7 +51,7 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		$key = strtolower( $key );
 
-		if ( 'nopaging' === $key && ( 'true' === $val || 1 === $val ) ) {
+		if ( $key === 'nopaging' && ( $val === 'true' || $val === 1 ) ) {
 			return 'Disabling pagination is prohibited in VIP context, do not set `%s` to `%s` ever.';
 		}
 

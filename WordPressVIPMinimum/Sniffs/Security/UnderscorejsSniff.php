@@ -47,13 +47,13 @@ class UnderscorejsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '<%=' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], '<%=' ) !== false ) {
 			// Underscore.js unescaped output.
 			$message = 'Found Underscore.js unescaped output notation: "<%=".';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );
 		}
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], 'interpolate' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'interpolate' ) !== false ) {
 			// Underscore.js unescaped output.
 			$message = 'Found Underscore.js delimiter change notation.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );

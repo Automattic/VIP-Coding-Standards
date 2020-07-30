@@ -47,19 +47,19 @@ class MustacheSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '{{{' ) || false !== strpos( $this->tokens[ $stackPtr ]['content'], '}}}' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], '{{{' ) !== false || strpos( $this->tokens[ $stackPtr ]['content'], '}}}' ) !== false ) {
 			// Mustache unescaped output notation.
 			$message = 'Found Mustache unescaped output notation: "{{{}}}".';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );
 		}
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '{{&' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], '{{&' ) !== false ) {
 			// Mustache unescaped variable notation.
 			$message = 'Found Mustache unescape variable notation: "{{&".';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'VariableNotation' );
 		}
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], '{{=' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], '{{=' ) !== false ) {
 			// Mustache delimiter change.
 			$new_delimiter = trim( str_replace( [ '{{=', '=}}' ], '', substr( $this->tokens[ $stackPtr ]['content'], 0, strpos( $this->tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) );
 			$message       = 'Found Mustache delimiter change notation. New delimiter is: %s.';
@@ -67,7 +67,7 @@ class MustacheSniff extends Sniff {
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'DelimiterChange', $data );
 		}
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], 'SafeString' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'SafeString' ) !== false ) {
 			// Handlebars.js Handlebars.SafeString does not get escaped.
 			$message = 'Found Handlebars.SafeString call which does not get escaped.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'SafeString' );

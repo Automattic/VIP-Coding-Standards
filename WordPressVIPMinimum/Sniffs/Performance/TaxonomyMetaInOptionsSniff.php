@@ -63,56 +63,56 @@ class TaxonomyMetaInOptionsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( false === in_array( $this->tokens[ $stackPtr ]['content'], $this->option_functions, true ) ) {
+		if ( in_array( $this->tokens[ $stackPtr ]['content'], $this->option_functions, true ) === false ) {
 			return;
 		}
 
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 			return;
 		}
 
 		$param_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $openBracket + 1, null, true );
 
-		if ( T_DOUBLE_QUOTED_STRING === $this->tokens[ $param_ptr ]['code'] ) {
+		if ( $this->tokens[ $param_ptr ]['code'] === T_DOUBLE_QUOTED_STRING ) {
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
-				if ( false !== strpos( $this->tokens[ $param_ptr ]['content'], $taxonomy_term_pattern ) ) {
+				if ( strpos( $this->tokens[ $param_ptr ]['content'], $taxonomy_term_pattern ) !== false ) {
 					$this->addPossibleTermMetaInOptionsWarning( $stackPtr );
 					return;
 				}
 			}
-		} elseif ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $param_ptr ]['code'] ) {
+		} elseif ( $this->tokens[ $param_ptr ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
 
 			$string_concat = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_ptr + 1, null, true );
-			if ( T_STRING_CONCAT !== $this->tokens[ $string_concat ]['code'] ) {
+			if ( $this->tokens[ $string_concat ]['code'] !== T_STRING_CONCAT ) {
 				return;
 			}
 
 			$variable_name = $this->phpcsFile->findNext( Tokens::$emptyTokens, $string_concat + 1, null, true );
-			if ( T_VARIABLE !== $this->tokens[ $variable_name ]['code'] ) {
+			if ( $this->tokens[ $variable_name ]['code'] !== T_VARIABLE ) {
 				return;
 			}
 
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
-				if ( false !== strpos( $this->tokens[ $variable_name ]['content'], $taxonomy_term_pattern ) ) {
+				if ( strpos( $this->tokens[ $variable_name ]['content'], $taxonomy_term_pattern ) !== false ) {
 					$this->addPossibleTermMetaInOptionsWarning( $stackPtr );
 					return;
 				}
 			}
 
 			$object_operator = $this->phpcsFile->findNext( Tokens::$emptyTokens, $variable_name + 1, null, true );
-			if ( T_OBJECT_OPERATOR !== $this->tokens[ $object_operator ]['code'] ) {
+			if ( $this->tokens[ $object_operator ]['code'] !== T_OBJECT_OPERATOR ) {
 				return;
 			}
 
 			$object_property = $this->phpcsFile->findNext( Tokens::$emptyTokens, $object_operator + 1, null, true );
-			if ( T_STRING !== $this->tokens[ $object_property ]['code'] ) {
+			if ( $this->tokens[ $object_property ]['code'] !== T_STRING ) {
 				return;
 			}
 
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
-				if ( false !== strpos( $this->tokens[ $object_property ]['content'], $taxonomy_term_pattern ) ) {
+				if ( strpos( $this->tokens[ $object_property ]['content'], $taxonomy_term_pattern ) !== false ) {
 					$this->addPossibleTermMetaInOptionsWarning( $stackPtr );
 					return;
 				}

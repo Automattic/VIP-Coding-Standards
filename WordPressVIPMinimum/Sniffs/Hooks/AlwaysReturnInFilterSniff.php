@@ -44,7 +44,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
-		if ( 'add_filter' !== $functionName ) {
+		if ( $functionName !== 'add_filter' ) {
 			return;
 		}
 
@@ -76,13 +76,13 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			return;
 		}
 
-		if ( 'PHPCS_T_CLOSURE' === $this->tokens[ $callbackPtr ]['code'] ) {
+		if ( $this->tokens[ $callbackPtr ]['code'] === 'PHPCS_T_CLOSURE' ) {
 			$this->processFunctionBody( $callbackPtr );
-		} elseif ( T_ARRAY === $this->tokens[ $callbackPtr ]['code']
-			|| T_OPEN_SHORT_ARRAY === $this->tokens[ $callbackPtr ]['code']
+		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_ARRAY
+			|| $this->tokens[ $callbackPtr ]['code'] === T_OPEN_SHORT_ARRAY
 		) {
 			$this->processArray( $callbackPtr );
-		} elseif ( true === in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) ) {
+		} elseif ( in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) === true ) {
 			$this->processString( $callbackPtr );
 		}
 	}
@@ -95,7 +95,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	private function processArray( $stackPtr ) {
 
 		$open_close = $this->find_array_open_close( $stackPtr );
-		if ( false === $open_close ) {
+		if ( $open_close === false ) {
 			return;
 		}
 
@@ -106,7 +106,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			true
 		);
 
-		if ( true === in_array( T_CLASS, $this->tokens[ $stackPtr ]['conditions'], true ) ) {
+		if ( in_array( T_CLASS, $this->tokens[ $stackPtr ]['conditions'], true ) === true ) {
 			$classPtr = array_search( T_CLASS, $this->tokens[ $stackPtr ]['conditions'], true );
 			if ( $classPtr ) {
 				$classToken = $this->tokens[ $classPtr ];
@@ -157,10 +157,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( false !== $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end ) ) {
+		while ( $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end ) !== false ) {
 			$functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end );
 			$functionNamePtr  = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
-			if ( T_STRING === $this->tokens[ $functionNamePtr ]['code'] && $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
+			if ( $this->tokens[ $functionNamePtr ]['code'] === T_STRING && $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
 				$this->processFunctionBody( $functionStackPtr );
 				return;
 			}
@@ -185,7 +185,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		);
 
 		// If arg is being passed by reference, we can skip.
-		if ( T_BITWISE_AND === $this->tokens[ $argPtr ]['code'] ) {
+		if ( $this->tokens[ $argPtr ]['code'] === T_BITWISE_AND ) {
 			return;
 		}
 
@@ -221,7 +221,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			);
 		}
 
-		if ( 0 <= $insideIfConditionalReturn && 0 === $outsideConditionalReturn ) {
+		if ( $insideIfConditionalReturn >= 0 && $outsideConditionalReturn === 0 ) {
 			$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
 			$data    = [ $filterName ];
 			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
@@ -240,24 +240,24 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		// This check helps us in situations a class or a function is wrapped
 		// inside a conditional as a whole. Eg.: inside `class_exists`.
-		if ( T_FUNCTION === end( $this->tokens[ $stackPtr ]['conditions'] ) ) {
+		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === T_FUNCTION ) {
 			return false;
 		}
 
 		// Similar case may be a conditional closure.
-		if ( 'PHPCS_T_CLOSURE' === end( $this->tokens[ $stackPtr ]['conditions'] ) ) {
+		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === 'PHPCS_T_CLOSURE' ) {
 			return false;
 		}
 
 		// Loop over the array of conditions and look for an IF.
 		reset( $this->tokens[ $stackPtr ]['conditions'] );
 
-		if ( true === array_key_exists( 'conditions', $this->tokens[ $stackPtr ] )
-			&& true === is_array( $this->tokens[ $stackPtr ]['conditions'] )
-			&& false === empty( $this->tokens[ $stackPtr ]['conditions'] )
+		if ( array_key_exists( 'conditions', $this->tokens[ $stackPtr ] ) === true
+			&& is_array( $this->tokens[ $stackPtr ]['conditions'] ) === true
+			&& empty( $this->tokens[ $stackPtr ]['conditions'] ) === false
 		) {
 			foreach ( $this->tokens[ $stackPtr ]['conditions'] as $tokenPtr => $tokenCode ) {
-				if ( T_IF === $this->tokens[ $stackPtr ]['conditions'][ $tokenPtr ] ) {
+				if ( $this->tokens[ $stackPtr ]['conditions'][ $tokenPtr ] === T_IF ) {
 					return true;
 				}
 			}
@@ -281,6 +281,6 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			true
 		);
 
-		return T_SEMICOLON === $this->tokens[ $nextToReturnTokenPtr ]['code'];
+		return $this->tokens[ $nextToReturnTokenPtr ]['code'] === T_SEMICOLON;
 	}
 }

@@ -45,7 +45,7 @@ class VuejsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( false !== strpos( $this->tokens[ $stackPtr ]['content'], 'v-html' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'v-html' ) !== false ) {
 			// Vue autoescape disabled.
 			$message = 'Found Vue.js non-escaped (raw) HTML directive.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'RawHTMLDirectiveFound' );

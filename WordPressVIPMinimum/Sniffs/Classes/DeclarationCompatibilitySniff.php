@@ -218,7 +218,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$methodName = $phpcsFile->getDeclarationName( $stackPtr );
 
 		$parentClassName = $phpcsFile->findExtendedClassName( $currScope );
-		if ( false === $parentClassName ) {
+		if ( $parentClassName === false ) {
 			// This class does not extend any other class.
 			return;
 		}
@@ -226,7 +226,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		// Meed to define the originalParentClassName since we might override the parentClassName due to signature notations grouping.
 		$originalParentClassName = $parentClassName;
 
-		if ( false === array_key_exists( $parentClassName, $this->checkClasses ) ) {
+		if ( array_key_exists( $parentClassName, $this->checkClasses ) === false ) {
 			// This class does not extend a class we are interested in.
 			foreach ( $this->checkClassesGroups as $parent => $children ) {
 				// But it might be one of the grouped classes.
@@ -237,14 +237,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					}
 				}
 			}
-			if ( false === array_key_exists( $parentClassName, $this->checkClasses ) ) {
+			if ( array_key_exists( $parentClassName, $this->checkClasses ) === false ) {
 				// This class really does not extend a class we are interested in.
 				return;
 			}
 		}
 
-		if ( false === array_key_exists( $methodName, $this->checkClasses[ $parentClassName ] ) &&
-			false === in_array( $methodName, $this->checkClasses[ $parentClassName ], true )
+		if ( array_key_exists( $methodName, $this->checkClasses[ $parentClassName ] ) === false &&
+			in_array( $methodName, $this->checkClasses[ $parentClassName ], true ) === false
 		) {
 			// This method is not a one we are interested in.
 			return;
@@ -258,11 +258,11 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			$extra_params                  = array_slice( $signatureParams, count( $parentSignature ) - count( $signatureParams ) );
 			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
-				if ( false === array_key_exists( 'default', $extra_param ) || 'true' !== $extra_param['default'] ) {
+				if ( array_key_exists( 'default', $extra_param ) === false || $extra_param['default'] !== 'true' ) {
 					$all_extra_params_have_default = false;
 				}
 			}
-			if ( true === $all_extra_params_have_default ) {
+			if ( $all_extra_params_have_default === true ) {
 				return; // We're good.
 			}
 		}
@@ -274,16 +274,16 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		$i = 0;
 		foreach ( $parentSignature as $key => $param ) {
-			if ( true === is_array( $param ) ) {
+			if ( is_array( $param ) === true ) {
 				if (
 					(
-						true === array_key_exists( 'default', $param ) &&
-						false === array_key_exists( 'default', $signatureParams[ $i ] )
+						array_key_exists( 'default', $param ) === true &&
+						array_key_exists( 'default', $signatureParams[ $i ] ) === false
 					) || (
-						true === array_key_exists( 'pass_by_reference', $param ) &&
+						array_key_exists( 'pass_by_reference', $param ) === true &&
 						$param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
 					) || (
-						true === array_key_exists( 'variable_length', $param ) &&
+						array_key_exists( 'variable_length', $param ) === true &&
 						$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
 					)
 				) {
@@ -329,26 +329,26 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$paramList = [];
 		foreach ( $methodSignature as $param => $options ) {
 			$paramName = '$';
-			if ( false === is_array( $options ) ) {
+			if ( is_array( $options ) === false ) {
 				$paramList[] = '$' . $options;
 				continue;
 			}
 
-			if ( true === array_key_exists( 'name', $options ) ) {
+			if ( array_key_exists( 'name', $options ) === true ) {
 				$paramName = $options['name'];
 			} else {
 				$paramName .= $param;
 			}
 
-			if ( true === array_key_exists( 'variable_length', $options ) && true === $options['variable_length'] ) {
+			if ( array_key_exists( 'variable_length', $options ) === true && $options['variable_length'] === true ) {
 				$paramName = '...' . $paramName;
 			}
 
-			if ( true === array_key_exists( 'pass_by_reference', $options ) && true === $options['pass_by_reference'] ) {
+			if ( array_key_exists( 'pass_by_reference', $options ) === true && $options['pass_by_reference'] === true ) {
 				$paramName = '&' . $paramName;
 			}
 
-			if ( true === array_key_exists( 'default', $options ) && false === empty( $options['default'] ) ) {
+			if ( array_key_exists( 'default', $options ) === true && empty( $options['default'] ) === false ) {
 				$paramName .= ' = ' . trim( $options['default'] );
 			}
 
@@ -371,7 +371,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$tokens             = $phpcsFile->getTokens();
 
 		for ( $i = ( $tokens[ $currScope ]['scope_opener'] + 1 ); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
-			if ( T_FUNCTION !== $tokens[ $i ]['code'] ) {
+			if ( $tokens[ $i ]['code'] !== T_FUNCTION ) {
 				continue;
 			}
 

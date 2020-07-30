@@ -88,13 +88,13 @@ class BatcacheWhitelistedParamsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( '$_GET' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== '$_GET' ) {
 			return;
 		}
 
 		$key = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_OPEN_SQUARE_BRACKET ] ), $stackPtr + 1, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $key ]['code'] ) {
+		if ( $this->tokens[ $key ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
 			return;
 		}
 
@@ -102,7 +102,7 @@ class BatcacheWhitelistedParamsSniff extends Sniff {
 
 		$variable_name = substr( $variable_name, 1, -1 );
 
-		if ( true === in_array( $variable_name, $this->whitelistes_batcache_params, true ) ) {
+		if ( in_array( $variable_name, $this->whitelistes_batcache_params, true ) === true ) {
 			$message = 'Batcache whitelisted GET param, `%s`, found. Batcache whitelisted parameters get stripped and are not available in PHP.';
 			$data    = [ $variable_name ];
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'StrippedGetParam', $data );

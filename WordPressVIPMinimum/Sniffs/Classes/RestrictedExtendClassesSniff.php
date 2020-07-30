@@ -47,7 +47,7 @@ class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
 		$tokens = $this->phpcsFile->getTokens();
 
-		if ( T_EXTENDS !== $tokens[ $stackPtr ]['code'] ) {
+		if ( $tokens[ $stackPtr ]['code'] !== T_EXTENDS ) {
 			// If not extending, bail.
 			return;
 		}
