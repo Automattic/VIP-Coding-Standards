@@ -100,8 +100,8 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if (
-			'T_VARIABLE' !==
-				$this->tokens[ $this->stackPtr ]['type']
+			$this->tokens[ $this->stackPtr ]['type'] !==
+				'T_VARIABLE'
 		) {
 			return;
 		}
@@ -123,15 +123,15 @@ class DynamicCallsSniff extends Sniff {
 			true
 		);
 
-		if ( false === $t_item_key ) {
+		if ( $t_item_key === false ) {
 			return;
 		}
 
-		if ( 'T_EQUAL' !== $this->tokens[ $t_item_key ]['type'] ) {
+		if ( $this->tokens[ $t_item_key ]['type'] !== 'T_EQUAL' ) {
 			return;
 		}
 
-		if ( 1 !== $this->tokens[ $t_item_key ]['length'] ) {
+		if ( $this->tokens[ $t_item_key ]['length'] !== 1 ) {
 			return;
 		}
 
@@ -147,7 +147,7 @@ class DynamicCallsSniff extends Sniff {
 			true
 		);
 
-		if ( false === $t_item_key ) {
+		if ( $t_item_key === false ) {
 			return;
 		}
 
@@ -186,8 +186,8 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if (
-			'T_VARIABLE' !==
-				$this->tokens[ $this->stackPtr ]['type']
+			$this->tokens[ $this->stackPtr ]['type'] !==
+				'T_VARIABLE'
 		) {
 			return;
 		}
@@ -215,13 +215,13 @@ class DynamicCallsSniff extends Sniff {
 		do {
 			$i++;
 		} while (
-			'T_WHITESPACE' ===
-				$this->tokens[ $this->stackPtr + $i ]['type']
+			$this->tokens[ $this->stackPtr + $i ]['type'] ===
+				'T_WHITESPACE'
 		);
 
 		if (
-			'T_OPEN_PARENTHESIS' !==
-				$this->tokens[ $this->stackPtr + $i ]['type']
+			$this->tokens[ $this->stackPtr + $i ]['type'] !==
+				'T_OPEN_PARENTHESIS'
 		) {
 			return;
 		}

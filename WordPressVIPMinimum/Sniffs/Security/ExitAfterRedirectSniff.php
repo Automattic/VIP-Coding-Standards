@@ -36,13 +36,13 @@ class ExitAfterRedirectSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'wp_redirect' !== $this->tokens[ $stackPtr ]['content'] && 'wp_safe_redirect' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'wp_redirect' && $this->tokens[ $stackPtr ]['content'] !== 'wp_safe_redirect' ) {
 			return;
 		}
 
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 			return;
 		}
 
@@ -51,17 +51,17 @@ class ExitAfterRedirectSniff extends Sniff {
 		$message = '`%s()` should almost always be followed by a call to `exit;`.';
 		$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 
-		if ( T_OPEN_CURLY_BRACKET === $this->tokens[ $next_token ]['code'] ) {
+		if ( $this->tokens[ $next_token ]['code'] === T_OPEN_CURLY_BRACKET ) {
 			$is_exit_in_scope = false;
 			for ( $i = $this->tokens[ $next_token ]['scope_opener']; $i <= $this->tokens[ $next_token ]['scope_closer']; $i++ ) {
-				if ( T_EXIT === $this->tokens[ $i ]['code'] ) {
+				if ( $this->tokens[ $i ]['code'] === T_EXIT ) {
 					$is_exit_in_scope = true;
 				}
 			}
-			if ( false === $is_exit_in_scope ) {
+			if ( $is_exit_in_scope === false ) {
 				$this->phpcsFile->addError( $message, $stackPtr, 'NoExitInConditional', $data );
 			}
-		} elseif ( T_EXIT !== $this->tokens[ $next_token ]['code'] ) {
+		} elseif ( $this->tokens[ $next_token ]['code'] !== T_EXIT ) {
 			$this->phpcsFile->addError( $message, $stackPtr, 'NoExit', $data );
 		}
 	}

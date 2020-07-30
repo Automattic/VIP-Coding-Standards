@@ -61,8 +61,8 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( 'filter_input' === $matched_content ) {
-			if ( 2 === count( $parameters ) ) {
+		if ( $matched_content === 'filter_input' ) {
+			if ( count( $parameters ) === 2 ) {
 				$message = 'Missing third parameter for "%s".';
 				$data    = [ $matched_content ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingThirdParameter', $data );
@@ -74,7 +74,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		} else {
-			if ( 1 === count( $parameters ) ) {
+			if ( count( $parameters ) === 1 ) {
 				$message = 'Missing second parameter for "%s".';
 				$data    = [ $matched_content ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingSecondParameter', $data );

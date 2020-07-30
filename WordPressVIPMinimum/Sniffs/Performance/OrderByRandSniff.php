@@ -49,7 +49,7 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches with custom error message passed to ->process().
 	 */
 	public function callback( $key, $val, $line, $group ) {
-		if ( 'rand' === strtolower( $val ) ) {
+		if ( strtolower( $val ) === 'rand' ) {
 			return 'Detected forbidden query_var "%s" of "%s". Use vip_get_random_posts() instead.';
 		}
 

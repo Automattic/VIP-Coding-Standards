@@ -86,14 +86,14 @@ class CheckReturnValueSniff extends Sniff {
 	 */
 	private function isFunctionCall( $stackPtr ) {
 
-		if ( false === in_array( $this->tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) ) {
+		if ( in_array( $this->tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) === false ) {
 			return false;
 		}
 
 		// Find the next non-empty token.
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call.
 			return false;
 		}
@@ -104,7 +104,7 @@ class CheckReturnValueSniff extends Sniff {
 		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
 		// It's a function definition, not a function call, so return false.
-		return ! ( T_FUNCTION === $this->tokens[ $previous ]['code'] );
+		return ! ( $this->tokens[ $previous ]['code'] === T_FUNCTION );
 	}
 
 	/**
@@ -121,14 +121,14 @@ class CheckReturnValueSniff extends Sniff {
 		$search[] = T_BITWISE_AND;
 		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
-		if ( T_EQUAL !== $this->tokens[ $previous ]['code'] ) {
+		if ( $this->tokens[ $previous ]['code'] !== T_EQUAL ) {
 			// It's not a variable assignment.
 			return false;
 		}
 
 		$previous = $this->phpcsFile->findPrevious( $search, $previous - 1, null, true );
 
-		if ( T_VARIABLE !== $this->tokens[ $previous ]['code'] ) {
+		if ( $this->tokens[ $previous ]['code'] !== T_VARIABLE ) {
 			// It's not a variable assignment.
 			return false;
 		}
@@ -145,12 +145,12 @@ class CheckReturnValueSniff extends Sniff {
 
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
-		if ( false === array_key_exists( $functionName, $this->catch ) ) {
+		if ( array_key_exists( $functionName, $this->catch ) === false ) {
 			// Not a function we are looking for.
 			return;
 		}
 
-		if ( false === $this->isFunctionCall( $stackPtr ) ) {
+		if ( $this->isFunctionCall( $stackPtr ) === false ) {
 			// Not a function call.
 			return;
 		}
@@ -164,7 +164,7 @@ class CheckReturnValueSniff extends Sniff {
 		$startNext = $openBracket + 1;
 		$next      = $this->phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
-			if ( true === in_array( $this->tokens[ $next ]['content'], $this->catch[ $functionName ], true ) ) {
+			if ( in_array( $this->tokens[ $next ]['content'], $this->catch[ $functionName ], true ) === true ) {
 				$message = "`%s`'s return type must be checked before calling `%s` using that value.";
 				$data    = [ $this->tokens[ $next ]['content'], $functionName ];
 				$this->phpcsFile->addError( $message, $next, 'DirectFunctionCall', $data );
@@ -192,25 +192,25 @@ class CheckReturnValueSniff extends Sniff {
 		$callees = [];
 
 		foreach ( $this->catch as $callee => $checkReturnArray ) {
-			if ( true === in_array( $functionName, $checkReturnArray, true ) ) {
+			if ( in_array( $functionName, $checkReturnArray, true ) === true ) {
 				$isFunctionWeLookFor = true;
 				$callees[]           = $callee;
 			}
 		}
 
-		if ( false === $isFunctionWeLookFor ) {
+		if ( $isFunctionWeLookFor === false ) {
 			// Not a function we are looking for.
 			return;
 		}
 
-		if ( false === $this->isFunctionCall( $stackPtr ) ) {
+		if ( $this->isFunctionCall( $stackPtr ) === false ) {
 			// Not a function call.
 			return;
 		}
 
 		$variablePos = $this->isVariableAssignment( $stackPtr );
 
-		if ( false === $variablePos ) {
+		if ( $variablePos === false ) {
 			// Not a variable assignment.
 			return;
 		}
@@ -224,7 +224,7 @@ class CheckReturnValueSniff extends Sniff {
 		// Find the closing bracket.
 		$closeBracket = $this->tokens[ $openBracket ]['parenthesis_closer'];
 
-		if ( true === in_array( $functionName, [ 'get_post_meta', 'get_term_meta' ], true ) ) {
+		if ( in_array( $functionName, [ 'get_post_meta', 'get_term_meta' ], true ) === true ) {
 			// Since the get_post_meta and get_term_meta always returns an array if $single is set to `true` we need to check for the value of it's third param before proceeding.
 			$params       = [];
 			$paramNo      = 1;
@@ -232,11 +232,11 @@ class CheckReturnValueSniff extends Sniff {
 
 			for ( $i = $openBracket + 1; $i <= $closeBracket; $i++ ) {
 
-				if ( T_OPEN_PARENTHESIS === $this->tokens[ $i ]['code'] ) {
+				if ( $this->tokens[ $i ]['code'] === T_OPEN_PARENTHESIS ) {
 					$i = $this->tokens[ $i ]['parenthesis_closer'];
 				}
 
-				if ( T_COMMA === $this->tokens[ $i ]['code'] ) {
+				if ( $this->tokens[ $i ]['code'] === T_COMMA ) {
 					$params[ $paramNo++ ] = trim( array_reduce( array_slice( $this->tokens, $prevCommaPos, $i - $prevCommaPos ), [ $this, 'reduce_array' ] ) );
 					$prevCommaPos         = $i + 1;
 				}
@@ -247,7 +247,7 @@ class CheckReturnValueSniff extends Sniff {
 				}
 			}
 
-			if ( false === array_key_exists( 3, $params ) || 'false' === $params[3] ) {
+			if ( array_key_exists( 3, $params ) === false || $params[3] === 'false' ) {
 				// Third param of get_post_meta is not set (default to false) or is set to false.
 				// Means the function returns an array. We are good then.
 				return;
@@ -269,7 +269,7 @@ class CheckReturnValueSniff extends Sniff {
 		foreach ( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : [];
 			// Check whether the found token is one of the function calls (or foreach call) we are interested in.
-			if ( true === in_array( $this->tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true )
+			if ( in_array( $this->tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true ) === true
 				&& $this->tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
 				$this->addNonCheckedVariableError( $nextFunctionCallWithVariable, $variableName, $callee );
@@ -278,7 +278,7 @@ class CheckReturnValueSniff extends Sniff {
 
 			$search = array_merge( Tokens::$emptyTokens, [ T_EQUAL ] );
 			$next   = $this->phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true );
-			if ( true === in_array( $this->tokens[ $next ]['code'], Tokens::$functionNameTokens, true )
+			if ( in_array( $this->tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) === true
 				&& $this->tokens[ $next ]['content'] === $callee
 			) {
 				$this->addNonCheckedVariableError( $next, $variableName, $callee );

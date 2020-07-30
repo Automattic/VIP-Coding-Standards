@@ -46,13 +46,13 @@ class TwigSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 1 === preg_match( '/autoescape\s+false/', $this->tokens[ $stackPtr ]['content'] ) ) {
+		if ( preg_match( '/autoescape\s+false/', $this->tokens[ $stackPtr ]['content'] ) === 1 ) {
 			// Twig autoescape disabled.
 			$message = 'Found Twig autoescape disabling notation.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'AutoescapeFalse' );
 		}
 
-		if ( 1 === preg_match( '/\|\s*raw/', $this->tokens[ $stackPtr ]['content'] ) ) {
+		if ( preg_match( '/\|\s*raw/', $this->tokens[ $stackPtr ]['content'] ) === 1 ) {
 			// Twig default unescape filter.
 			$message = 'Found Twig default unescape filter: "|raw".';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'RawFound' );

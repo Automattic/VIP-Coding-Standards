@@ -58,18 +58,18 @@ class RestrictedConstantsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( T_STRING === $this->tokens[ $stackPtr ]['code'] ) {
+		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
 			$constantName = $this->tokens[ $stackPtr ]['content'];
 		} else {
 			$constantName = trim( $this->tokens[ $stackPtr ]['content'], "\"'" );
 		}
 
-		if ( false === in_array( $constantName, $this->restrictedConstantNames, true ) && false === in_array( $constantName, $this->restrictedConstantDeclaration, true ) ) {
+		if ( in_array( $constantName, $this->restrictedConstantNames, true ) === false && in_array( $constantName, $this->restrictedConstantDeclaration, true ) === false ) {
 			// Not the constant we are looking for.
 			return;
 		}
 
-		if ( T_STRING === $this->tokens[ $stackPtr ]['code'] && true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
+		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING && in_array( $constantName, $this->restrictedConstantNames, true ) === true ) {
 			$message = 'Code is touching the `%s` constant. Make sure it\'s used appropriately.';
 			$data    = [ $constantName ];
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'UsingRestrictedConstant', $data );
@@ -79,12 +79,12 @@ class RestrictedConstantsSniff extends Sniff {
 		// Find the previous non-empty token.
 		$openBracket = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call.
 			return;
 		}
 
-		if ( false === isset( $this->tokens[ $openBracket ]['parenthesis_closer'] ) ) {
+		if ( isset( $this->tokens[ $openBracket ]['parenthesis_closer'] ) === false ) {
 			// Not a function call.
 			return;
 		}
@@ -93,17 +93,17 @@ class RestrictedConstantsSniff extends Sniff {
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
 		$previous = $this->phpcsFile->findPrevious( $search, $openBracket - 1, null, true );
-		if ( T_FUNCTION === $this->tokens[ $previous ]['code'] ) {
+		if ( $this->tokens[ $previous ]['code'] === T_FUNCTION ) {
 			// It's a function definition, not a function call.
 			return;
 		}
 
-		if ( true === in_array( $this->tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) ) {
+		if ( in_array( $this->tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) === true ) {
 			$data = [ $constantName ];
-			if ( 'define' === $this->tokens[ $previous ]['content'] ) {
+			if ( $this->tokens[ $previous ]['content'] === 'define' ) {
 				$message = 'The definition of `%s` constant is prohibited. Please use a different name.';
 				$this->phpcsFile->addError( $message, $previous, 'DefiningRestrictedConstant', $data );
-			} elseif ( true === in_array( $constantName, $this->restrictedConstantNames, true ) ) {
+			} elseif ( in_array( $constantName, $this->restrictedConstantNames, true ) === true ) {
 				$message = 'Code is touching the `%s` constant. Make sure it\'s used appropriately.';
 				$this->phpcsFile->addWarning( $message, $previous, 'UsingRestrictedConstant', $data );
 			}

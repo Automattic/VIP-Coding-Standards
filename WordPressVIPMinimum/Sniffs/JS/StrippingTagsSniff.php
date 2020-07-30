@@ -48,27 +48,27 @@ class StrippingTagsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'html' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'html' ) {
 			// Looking for html() only.
 			return;
 		}
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $nextToken ]['code'] ) {
+		if ( $this->tokens[ $nextToken ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function.
 			return;
 		}
 
 		$afterFunctionCall = $this->phpcsFile->findNext( Tokens::$emptyTokens, $this->tokens[ $nextToken ]['parenthesis_closer'] + 1, null, true, null, true );
 
-		if ( T_OBJECT_OPERATOR !== $this->tokens[ $afterFunctionCall ]['code'] ) {
+		if ( $this->tokens[ $afterFunctionCall ]['code'] !== T_OBJECT_OPERATOR ) {
 			return;
 		}
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $afterFunctionCall + 1, null, true, null, true );
 
-		if ( T_STRING === $this->tokens[ $nextToken ]['code'] && 'text' === $this->tokens[ $nextToken ]['content'] ) {
+		if ( $this->tokens[ $nextToken ]['code'] === T_STRING && $this->tokens[ $nextToken ]['content'] === 'text' ) {
 			$message = 'Vulnerable tag stripping approach detected.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'VulnerableTagStripping' );
 		}

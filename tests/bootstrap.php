@@ -24,15 +24,15 @@ $phpcsDir          = getenv( 'PHPCS_DIR' );
 $composerPHPCSPath = dirname( __DIR__ ) . $ds . 'vendor' . $ds . 'squizlabs' . $ds . 'php_codesniffer';
 
 // This may be a Composer install.
-if ( false === $phpcsDir && is_dir( $composerPHPCSPath ) ) {
+if ( $phpcsDir === false && is_dir( $composerPHPCSPath ) ) {
 	$phpcsDir = $composerPHPCSPath;
-} elseif ( false !== $phpcsDir ) {
+} elseif ( $phpcsDir !== false ) {
 	// PHPCS in a custom directory.
 	$phpcsDir = realpath( $phpcsDir );
 }
 
 // Try and load the PHPCS autoloader.
-if ( false !== $phpcsDir
+if ( $phpcsDir !== false
 	&& file_exists( $phpcsDir . $ds . 'autoload.php' )
 	&& file_exists( $phpcsDir . $ds . 'tests' . $ds . 'bootstrap.php' )
 ) {

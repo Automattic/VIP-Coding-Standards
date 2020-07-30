@@ -64,14 +64,14 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( false === isset( $parameters[4] ) ) {
+		if ( isset( $parameters[4] ) === false ) {
 			// If no cache expiry time, bail (i.e. we don't want to flag for something like feeds where it is cached indefinitely until a hook runs).
 			return;
 		}
 
 		$time = $parameters[4]['raw'];
 
-		if ( false === is_numeric( $time ) ) {
+		if ( is_numeric( $time ) === false ) {
 			// If using time constants, we need to convert to a number.
 			$time = str_replace( array_keys( $this->wp_time_constants ), $this->wp_time_constants, $time );
 

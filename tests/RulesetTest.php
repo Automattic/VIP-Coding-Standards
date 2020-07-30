@@ -91,7 +91,7 @@ class RulesetTest {
 
 		// Travis and Windows support.
 		$phpcs_bin = getenv( 'PHPCS_BIN' );
-		if ( false === $phpcs_bin ) {
+		if ( $phpcs_bin === false ) {
 			// phpcs:ignore
 			putenv( 'PHPCS_BIN=phpcs' );
 		} else {
@@ -199,7 +199,7 @@ class RulesetTest {
 	 * @return bool True if string matches error type.
 	 */
 	private function violation_type_is_error( $violation ) {
-		return self::ERROR_TYPE === $violation->type;
+		return $violation->type === self::ERROR_TYPE;
 	}
 
 	/**
@@ -235,12 +235,12 @@ class RulesetTest {
 	 */
 	private function check_missing_expected_values() {
 		foreach ( $this->expected as $type => $lines ) {
-			if ( 'messages' === $type ) {
+			if ( $type === 'messages' ) {
 				continue;
 			}
 
 			foreach ( $lines as $line_number => $expected_count_of_type_violations ) {
-				if ( 0 === $expected_count_of_type_violations ) {
+				if ( $expected_count_of_type_violations === 0 ) {
 					continue;
 				}
 
@@ -261,7 +261,7 @@ class RulesetTest {
 	private function check_unexpected_values() {
 		foreach ( [ 'errors', 'warnings' ] as $type ) {
 			foreach ( $this->$type as $line_number => $actual_count_of_type_violations ) {
-				if ( 0 === $actual_count_of_type_violations ) {
+				if ( $actual_count_of_type_violations === 0 ) {
 					continue;
 				}
 

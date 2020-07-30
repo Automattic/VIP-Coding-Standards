@@ -49,14 +49,14 @@ class StringConcatSniff extends Sniff {
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $nextToken ]['code'] && false !== strpos( $this->tokens[ $nextToken ]['content'], '<' ) && 1 === preg_match( '/\<\/[a-zA-Z]+/', $this->tokens[ $nextToken ]['content'] ) ) {
+		if ( $this->tokens[ $nextToken ]['code'] === T_CONSTANT_ENCAPSED_STRING && strpos( $this->tokens[ $nextToken ]['content'], '<' ) !== false && preg_match( '/\<\/[a-zA-Z]+/', $this->tokens[ $nextToken ]['content'] ) === 1 ) {
 			$data = [ '+' . $this->tokens[ $nextToken ]['content'] ];
 			$this->addFoundError( $stackPtr, $data );
 		}
 
 		$prevToken = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $prevToken ]['code'] && false !== strpos( $this->tokens[ $prevToken ]['content'], '<' ) && 1 === preg_match( '/\<[a-zA-Z]+/', $this->tokens[ $prevToken ]['content'] ) ) {
+		if ( $this->tokens[ $prevToken ]['code'] === T_CONSTANT_ENCAPSED_STRING && strpos( $this->tokens[ $prevToken ]['content'], '<' ) !== false && preg_match( '/\<[a-zA-Z]+/', $this->tokens[ $prevToken ]['content'] ) === 1 ) {
 			$data = [ $this->tokens[ $nextToken ]['content'] . '+' ];
 			$this->addFoundError( $stackPtr, $data );
 		}

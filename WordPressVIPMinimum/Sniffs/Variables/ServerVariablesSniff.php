@@ -54,7 +54,7 @@ class ServerVariablesSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( '$_SERVER' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== '$_SERVER' ) {
 			// Not the variable we are looking for.
 			return;
 		}

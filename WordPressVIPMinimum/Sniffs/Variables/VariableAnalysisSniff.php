@@ -76,14 +76,14 @@ class VariableAnalysisSniff extends \VariableAnalysis\Sniffs\CodeAnalysis\Variab
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		if ( false === $this->thrown['DeprecatedSniff'] ) {
+		if ( $this->thrown['DeprecatedSniff'] === false ) {
 			$this->thrown['DeprecatedSniff'] = $phpcsFile->addWarning(
 				'The "WordPressVIPMinimum.Variables.VariableAnalysis" sniff has been deprecated. Use the "VariableAnalysis.CodeAnalysis.VariableAnalysis" sniff instead. Please update your custom ruleset.',
 				0,
 				'DeprecatedSniff'
 			);
 		}
-		if ( ! empty( $this->exclude ) && false === $this->thrown['FoundPropertyForDeprecatedSniff'] ) {
+		if ( ! empty( $this->exclude ) && $this->thrown['FoundPropertyForDeprecatedSniff'] === false ) {
 			$this->thrown['FoundPropertyForDeprecatedSniff'] = $phpcsFile->addWarning(
 				'The "WordPressVIPMinimum.Variables.VariableAnalysis" sniff has been deprecated. Use the "CodeAnalysis.VariableAnalysis" sniff instead. "exclude" property setting found. Please update your custom ruleset.',
 				0,

@@ -37,22 +37,22 @@ class FetchingRemoteDataSniff extends Sniff {
 	public function process_token( $stackPtr ) {
 
 		$functionName = $this->tokens[ $stackPtr ]['content'];
-		if ( 'file_get_contents' !== $functionName ) {
+		if ( $functionName !== 'file_get_contents' ) {
 			return;
 		}
 
 		$data = [ $this->tokens[ $stackPtr ]['content'] ];
 
 		$fileNameStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $stackPtr + 1, null, false, null, true );
-		if ( false === $fileNameStackPtr ) {
+		if ( $fileNameStackPtr === false ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead. If it\'s for a local file please use WP_Filesystem instead.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsUnknown', $data );
 		}
 
 		$fileName = $this->tokens[ $fileNameStackPtr ]['content'];
 
-		$isRemoteFile = ( false !== strpos( $fileName, '://' ) );
-		if ( true === $isRemoteFile ) {
+		$isRemoteFile = ( strpos( $fileName, '://' ) !== false );
+		if ( $isRemoteFile === true ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsRemoteFile', $data );
 		}

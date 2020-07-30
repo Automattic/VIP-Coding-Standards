@@ -35,26 +35,26 @@ class ZoninatorSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'wpcom_vip_load_plugin' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'wpcom_vip_load_plugin' ) {
 			return;
 		}
 
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call.
 			return;
 		}
 
 		$plugin_name = $this->phpcsFile->findNext( Tokens::$emptyTokens, $openBracket + 1, null, true );
 
-		if ( 'zoninator' !== $this->remove_wrapping_quotation_marks( $this->tokens[ $plugin_name ]['content'] ) ) {
+		if ( $this->remove_wrapping_quotation_marks( $this->tokens[ $plugin_name ]['content'] ) !== 'zoninator' ) {
 			return;
 		}
 
 		$comma = $this->phpcsFile->findNext( Tokens::$emptyTokens, $plugin_name + 1, null, true );
 
-		if ( ! $comma || 'PHPCS_T_COMMA' !== $this->tokens[ $comma ]['code'] ) {
+		if ( ! $comma || $this->tokens[ $comma ]['code'] !== 'PHPCS_T_COMMA' ) {
 			// We are loading the default version.
 			return;
 		}
@@ -63,7 +63,7 @@ class ZoninatorSniff extends Sniff {
 
 		$comma = $this->phpcsFile->findNext( Tokens::$emptyTokens, $folder + 1, null, true );
 
-		if ( ! $comma || 'PHPCS_T_COMMA' !== $this->tokens[ $comma ]['code'] ) {
+		if ( ! $comma || $this->tokens[ $comma ]['code'] !== 'PHPCS_T_COMMA' ) {
 			// We are loading the default version.
 			return;
 		}
@@ -71,7 +71,7 @@ class ZoninatorSniff extends Sniff {
 		$version = $this->phpcsFile->findNext( Tokens::$emptyTokens, $comma + 1, null, true );
 		$version = $this->remove_wrapping_quotation_marks( $this->tokens[ $version ]['content'] );
 
-		if ( true === version_compare( $version, '0.8', '>=' ) ) {
+		if ( version_compare( $version, '0.8', '>=' ) === true ) {
 			$message = 'Zoninator of version >= v0.8 requires WordPress core REST API. Please, make sure the `wpcom_vip_load_wp_rest_api()` is being called on all sites loading this file.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'RequiresRESTAPI' );
 		}

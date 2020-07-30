@@ -40,21 +40,21 @@ class EscapingVoidReturnFunctionsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 0 !== strpos( $this->tokens[ $stackPtr ]['content'], 'esc_' ) && 0 !== strpos( $this->tokens[ $stackPtr ]['content'], 'wp_kses' ) ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'esc_' ) !== 0 && strpos( $this->tokens[ $stackPtr ]['content'], 'wp_kses' ) !== 0 ) {
 			// Not what we are looking for.
 			return;
 		}
 
 		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $next_token ]['code'] ) {
+		if ( $this->tokens[ $next_token ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call.
 			return;
 		}
 
 		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $next_token + 1, null, true );
 
-		if ( T_STRING !== $this->tokens[ $next_token ]['code'] ) {
+		if ( $this->tokens[ $next_token ]['code'] !== T_STRING ) {
 			// Not what we are looking for.
 			return;
 		}

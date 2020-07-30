@@ -46,21 +46,21 @@ class DangerouslySetInnerHTMLSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'dangerouslySetInnerHTML' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'dangerouslySetInnerHTML' ) {
 			// Looking for dangerouslySetInnerHTML only.
 			return;
 		}
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_EQUAL !== $this->tokens[ $nextToken ]['code'] ) {
+		if ( $this->tokens[ $nextToken ]['code'] !== T_EQUAL ) {
 			// Not an assignment.
 			return;
 		}
 
 		$nextNextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 
-		if ( T_OBJECT !== $this->tokens[ $nextNextToken ]['code'] ) {
+		if ( $this->tokens[ $nextNextToken ]['code'] !== T_OBJECT ) {
 			// Not react syntax.
 			return;
 		}
