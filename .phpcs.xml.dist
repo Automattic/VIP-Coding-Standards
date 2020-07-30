@@ -17,6 +17,7 @@
 		<exclude name="WordPress.Files.FileName"/>
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="WordPress.PHP.YodaConditions"/>
 	</rule>
 
 	<rule ref="WordPress-Docs"/>
@@ -32,8 +33,11 @@
 
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
 
-	<!-- Disallow long array syntax -->
+	<!-- Disallow long array syntax. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+	<!-- Disallow Yoda conditions. -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
 
 	<!-- Check code for cross-version PHP compatibility. -->
 	<config name="testVersion" value="5.4-"/>
