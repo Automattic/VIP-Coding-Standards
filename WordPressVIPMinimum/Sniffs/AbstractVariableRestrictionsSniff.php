@@ -143,6 +143,11 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 			}
 		}
 
+		if ( $this->is_in_isset_or_empty( $stackPtr ) === true ) {
+			// Checking whether a variable exists is not the same as using it.
+			return;
+		}
+
 		foreach ( $this->groups_cache as $groupName => $group ) {
 
 			if ( isset( $this->excluded_groups[ $groupName ] ) ) {
