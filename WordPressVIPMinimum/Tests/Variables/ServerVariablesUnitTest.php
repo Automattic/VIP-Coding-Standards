@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the Variable Analysis sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Variables\ServerVariablesSniff
  */
 class ServerVariablesUnitTest extends AbstractSniffUnitTest {
 

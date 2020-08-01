@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the RestrictedExtendClasses sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Classes\RestrictedExtendClassesSniff
  */
 class RestrictedExtendClassesUnitTest extends AbstractSniffUnitTest {
 

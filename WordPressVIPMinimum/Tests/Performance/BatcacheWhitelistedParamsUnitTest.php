@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the BatcacheWhitelistedParams sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\BatcacheWhitelistedParamsSniff
  */
 class BatcacheWhitelistedParamsUnitTest extends AbstractSniffUnitTest {
 

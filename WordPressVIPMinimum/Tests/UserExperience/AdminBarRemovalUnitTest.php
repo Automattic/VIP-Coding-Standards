@@ -15,6 +15,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @package VIPCS\WordPressVIPMinimum
  *
  * @since   0.5.0
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\UserExperience\AdminBarRemovalSniff
  */
 class AdminBarRemovalUnitTest extends AbstractSniffUnitTest {
 

@@ -14,6 +14,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @package VIPCS\WordPressVIPMinimum
  *
  * @since 0.4.0
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Hooks\RestrictedHooksSniff
  */
 class RestrictedHooksUnitTest extends AbstractSniffUnitTest {
 
