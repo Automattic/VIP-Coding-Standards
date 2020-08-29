@@ -28,7 +28,6 @@
 	"suggest": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7 || This Composer plugin will manage the PHPCS 'installed_paths' automatically."
 	},
-	"minimum-stability": "RC",
 	"scripts": {
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"ruleset": "bin/ruleset-tests",
