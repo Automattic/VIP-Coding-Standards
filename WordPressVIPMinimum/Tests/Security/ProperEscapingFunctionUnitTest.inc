@@ -35,3 +35,7 @@ echo '<media:content url="' . esc_attr( $post_image ) . '" medium="image">'; // 
 echo 'data-param-url="' . esc_url( $share_url ) . '"'; // OK.
 
 echo 'data-param-url="' . esc_html( $share_url ) . '"'; // NOK.
+
+?>
+
+<form method="post" action="<?php echo esc_html(admin_url('admin.php?page='.$base_name.'&amp;mode=logs&amp;id='.$poll_id)); ?>">
