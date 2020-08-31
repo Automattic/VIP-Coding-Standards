@@ -193,3 +193,18 @@ An example where it might not would be when a ruleset references a local sniff o
 The `composer test` or `composer ruleset` commands run the `ruleset-test.php` files (one for each standard), which internally run `phpcs` against the "dirty" test files (`ruleset-test.inc`), and looks out for a known number of errors, warnings, and messages on each line. This is then compared against the expected errors, warnings and messages to see if there are any missing or unexpected violations or difference in messages.
 
 When adding or changing a sniff, the ruleset test files should be updated to match.
+
+## Releases
+
+- In a `changelog/x.y.z` branch off of `develop`, update the `CHANGELOG.md` with a list of all of the changes following the keepachangelog.com format. Include PR references and GitHub username props.
+- Create a PR of `develop` <-- `changelog/x.y.z`, but do not merge until ready to release.
+- Create a PR of `master` <-- `develop`, and copy-paste the [`release-template.md`](https://github.com/Automattic/VIP-Coding-Standards/blob/develop/.github/ISSUE_TEMPLATE/release-template.md) contents.
+- When ready to release, merge the change log PR into `develop`, then merge the `develop` into `master` PR.
+- Tag the commit in `master` with the appropriate version number. Ideally, have it signed.
+- Close the current milestone.
+- Open a new milestone for the next release.
+- If any open PRs/issues which were milestoned for this release do not make it into the release, update their milestone.
+- Write a Lobby post to inform VIP customers about the release, including the date when the Review Bot will be updated (usually about 1.5 weeks after the VIPCS release).
+- Write an internal P2 post.
+- Open a PR to update the [Review Bot dependencies](https://github.com/Automattic/vip-go-ci/blob/master/tools-init.sh).
+

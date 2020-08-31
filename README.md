@@ -1,6 +1,6 @@
 # VIP Coding Standards
 
-This project contains [PHP_CodeSniffer (PHPCS) sniffs and rulesets](https://github.com/squizlabs/PHP_CodeSniffer) to validate code developed for [WordPress.com VIP](https://wpvip.com/).
+This project contains [PHP_CodeSniffer (PHPCS) sniffs and rulesets](https://github.com/squizlabs/PHP_CodeSniffer) to validate code developed for [WordPress VIP](https://wpvip.com/).
 
 This project contains two rulesets:
 
@@ -25,14 +25,13 @@ Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why 
 
 This will install the latest compatible versions of PHPCS and WPCS. 
 
-
 Please refer to the [installation instructions for installing PHP_CodeSniffer for WordPress.com VIP](https://wpvip.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/) for more details.
 
 We recommend the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer), which handles the registration of all of the installed standards, so there is no need to set the `installed_paths` config value manually, for single or multiple standards.
 
 Alternatively, you should register the standard to PHPCS by appending the VIPCS directory to the end of the installed paths. e.g.
 
-`phpcs --config-set installed_paths /path/to/wpcsstandard,path/to/vipcsstandard,etc.`
+`phpcs --config-set installed_paths /path/to/wpcsstandard,path/to/vipcsstandard`
 
 ## Contribution
 
