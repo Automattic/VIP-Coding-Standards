@@ -82,8 +82,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$data = [ $function_name ];
 
-		if ( $function_name !== 'esc_url' && $this->is_href_or_src( $this->tokens[ $html ]['content'] ) ) {
-			$message = 'Wrong escaping function. href and src attributes should be escaped by `esc_url()`, not by `%s()`.';
+		if ( $function_name !== 'esc_url' && $this->attr_expects_url( $this->tokens[ $html ]['content'] ) ) {
+			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
@@ -95,15 +95,15 @@ class ProperEscapingFunctionSniff extends Sniff {
 	}
 
 	/**
-	 * Tests whether provided string ends with open src or href attribute.
+	 * Tests whether provided string ends with open attribute which expects a URL value.
 	 *
-	 * @param string $content Haystack in which we look for an open src or href attribute.
+	 * @param string $content Haystack in which we look for an open attribute which exects a URL value.
 	 *
-	 * @return bool True if string ends with open src or href attribute.
+	 * @return bool True if string ends with open attribute which exects a URL value.
 	 */
-	public function is_href_or_src( $content ) {
-		$is_href_or_src = false;
-		foreach ( [ 'href', 'src', 'url' ] as $attr ) {
+	public function attr_expects_url( $content ) {
+		$attr_expects_url = false;
+		foreach ( [ 'href', 'src', 'url', 'action' ] as $attr ) {
 			foreach ( [
 				'="',
 				"='",
@@ -111,16 +111,16 @@ class ProperEscapingFunctionSniff extends Sniff {
 				'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
 			] as $ending ) {
 				if ( $this->endswith( $content, $attr . $ending ) === true ) {
-					$is_href_or_src = true;
+					$attr_expects_url = true;
 					break;
 				}
 			}
 		}
-		return $is_href_or_src;
+		return $attr_expects_url;
 	}
 
 	/**
-	 * Tests, whether provided string ends with open HMTL attribute.
+	 * Tests whether provided string ends with open HMTL attribute.
 	 *
 	 * @param string $content Haystack in which we look for open HTML attribute.
 	 *

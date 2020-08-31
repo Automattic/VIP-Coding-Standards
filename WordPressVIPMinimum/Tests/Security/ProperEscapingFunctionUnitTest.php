@@ -33,6 +33,7 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			33 => 1,
 			37 => 1,
+			41 => 1,
 		];
 	}
 
