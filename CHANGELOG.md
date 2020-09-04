@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Bumps requirements to PHPCS 3.5.5+ and WPCS 2.3.0+.
 
+Props: GaryJones, jenkoian, kevinfodness, rebeccahum.
+
 ### Added
 
 - `get_page_by_path()` restricted function warning, to suggest `wpcom_vip_get_page_by_path()` function.
@@ -40,6 +42,8 @@ Bumps requirements to PHPCS 3.5.5+ and WPCS 2.3.0+.
 This release switches from having WPCS `1.*` as a dependency, to WPCS `2.*`. It is not compatible with WPCS `1.*`.
 
 The sniffs in WPCS `2.*` are more accurate, so you may see new violations there weren't being reported before, and a reduction in violations for false positives.  
+
+Props: GaryJones, hanifn, paulscreiber, rebeccahum, tomjn. 
 
 ### Added
 
@@ -87,6 +91,8 @@ The sniffs in WPCS `2.*` are more accurate, so you may see new violations there 
 This release contains many breaking changes.
 
 It requires PHP `>= 5.6`, PHPCS `3.2.3+`, and WPCS `1.*`. It does not work with WPCS `2.*`.
+
+Props: GaryJones, rebeccahum, whyisjake, WPprodigy.
 
 ### Reorganisation and Renaming
 
@@ -345,9 +351,11 @@ The sniffs in VIPCS have been reorganised into different categories, with new sn
 - Silence `WordPress.WP.AlternativeFunctions.file_system_read_fwrite` and `WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents` since we have `WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_*`.
 - Silence Short Echo tags on `WordPress-VIP-Go`.
 
-## 0.4.0 - 2018-12-19
+## [0.4.0] - 2018-12-19
 
 This release contains breaking changes.
+
+Props: GaryJones, nickdaugherty, rebeccahum, tomjn.
 
 ### Added
  - `WordPressVIPMinimum.Cache.LowExpiryCacheTime` sniff.
@@ -398,6 +406,52 @@ This release contains breaking changes.
  - `wpcom_vip_get_page_by_path` from `WordPressVIPMinimum.VIP.RestrictedFunctions`
  - Version check for PHP 7 or less in `WordPressVIPMinimum.Variables.VariableAnalysis` unit test since tests are not failing anymore.
 
+## [0.3.1] - 2018-12-04
+
+Originally tagged as 0.2.5.
+
+Props: emrikol, GaryJones, gudmdharalds, mikeyarce, nickdaugherty, paulschreiber, rebeccahum, sboisvert, tomjn.
+
+## [0.3.0] - 2018-08-15
+
+Props: BrookeDot, david-binda, GaryJones, gudmdharalds, rebeccahum, sboisvert, tomjn, uxcitizen.
+
+## [0.2.4] - 2018-07-18
+
+Props: david-binda, sboisvert, tessneedham, trepmal.
+
+## [0.2.3] - 2018-03-29
+
+Props: david-binda, jacklenox, pyronaur, sboisvert, trepmal, vaurdan.
+
+## [0.2.2] - 2018-01-19
+
+Props: david-binda.
+
+## [0.2.1] - 2017-12-01
+
+Props: david-binda, philipjohn, tomjn.
+
+## [0.2.0] - 2017-08-15
+
+Props: david-binda.
+
+## [0.1.0] - 2017-08-14
+
+Initial release.
+
+Props: david-binda, pkevan.
+
+
 [2.1.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/1.0.0...2.0.0
 [1.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/0.4.0...1.0.0
+[0.4.0]: https://github.com/automattic/vip-coding-standards/compare/0.3.1...0.4.0
+[0.3.1]: https://github.com/automattic/vip-coding-standards/compare/0.3.0...0.3.1
+[0.3.0]: https://github.com/automattic/vip-coding-standards/compare/0.2.4...0.3.0
+[0.2.4]: https://github.com/automattic/vip-coding-standards/compare/0.2.3...0.2.4
+[0.2.3]: https://github.com/automattic/vip-coding-standards/compare/0.2.2...0.2.3
+[0.2.2]: https://github.com/automattic/vip-coding-standards/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/automattic/vip-coding-standards/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/automattic/vip-coding-standards/compare/0.1.0...0.2.0
+[0.1.0]: https://github.com/automattic/vip-coding-standards/compare/f0e821c0b91f7e5b3850c5ae7bfab4f38d24e406...0.1.0
