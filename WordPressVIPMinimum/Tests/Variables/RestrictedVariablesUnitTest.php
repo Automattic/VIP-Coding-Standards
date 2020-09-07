@@ -5,7 +5,7 @@
  * @package VIPCS\WordPressVIPMinimum
  */
 
-namespace WordPress\Tests\Variables;
+namespace WordPressVIPMinimum\Tests\Variables;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
@@ -16,6 +16,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since   0.3.0
  * @since   0.13.0 Class name changed: this class is now namespaced.
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Variables\RestrictedVariablesSniff
  */
 class RestrictedVariablesUnitTest extends AbstractSniffUnitTest {
 
@@ -43,7 +45,6 @@ class RestrictedVariablesUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			13 => 1,
 			14 => 1,
 			17 => 1,
 			28 => 1,

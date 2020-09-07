@@ -48,7 +48,7 @@ class StripTagsSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( 1 === count( $parameters ) ) {
+		if ( count( $parameters ) === 1 ) {
 			$message = '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_strip_all_tags()` to strip all tags.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'StripTagsOneParameter' );
 		} elseif ( isset( $parameters[2] ) ) {

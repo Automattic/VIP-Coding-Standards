@@ -40,10 +40,10 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 		$curStackPtr = $stackPtr;
-		while ( false !== $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true ) ) {
+		while ( $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true ) !== false ) {
 			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true );
 
-			if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $curStackPtr ]['code'] ) {
+			if ( $this->tokens[ $curStackPtr ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
 				$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
 			} else {
 				$stringWithoutEnclosingQuotationMarks = $this->tokens[ $curStackPtr ]['content'];
@@ -51,12 +51,12 @@ class IncludingNonPHPFileSniff extends Sniff {
 
 			$isFileName = preg_match( '/.*(\.[a-z]{2,})$/i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
 
-			if ( false === $isFileName || 0 === $isFileName ) {
+			if ( $isFileName === false || $isFileName === 0 ) {
 				continue;
 			}
 
 			$extension = $regexMatches[1];
-			if ( true === in_array( $extension, [ '.php', '.inc' ], true ) ) {
+			if ( in_array( $extension, [ '.php', '.inc' ], true ) === true ) {
 				return;
 			}
 
@@ -64,7 +64,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 			$code    = 'IncludingNonPHPFile';
 
-			if ( true === in_array( $extension, [ '.svg', '.css' ], true ) ) {
+			if ( in_array( $extension, [ '.svg', '.css' ], true ) === true ) {
 				// Be more specific for SVG and CSS files.
 				$message = 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`.';
 				$code    = 'IncludingSVGCSSFile';

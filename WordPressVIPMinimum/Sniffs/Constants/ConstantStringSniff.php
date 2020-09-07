@@ -38,26 +38,26 @@ class ConstantStringSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( false === in_array( $this->tokens[ $stackPtr ]['content'], [ 'define', 'defined' ], true ) ) {
+		if ( in_array( $this->tokens[ $stackPtr ]['content'], [ 'define', 'defined' ], true ) === false ) {
 			return;
 		}
 
 		// Find the next non-empty token.
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $nextToken ]['code'] ) {
+		if ( $this->tokens[ $nextToken ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call.
 			return;
 		}
 
-		if ( false === isset( $this->tokens[ $nextToken ]['parenthesis_closer'] ) ) {
+		if ( isset( $this->tokens[ $nextToken ]['parenthesis_closer'] ) === false ) {
 			// Not a function call.
 			return;
 		}
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 
-		if ( T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $nextToken ]['code'] ) {
+		if ( $this->tokens[ $nextToken ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
 			$message = 'Constant name, as a string, should be used along with `%s()`.';
 			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 			$this->phpcsFile->addError( $message, $nextToken, 'NotCheckingConstantName', $data );

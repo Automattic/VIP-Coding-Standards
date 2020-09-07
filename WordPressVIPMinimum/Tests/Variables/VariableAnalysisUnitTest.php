@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the Variable Analysis sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Variables\VariableAnalysisSniff
  */
 class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 
@@ -32,8 +34,8 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			5  => 2,
-			18 => 2,
+			1 => 1,
+			5 => 2,
 		];
 	}
 

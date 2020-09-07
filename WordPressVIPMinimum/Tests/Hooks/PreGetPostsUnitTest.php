@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the PreGetPosts sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Hooks\PreGetPostsSniff
  */
 class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 
@@ -32,13 +34,15 @@ class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			8  => 1,
-			11 => 1,
-			29 => 1,
-			32 => 1,
-			52 => 1,
-			57 => 1,
-			87 => 1,
+			8   => 1,
+			11  => 1,
+			29  => 1,
+			32  => 1,
+			52  => 1,
+			57  => 1,
+			87  => 1,
+			128 => 1,
+			133 => 1,
 		];
 	}
 

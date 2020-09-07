@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the EscapingVoidReturnFunctions sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Security\EscapingVoidReturnFunctionsSniff
  */
 class EscapingVoidReturnFunctionsUnitTest extends AbstractSniffUnitTest {
 

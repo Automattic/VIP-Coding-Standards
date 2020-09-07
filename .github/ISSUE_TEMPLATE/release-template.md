@@ -9,13 +9,13 @@ assignees: GaryJones, rebeccahum
 
 ⚠️ DO NOT MERGE (YET) ⚠️
 
-Please do add approvals if you agree.
+[Remaining work for this Milestone](https://github.com/Automattic/VIP-Coding-Standards/milestone/X)
 
-PR for tracking changes for the 2.x.y release. Target release date: DOW DD MMMM.
+PR for tracking changes for the X.Y.Z release. Target release date: DOW DD MMMM YYYY.
 
-- [ ] Add changelog for this release.
+- [ ] Add change log for this release: PR #XXX
 - [ ] Merge this PR.
-- [ ] Add release tag against `master`.
+- [ ] Add signed release tag against `master`.
 - [ ] Close the current milestone.
 - [ ] Open a new milestone for the next release.
 - [ ] If any open PRs/issues which were milestoned for this release do not make it into the release, update their milestone.

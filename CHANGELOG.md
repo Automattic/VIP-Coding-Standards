@@ -4,12 +4,53 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2020-09-09
+
+Props: GaryJones, jrfnl, rebeccahum.
+
+Technically, there's a breaking change due to the use of the VariableAnalysis package over the previous sniff. If you have `WordPressVIPMinimum.Variables.Variables` references in your PHPCS config file or in inline ignore comments, then these will need to be updated to `VariableAnalysis.CodeAnalysis.VariableAnalysis`.
+
+### Added
+- [#494](https://github.com/Automattic/VIP-Coding-Standards/pull/494): `.gitattributes` file.
+- [#495](https://github.com/Automattic/VIP-Coding-Standards/pull/495): `CODEOWNERS` file.
+- [#450](https://github.com/Automattic/VIP-Coding-Standards/pull/450): [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis/) package.
+- [#560](https://github.com/Automattic/VIP-Coding-Standards/pull/560): Allow checking test code coverage.
+- [#579](https://github.com/Automattic/VIP-Coding-Standards/pull/560): Docs: Add comparisons and props to change log for old versions.
+
+### Changed
+- [#500](https://github.com/Automattic/VIP-Coding-Standards/pull/500): Travis: change from "trusty" to "xenial".
+- [#501](https://github.com/Automattic/VIP-Coding-Standards/pull/501): Move and improve `CONTRIBUTING.md`.
+- [#502](https://github.com/Automattic/VIP-Coding-Standards/pull/502): CS Ruleset: minor tweaks.
+- [#508](https://github.com/Automattic/VIP-Coding-Standards/pull/508): RulesetTest: don't use the system default version of PHP.
+- [#558](https://github.com/Automattic/VIP-Coding-Standards/pull/558): Test bootstrap: various minor tweaks.
+- [#571](https://github.com/Automattic/VIP-Coding-Standards/pull/571): CS: change yoda conditions to non-yoda.
+- [#573](https://github.com/Automattic/VIP-Coding-Standards/pull/573): Composer: Change minimum stability to stable.
+
+### Fixed
+- [#503](https://github.com/Automattic/VIP-Coding-Standards/pull/503): RulesetTest, fix compatibility with Windows.
+- [#504](https://github.com/Automattic/VIP-Coding-Standards/pull/504): RulesetTest: fail the build on failing ruleset tests, fix the failing ruleset test, and fix the test script to handle 0 values.
+- [#505](https://github.com/Automattic/VIP-Coding-Standards/pull/505): DeclarationCompatibility: fix incorrect signature check for `Walker::walk()`.
+- [#509](https://github.com/Automattic/VIP-Coding-Standards/pull/509): RulesetTest: Revert #485 and fix one of the three causes properly.
+- [#559](https://github.com/Automattic/VIP-Coding-Standards/pull/559): Variables/RestrictedVariables: fix namespace of unit test file, fix the test.
+- [#561](https://github.com/Automattic/VIP-Coding-Standards/pull/561): Functions/RestrictedFunctions: fix false positive on class instantiation.
+- [#563](https://github.com/Automattic/VIP-Coding-Standards/pull/563): Hooks/AlwaysReturnInFilter: add support for hook-ins using short arrays.
+- [#564](https://github.com/Automattic/VIP-Coding-Standards/pull/564): Hooks/PreGetPosts: add support for hook-ins using short arrays.
+- [#565](https://github.com/Automattic/VIP-Coding-Standards/pull/565): PreGetPosts: improve the `isEarlyMainQueryCheck()` method.
+- [#566](https://github.com/Automattic/VIP-Coding-Standards/pull/566): RestrictedFunctions: fix false negative - functions in `config_settings` would never match.
+- [#569](https://github.com/Automattic/VIP-Coding-Standards/pull/569): RestrictedVariables: don't report on "use" in `isset()`.
+- [#575](https://github.com/Automattic/VIP-Coding-Standards/pull/575): ProperEscaping: Fix message for action attribute.
+- [#576](https://github.com/Automattic/VIP-Coding-Standards/pull/576): Docs: Update notes for releasing.
+
+### Deprecated
+- [#450](https://github.com/Automattic/VIP-Coding-Standards/pull/450): Deprecate Variables/VariableAnalysisSniff. Will be removed in the next major release.
+
 ## [2.1.0] - 2020-07-07
 
 Bumps requirements to PHPCS 3.5.5+ and WPCS 2.3.0+.
 
-### Added
+Props: GaryJones, jenkoian, kevinfodness, rebeccahum.
 
+### Added
 - `get_page_by_path()` restricted function warning, to suggest `wpcom_vip_get_page_by_path()` function.
 - `stats_get_csv()` restricted function error, since this is a Jetpack-only function.
 - Expanded list of HTMLExecutingFunctions to include `after`, `appendTo`, `before`, `insertAfter`, `insertBefore`, `prepend`, `prependTo`, `replaceAll` and `replaceWith`.
@@ -17,7 +58,6 @@ Bumps requirements to PHPCS 3.5.5+ and WPCS 2.3.0+.
 - PHP 8 nightly testing.
 
 ### Changed
-
 - Expand message for `wp_remote_get()` usage.
 - Downgrade `append()` usage violation from Error to Warning for VIP Go, to be consistent with the other HTMLExecutingFunctions.
 - Downgrade AdminBarRemoval sniff from Error to Warning for VIP Go.
@@ -26,12 +66,10 @@ Bumps requirements to PHPCS 3.5.5+ and WPCS 2.3.0+.
 - Update issue templates.
 
 ### Fixed
-
 - Use new `WordPress.DateTime.RestrictedFunctions` sniff instead of deprecated `WordPress.WP.TimezoneChange`.
 - Fixed warnings and information items in Travis.
 
 ### Removed
-
 - `get_super_admins()` restricted function rule for VIP Go.
 - `WordPressVIPMinimum.VersionControl.MergeConflict` sniff in favour of `Generic.VersionControl.GitMergeConflict`.
 
@@ -41,8 +79,9 @@ This release switches from having WPCS `1.*` as a dependency, to WPCS `2.*`. It 
 
 The sniffs in WPCS `2.*` are more accurate, so you may see new violations there weren't being reported before, and a reduction in violations for false positives.  
 
-### Added
+Props: GaryJones, hanifn, paulscreiber, rebeccahum, tomjn. 
 
+### Added
 - Switch to using WPCS `2.*`.
 	- Remove reference to WPCS's `PHPAliases.php`.
 	- Remove WPCS `1.*`'s `WordPress.VIP` references from rulesets.
@@ -53,7 +92,6 @@ The sniffs in WPCS `2.*` are more accurate, so you may see new violations there 
 	- Update `DiscouragedPHPFunctions` group exclusion in `WordPressVIPMinimum` ruleset.
 	
 ### Changed 
-
 - Downgrade use of file operation functions from Error to Warning:
 	- `delete`
 	- `file_put_contents`
@@ -79,7 +117,6 @@ The sniffs in WPCS `2.*` are more accurate, so you may see new violations there 
 - Switch development to a `git-flow` workflow.
 
 ## Fixed
-
 - Fixed CS violations in VIPCS code.
 
 ## [1.0.0] - 2019-04-24
@@ -88,8 +125,9 @@ This release contains many breaking changes.
 
 It requires PHP `>= 5.6`, PHPCS `3.2.3+`, and WPCS `1.*`. It does not work with WPCS `2.*`.
 
-### Reorganisation and Renaming
+Props: GaryJones, rebeccahum, whyisjake, WPprodigy.
 
+### Reorganisation and Renaming
 The sniffs in VIPCS have been reorganised into different categories, with new sniff names and new violation codes. The changes are detailed in the table below. If you reference any of the old violations in your custom ruleset (to change severity, type, or message), or with `// phpcs:ignore` or `// phpcs:disable`, you will need to updates these references to the new violation codes.
 
 | Original Violation | New Violation |
@@ -210,7 +248,6 @@ The sniffs in VIPCS have been reorganised into different categories, with new sn
 | `WordPressVIPMinimum.VIP.WPQueryParams.post__not_in` | `WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn` |
 
 ### Added
-
 - New violations:
 	- `WordPressVIPMinimum.Functions.RestrictedFunctions.chmod_chgrp`
 	- `WordPressVIPMinimum.Functions.RestrictedFunctions.chmod_chown`
@@ -345,9 +382,11 @@ The sniffs in VIPCS have been reorganised into different categories, with new sn
 - Silence `WordPress.WP.AlternativeFunctions.file_system_read_fwrite` and `WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents` since we have `WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_*`.
 - Silence Short Echo tags on `WordPress-VIP-Go`.
 
-## 0.4.0 - 2018-12-19
+## [0.4.0] - 2018-12-19
 
 This release contains breaking changes.
+
+Props: GaryJones, nickdaugherty, rebeccahum, tomjn.
 
 ### Added
  - `WordPressVIPMinimum.Cache.LowExpiryCacheTime` sniff.
@@ -398,6 +437,53 @@ This release contains breaking changes.
  - `wpcom_vip_get_page_by_path` from `WordPressVIPMinimum.VIP.RestrictedFunctions`
  - Version check for PHP 7 or less in `WordPressVIPMinimum.Variables.VariableAnalysis` unit test since tests are not failing anymore.
 
+## [0.3.1] - 2018-12-04
+
+Originally tagged as 0.2.5.
+
+Props: emrikol, GaryJones, gudmdharalds, mikeyarce, nickdaugherty, paulschreiber, rebeccahum, sboisvert, tomjn.
+
+## [0.3.0] - 2018-08-15
+
+Props: BrookeDot, david-binda, GaryJones, gudmdharalds, rebeccahum, sboisvert, tomjn, uxcitizen.
+
+## [0.2.4] - 2018-07-18
+
+Props: david-binda, sboisvert, tessneedham, trepmal.
+
+## [0.2.3] - 2018-03-29
+
+Props: david-binda, jacklenox, pyronaur, sboisvert, trepmal, vaurdan.
+
+## [0.2.2] - 2018-01-19
+
+Props: david-binda.
+
+## [0.2.1] - 2017-12-01
+
+Props: david-binda, philipjohn, tomjn.
+
+## [0.2.0] - 2017-08-15
+
+Props: david-binda.
+
+## [0.1.0] - 2017-08-14
+
+Initial release.
+
+Props: david-binda, pkevan.
+
+
+[2.2.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/1.0.0...2.0.0
 [1.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/0.4.0...1.0.0
+[0.4.0]: https://github.com/automattic/vip-coding-standards/compare/0.3.1...0.4.0
+[0.3.1]: https://github.com/automattic/vip-coding-standards/compare/0.3.0...0.3.1
+[0.3.0]: https://github.com/automattic/vip-coding-standards/compare/0.2.4...0.3.0
+[0.2.4]: https://github.com/automattic/vip-coding-standards/compare/0.2.3...0.2.4
+[0.2.3]: https://github.com/automattic/vip-coding-standards/compare/0.2.2...0.2.3
+[0.2.2]: https://github.com/automattic/vip-coding-standards/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/automattic/vip-coding-standards/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/automattic/vip-coding-standards/compare/0.1.0...0.2.0
+[0.1.0]: https://github.com/automattic/vip-coding-standards/compare/f0e821c0b91f7e5b3850c5ae7bfab4f38d24e406...0.1.0

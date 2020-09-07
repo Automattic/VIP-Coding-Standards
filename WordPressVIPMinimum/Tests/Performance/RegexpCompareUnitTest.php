@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the RegexpCompare sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\RegexpCompareSniff
  */
 class RegexpCompareUnitTest extends AbstractSniffUnitTest {
 

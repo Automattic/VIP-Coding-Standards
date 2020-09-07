@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the CacheValueOverride sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\CacheValueOverrideSniff
  */
 class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 

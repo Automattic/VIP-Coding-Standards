@@ -69,20 +69,20 @@ class WindowSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'window' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'window' ) {
 			// Doesn't begin with 'window', bail.
 			return;
 		}
 
 		$nextTokenPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 		$nextToken    = $this->tokens[ $nextTokenPtr ]['code'];
-		if ( T_OBJECT_OPERATOR !== $nextToken && T_OPEN_SQUARE_BRACKET !== $nextToken ) {
+		if ( $nextToken !== T_OBJECT_OPERATOR && $nextToken !== T_OPEN_SQUARE_BRACKET ) {
 			// No . or [' next, bail.
 			return;
 		}
 
 		$nextNextTokenPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextTokenPtr + 1, null, true, null, true );
-		if ( false === $nextNextTokenPtr ) {
+		if ( $nextNextTokenPtr === false ) {
 			// Something went wrong, bail.
 			return;
 		}
@@ -97,9 +97,9 @@ class WindowSniff extends Sniff {
 		$nextNextNextToken    = $this->tokens[ $nextNextNextTokenPtr ]['code'];
 
 		$nextNextNextNextToken = false;
-		if ( T_OBJECT_OPERATOR === $nextNextNextToken || T_OPEN_SQUARE_BRACKET === $nextNextNextToken ) {
+		if ( $nextNextNextToken === T_OBJECT_OPERATOR || $nextNextNextToken === T_OPEN_SQUARE_BRACKET ) {
 			$nextNextNextNextTokenPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextNextNextTokenPtr + 1, null, true, null, true );
-			if ( false === $nextNextNextNextTokenPtr ) {
+			if ( $nextNextNextNextTokenPtr === false ) {
 				// Something went wrong, bail.
 				return;
 			}
@@ -117,7 +117,7 @@ class WindowSniff extends Sniff {
 
 		$prevTokenPtr = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_EQUAL === $this->tokens[ $prevTokenPtr ]['code'] ) {
+		if ( $this->tokens[ $prevTokenPtr ]['code'] === T_EQUAL ) {
 			// Variable assignment.
 			$message = 'Data from JS global "%s" may contain user-supplied values and should be checked.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'VarAssignment', $data );

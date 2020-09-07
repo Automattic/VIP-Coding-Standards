@@ -68,6 +68,13 @@ class RulesetTest {
 	private $ruleset;
 
 	/**
+	 * Path to the PHPCS executable.
+	 *
+	 * @var string
+	 */
+	private $phpcs_bin = 'phpcs';
+
+	/**
 	 * String returned by PHP_CodeSniffer report for an Error.
 	 */
 	const ERROR_TYPE = 'ERROR';
@@ -82,17 +89,20 @@ class RulesetTest {
 		$this->ruleset  = $ruleset;
 		$this->expected = $expected;
 
-		// Travis support.
-		if ( false === getenv( 'PHPCS_BIN' ) ) {
+		// Travis and Windows support.
+		$phpcs_bin = getenv( 'PHPCS_BIN' );
+		if ( $phpcs_bin === false ) {
 			// phpcs:ignore
 			putenv( 'PHPCS_BIN=phpcs' );
+		} else {
+			$this->phpcs_bin = realpath( $phpcs_bin );
 		}
 
 		$output = $this->collect_phpcs_result();
 
 		if ( ! is_object( $output ) || empty( $output ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			printf( 'The PHPCS command checking the ruleset haven\'t returned any issues. Bailing ...' . PHP_EOL );
+			printf( 'The PHPCS command checking the ruleset hasn\'t returned any issues. Bailing ...' . PHP_EOL );
 			exit( 1 ); // Die early, if we don't have any output.
 		}
 
@@ -128,7 +138,17 @@ class RulesetTest {
 	 * @return array Returns an associative array with keys of `totals` and `files`.
 	 */
 	private function collect_phpcs_result() {
-		$shell = sprintf( '$PHPCS_BIN --severity=1 --standard=%1$s --report=json ./%1$s/ruleset-test.inc', $this->ruleset );
+		$php = '';
+		if ( \PHP_BINARY && in_array( \PHP_SAPI, [ 'cgi-fcgi', 'cli', 'cli-server', 'phpdbg' ], true ) ) {
+			$php = \PHP_BINARY . ' ';
+		}
+
+		$shell = sprintf(
+			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
+			$php, // Current PHP executable if avaiable.
+			$this->phpcs_bin,
+			$this->ruleset
+		);
 		// phpcs:ignore
 		$output = shell_exec( $shell );
 
@@ -179,7 +199,7 @@ class RulesetTest {
 	 * @return bool True if string matches error type.
 	 */
 	private function violation_type_is_error( $violation ) {
-		return self::ERROR_TYPE === $violation->type;
+		return $violation->type === self::ERROR_TYPE;
 	}
 
 	/**
@@ -215,11 +235,15 @@ class RulesetTest {
 	 */
 	private function check_missing_expected_values() {
 		foreach ( $this->expected as $type => $lines ) {
-			if ( 'messages' === $type ) {
+			if ( $type === 'messages' ) {
 				continue;
 			}
 
 			foreach ( $lines as $line_number => $expected_count_of_type_violations ) {
+				if ( $expected_count_of_type_violations === 0 ) {
+					continue;
+				}
+
 				if ( ! isset( $this->{$type}[ $line_number ] ) ) {
 					$this->error_warning_message( $expected_count_of_type_violations, $type, 0, $line_number );
 				} elseif ( $this->{$type}[ $line_number ] !== $expected_count_of_type_violations ) {
@@ -237,6 +261,10 @@ class RulesetTest {
 	private function check_unexpected_values() {
 		foreach ( [ 'errors', 'warnings' ] as $type ) {
 			foreach ( $this->$type as $line_number => $actual_count_of_type_violations ) {
+				if ( $actual_count_of_type_violations === 0 ) {
+					continue;
+				}
+
 				if ( ! isset( $this->expected[ $type ][ $line_number ] ) ) {
 					$this->error_warning_message( 0, $type, $actual_count_of_type_violations, $line_number );
 				} elseif ( $actual_count_of_type_violations !== $this->expected[ $type ][ $line_number ] ) {

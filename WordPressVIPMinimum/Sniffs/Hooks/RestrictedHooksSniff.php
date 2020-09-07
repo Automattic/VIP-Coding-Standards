@@ -114,7 +114,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		if ( $concat_ptr ) {
 			$hook_name = '';
 			for ( $i = $parameter['start'] + 1; $i < $parameter['end']; $i++ ) {
-				if ( T_CONSTANT_ENCAPSED_STRING === $this->tokens[ $i ]['code'] ) {
+				if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
 					$hook_name .= str_replace( [ "'", '"' ], '', $this->tokens[ $i ]['content'] );
 				}
 			}

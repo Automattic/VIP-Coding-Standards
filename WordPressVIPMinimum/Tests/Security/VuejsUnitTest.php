@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the unescaped output in Vue.js templating engine.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Security\VuejsSniff
  */
 class VuejsUnitTest extends AbstractSniffUnitTest {
 

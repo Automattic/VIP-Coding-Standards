@@ -46,20 +46,20 @@ class InnerHTMLSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'innerHTML' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'innerHTML' ) {
 			// Looking for .innerHTML only.
 			return;
 		}
 
 		$prevToken = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true, null, true );
 
-		if ( T_OBJECT_OPERATOR !== $this->tokens[ $prevToken ]['code'] ) {
+		if ( $this->tokens[ $prevToken ]['code'] !== T_OBJECT_OPERATOR ) {
 				return;
 		}
 
 		$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true );
 
-		if ( T_EQUAL !== $this->tokens[ $nextToken ]['code'] ) {
+		if ( $this->tokens[ $nextToken ]['code'] !== T_EQUAL ) {
 			// Not an assignment.
 			return;
 		}
@@ -67,9 +67,9 @@ class InnerHTMLSniff extends Sniff {
 		$nextToken     = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		$foundVariable = false;
 
-		while ( false !== $nextToken && T_SEMICOLON !== $this->tokens[ $nextToken ]['code'] ) {
+		while ( $nextToken !== false && $this->tokens[ $nextToken ]['code'] !== T_SEMICOLON ) {
 
-			if ( T_STRING === $this->tokens[ $nextToken ]['code'] ) {
+			if ( $this->tokens[ $nextToken ]['code'] === T_STRING ) {
 				$foundVariable = true;
 				break;
 			}
@@ -77,7 +77,7 @@ class InnerHTMLSniff extends Sniff {
 			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
 		}
 
-		if ( true === $foundVariable ) {
+		if ( $foundVariable === true ) {
 			$message = 'Any HTML passed to `%s` gets executed. Consider using `.textContent` or make sure that used variables are properly escaped.';
 			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'Found', $data );

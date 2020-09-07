@@ -10,8 +10,8 @@ $wp_db->update( $wpdb->usermeta, array( 'meta_value' => 'bar!' ), array( 'user_i
 
 $query = "SELECT * FROM $wpdb->posts"; // Ok.
 
-if ( isset( $_SERVER['REMOTE_ADDR'] ) ) { // Warning.
-	foo( $_SERVER['HTTP_USER_AGENT'] ); // Warning.
+if ( isset( $_SERVER['REMOTE_ADDR'] ) ) { // OK.
+	foo( $_SERVER['REMOTE_ADDR'] ); // Warning.
 }
 
 $x = $_COOKIE['bar']; // Warning.
@@ -28,10 +28,14 @@ $phrase = <<<EOD
 Your user-agent is {$_SERVER['HTTP_USER_AGENT']}
 EOD;
 
-// phpcs:set WordPressVIPMinimum.Variables.RestrictedVariables exclude user_meta
-$query = "SELECT * FROM $wpdb->usermeta"; // Error.
+// phpcs:set WordPressVIPMinimum.Variables.RestrictedVariables exclude[] user_meta
+$query = "SELECT * FROM $wpdb->usermeta"; // Ok, excluded.
 
-// phpcs:set WordPressVIPMinimum.Functions.RestrictedFunctions exclude false
+// phpcs:set WordPressVIPMinimum.Functions.RestrictedFunctions exclude[]
 
 foo( $_SESSION ); // Error.
 foo( $_SESSION['bar'] ); // Error.
+
+if ( isset( $_SESSION ) ) { // OK.
+	$cache = false;
+}

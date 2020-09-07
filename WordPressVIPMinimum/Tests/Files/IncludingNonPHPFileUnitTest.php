@@ -12,6 +12,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the IncludingFile sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Files\IncludingNonPHPFileSniff
  */
 class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 

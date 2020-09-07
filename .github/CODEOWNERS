@@ -1,0 +1,4 @@
+# The following teams will get auto-tagged for a review.
+# See https://docs.github.com/en/enterprise/2.15/user/articles/about-code-owners
+
+* @Automattic/vipcs

@@ -36,13 +36,13 @@ class StaticStrreplaceSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( 'str_replace' !== $this->tokens[ $stackPtr ]['content'] ) {
+		if ( $this->tokens[ $stackPtr ]['content'] !== 'str_replace' ) {
 			return;
 		}
 
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
-		if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 			return;
 		}
 
@@ -50,9 +50,9 @@ class StaticStrreplaceSniff extends Sniff {
 		for ( $i = 0; $i < 3; $i++ ) {
 			$param_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $next_start_ptr, null, true );
 
-			if ( T_ARRAY === $this->tokens[ $param_ptr ]['code'] ) {
+			if ( $this->tokens[ $param_ptr ]['code'] === T_ARRAY ) {
 				$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_ptr + 1, null, true );
-				if ( T_OPEN_PARENTHESIS !== $this->tokens[ $openBracket ]['code'] ) {
+				if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
 					return;
 				}
 
@@ -60,9 +60,9 @@ class StaticStrreplaceSniff extends Sniff {
 				$closeBracket = $this->tokens[ $openBracket ]['parenthesis_closer'];
 
 				$array_item_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $openBracket + 1, $closeBracket, true );
-				while ( false !== $array_item_ptr ) {
+				while ( $array_item_ptr !== false ) {
 
-					if ( T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $array_item_ptr ]['code'] ) {
+					if ( $this->tokens[ $array_item_ptr ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
 						return;
 					}
 					$array_item_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $array_item_ptr + 1, $closeBracket, true );
@@ -73,7 +73,7 @@ class StaticStrreplaceSniff extends Sniff {
 
 			}
 
-			if ( T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $param_ptr ]['code'] ) {
+			if ( $this->tokens[ $param_ptr ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
 				return;
 			}
 

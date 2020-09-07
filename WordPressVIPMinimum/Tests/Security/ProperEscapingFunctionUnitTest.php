@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the ProperEscapingFunction sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Security\ProperEscapingFunctionSniff
  */
 class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 
@@ -31,6 +33,7 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			33 => 1,
 			37 => 1,
+			41 => 1,
 		];
 	}
 

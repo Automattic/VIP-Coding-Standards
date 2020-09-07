@@ -13,6 +13,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * Unit test class for the LowExpiryCacheTime sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\LowExpiryCacheTimeSniff
  */
 class LowExpiryCacheTimeUnitTest extends AbstractSniffUnitTest {
 
