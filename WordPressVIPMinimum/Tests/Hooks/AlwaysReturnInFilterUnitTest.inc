@@ -172,3 +172,23 @@ class bad_example_class_short_array { // Error.
 	}
 }
 
+abstract class good_example_abstract_class { // Ok.
+	public function __construct() {
+		add_filter( 'good_example_class_filter', [ $this, 'class_filter' ] );
+	}
+
+	abstract public function class_filter( $param );
+}
+
+class good_example_abstract_class_implementation { // Ok.
+	public function class_filter( $param ) {
+		if ( 1 === 1 ) {
+			if ( 1 === 0 ) {
+				return 'whoops';
+			} else {
+				return 'here!';
+			}
+		}
+		return 'This is Okay';
+	}
+}
