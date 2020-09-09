@@ -176,7 +176,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	private function processFunctionBody( $stackPtr ) {
 
 		/**
-		 * Stop if the constructor doesn't have a body, like when it is abstract.
+		 * Stop if the function doesn't have a body, like when it is abstract.
 		 *
 		 * @see https://github.com/squizlabs/PHP_CodeSniffer/blob/master/src/Standards/Generic/Sniffs/NamingConventions/ConstructorNameSniff.php#L87-L90
 		 */
