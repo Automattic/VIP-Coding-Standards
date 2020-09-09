@@ -180,7 +180,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		 *
 		 * @see https://github.com/squizlabs/PHP_CodeSniffer/blob/master/src/Standards/Generic/Sniffs/NamingConventions/ConstructorNameSniff.php#L87-L90
 		 */
-		if ( false === isset( $this->tokens[ $stackPtr ]['scope_closer'] ) ) {
+		if ( isset( $this->tokens[ $stackPtr ]['scope_closer'] ) === false ) {
 			return;
 		}
 
