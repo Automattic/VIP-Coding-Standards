@@ -172,23 +172,26 @@ class bad_example_class_short_array { // Error.
 	}
 }
 
-abstract class good_example_abstract_class { // Ok.
+abstract class warning_filter_points_to_abstract_method {
 	public function __construct() {
-		add_filter( 'good_example_class_filter', [ $this, 'class_filter' ] );
+		add_filter( 'good_example_abstract_class', [ $this, 'abstract_method' ] );
 	}
 
-	abstract public function class_filter( $param );
+	abstract public function abstract_method( $param ); // Warning.
 }
 
-class good_example_abstract_class_implementation { // Ok.
-	public function class_filter( $param ) {
-		if ( 1 === 1 ) {
-			if ( 1 === 0 ) {
-				return 'whoops';
-			} else {
-				return 'here!';
-			}
-		}
-		return 'This is Okay';
+class tokenizer_bug_test {
+	public function __construct() {
+		add_filter( 'tokenizer_bug', [ $this, 'tokenizer_bug' ] );
 	}
+
+	public function tokenizer_bug( $param ): namespace\Foo {} // Ok (tokenizer bug in PHPCS < 3.5.7/3.6.0).
 }
+
+// Intentional parse error. This has to be the last test in the file!
+class parse_error_test {
+	public function __construct() {
+		add_filter( 'parse_error', [ $this, 'parse_error' ] );
+	}
+
+	public function parse_error( $param ) // Ok, parse error ignored.
