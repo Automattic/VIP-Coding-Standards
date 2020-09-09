@@ -175,12 +175,18 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
-		/**
-		 * Stop if the function doesn't have a body, like when it is abstract.
-		 *
-		 * @see https://github.com/squizlabs/PHP_CodeSniffer/blob/master/src/Standards/Generic/Sniffs/NamingConventions/ConstructorNameSniff.php#L87-L90
-		 */
-		if ( isset( $this->tokens[ $stackPtr ]['scope_closer'] ) === false ) {
+		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
+
+		$methodProps = $this->phpcsFile->getMethodProperties( $stackPtr );
+		if ( $methodProps['is_abstract'] === true ) {
+			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please, make sure that all child class implementations of this abstract method always return a value.';
+			$data    = [ $filterName ];
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'AbstractMethod', $data );
+			return;
+		}
+
+		if ( isset( $this->tokens[ $stackPtr ]['scope_opener'], $this->tokens[ $stackPtr ]['scope_closer'] ) === false ) {
+			// Live coding, parse or tokenizer error.
 			return;
 		}
 
@@ -197,8 +203,6 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		if ( $this->tokens[ $argPtr ]['code'] === T_BITWISE_AND ) {
 			return;
 		}
-
-		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
