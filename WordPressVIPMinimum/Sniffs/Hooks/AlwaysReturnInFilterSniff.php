@@ -179,7 +179,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		$methodProps = $this->phpcsFile->getMethodProperties( $stackPtr );
 		if ( $methodProps['is_abstract'] === true ) {
-			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please, make sure that all child class implementations of this abstract method always return a value.';
+			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please ensure that child class implementations of this method always return a value.';
 			$data    = [ $filterName ];
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'AbstractMethod', $data );
 			return;
