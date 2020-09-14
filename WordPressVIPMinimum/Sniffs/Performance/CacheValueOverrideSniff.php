@@ -29,7 +29,7 @@ class CacheValueOverrideSniff extends Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return Tokens::$functionNameTokens;
+		return [ T_STRING ];
 	}
 
 
@@ -96,10 +96,6 @@ class CacheValueOverrideSniff extends Sniff {
 	 * @return bool
 	 */
 	private function isFunctionCall( $stackPtr ) {
-
-		if ( in_array( $this->tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) === false ) {
-			return false;
-		}
 
 		// Find the next non-empty token.
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );

@@ -30,7 +30,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return Tokens::$functionNameTokens;
+		return [ T_STRING ];
 	}
 
 	/**
@@ -130,7 +130,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
-			Tokens::$functionNameTokens,
+			T_STRING,
 			$start,
 			$end,
 			false,
