@@ -25,7 +25,7 @@ class PreGetPostsSniff extends Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return Tokens::$functionNameTokens;
+		return [ T_STRING ];
 	}
 
 	/**
@@ -120,7 +120,7 @@ class PreGetPostsSniff extends Sniff {
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
-			Tokens::$functionNameTokens,
+			T_STRING,
 			0,
 			null,
 			false,
@@ -394,7 +394,7 @@ class PreGetPostsSniff extends Sniff {
 			true
 		);
 
-		return $next && in_array( $this->tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) === true && $method === $this->tokens[ $next ]['content'];
+		return $next && $this->tokens[ $next ]['code'] === T_STRING && $method === $this->tokens[ $next ]['content'];
 	}
 
 	/**
