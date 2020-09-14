@@ -175,6 +175,21 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
+		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
+
+		$methodProps = $this->phpcsFile->getMethodProperties( $stackPtr );
+		if ( $methodProps['is_abstract'] === true ) {
+			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please ensure that child class implementations of this method always return a value.';
+			$data    = [ $filterName ];
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'AbstractMethod', $data );
+			return;
+		}
+
+		if ( isset( $this->tokens[ $stackPtr ]['scope_opener'], $this->tokens[ $stackPtr ]['scope_closer'] ) === false ) {
+			// Live coding, parse or tokenizer error.
+			return;
+		}
+
 		$argPtr = $this->phpcsFile->findNext(
 			array_merge( Tokens::$emptyTokens, [ T_STRING, T_OPEN_PARENTHESIS ] ),
 			$stackPtr + 1,
@@ -188,8 +203,6 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		if ( $this->tokens[ $argPtr ]['code'] === T_BITWISE_AND ) {
 			return;
 		}
-
-		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];

@@ -40,7 +40,9 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return [];
+		return [
+			180 => 1,
+		];
 	}
 
 }
