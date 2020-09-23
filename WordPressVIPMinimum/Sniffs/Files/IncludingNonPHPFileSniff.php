@@ -77,7 +77,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 				continue;
 			}
 
-			$extension = $regexMatches[1];
+			$extension = strtolower( $regexMatches[1] );
 			if ( isset( $this->php_extensions[ $extension ] ) === true ) {
 				return;
 			}

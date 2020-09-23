@@ -6,13 +6,13 @@ require "my_file.php"; // OK.
 
 include_once( __DIR__ . "/my_file.php" ); // OK.
 
-include ( MY_CONSTANT . "my_file.php" ); // OK.
+include ( MY_CONSTANT . "my_file.INC" ); // OK.
 
 require_once ( MY_CONSTANT . "my_file.php" ); // OK.
 
-Include( locate_template('index-loop.php') ); // OK.
+Include( locate_template('index-loop.PHP') ); // OK.
 
-require_once __DIR__ . "/my_file.svg"; // NOK.
+require_once __DIR__ . "/my_file.SVG"; // NOK.
 
 Require_Once "my_file.svg"; // NOK.
 
@@ -24,7 +24,7 @@ require ( MY_CONSTANT . "my_file.svg" ); // NOK.
 
 include( locate_template('index-loop.svg') ); // NOK.
 
-require_once __DIR__ . "/my_file.css"; // NOK.
+require_once __DIR__ . "/my_file.CSS"; // NOK.
 
 require_once "my_file.css"; // NOK.
 
@@ -34,13 +34,13 @@ include ( MY_CONSTANT . "my_file.css" ); // NOK.
 
 require_once ( MY_CONSTANT . "my_file.css" ); // NOK.
 
-include( locate_template('index-loop.css') ); // NOK.
+include( locate_template('index-loop.Css') ); // NOK.
 
 REQUIRE_ONCE __DIR__ . "/my_file.csv"; // NOK.
 
 require_once "my_file.inc"; // OK.
 
-include( __DIR__ . "/my_file.csv" ); // NOK.
+include( __DIR__ . "/my_file.CSV" ); // NOK.
 
 include ( MY_CONSTANT . "my_file.csv" ); // NOK.
 
