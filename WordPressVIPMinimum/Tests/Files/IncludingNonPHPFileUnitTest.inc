@@ -51,3 +51,7 @@ include( locate_template('index-loop.csv') ); // NOK.
 echo file_get_contents( 'index-loop.svg' ); // XSS OK.
 
 echo file_get_contents( 'index-loop.css' ); // XSS OK.
+
+include_once 'path/to/geoip.phar'; // OK.
+
+require dirname(__DIR__) . '/externals/aws-sdk.phar'; // OK.

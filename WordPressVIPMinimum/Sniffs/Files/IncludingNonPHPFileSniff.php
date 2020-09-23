@@ -29,8 +29,9 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 * @var array Key is the extension, value is irrelevant.
 	 */
 	private $php_extensions = [
-		'php' => true,
-		'inc' => true,
+		'php'  => true,
+		'inc'  => true,
+		'phar' => true,
 	];
 
 	/**
