@@ -66,11 +66,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 		while ( $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true ) !== false ) {
 			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true );
 
-			if ( $this->tokens[ $curStackPtr ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-				$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
-			} else {
-				$stringWithoutEnclosingQuotationMarks = $this->tokens[ $curStackPtr ]['content'];
-			}
+			$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
 
 			$isFileName = preg_match( '`\.([a-z]{2,})$`i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
 

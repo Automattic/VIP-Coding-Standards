@@ -55,3 +55,9 @@ echo file_get_contents( 'index-loop.css' ); // XSS OK.
 include_once 'path/to/geoip.phar'; // OK.
 
 require dirname(__DIR__) . '/externals/aws-sdk.phar'; // OK.
+
+require "$path/$file.inc"; // OK.
+
+require "$path/$file.css"; // NOK.
+
+include_once $path . '/' . "$file.js"; // NOK.
