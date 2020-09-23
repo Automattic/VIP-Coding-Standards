@@ -11,10 +11,9 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingNonPHPFileSniff.
+ * Ensure that non-PHP files are included via `file_get_contents()` instead of using `include/require[_once]`.
  *
- * Checks that __DIR__, dirname( __FILE__ ) or plugin_dir_path( __FILE__ )
- * is used when including or requiring files.
+ * This prevents potential PHP code embedded in those files from being automatically executed.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
@@ -51,7 +50,6 @@ class IncludingNonPHPFileSniff extends Sniff {
 	public function register() {
 		return Tokens::$includeTokens;
 	}
-
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
