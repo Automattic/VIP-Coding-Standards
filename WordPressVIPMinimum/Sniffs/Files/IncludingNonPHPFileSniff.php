@@ -82,13 +82,16 @@ class IncludingNonPHPFileSniff extends Sniff {
 				return;
 			}
 
-			$message = 'Local non-PHP file should be loaded via `file_get_contents` rather than via `%s`.';
-			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
+			$message = 'Local non-PHP file should be loaded via `file_get_contents` rather than via `%s`. Found: %s';
+			$data    = [
+				strtolower( $this->tokens[ $stackPtr ]['content'] ),
+				$this->tokens[ $curStackPtr ]['content'],
+			];
 			$code    = 'IncludingNonPHPFile';
 
 			if ( isset( $this->svg_css_extensions[ $extension ] ) === true ) {
 				// Be more specific for SVG and CSS files.
-				$message = 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`.';
+				$message = 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`. Found: %s';
 				$code    = 'IncludingSVGCSSFile';
 			}
 
