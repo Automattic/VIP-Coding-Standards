@@ -22,6 +22,28 @@ use PHP_CodeSniffer\Util\Tokens;
 class IncludingNonPHPFileSniff extends Sniff {
 
 	/**
+	 * File extensions used for PHP files.
+	 *
+	 * Files with these extensions are allowed to be `include`d.
+	 *
+	 * @var array Key is the extension, value is irrelevant.
+	 */
+	private $php_extensions = [
+		'php' => true,
+		'inc' => true,
+	];
+
+	/**
+	 * File extensions used for SVG and CSS files.
+	 *
+	 * @var array Key is the extension, value is irrelevant.
+	 */
+	private $svg_css_extensions = [
+		'css' => true,
+		'svg' => true,
+	];
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -49,14 +71,14 @@ class IncludingNonPHPFileSniff extends Sniff {
 				$stringWithoutEnclosingQuotationMarks = $this->tokens[ $curStackPtr ]['content'];
 			}
 
-			$isFileName = preg_match( '/.*(\.[a-z]{2,})$/i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
+			$isFileName = preg_match( '/.*\.([a-z]{2,})$/i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
 
 			if ( $isFileName === false || $isFileName === 0 ) {
 				continue;
 			}
 
 			$extension = $regexMatches[1];
-			if ( in_array( $extension, [ '.php', '.inc' ], true ) === true ) {
+			if ( isset( $this->php_extensions[ $extension ] ) === true ) {
 				return;
 			}
 
@@ -64,7 +86,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 			$code    = 'IncludingNonPHPFile';
 
-			if ( in_array( $extension, [ '.svg', '.css' ], true ) === true ) {
+			if ( isset( $this->svg_css_extensions[ $extension ] ) === true ) {
 				// Be more specific for SVG and CSS files.
 				$message = 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`.';
 				$code    = 'IncludingSVGCSSFile';
