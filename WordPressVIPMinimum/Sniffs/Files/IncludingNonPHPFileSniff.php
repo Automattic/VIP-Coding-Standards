@@ -71,7 +71,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 				$stringWithoutEnclosingQuotationMarks = $this->tokens[ $curStackPtr ]['content'];
 			}
 
-			$isFileName = preg_match( '/.*\.([a-z]{2,})$/i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
+			$isFileName = preg_match( '`\.([a-z]{2,})$`i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
 
 			if ( $isFileName === false || $isFileName === 0 ) {
 				continue;
