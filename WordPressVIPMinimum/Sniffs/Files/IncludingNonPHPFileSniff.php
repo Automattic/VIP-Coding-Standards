@@ -74,7 +74,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 
 			$isFileName = preg_match( '`\.([a-z]{2,})$`i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
 
-			if ( $isFileName === false || $isFileName === 0 ) {
+			if ( $isFileName !== 1 ) {
 				continue;
 			}
 
