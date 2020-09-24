@@ -60,4 +60,17 @@ require "$path/$file.inc"; // OK.
 
 require "$path/$file.css"; // NOK.
 
-include_once $path . '/' . "$file.js"; // NOK.
+include_once $path . '/' . "$file.js" ?><!-- NOK. -->
+<?php
+echo 'some .css'; // OK.
+
+if ((include 'vars.php') == TRUE) {} // OK.
+
+if ((include 'vars.svg') && $imported_var === 'foo') {} // NOK.
+
+require ( dirname(__FILE__) . '/path' ) . 'concatafterparentheses.php'; // OK.
+require ( dirname(__FILE__) . '/path' ) . 'concatafterparentheses.py'; // NOK.
+
+// Live coding.
+// Intentional parse error. This has to be the last test in the file.
+include $path . 'filename.css
