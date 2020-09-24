@@ -98,6 +98,10 @@ class IncludingNonPHPFileSniff extends Sniff {
 			}
 
 			$this->phpcsFile->addError( $message, $curStackPtr, $code, $data );
+
+			// Don't throw more than one error for any one statement.
+			return;
+
 		} while ( $curStackPtr > $stackPtr );
 	}
 

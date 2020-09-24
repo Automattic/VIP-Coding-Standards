@@ -46,6 +46,7 @@ class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 			69 => 1,
 			72 => 1,
 			75 => 1,
+			77 => 1,
 		];
 	}
 
