@@ -7,7 +7,6 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use PHP_CodeSniffer\Files\File;
 use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
