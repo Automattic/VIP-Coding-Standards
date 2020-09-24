@@ -64,8 +64,12 @@ class IncludingNonPHPFileSniff extends Sniff {
 	public function process_token( $stackPtr ) {
 		$curStackPtr      = $stackPtr;
 		$end_of_statement = $this->phpcsFile->findEndOfStatement( $stackPtr );
-		while ( $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, $end_of_statement + 1 ) !== false ) {
-			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, $end_of_statement + 1 );
+
+		do {
+			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, $end_of_statement + 1);
+			if ( $curStackPtr === false ) {
+				return;
+			}
 
 			$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
 
@@ -94,7 +98,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 			}
 
 			$this->phpcsFile->addError( $message, $curStackPtr, $code, $data );
-		}
+		} while ( $curStackPtr <= $end_of_statement );
 	}
 
 }
