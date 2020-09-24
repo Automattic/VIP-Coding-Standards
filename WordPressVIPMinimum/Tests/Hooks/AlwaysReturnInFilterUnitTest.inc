@@ -185,7 +185,7 @@ class tokenizer_bug_test {
 		add_filter( 'tokenizer_bug', [ $this, 'tokenizer_bug' ] );
 	}
 
-	public function tokenizer_bug( $param ): namespace\Foo {} // Ok (tokenizer bug in PHPCS < 3.5.7/3.6.0).
+	public function tokenizer_bug( $param ): namespace\Foo {} // Ok (tokenizer bug PHPCS < 3.5.7) / Error in PHPCS >= 3.5.7.
 }
 
 // Intentional parse error. This has to be the last test in the file!
