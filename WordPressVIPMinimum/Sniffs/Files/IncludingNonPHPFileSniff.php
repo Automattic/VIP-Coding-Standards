@@ -62,11 +62,11 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
-		$curStackPtr      = $stackPtr;
 		$end_of_statement = $this->phpcsFile->findEndOfStatement( $stackPtr );
+		$curStackPtr      = ( $end_of_statement + 1 );
 
 		do {
-			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, $end_of_statement + 1);
+			$curStackPtr = $this->phpcsFile->findPrevious( Tokens::$stringTokens, $curStackPtr - 1, $stackPtr );
 			if ( $curStackPtr === false ) {
 				return;
 			}
@@ -98,7 +98,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 			}
 
 			$this->phpcsFile->addError( $message, $curStackPtr, $code, $data );
-		} while ( $curStackPtr <= $end_of_statement );
+		} while ( $curStackPtr > $stackPtr );
 	}
 
 }

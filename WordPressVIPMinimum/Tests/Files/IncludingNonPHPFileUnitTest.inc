@@ -71,6 +71,9 @@ if ((include 'vars.svg') && $imported_var === 'foo') {} // NOK.
 require ( dirname(__FILE__) . '/path' ) . 'concatafterparentheses.php'; // OK.
 require ( dirname(__FILE__) . '/path' ) . 'concatafterparentheses.py'; // NOK.
 
+include_once '/src.css' . DIRECTORY_SEPARATOR . $subdir . '/filename.php'; // OK.
+include_once '/src.php' . DIRECTORY_SEPARATOR . $subdir . '/filename.css'; // NOK.
+
 // Live coding.
 // Intentional parse error. This has to be the last test in the file.
 include $path . 'filename.css
