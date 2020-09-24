@@ -76,6 +76,10 @@ include_once '/src.php' . DIRECTORY_SEPARATOR . $subdir . '/filename.css'; // NO
 
 include_once '/src.csv' . DIRECTORY_SEPARATOR . $subdir . '/filename.png'; // NOK.
 
+include 'http://www.example.com/file.php?foo=1&bar=2'; // OK - this sniff is not about remote includes.
+
+require __DIR__ . '/' . $subdir . '/' . $filename . '.' . $extension; // OK - undetermined.
+
 // Live coding.
 // Intentional parse error. This has to be the last test in the file.
 include $path . 'filename.css
