@@ -8,8 +8,9 @@
 namespace WordPressVIPMinimum\Tests\Files;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
- * Unit test class for the IncludingFile sniff.
+ * Unit test class for the IncludingNonPHPFile sniff.
  *
  * @package VIPCS\WordPressVIPMinimum
  *
@@ -41,6 +42,12 @@ class IncludingNonPHPFileUnitTest extends AbstractSniffUnitTest {
 			45 => 1,
 			47 => 1,
 			49 => 1,
+			61 => 1,
+			63 => 1,
+			69 => 1,
+			72 => 1,
+			75 => 1,
+			77 => 1,
 		];
 	}
 
