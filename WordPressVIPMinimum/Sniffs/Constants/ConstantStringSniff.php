@@ -55,20 +55,26 @@ class ConstantStringSniff extends Sniff {
 			return;
 		}
 
-		$nextToken     = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
-		$nextNextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
-
-		if ( T_NS_C === $this->tokens[ $nextToken ]['code'] && T_STRING_CONCAT === $this->tokens[ $nextNextToken ]['code'] ) {
-			// Namespacing being used, skip to next.
-			$nextToken = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextNextToken + 1, null, true, null, true );
-		}
-
-		if ( $this->tokens[ $nextToken ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
-			$message = 'Constant name, as a string, should be used along with `%s()`.';
-			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
-			$this->phpcsFile->addError( $message, $nextToken, 'NotCheckingConstantName', $data );
+		$param = $this->get_function_call_parameter( $stackPtr, 1 );
+		if ( $param === false ) {
+			// Target parameter not found.
 			return;
 		}
+
+		$search             = Tokens::$emptyTokens;
+		$search[ T_STRING ] = T_STRING;
+
+		$has_only_tstring = $this->phpcsFile->findNext( $search, $param['start'], $param['end'] + 1, true );
+		if ( $has_only_tstring !== false ) {
+			// Came across something other than a T_STRING token. Ignore.
+			return;
+		}
+
+		$tstring_token = $this->phpcsFile->findNext( T_STRING, $param['start'], $param['end'] + 1 );
+
+		$message = 'Constant name, as a string, should be used along with `%s()`.';
+		$data    = [ $this->tokens[ $stackPtr ]['content'] ];
+		$this->phpcsFile->addError( $message, $tstring_token, 'NotCheckingConstantName', $data );
 	}
 
 }

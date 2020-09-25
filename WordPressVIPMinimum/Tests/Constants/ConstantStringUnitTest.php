@@ -25,9 +25,8 @@ class ConstantStringUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			7  => 1,
-			8  => 1,
-			14 => 1,
+			7 => 1,
+			8 => 1,
 		];
 	}
 
