@@ -24,6 +24,11 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
  */
 class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 
+// TODO: switch to PHPCSUtils version of AbstractFunctionParameterSniff once available.
+// Have the namespace + use tracker available for the constant check
+// Also for the function check as per #408
+// Use Collections::nameTokens() to handle constant better for PHP 8.0/PHPCS 4.0.
+
 	/**
 	 * The group name for this group of functions.
 	 *

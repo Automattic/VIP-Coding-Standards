@@ -159,3 +159,9 @@ wp_cache_replace($key, expire: 400, group: $group, data: 100,); // OK.
 
 wp_cache_replace($key, $data, expire: 100 ); // Bad.
 wp_cache_replace(expire: 100, data: $data, key: $group); // Bad.
+
+// Test with constants for which the value is known.
+wp_cache_set( 'test', $data, $group, PHP_INT_MAX ); // OK.
+wp_cache_set( 'test', $data, $group, PHP_INT_MIN ); // Bad.
+wp_cache_set( 'test', $data, $group, PHP_FLOAT_MAX ); // OK.
+wp_cache_set( 'test', $data, $group, PHP_FLOAT_MIN ); // Bad.
