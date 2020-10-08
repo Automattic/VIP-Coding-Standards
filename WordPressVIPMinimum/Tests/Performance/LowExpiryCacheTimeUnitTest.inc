@@ -46,3 +46,7 @@ wp_cache_replace(
 	'',
 	1.5 * MINUTE_IN_SECONDS  // Lower than 300.
 );
+
+// Test calculations with floats.
+wp_cache_replace( $testing, $data, '', 7.5 * MINUTE_IN_SECONDS ); // OK.
+wp_cache_replace( $testing, $data, '', 500 * 0.1 ); // Bad.
