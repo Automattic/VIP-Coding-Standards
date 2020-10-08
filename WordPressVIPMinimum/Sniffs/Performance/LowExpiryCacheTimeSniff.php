@@ -73,6 +73,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 		$param          = $parameters[4];
 		$tokensAsString = '';
 		$reportPtr      = null;
+		$openParens     = 0;
 
 		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
@@ -106,6 +107,18 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
+			if ( $this->tokens[ $i ]['code'] === T_OPEN_PARENTHESIS ) {
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				++$openParens;
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_CLOSE_PARENTHESIS ) {
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				--$openParens;
+				continue;
+			}
+
 			// Encountered an unexpected token. Manual inspection needed.
 			$message = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
 			$data    = [ $matched_content, $parameters[4]['raw'] ];
@@ -120,7 +133,20 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 		}
 
 		$tokensAsString = trim( $tokensAsString );
-		$time           = eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
+
+		if ( $openParens !== 0 ) {
+			/*
+			 * Shouldn't be possible as that would indicate a parse error in the original code,
+			 * but let's prevent getting parse errors in the `eval`-ed code.
+			 */
+			if ( $openParens > 0 ) {
+				$tokensAsString .= str_repeat( ')', $openParens );
+			} else {
+				$tokensAsString = str_repeat( '(', abs( $openParens ) ) . $tokensAsString;
+			}
+		}
+
+		$time = eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
 
 		if ( $time < 300 ) {
 			$message = 'Low cache expiry time of %s seconds detected. It is recommended to have 300 seconds or more.';

@@ -81,3 +81,9 @@ wp_cache_set( $key, $data, '', PREFIX_CUSTOM_TIME * 5); // Manual inspection war
 // Test calculations with additional aritmetic operators.
 wp_cache_replace( 'test', $data, $group, +5 ** MINUTE_IN_SECONDS ); // OK.
 wp_cache_add( 'test', $data, $group, WEEK_IN_SECONDS / 3 + HOUR_IN_SECONDS  ); // OK.
+
+// Test calculations grouped with parentheses.
+wp_cache_set( $key, $data, '', (24 * 60 * 60) ); // OK.
+wp_cache_set( $key, $data, '', (-(2 * 60) + 600) ); // OK.
+wp_cache_set( $key, $data, '', (2 * 60) ); // Bad.
+wp_cache_set( $key, $data, '', (-(2 * 60) + 600 ); // OK - includes parse error, close parenthesis missing.
