@@ -49,6 +49,12 @@ class LowExpiryCacheTimeUnitTest extends AbstractSniffUnitTest {
 			47 => 1,
 			52 => 1,
 			56 => 1,
+			74 => 1,
+			75 => 1,
+			76 => 1,
+			77 => 1,
+			78 => 1,
+			79 => 1,
 		];
 	}
 }

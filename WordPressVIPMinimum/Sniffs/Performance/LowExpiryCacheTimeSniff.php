@@ -108,6 +108,13 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				$tokensAsString .= $this->wp_time_constants[ $this->tokens[ $i ]['content'] ];
 				continue;
 			}
+
+			// Encountered an unexpected token. Manual inspection needed.
+			$message = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
+			$data    = [ $matched_content, $parameters[4]['raw'] ];
+			$this->phpcsFile->addWarning( $message, $reportPtr, 'CacheTimeUndetermined', $data );
+
+			return;
 		}
 
 		if ( $tokensAsString === '' ) {

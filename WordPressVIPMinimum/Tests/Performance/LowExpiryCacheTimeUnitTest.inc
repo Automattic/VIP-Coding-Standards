@@ -69,3 +69,11 @@ wp_cache_add(
 	// phpcs:ignore Stnd.Cat.Sniff -- Just here for testing purposes.
 	600
 ); // OK.
+
+// Test variable/constant with or without calculation being passed.
+wp_cache_set( $key, $data, '', $time ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', PREFIX_FIVE_MINUTES ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', 20 * $time ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', $base + $extra ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', 300 + $extra ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', PREFIX_CUSTOM_TIME * 5); // Manual inspection warning.
