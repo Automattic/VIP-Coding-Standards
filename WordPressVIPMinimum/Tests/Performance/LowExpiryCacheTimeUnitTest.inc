@@ -87,3 +87,9 @@ wp_cache_set( $key, $data, '', (24 * 60 * 60) ); // OK.
 wp_cache_set( $key, $data, '', (-(2 * 60) + 600) ); // OK.
 wp_cache_set( $key, $data, '', (2 * 60) ); // Bad.
 wp_cache_set( $key, $data, '', (-(2 * 60) + 600 ); // OK - includes parse error, close parenthesis missing.
+
+// Test handling of numbers passed as strings.
+wp_cache_set( 'test', $data, $group, '300' ); // OK - type cast to integer within the function.
+wp_cache_set( 'test', $data, $group, '100' * 3 ); // OK - type cast to integer by PHP during the calculation.
+wp_cache_set( 'test', $data, $group, '-10' ); // Bad - type cast to integer within the function.
+wp_cache_replace( $testing, $data, '', '1.5' * MINUTE_IN_SECONDS ); // Bad - type cast to integer by PHP during the calculation.

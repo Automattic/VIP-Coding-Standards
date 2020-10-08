@@ -119,6 +119,14 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
+			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
+				$content = $this->strip_quotes( $this->tokens[ $i ]['content'] );
+				if ( is_numeric( $content ) === true ) {
+					$tokensAsString .= $content;
+					continue;
+				}
+			}
+
 			// Encountered an unexpected token. Manual inspection needed.
 			$message = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
 			$data    = [ $matched_content, $parameters[4]['raw'] ];
