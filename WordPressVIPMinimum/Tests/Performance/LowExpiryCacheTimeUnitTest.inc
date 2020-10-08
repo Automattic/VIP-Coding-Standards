@@ -103,3 +103,14 @@ wp_cache_add( 'test', $data, $group, null ); // OK.
 
 // Test handling of other scalar values.
 wp_cache_add( 'test', $data, $group, true ); // Bad - becomes integer 1.
+
+// Test passing just and only one of the time constants, including passing it as an FQN.
+wp_cache_set( 'test', $data, $group, HOUR_IN_SECONDS ); // OK.
+wp_cache_set( 'test', $data, $group, \MONTH_IN_SECONDS ); // OK.
+
+// Test passing something which may look like one of the time constants, but isn't.
+wp_cache_set( 'test', $data, $group, month_in_seconds ); // Bad - constants are case-sensitive.
+wp_cache_set( 'test', $data, $group, HOUR_IN_SECONDS::methodName() ); // Bad - not a constant.
+wp_cache_set( 'test', $data, $group, $obj->MONTH_IN_SECONDS ); // Bad - not a constant.
+wp_cache_set( 'test', $data, $group, $obj::MONTH_IN_SECONDS ); // Bad - not the WP constant.
+wp_cache_set( 'test', $data, $group, PluginNamespace\SubLevel\DAY_IN_SECONDS ); // Bad - not the WP constant.

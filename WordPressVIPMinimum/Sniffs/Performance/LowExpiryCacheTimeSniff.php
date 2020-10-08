@@ -81,6 +81,15 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
+			if ( $this->tokens[ $i ]['code'] === T_NS_SEPARATOR ) {
+				/*
+				 * Ignore namespace separators. If it's part of a global WP time constant, it will be
+				 * handled correctly. If it's used in any other context, another token *will* trigger the
+				 * "undetermined" warning anyway.
+				 */
+				continue;
+			}
+
 			if ( isset( $reportPtr ) === false ) {
 				// Set the report pointer to the first non-empty token we encounter.
 				$reportPtr = $i;
