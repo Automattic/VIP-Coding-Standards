@@ -7,6 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
+use PHP_CodeSniffer\Util\Tokens;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -69,7 +70,8 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$time = $parameters[4]['raw'];
+		$param = $parameters[4];
+		$time  = $param['raw'];
 
 		if ( is_numeric( $time ) === false ) {
 			// If using time constants, we need to convert to a number.
@@ -89,7 +91,9 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				$data[]   = $parameters[4]['raw'];
 			}
 
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'LowCacheTime', $data );
+			$reportPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], $param['end'], true );
+
+			$this->phpcsFile->addWarning( $message, $reportPtr, 'LowCacheTime', $data );
 		}
 	}
 }

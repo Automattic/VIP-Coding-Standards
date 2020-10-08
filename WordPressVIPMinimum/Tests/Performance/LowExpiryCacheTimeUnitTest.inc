@@ -38,3 +38,11 @@ wp_cache_replace( 'test', $data, $group, 100 ); // Lower than 300.
 wp_cache_replace( 'test', $data, $group,  2*MINUTE_IN_SECONDS  ); // Lower than 300.
 wp_cache_replace( 123, $data, null, 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 wp_cache_replace( $testing, $data, '', 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
+
+// Test error being reported on the line containing the parameter.
+wp_cache_replace(
+	$testing,
+	$data,
+	'',
+	1.5 * MINUTE_IN_SECONDS  // Lower than 300.
+);
