@@ -77,3 +77,7 @@ wp_cache_set( $key, $data, '', 20 * $time ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', $base + $extra ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', 300 + $extra ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', PREFIX_CUSTOM_TIME * 5); // Manual inspection warning.
+
+// Test calculations with additional aritmetic operators.
+wp_cache_replace( 'test', $data, $group, +5 ** MINUTE_IN_SECONDS ); // OK.
+wp_cache_add( 'test', $data, $group, WEEK_IN_SECONDS / 3 + HOUR_IN_SECONDS  ); // OK.

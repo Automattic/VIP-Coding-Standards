@@ -93,10 +93,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
-			if ( $this->tokens[ $i ]['code'] === T_MULTIPLY
-				|| $this->tokens[ $i ]['code'] === T_DIVIDE
-				|| $this->tokens[ $i ]['code'] === T_MINUS
-			) {
+			if ( isset( Tokens::$arithmeticTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				$tokensAsString .= $this->tokens[ $i ]['content'];
 				continue;
 			}
