@@ -114,3 +114,10 @@ wp_cache_set( 'test', $data, $group, HOUR_IN_SECONDS::methodName() ); // Bad - n
 wp_cache_set( 'test', $data, $group, $obj->MONTH_IN_SECONDS ); // Bad - not a constant.
 wp_cache_set( 'test', $data, $group, $obj::MONTH_IN_SECONDS ); // Bad - not the WP constant.
 wp_cache_set( 'test', $data, $group, PluginNamespace\SubLevel\DAY_IN_SECONDS ); // Bad - not the WP constant.
+
+// Test passing negative number as cache time.
+wp_cache_set( 'test', $data, $group, -300 ); // Bad.
+wp_cache_add( $testing, $data, 'test_group', -6 * MINUTE_IN_SECONDS ); // Bad.
+
+// Test more complex logic in the parameter.
+wp_cache_add( $key, $data, '', ($toggle ? 200 : 400) ); // Manual inspection warning.
