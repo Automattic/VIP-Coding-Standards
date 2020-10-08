@@ -72,11 +72,17 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 
 		$param          = $parameters[4];
 		$tokensAsString = '';
+		$reportPtr      = null;
 
 		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				$tokensAsString .= ' ';
 				continue;
+			}
+
+			if ( isset( $reportPtr ) === false ) {
+				// Set the report pointer to the first non-empty token we encounter.
+				$reportPtr = $i;
 			}
 
 			if ( $this->tokens[ $i ]['code'] === T_LNUMBER
@@ -120,8 +126,6 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				$message .= ' Found: "%s"';
 				$data[]   = $tokensAsString;
 			}
-
-			$reportPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], $param['end'], true );
 
 			$this->phpcsFile->addWarning( $message, $reportPtr, 'LowCacheTime', $data );
 		}
