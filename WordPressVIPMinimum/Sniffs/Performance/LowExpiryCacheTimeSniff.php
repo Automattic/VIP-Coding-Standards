@@ -13,6 +13,8 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 /**
  * This sniff throws a warning when low cache times are set.
  *
+ * {@internal VIP uses the Memcached object cache implementation. {@link https://github.com/Automattic/wp-memcached}}
+ *
  * @package VIPCS\WordPressVIPMinimum
  *
  * @since 0.4.0
