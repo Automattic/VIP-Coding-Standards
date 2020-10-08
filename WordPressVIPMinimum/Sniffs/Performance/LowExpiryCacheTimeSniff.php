@@ -70,25 +70,55 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$param = $parameters[4];
-		$time  = $param['raw'];
+		$param          = $parameters[4];
+		$tokensAsString = '';
 
-		if ( is_numeric( $time ) === false ) {
+		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
+			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
+				$tokensAsString .= ' ';
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_LNUMBER
+				|| $this->tokens[ $i ]['code'] === T_DNUMBER
+			) {
+				// Integer or float.
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_MULTIPLY
+				|| $this->tokens[ $i ]['code'] === T_DIVIDE
+				|| $this->tokens[ $i ]['code'] === T_MINUS
+			) {
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				continue;
+			}
+
 			// If using time constants, we need to convert to a number.
-			$time = str_replace( array_keys( $this->wp_time_constants ), $this->wp_time_constants, $time );
-
-			if ( preg_match( '#^[\s\d+\.*/-]+$#', $time ) > 0 ) {
-				$time = eval( "return $time;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
+			if ( $this->tokens[ $i ]['code'] === T_STRING
+				&& isset( $this->wp_time_constants[ $this->tokens[ $i ]['content'] ] ) === true
+			) {
+				$tokensAsString .= $this->wp_time_constants[ $this->tokens[ $i ]['content'] ];
+				continue;
 			}
 		}
+
+		if ( $tokensAsString === '' ) {
+			// Nothing found to evaluate.
+			return;
+		}
+
+		$tokensAsString = trim( $tokensAsString );
+		$time           = eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
 
 		if ( $time < 300 ) {
 			$message = 'Low cache expiry time of %s seconds detected. It is recommended to have 300 seconds or more.';
 			$data    = [ $time ];
 
-			if ( $time !== trim( $parameters[4]['raw'] ) ) {
+			if ( (string) $time !== $tokensAsString ) {
 				$message .= ' Found: "%s"';
-				$data[]   = $parameters[4]['raw'];
+				$data[]   = $tokensAsString;
 			}
 
 			$reportPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], $param['end'], true );

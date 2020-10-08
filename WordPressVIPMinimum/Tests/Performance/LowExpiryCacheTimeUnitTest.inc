@@ -50,3 +50,22 @@ wp_cache_replace(
 // Test calculations with floats.
 wp_cache_replace( $testing, $data, '', 7.5 * MINUTE_IN_SECONDS ); // OK.
 wp_cache_replace( $testing, $data, '', 500 * 0.1 ); // Bad.
+
+// Test comment handling.
+wp_cache_add( 'test', $data, $group, /* Deliberately left empty */ ); // OK.
+wp_cache_add( 'test', $data, $group, 600 * 0.1 /* = 1 minute */ ); // Bad.
+wp_cache_add(
+	'test',
+	$data,
+	$group,
+	// Cache for 10 minutes.
+	600
+); // OK.
+
+wp_cache_add(
+	'test',
+	$data,
+	$group,
+	// phpcs:ignore Stnd.Cat.Sniff -- Just here for testing purposes.
+	600
+); // OK.
