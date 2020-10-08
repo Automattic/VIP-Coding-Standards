@@ -100,3 +100,6 @@ wp_cache_add( 'test', $data, $group, 0.0 ); // OK.
 wp_cache_add( 'test', $data, $group, '0' ); // OK.
 wp_cache_add( 'test', $data, $group, false ); // OK.
 wp_cache_add( 'test', $data, $group, null ); // OK.
+
+// Test handling of other scalar values.
+wp_cache_add( 'test', $data, $group, true ); // Bad - becomes integer 1.

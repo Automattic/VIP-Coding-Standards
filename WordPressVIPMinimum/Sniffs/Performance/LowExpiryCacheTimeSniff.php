@@ -101,6 +101,11 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
+			if ( $this->tokens[ $i ]['code'] === T_TRUE ) {
+				$tokensAsString .= 1;
+				continue;
+			}
+
 			if ( isset( Tokens::$arithmeticTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				$tokensAsString .= $this->tokens[ $i ]['content'];
 				continue;
