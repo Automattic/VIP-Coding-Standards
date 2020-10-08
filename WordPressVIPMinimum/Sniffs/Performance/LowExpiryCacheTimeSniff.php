@@ -94,6 +94,13 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
+			if ( $this->tokens[ $i ]['code'] === T_FALSE
+				|| $this->tokens[ $i ]['code'] === T_NULL
+			) {
+				$tokensAsString .= 0;
+				continue;
+			}
+
 			if ( isset( Tokens::$arithmeticTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				$tokensAsString .= $this->tokens[ $i ]['content'];
 				continue;
@@ -156,7 +163,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 
 		$time = eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
 
-		if ( $time < 300 ) {
+		if ( $time < 300 && (int) $time !== 0 ) {
 			$message = 'Low cache expiry time of %s seconds detected. It is recommended to have 300 seconds or more.';
 			$data    = [ $time ];
 

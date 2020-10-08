@@ -93,3 +93,10 @@ wp_cache_set( 'test', $data, $group, '300' ); // OK - type cast to integer withi
 wp_cache_set( 'test', $data, $group, '100' * 3 ); // OK - type cast to integer by PHP during the calculation.
 wp_cache_set( 'test', $data, $group, '-10' ); // Bad - type cast to integer within the function.
 wp_cache_replace( $testing, $data, '', '1.5' * MINUTE_IN_SECONDS ); // Bad - type cast to integer by PHP during the calculation.
+
+// Test handling of 0 values. `0` is the default value for the parameter and translates internally to "no expiration".
+wp_cache_add( 'test', $data, $group, 0 ); // OK.
+wp_cache_add( 'test', $data, $group, 0.0 ); // OK.
+wp_cache_add( 'test', $data, $group, '0' ); // OK.
+wp_cache_add( 'test', $data, $group, false ); // OK.
+wp_cache_add( 'test', $data, $group, null ); // OK.
