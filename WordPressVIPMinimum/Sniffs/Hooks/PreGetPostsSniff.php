@@ -195,7 +195,7 @@ class PreGetPostsSniff extends Sniff {
 	/**
 	 * Process function's body
 	 *
-	 * @param int    $stackPtr The position in the stack where the token was found.
+	 * @param int    $stackPtr     The position in the stack where the token was found.
 	 * @param string $variableName Variable name.
 	 */
 	private function processFunctionBody( $stackPtr, $variableName ) {
@@ -363,7 +363,7 @@ class PreGetPostsSniff extends Sniff {
 	 * Is the current code a WP_Query call?
 	 *
 	 * @param int  $stackPtr The position in the stack where the token was found.
-	 * @param null $method Method.
+	 * @param null $method   Method.
 	 *
 	 * @return bool
 	 */

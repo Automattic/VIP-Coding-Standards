@@ -122,8 +122,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * Process string.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
-	 * @param int $start The start of the token.
-	 * @param int $end The end of the token.
+	 * @param int $start    The start of the token.
+	 * @param int $end      The end of the token.
 	 */
 	private function processString( $stackPtr, $start = 0, $end = null ) {
 
@@ -149,8 +149,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * Process function.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
-	 * @param int $start The start of the token.
-	 * @param int $end The end of the token.
+	 * @param int $start    The start of the token.
+	 * @param int $end      The end of the token.
 	 */
 	private function processFunction( $stackPtr, $start = 0, $end = null ) {
 

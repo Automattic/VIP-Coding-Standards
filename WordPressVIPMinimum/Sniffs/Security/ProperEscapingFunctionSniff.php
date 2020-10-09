@@ -146,7 +146,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * A helper function which tests whether string ends with some other.
 	 *
 	 * @param string $haystack String which is being tested.
-	 * @param string $needle The substring, which we try to locate on the end of the $haystack.
+	 * @param string $needle   The substring, which we try to locate on the end of the $haystack.
 	 *
 	 * @return bool True if haystack ends with needle.
 	 */
