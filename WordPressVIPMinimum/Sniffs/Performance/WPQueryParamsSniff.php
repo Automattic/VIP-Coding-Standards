@@ -8,7 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
+use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
-class WPQueryParamsSniff extends Sniff {
+class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -24,8 +24,38 @@ class WPQueryParamsSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
+		$targets = parent::register();
+
+		// Add the target for the "old" implementation.
+		$targets[] = T_CONSTANT_ENCAPSED_STRING;
+
+		return $targets;
+	}
+
+	/**
+	 * Groups of variables to restrict.
+	 * This should be overridden in extending classes.
+	 *
+	 * Example: groups => array(
+	 *  'groupname' => array(
+	 *      'type'     => 'error' | 'warning',
+	 *      'message'  => 'Dont use this one please!',
+	 *      'keys'     => array( 'key1', 'another_key' ),
+	 *      'callback' => array( 'class', 'method' ), // Optional.
+	 *  )
+	 * )
+	 *
+	 * @return array
+	 */
+	public function getGroups() {
 		return [
-			T_CONSTANT_ENCAPSED_STRING,
+			'PostNotIn' => [
+				'type'    => 'warning',
+				'message' => 'Using `exclude`, which is subsequently used by `post__not_in`, should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.',
+				'keys'    => [
+					'exclude',
+				],
+			],
 		];
 	}
 
@@ -54,6 +84,22 @@ class WPQueryParamsSniff extends Sniff {
 			$message = 'Using `post__not_in` should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'PostNotIn' );
 		}
+
+		parent::process_token( $stackPtr );
+	}
+
+	/**
+	 * Callback to process a confirmed key which doesn't need custom logic, but should always error.
+	 *
+	 * @param  string $key   Array index / key.
+	 * @param  mixed  $val   Assigned value.
+	 * @param  int    $line  Token line.
+	 * @param  array  $group Group definition.
+	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches
+	 *                       with custom error message passed to ->process().
+	 */
+	public function callback( $key, $val, $line, $group ) {
+		return true;
 	}
 
 }

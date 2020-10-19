@@ -17,3 +17,7 @@ $q = new WP_Query( $query_args );
 $query_args[ 'suppress_filters' ] = true;
 
 $q = new WP_query( $query_args );
+
+get_posts( [ 'exclude' => $post_ids ] ); // Warning.
+
+$exclude = [ 1, 2, 3 ];
