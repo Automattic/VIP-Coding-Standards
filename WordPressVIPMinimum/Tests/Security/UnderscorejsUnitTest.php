@@ -30,21 +30,35 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Returns the lines where warnings should occur.
 	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList() {
-		return [
-			6  => 1,
-			14 => 1,
-			22 => 1,
-			23 => 1,
-			28 => 1,
-			32 => 1,
-			38 => 3,
-			45 => 1,
-			46 => 1,
-			47 => 1,
-		];
+	public function getWarningList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'UnderscorejsUnitTest.inc':
+				return [
+					6  => 1,
+					14 => 1,
+					22 => 1,
+					23 => 1,
+					28 => 1,
+					32 => 1,
+					38 => 3,
+					45 => 1,
+					46 => 1,
+					47 => 1,
+				];
+
+			case 'UnderscorejsUnitTest.js':
+				return [
+					4 => 1,
+					5 => 1,
+				];
+
+			default:
+				return [];
+		}
 	}
 
 }
