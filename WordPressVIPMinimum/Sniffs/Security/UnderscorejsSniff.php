@@ -8,6 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
+use PHP_CodeSniffer\Util\Tokens;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -30,12 +31,10 @@ class UnderscorejsSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return [
-			T_CONSTANT_ENCAPSED_STRING,
-			T_PROPERTY,
-			T_INLINE_HTML,
-			T_HEREDOC,
-		];
+		$targets   = Tokens::$textStringTokens;
+		$targets[] = T_PROPERTY;
+
+		return $targets;
 	}
 
 	/**

@@ -36,6 +36,14 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 		return [
 			6  => 1,
 			14 => 1,
+			22 => 1,
+			23 => 1,
+			28 => 1,
+			32 => 1,
+			38 => 1,
+			45 => 1,
+			46 => 1,
+			47 => 1,
 		];
 	}
 
