@@ -52,8 +52,11 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 
 			case 'UnderscorejsUnitTest.js':
 				return [
-					4 => 1,
-					5 => 1,
+					4  => 1,
+					5  => 1,
+					7  => 1,
+					9  => 1,
+					12 => 1,
 				];
 
 			default:

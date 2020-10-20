@@ -41,6 +41,7 @@ class UnderscorejsSniff extends Sniff {
 	public function register() {
 		$targets   = Tokens::$textStringTokens;
 		$targets[] = T_PROPERTY;
+		$targets[] = T_STRING;
 
 		return $targets;
 	}
@@ -53,6 +54,46 @@ class UnderscorejsSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
+		/*
+		 * Check for delimiter change in JS files.
+		 */
+		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING
+			|| $this->tokens[ $stackPtr ]['code'] === T_PROPERTY
+		) {
+			if ( $this->phpcsFile->tokenizerType !== 'JS' ) {
+				// These tokens are only relevant for JS files.
+				return;
+			}
+
+			if ( $this->tokens[ $stackPtr ]['content'] !== 'interpolate' ) {
+				return;
+			}
+
+			// Check the context to prevent false positives.
+			if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
+				$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+				if ( $prev === false || $this->tokens[ $prev ]['code'] !== T_OBJECT_OPERATOR ) {
+					return;
+				}
+
+				$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+				$next     = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+				if ( ( $prevPrev === false
+					|| $this->tokens[ $prevPrev ]['code'] !== T_STRING
+					|| $this->tokens[ $prevPrev ]['content'] !== 'templateSettings' )
+					&& ( $next === false
+					|| $this->tokens[ $next ]['code'] !== T_EQUAL )
+				) {
+					return;
+				}
+			}
+
+			// Underscore.js delimiter change.
+			$message = 'Found Underscore.js delimiter change notation.';
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );
+
+			return;
+		}
 
 		$content     = $this->strip_quotes( $this->tokens[ $stackPtr ]['content'] );
 		$match_count = preg_match_all( self::UNESCAPED_INTERPOLATE_REGEX, $content, $matches );
@@ -65,8 +106,10 @@ class UnderscorejsSniff extends Sniff {
 			}
 		}
 
-		if ( strpos( $content, 'interpolate' ) !== false ) {
-			// Underscore.js unescaped output.
+		if ( $this->phpcsFile->tokenizerType !== 'JS'
+			&& strpos( $content, 'interpolate' ) !== false
+		) {
+			// Underscore.js delimiter change.
 			$message = 'Found Underscore.js delimiter change notation.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );
 		}

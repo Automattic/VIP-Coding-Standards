@@ -47,3 +47,6 @@ $heredoc = <<<EOD
 		<%= name %>
 	</label><!-- NOK - 1 per line -->
 EOD;
+
+// Make sure the JS specific check does not trigger on PHP code.
+$obj->interpolate = true;
