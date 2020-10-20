@@ -19,6 +19,14 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 class UnderscorejsSniff extends Sniff {
 
 	/**
+	 * Regex to match unescaped output notations containing variable interpolation
+	 * and retrieve a code snippet.
+	 *
+	 * @var string
+	 */
+	const UNESCAPED_INTERPOLATE_REGEX = '`<%=\s*(?:.+?%>|$)`';
+
+	/**
 	 * A list of tokenizers this sniff supports.
 	 *
 	 * @var string[]
@@ -46,13 +54,18 @@ class UnderscorejsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( strpos( $this->tokens[ $stackPtr ]['content'], '<%=' ) !== false ) {
-			// Underscore.js unescaped output.
-			$message = 'Found Underscore.js unescaped output notation: "<%=".';
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );
+		$content     = $this->strip_quotes( $this->tokens[ $stackPtr ]['content'] );
+		$match_count = preg_match_all( self::UNESCAPED_INTERPOLATE_REGEX, $content, $matches );
+		if ( $match_count > 0 ) {
+			foreach ( $matches[0] as $match ) {
+				// Underscore.js unescaped output.
+				$message = 'Found Underscore.js unescaped output notation: "%s".';
+				$data    = [ $match ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation', $data );
+			}
 		}
 
-		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'interpolate' ) !== false ) {
+		if ( strpos( $content, 'interpolate' ) !== false ) {
 			// Underscore.js unescaped output.
 			$message = 'Found Underscore.js delimiter change notation.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );

@@ -40,7 +40,7 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			28 => 1,
 			32 => 1,
-			38 => 1,
+			38 => 3,
 			45 => 1,
 			46 => 1,
 			47 => 1,
