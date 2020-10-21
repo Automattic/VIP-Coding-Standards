@@ -73,3 +73,36 @@ function test_interpolate_match_precision() {
 	</script>
 	<?php
 }
+
+// Recognize escaping.
+function dont_trigger_when_escaped() {
+	$script = <<<EOD
+		var html = _.template('<li><%= _.escape(name) %></li>', { name: 'John Smith' }); // OK.
+		
+		var html = _.template(
+			"<pre>The \"<% __p+=_.escape(o.text) %>\" is the same<br />" + // OK.
+				"as the  \"<%= _.escape(o.text) %>\" and the same<br />" + // OK.
+				"as the \"<%- o.text %>\"</pre>", // OK.
+			{
+				text: "<b>some text</b> and \n it's a line break"
+			},
+			{
+				variable: "o"
+			}
+		);
+EOD;
+
+	echo $script;
+}
+
+function display_foo {
+?>
+	<script id="template" type="text/template">
+		<li class="dashboard-post-item" dashboard-id="<%= _.escape( id ) %>"><!-- OK -->
+			<div class="image-wrapper">
+				<img src="<%= _.escape( image_url ) %>" class="dashboard-image"><!-- OK -->
+			</div>
+		</li>
+	</script>
+<?php
+}

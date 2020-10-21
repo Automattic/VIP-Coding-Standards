@@ -106,6 +106,10 @@ class UnderscorejsSniff extends Sniff {
 		$match_count = preg_match_all( self::UNESCAPED_INTERPOLATE_REGEX, $content, $matches );
 		if ( $match_count > 0 ) {
 			foreach ( $matches[0] as $match ) {
+				if ( strpos( $match, '_.escape(' ) !== false ) {
+					continue;
+				}
+
 				// Underscore.js unescaped output.
 				$message = 'Found Underscore.js unescaped output notation: "%s".';
 				$data    = [ $match ];

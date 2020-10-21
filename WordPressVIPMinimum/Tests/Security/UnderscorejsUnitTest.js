@@ -24,3 +24,18 @@ var p = function(f, d) {
 }
 
 y.interpolate.bezier = b; // OK.
+
+// Recognize escaping.
+var html = _.template('<li><%= _.escape(name) %></li>', { name: 'John Smith' }); // OK.
+
+var html = _.template(
+	"<pre>The \"<% __p+=_.escape(o.text) %>\" is the same<br />" + // OK.
+		"as the  \"<%= _.escape(o.text) %>\" and the same<br />" + // OK.
+		"as the \"<%- o.text %>\"</pre>", // OK.
+	{
+		text: "<b>some text</b> and \n it's a line break"
+	},
+	{
+		variable: "o"
+	}
+);
