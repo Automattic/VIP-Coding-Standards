@@ -48,6 +48,8 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 					45 => 1,
 					46 => 1,
 					47 => 1,
+					58 => 1,
+					60 => 1,
 				];
 
 			case 'UnderscorejsUnitTest.js':

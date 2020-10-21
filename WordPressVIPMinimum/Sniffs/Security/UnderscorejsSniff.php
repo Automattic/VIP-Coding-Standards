@@ -27,6 +27,13 @@ class UnderscorejsSniff extends Sniff {
 	const UNESCAPED_INTERPOLATE_REGEX = '`<%=\s*(?:.+?%>|$)`';
 
 	/**
+	 * Regex to match the "interpolate" keyword when used to overrule the ERB-style delimiters.
+	 *
+	 * @var string
+	 */
+	const INTERPOLATE_KEYWORD_REGEX = '`(?:templateSettings\.interpolate|\.interpolate\s*=\s*/|interpolate\s*:\s*/)`';
+
+	/**
 	 * A list of tokenizers this sniff supports.
 	 *
 	 * @var string[]
@@ -107,7 +114,7 @@ class UnderscorejsSniff extends Sniff {
 		}
 
 		if ( $this->phpcsFile->tokenizerType !== 'JS'
-			&& strpos( $content, 'interpolate' ) !== false
+			&& preg_match( self::INTERPOLATE_KEYWORD_REGEX, $content ) > 0
 		) {
 			// Underscore.js delimiter change.
 			$message = 'Found Underscore.js delimiter change notation.';

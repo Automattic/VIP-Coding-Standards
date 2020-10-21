@@ -50,3 +50,26 @@ EOD;
 
 // Make sure the JS specific check does not trigger on PHP code.
 $obj->interpolate = true;
+
+// Test matching the "interpolate" keyword with higher precision (mirrors same check in JS).
+function test_interpolate_match_precision() {
+	?>
+	<script type="text/javascript">
+	_.templateSettings.interpolate = /\{\{(.+?)\}\}/g; /* NOK */
+
+	options.interpolate=_.templateSettings.interpolate; /* NOK */
+	var interpolate = options.interpolate || reNoMatch, /* Ignore */
+		source = "__p += '";
+
+	// Prevent false positives on "interpolate".
+	var preventMisidentification = 'text interpolate text'; // OK.
+	var interpolate = THREE.CurveUtils.interpolate; // OK.
+
+	var p = function(f, d) {
+		return s.interpolate(m(f), _(d), 0.5, e.color_space) // OK.
+	}
+
+	y.interpolate.bezier = b; // OK.
+	</script>
+	<?php
+}
