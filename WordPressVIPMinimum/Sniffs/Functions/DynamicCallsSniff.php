@@ -31,15 +31,15 @@ class DynamicCallsSniff extends Sniff {
 	 * @var array
 	 */
 	private $blacklisted_functions = [
-		'assert',
-		'compact',
-		'extract',
-		'func_get_args',
-		'func_get_arg',
-		'func_num_args',
-		'get_defined_vars',
-		'mb_parse_str',
-		'parse_str',
+		'assert'           => true,
+		'compact'          => true,
+		'extract'          => true,
+		'func_get_args'    => true,
+		'func_get_arg'     => true,
+		'func_num_args'    => true,
+		'get_defined_vars' => true,
+		'mb_parse_str'     => true,
+		'parse_str'        => true,
 	];
 
 	/**
@@ -138,11 +138,17 @@ class DynamicCallsSniff extends Sniff {
 		/*
 		 * If we reached the end of the loop and the $value_ptr was set, we know for sure
 		 * this was a plain text string variable assignment.
-		 *
-		 * Register its name and value in the internal array for later usage.
 		 */
 		$current_var_value = $this->strip_quotes( $this->tokens[ $value_ptr ]['content'] );
 
+		if ( isset( $this->blacklisted_functions[ $current_var_value ] ) === false ) {
+			// Text string is not one of the ones we're looking for.
+			return;
+		}
+
+		/*
+		 * Register the variable name and value in the internal array for later usage.
+		 */
 		$this->variables_arr[ $current_var_name ] = $current_var_value;
 	}
 
@@ -183,19 +189,6 @@ class DynamicCallsSniff extends Sniff {
 
 		$t_item_key = $this->stackPtr + $i;
 
-		/*
-		 * We have a variable match, but make sure it contains name of a function which is on our blacklist.
-		 */
-
-		if ( ! in_array(
-			$this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ],
-			$this->blacklisted_functions,
-			true
-		) ) {
-			return;
-		}
-
-		// We do, so report.
 		$message = 'Dynamic calling is not recommended in the case of %s.';
 		$data    = [ $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ];
 		$this->phpcsFile->addError( $message, $t_item_key, 'DynamicCalls', $data );
