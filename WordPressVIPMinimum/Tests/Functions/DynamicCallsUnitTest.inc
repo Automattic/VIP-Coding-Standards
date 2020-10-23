@@ -30,3 +30,6 @@ $test_getting_the_actual_value_4 = 'get_defined_vars' . $source;
 $test_getting_the_actual_value_4(); // OK. Unclear what the actual variable value will be.
 
 $ensure_no_notices_are_thrown_on_parse_error = /*comment*/ ;
+
+$test_double_quoted_string = "assert";
+$test_double_quoted_string(); // Bad.

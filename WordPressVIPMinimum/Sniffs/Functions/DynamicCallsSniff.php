@@ -141,9 +141,9 @@ class DynamicCallsSniff extends Sniff {
 		 *
 		 * Register its name and value in the internal array for later usage.
 		 */
-		$current_var_value = $this->tokens[ $value_ptr ]['content'];
+		$current_var_value = $this->strip_quotes( $this->tokens[ $value_ptr ]['content'] );
 
-		$this->variables_arr[ $current_var_name ] = str_replace( "'", '', $current_var_value );
+		$this->variables_arr[ $current_var_name ] = $current_var_value;
 	}
 
 	/**
