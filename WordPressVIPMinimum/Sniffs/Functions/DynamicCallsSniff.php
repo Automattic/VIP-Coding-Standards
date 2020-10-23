@@ -30,7 +30,7 @@ class DynamicCallsSniff extends Sniff {
 	 *
 	 * @var array
 	 */
-	private $blacklisted_functions = [
+	private $function_names = [
 		'assert'           => true,
 		'compact'          => true,
 		'extract'          => true,
@@ -141,7 +141,7 @@ class DynamicCallsSniff extends Sniff {
 		 */
 		$current_var_value = $this->strip_quotes( $this->tokens[ $value_ptr ]['content'] );
 
-		if ( isset( $this->blacklisted_functions[ $current_var_value ] ) === false ) {
+		if ( isset( $this->function_names[ $current_var_value ] ) === false ) {
 			// Text string is not one of the ones we're looking for.
 			return;
 		}
