@@ -112,26 +112,36 @@ class DynamicCallsSniff extends Sniff {
 		}
 
 		/*
-		 * Find encapsulated string ( "" ).
+		 * Find assignments which only assign a plain text string.
 		 */
-		$t_item_key = $this->phpcsFile->findNext(
-			[ T_CONSTANT_ENCAPSED_STRING ],
-			$t_item_key + 1,
-			null,
-			false,
-			null,
-			true
-		);
+		$end_of_statement = $this->phpcsFile->findNext( [ T_SEMICOLON, T_CLOSE_TAG ], ( $t_item_key + 1 ) );
+		$value_ptr        = null;
 
-		if ( $t_item_key === false ) {
+		for ( $i = $t_item_key + 1; $i < $end_of_statement; $i++ ) {
+			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
+				// Not a plain text string value. Value cannot be determined reliably.
+				return;
+			}
+
+			$value_ptr = $i;
+		}
+
+		if ( isset( $value_ptr ) === false ) {
+			// Parse error. Bow out.
 			return;
 		}
 
 		/*
-		 * We have found variable-assignment, register its name and value in the
-		 * internal array for later usage.
+		 * If we reached the end of the loop and the $value_ptr was set, we know for sure
+		 * this was a plain text string variable assignment.
+		 *
+		 * Register its name and value in the internal array for later usage.
 		 */
-		$current_var_value = $this->tokens[ $t_item_key ]['content'];
+		$current_var_value = $this->tokens[ $value_ptr ]['content'];
 
 		$this->variables_arr[ $current_var_name ] = str_replace( "'", '', $current_var_value );
 	}
