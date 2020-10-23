@@ -6,10 +6,10 @@ function my_test() {
 
 
 $my_notokay_func = 'extract';
-$my_notokay_func();
+$my_notokay_func(); // Bad.
 
 $my_okay_func = 'my_test';
-$my_okay_func();
+$my_okay_func(); // OK.
 
 
 
