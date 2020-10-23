@@ -10,22 +10,20 @@ namespace WordPressVIPMinimum\Sniffs\Functions;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
- * This sniff enforces that certain functions are not
- * dynamically called.
+ * This sniff enforces that certain functions are not dynamically called.
  *
  * An example:
- *
- * <code>
+ * ```php
  *   $func = 'func_num_args';
  *   $func();
- * </code>
+ * ```
  *
- * See here: http://php.net/manual/en/migration71.incompatible.php
+ * Note that this sniff does not catch all possible forms of dynamic calling, only some.
  *
- * Note that this sniff does not catch all possible forms of dynamic
- * calling, only some.
+ * @link http://php.net/manual/en/migration71.incompatible.php
  */
 class DynamicCallsSniff extends Sniff {
+
 	/**
 	 * Functions that should not be called dynamically.
 	 *
@@ -44,10 +42,11 @@ class DynamicCallsSniff extends Sniff {
 	];
 
 	/**
-	 * Array of functions encountered, along with their values.
-	 * Populated on run-time.
+	 * Array of variable assignments encountered, along with their values.
 	 *
-	 * @var array
+	 * Populated at run-time.
+	 *
+	 * @var array The key is the name of the variable, the value, its assigned value.
 	 */
 	private $variables_arr = [];
 
@@ -60,8 +59,6 @@ class DynamicCallsSniff extends Sniff {
 
 	/**
 	 * Returns the token types that this sniff is interested in.
-	 *
-	 * We want everything variable- and function-related.
 	 *
 	 * @return array(int)
 	 */
@@ -87,9 +84,8 @@ class DynamicCallsSniff extends Sniff {
 	}
 
 	/**
-	 * Finds any variable-definitions in the file being processed,
-	 * and stores them internally in a private array. The data stored
-	 * is the name of the variable and its assigned value.
+	 * Finds any variable-definitions in the file being processed and stores them
+	 * internally in a private array.
 	 *
 	 * @return void
 	 */
@@ -98,11 +94,9 @@ class DynamicCallsSniff extends Sniff {
 		$current_var_name = $this->tokens[ $this->stackPtr ]['content'];
 
 		/*
-		 * Find assignments ( $foo = "bar"; )
-		 * -- do this by finding all non-whitespaces, and
-		 * check if the first one is T_EQUAL.
+		 * Find assignments ( $foo = "bar"; ) by finding all non-whitespaces,
+		 * and checking if the first one is T_EQUAL.
 		 */
-
 		$t_item_key = $this->phpcsFile->findNext(
 			[ T_WHITESPACE ],
 			$this->stackPtr + 1,
@@ -121,7 +115,7 @@ class DynamicCallsSniff extends Sniff {
 		}
 
 		/*
-		 * Find encapsulated string ( "" )
+		 * Find encapsulated string ( "" ).
 		 */
 		$t_item_key = $this->phpcsFile->findNext(
 			[ T_CONSTANT_ENCAPSED_STRING ],
@@ -137,74 +131,53 @@ class DynamicCallsSniff extends Sniff {
 		}
 
 		/*
-		 * We have found variable-assignment,
-		 * register its name and value in the
+		 * We have found variable-assignment, register its name and value in the
 		 * internal array for later usage.
 		 */
+		$current_var_value = $this->tokens[ $t_item_key ]['content'];
 
-		$current_var_value =
-			$this->tokens[ $t_item_key ]['content'];
-
-		$this->variables_arr[ $current_var_name ] =
-			str_replace( "'", '', $current_var_value );
+		$this->variables_arr[ $current_var_name ] = str_replace( "'", '', $current_var_value );
 	}
 
 	/**
 	 * Find any dynamic calls being made using variables.
-	 * Report on this when found, using name of the function
-	 * in the message.
+	 *
+	 * Report on this when found, using the name of the function in the message.
 	 *
 	 * @return void
 	 */
 	private function find_dynamic_calls() {
-		/*
-		 * No variables detected; no basis for doing
-		 * anything
-		 */
-
+		// No variables detected; no basis for doing anything.
 		if ( empty( $this->variables_arr ) ) {
 			return;
 		}
 
 		/*
-		 * If variable is not found in our registry of
-		 * variables, do nothing, as we cannot be
-		 * sure that the function being called is one of the
-		 * blacklisted ones.
+		 * If variable is not found in our registry of variables, do nothing, as we cannot be
+		 * sure that the function being called is one of the blacklisted ones.
 		 */
-
-		if ( ! isset(
-			$this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ]
-		) ) {
+		if ( ! isset( $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ) ) {
 			return;
 		}
 
 		/*
-		 * Check if we have an '(' next, or separated by whitespaces
-		 * from our current position.
+		 * Check if we have an '(' next, or separated by whitespaces from our current position.
 		 */
 
 		$i = 0;
 
 		do {
 			$i++;
-		} while (
-			$this->tokens[ $this->stackPtr + $i ]['type'] ===
-				'T_WHITESPACE'
-		);
+		} while ( $this->tokens[ $this->stackPtr + $i ]['type'] === 'T_WHITESPACE' );
 
-		if (
-			$this->tokens[ $this->stackPtr + $i ]['type'] !==
-				'T_OPEN_PARENTHESIS'
-		) {
+		if ( $this->tokens[ $this->stackPtr + $i ]['type'] !== 'T_OPEN_PARENTHESIS' ) {
 			return;
 		}
 
 		$t_item_key = $this->stackPtr + $i;
 
 		/*
-		 * We have a variable match, but make sure it contains name
-		 * of a function which is on our blacklist.
+		 * We have a variable match, but make sure it contains name of a function which is on our blacklist.
 		 */
 
 		if ( ! in_array(
