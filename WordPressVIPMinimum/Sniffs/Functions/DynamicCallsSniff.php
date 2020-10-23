@@ -174,23 +174,15 @@ class DynamicCallsSniff extends Sniff {
 		}
 
 		/*
-		 * Check if we have an '(' next, or separated by whitespaces from our current position.
+		 * Check if we have an '(' next.
 		 */
-
-		$i = 0;
-
-		do {
-			$i++;
-		} while ( $this->tokens[ $this->stackPtr + $i ]['type'] === 'T_WHITESPACE' );
-
-		if ( $this->tokens[ $this->stackPtr + $i ]['type'] !== 'T_OPEN_PARENTHESIS' ) {
+		$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $this->stackPtr + 1 ), null, true );
+		if ( $next === false || $this->tokens[ $next ]['code'] !== T_OPEN_PARENTHESIS ) {
 			return;
 		}
 
-		$t_item_key = $this->stackPtr + $i;
-
 		$message = 'Dynamic calling is not recommended in the case of %s.';
 		$data    = [ $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ];
-		$this->phpcsFile->addError( $message, $t_item_key, 'DynamicCalls', $data );
+		$this->phpcsFile->addError( $message, $this->stackPtr, 'DynamicCalls', $data );
 	}
 }
