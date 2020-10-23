@@ -181,7 +181,7 @@ class DynamicCallsSniff extends Sniff {
 			return;
 		}
 
-		$message = 'Dynamic calling is not recommended in the case of %s.';
+		$message = 'Dynamic calling is not recommended in the case of %s().';
 		$data    = [ $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ];
 		$this->phpcsFile->addError( $message, $this->stackPtr, 'DynamicCalls', $data );
 	}
