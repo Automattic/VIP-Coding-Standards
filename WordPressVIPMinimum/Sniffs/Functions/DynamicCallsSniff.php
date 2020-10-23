@@ -106,11 +106,7 @@ class DynamicCallsSniff extends Sniff {
 			true
 		);
 
-		if ( $t_item_key === false ) {
-			return;
-		}
-
-		if ( $this->tokens[ $t_item_key ]['type'] !== 'T_EQUAL' ) {
+		if ( $t_item_key === false || $this->tokens[ $t_item_key ]['code'] !== T_EQUAL ) {
 			return;
 		}
 
