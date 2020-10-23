@@ -7,6 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
+use PHP_CodeSniffer\Util\Tokens;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -98,7 +99,7 @@ class DynamicCallsSniff extends Sniff {
 		 * and checking if the first one is T_EQUAL.
 		 */
 		$t_item_key = $this->phpcsFile->findNext(
-			[ T_WHITESPACE ],
+			Tokens::$emptyTokens,
 			$this->stackPtr + 1,
 			null,
 			true,
