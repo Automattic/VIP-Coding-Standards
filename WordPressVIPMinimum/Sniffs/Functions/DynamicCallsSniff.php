@@ -120,10 +120,6 @@ class DynamicCallsSniff extends Sniff {
 			return;
 		}
 
-		if ( $this->tokens[ $t_item_key ]['length'] !== 1 ) {
-			return;
-		}
-
 		/*
 		 * Find encapsulated string ( "" )
 		 */
