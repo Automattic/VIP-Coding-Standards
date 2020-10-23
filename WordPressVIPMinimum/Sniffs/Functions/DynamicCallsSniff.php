@@ -94,17 +94,6 @@ class DynamicCallsSniff extends Sniff {
 	 * @return void
 	 */
 	private function collect_variables() {
-		/*
-		 * Make sure we are working with a variable,
-		 * get its value if so.
-		 */
-
-		if (
-			$this->tokens[ $this->stackPtr ]['type'] !==
-				'T_VARIABLE'
-		) {
-			return;
-		}
 
 		$current_var_name = $this->tokens[ $this->stackPtr ]['content'];
 
@@ -178,17 +167,6 @@ class DynamicCallsSniff extends Sniff {
 		 */
 
 		if ( empty( $this->variables_arr ) ) {
-			return;
-		}
-
-		/*
-		 * Make sure we do have a variable to work with.
-		 */
-
-		if (
-			$this->tokens[ $this->stackPtr ]['type'] !==
-				'T_VARIABLE'
-		) {
 			return;
 		}
 
