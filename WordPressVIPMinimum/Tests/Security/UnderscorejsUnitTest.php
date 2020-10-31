@@ -19,6 +19,21 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 
 	/**
+	 * Get a list of all test files to check.
+	 *
+	 * @param string $testFileBase The base path that the unit tests files will have.
+	 *
+	 * @return string[]
+	 */
+	protected function getTestFiles( $testFileBase ) {
+		return [
+			$testFileBase . 'inc',
+			$testFileBase . 'js',
+			__DIR__ . DIRECTORY_SEPARATOR . 'Gruntfile.js',
+		];
+	}
+
+	/**
 	 * Returns the lines where errors should occur.
 	 *
 	 * @return array <int line number> => <int number of errors>

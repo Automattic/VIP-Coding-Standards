@@ -62,6 +62,16 @@ class UnderscorejsSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 		/*
+		 * Ignore Gruntfile.js files as they are configuration, not code.
+		 */
+		$file_name = $this->strip_quotes( $this->phpcsFile->getFileName() );
+		$file_name = strtolower( basename( $file_name ) );
+
+		if ( $file_name === 'gruntfile.js' ) {
+			return;
+		}
+
+		/*
 		 * Check for delimiter change in JS files.
 		 */
 		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING
