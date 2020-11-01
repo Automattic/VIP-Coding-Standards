@@ -53,18 +53,20 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 		switch ( $testFile ) {
 			case 'UnderscorejsUnitTest.inc':
 				return [
-					6  => 1,
-					14 => 1,
-					22 => 1,
-					23 => 1,
-					28 => 1,
-					32 => 1,
-					38 => 3,
-					45 => 1,
-					46 => 1,
-					47 => 1,
-					58 => 1,
-					60 => 1,
+					6   => 1,
+					14  => 1,
+					22  => 1,
+					23  => 1,
+					28  => 1,
+					32  => 1,
+					38  => 3,
+					45  => 1,
+					46  => 1,
+					47  => 1,
+					58  => 1,
+					60  => 1,
+					114 => 1,
+					115 => 1,
 				];
 
 			case 'UnderscorejsUnitTest.js':
@@ -74,6 +76,8 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 					7  => 1,
 					9  => 1,
 					12 => 1,
+					44 => 1,
+					45 => 1,
 				];
 
 			default:

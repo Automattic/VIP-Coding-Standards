@@ -39,3 +39,7 @@ var html = _.template(
 		variable: "o"
 	}
 );
+
+var compiled = _.template("<% print('Hello ' + _.escape(epithet)); %>"); /* OK */
+var compiled = _.template("<% print('Hello ' + epithet); %>"); /* NOK */
+var compiled = _.template("<% __p+=o.text %>"); /* NOK */

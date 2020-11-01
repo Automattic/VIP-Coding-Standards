@@ -27,6 +27,14 @@ class UnderscorejsSniff extends Sniff {
 	const UNESCAPED_INTERPOLATE_REGEX = '`<%=\s*(?:.+?%>|$)`';
 
 	/**
+	 * Regex to match execute notations containing a print command
+	 * and retrieve a code snippet.
+	 *
+	 * @var string
+	 */
+	const UNESCAPED_PRINT_REGEX = '`<%\s*(?:print\s*\(.+?\)\s*;|__p\s*\+=.+?)\s*%>`';
+
+	/**
 	 * Regex to match the "interpolate" keyword when used to overrule the ERB-style delimiters.
 	 *
 	 * @var string
@@ -112,7 +120,8 @@ class UnderscorejsSniff extends Sniff {
 			return;
 		}
 
-		$content     = $this->strip_quotes( $this->tokens[ $stackPtr ]['content'] );
+		$content = $this->strip_quotes( $this->tokens[ $stackPtr ]['content'] );
+
 		$match_count = preg_match_all( self::UNESCAPED_INTERPOLATE_REGEX, $content, $matches );
 		if ( $match_count > 0 ) {
 			foreach ( $matches[0] as $match ) {
@@ -124,6 +133,20 @@ class UnderscorejsSniff extends Sniff {
 				$message = 'Found Underscore.js unescaped output notation: "%s".';
 				$data    = [ $match ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation', $data );
+			}
+		}
+
+		$match_count = preg_match_all( self::UNESCAPED_PRINT_REGEX, $content, $matches );
+		if ( $match_count > 0 ) {
+			foreach ( $matches[0] as $match ) {
+				if ( strpos( $match, '_.escape(' ) !== false ) {
+					continue;
+				}
+
+				// Underscore.js unescaped output.
+				$message = 'Found Underscore.js unescaped print execution: "%s".';
+				$data    = [ $match ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'PrintExecution', $data );
 			}
 		}
 

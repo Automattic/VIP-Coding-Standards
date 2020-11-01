@@ -106,3 +106,15 @@ function display_foo {
 	</script>
 <?php
 }
+
+function print_foo() {
+?>
+	<script id="template" type="text/template">
+		var compiled = _.template("<% print('Hello ' + _.escape(epithet)); %>"); /* OK */
+		var compiled = _.template("<% print('Hello ' + epithet); %>"); /* NOK */
+		var compiled = _.template("<% __p+=o.text %>"); /* NOK */
+
+		compiled({epithet: "stooge"});
+	</script>
+<?php
+}
