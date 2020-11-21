@@ -19,6 +19,12 @@ use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
  */
 class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
+/*
+NOTES related to #407:
+- add list of partial constant names to filter out on - `DIR` and `PATH`
+- add (intentionally) public property to allow adding additional (full) constant names to ignore
+*/
+
 	/**
 	 * List of function used for getting paths.
 	 *
