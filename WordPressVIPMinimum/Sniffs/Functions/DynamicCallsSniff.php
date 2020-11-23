@@ -30,7 +30,7 @@ class DynamicCallsSniff extends Sniff {
 	 *
 	 * @var array
 	 */
-	private $function_names = [
+	private $disallowed_functions = [
 		'assert'           => true,
 		'compact'          => true,
 		'extract'          => true,
@@ -141,7 +141,7 @@ class DynamicCallsSniff extends Sniff {
 		 */
 		$current_var_value = $this->strip_quotes( $this->tokens[ $value_ptr ]['content'] );
 
-		if ( isset( $this->function_names[ $current_var_value ] ) === false ) {
+		if ( isset( $this->disallowed_functions[ $current_var_value ] ) === false ) {
 			// Text string is not one of the ones we're looking for.
 			return;
 		}
@@ -167,7 +167,7 @@ class DynamicCallsSniff extends Sniff {
 
 		/*
 		 * If variable is not found in our registry of variables, do nothing, as we cannot be
-		 * sure that the function being called is one of the blacklisted ones.
+		 * sure that the function being called is one of the disallowed ones.
 		 */
 		if ( ! isset( $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ) ) {
 			return;
