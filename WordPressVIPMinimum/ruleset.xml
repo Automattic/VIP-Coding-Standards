@@ -149,9 +149,6 @@
 	<rule ref="WordPress.WP.AlternativeFunctions.curl_curl_getinfo">
 		<message>Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.</message>
 	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.curl_curl_getinfo">
-		<message>Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.</message>
-	</rule>
 
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children">
 		<type>error</type>
