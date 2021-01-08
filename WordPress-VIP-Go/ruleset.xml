@@ -112,7 +112,6 @@
 	<!-- Things that really should be fixed, but don't necessarily have to be for the site to work.
 		 This includes potential security holes as well as functions that may bring down sites for performance reasons.
 	 -->
-	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped"/>
 	<!-- Should fix all of them but it doesn't need a manual review -->
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
 		<type>warning</type>
