@@ -93,19 +93,14 @@
 		<message>Hiding of admin bar is highly discouraged for user roles of "administrator" and "vip_support" -- if these roles are already excluded, this warning can be ignored.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie">
-		<type>error</type>
 		<severity>6</severity>
-		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE">
-		<type>error</type>
 		<severity>6</severity>
-		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__">
 		<type>error</type>
 		<severity>6</severity>
-		<message>Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.</message>
 	</rule>
 
 

@@ -57,7 +57,7 @@ class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 			// @link https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#caching-constraints
 			'cache_constraints' => [
 				'type'          => 'warning',
-				'message'       => 'Due to using Batcache, server side based client related logic will not work, use JS instead.',
+				'message'       => 'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
 				'variables'     => [
 					'$_COOKIE',
 				],
