@@ -310,8 +310,8 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			// @link WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#custom-roles
 			// @link VIP Go: https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#cache-constraints
 			'cookies' => [
-				'type'      => 'warning',
-				'message'   => 'Due to using Batcache, server side based client related logic will not work, use JS instead.',
+				'type'      => 'error',
+				'message'   => 'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
 				'functions' => [
 					'setcookie',
 				],

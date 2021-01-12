@@ -122,7 +122,7 @@ vip_safe_wp_remote_get(); // Ok - VIP recommended version of wp_remote_get().
 wp_remote_get( $url ); // Warning.
 
 cookie( $_GET['test'] ); // Ok - similarly-named function to setcookie().
-setcookie( 'cookie[three]', 'cookiethree' ); // Warning.
+setcookie( 'cookie[three]', 'cookiethree' ); // Error.
 
 get_post( 123 ); // Ok - not using get_posts().
 wp_get_recent_post(); // Ok - similarly-named function to wp_get_recent_posts().
