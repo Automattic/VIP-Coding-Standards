@@ -121,11 +121,6 @@
 
 
 	<!-- Warnings and other things -->
-	<rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
-		<!-- Needs a manual check -->
-		<type>warning</type>
-		<severity>10</severity>
-	</rule>
 	<rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized">
 		<!-- Needs a manual check -->
 		<type>warning</type>

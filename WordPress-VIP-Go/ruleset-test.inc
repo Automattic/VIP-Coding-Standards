@@ -67,7 +67,7 @@ $external_resource = file_get_contents( $test ); // Warning + Message.
 $file_content = file_get_contents( 'my-file.svg' ); // Ok.
 wpcom_vip_file_get_contents( $bar ); // Ok.
 
-// WordPress.Security.NonceVerification.NoNonceVerification
+// WordPress.Security.NonceVerification (inherited from parent)
 function bar_foo() {
 	if ( ! isset( $_POST['test'] ) ) { // Error.
 		return;
