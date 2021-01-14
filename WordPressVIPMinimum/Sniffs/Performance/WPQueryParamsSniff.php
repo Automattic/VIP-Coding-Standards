@@ -73,7 +73,7 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 			$next_token = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_EQUAL, T_CLOSE_SQUARE_BRACKET, T_DOUBLE_ARROW ] ), $stackPtr + 1, null, true );
 
 			if ( $this->tokens[ $next_token ]['code'] === T_TRUE ) {
-				// https://docs.wpvip.com/technical-references/caching/uncached-functions/
+				// https://docs.wpvip.com/technical-references/caching/uncached-functions/.
 				$message = 'Setting `suppress_filters` to `true` is prohibited.';
 				$this->phpcsFile->addError( $message, $stackPtr, 'SuppressFiltersTrue' );
 			}
