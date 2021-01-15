@@ -14,7 +14,7 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 /**
  * Flag returning high or infinite posts_per_page.
  *
- * @link https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#no-limit-queries
+ * @link https://docs.wpvip.com/technical-references/code-review/#no-limit-queries
  *
  * @package VIPCS\WordPressVIPMinimum
  *

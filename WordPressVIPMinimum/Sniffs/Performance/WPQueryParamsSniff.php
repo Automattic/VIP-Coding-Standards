@@ -51,7 +51,7 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 		return [
 			'PostNotIn' => [
 				'type'    => 'warning',
-				'message' => 'Using `exclude`, which is subsequently used by `post__not_in`, should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.',
+				'message' => 'Using `exclude`, which is subsequently used by `post__not_in`, should be done with caution, see https://docs.wpvip.com/how-tos/improve-performance-by-removing-usage-of-post__not_in/ for more information.',
 				'keys'    => [
 					'exclude',
 				],
@@ -73,15 +73,14 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 			$next_token = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_EQUAL, T_CLOSE_SQUARE_BRACKET, T_DOUBLE_ARROW ] ), $stackPtr + 1, null, true );
 
 			if ( $this->tokens[ $next_token ]['code'] === T_TRUE ) {
-				// WordPress.com: https://lobby.vip.wordpress.com/wordpress-com-documentation/uncached-functions/.
-				// VIP Go: https://wpvip.com/documentation/vip-go/uncached-functions/.
+				// https://docs.wpvip.com/technical-references/caching/uncached-functions/.
 				$message = 'Setting `suppress_filters` to `true` is prohibited.';
 				$this->phpcsFile->addError( $message, $stackPtr, 'SuppressFiltersTrue' );
 			}
 		}
 
 		if ( trim( $this->tokens[ $stackPtr ]['content'], '\'' ) === 'post__not_in' ) {
-			$message = 'Using `post__not_in` should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.';
+			$message = 'Using `post__not_in` should be done with caution, see https://docs.wpvip.com/how-tos/improve-performance-by-removing-usage-of-post__not_in/ for more information.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'PostNotIn' );
 		}
 

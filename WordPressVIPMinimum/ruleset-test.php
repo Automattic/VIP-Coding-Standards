@@ -309,13 +309,13 @@ $expected = [
 			'`eval()` is a security risk, please refrain from using it.',
 		],
 		242 => [
-			'Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.',
+			'Using cURL functions is highly discouraged within VIP context. Please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.',
 		],
 		243 => [
-			'Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.',
+			'Using cURL functions is highly discouraged within VIP context. Please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.',
 		],
 		244 => [
-			'Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.',
+			'Using cURL functions is highly discouraged within VIP context. Please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.',
 		],
 		259 => [
 			'`get_children()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `get_children()` will do a -1 query by default, a maximum of 100 should be used.',
