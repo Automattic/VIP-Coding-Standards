@@ -234,9 +234,6 @@
 	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable">
 		<severity>3</severity>
 	</rule>
-	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
-		<severity>1</severity>
-	</rule>
 	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval">
 		<severity>3</severity>
 	</rule>
