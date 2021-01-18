@@ -34,8 +34,8 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	 *            depending on your needs.
 	 */
 	protected $target_functions = [
-		'wp_cache_set'         => true,
-		'wp_cache_add'         => true,
+		'wp_cache_set' => true,
+		'wp_cache_add' => true,
 	];
 
 	/**
