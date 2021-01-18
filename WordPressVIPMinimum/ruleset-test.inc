@@ -607,6 +607,9 @@ class MyClass {
 	function my_callback() {}
 }
 
+// WordPressVIPMinimum.Compatibility.RestrictedCacheGroup.MemcachedGroupNameFound
+wp_cache_set( 'key', [ 1, 2, 3 ],        'post_meta' ); // Error.
+
 // Generic.VersionControl.GitMergeConflict
 ?>
 <<<<<<< HEAD // Error.
