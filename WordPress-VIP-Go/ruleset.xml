@@ -210,7 +210,7 @@
 		<!-- We trust that translations are safe on VIP Go -->
 		<severity>1</severity>
 	</rule>
-	<rule ref="WordPress.WP.GlobalVariablesOverride.OverrideProhibited">
+	<rule ref="WordPress.WP.GlobalVariablesOverride.Prohibited">
 		<!-- This is often a false positive. Still nice to flag for a check -->
 		<severity>3</severity>
 	</rule>
