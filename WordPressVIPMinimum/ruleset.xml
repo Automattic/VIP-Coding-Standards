@@ -144,9 +144,7 @@
 	</rule>
 
 	<!-- Include VariableAnalysis checks -->
-	<rule ref="VariableAnalysis">
-		<exclude name="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable"/>
-	</rule>
+	<rule ref="VariableAnalysis"/>
 
 	<!-- Prevent deprecation notice when the sniff is not explicitly included. -->
 	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.DeprecatedSniff">
