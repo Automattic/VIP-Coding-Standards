@@ -34,8 +34,8 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	 *            depending on your needs.
 	 */
 	protected $target_functions = [
-		'wp_cache_set' => true,
 		'wp_cache_add' => true,
+		'wp_cache_set' => true,
 	];
 
 	/**
@@ -94,7 +94,7 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		if ( count( $parameters ) > 2 && isset( $this->wp_memcached_groups[ trim( $parameters[3]['raw'], '"\'' ) ] ) ) {
-			$this->phpcsFile->addError( 'Please do not use cache group %s, as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.', $stackPtr, 'wp_memcached', $parameters[3]['raw'] );
+			$this->phpcsFile->addError( 'Please do not use cache group %s, as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.', $stackPtr, 'Wp_memcached', $parameters[3]['raw'] );
 		}
 	}
 }

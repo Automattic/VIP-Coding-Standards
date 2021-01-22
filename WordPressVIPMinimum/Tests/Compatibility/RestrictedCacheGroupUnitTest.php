@@ -25,10 +25,12 @@ class RestrictedCacheGroupUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			6 => 1,
-			7 => 1,
-			8 => 1,
-			9 => 1,
+			6  => 1,
+			7  => 1,
+			8  => 1,
+			9  => 1,
+			10 => 1,
+			15 => 1,
 		];
 	}
 
