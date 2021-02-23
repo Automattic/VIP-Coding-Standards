@@ -26,6 +26,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	public $escaping_functions = [
 		'esc_url',
 		'esc_attr',
+		'esc_attr__',
 		'esc_html',
 	];
 
@@ -53,8 +54,27 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$function_name = $this->tokens[ $stackPtr ]['content'];
 
-		$echo_or_string_concat = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
+		$data = [ $function_name ];
 
+		if ( $function_name === 'esc_attr' || $function_name === 'esc_attr__' ) {
+			// Find esc_attr being used between HTML tags.
+			$tokens = array_merge(
+				Tokens::$emptyTokens,
+				[
+					'T_ECHO'     => T_ECHO,
+					'T_OPEN_TAG' => T_OPEN_TAG,
+				]
+			);
+			$html_tag = $this->phpcsFile->findPrevious( $tokens, $stackPtr - 1, null, true );
+			if ( $this->tokens[ $html_tag ]['type'] === 'T_INLINE_HTML' && false !== strpos( $this->tokens[ $html_tag ]['content'], '>' ) ) {
+				$message =  'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
+				$this->phpcsFile->addError( $message, $html_tag, 'notAttrEscAttr', $data );
+				return;
+			}
+		}
+
+		$echo_or_string_concat = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
+		
 		if ( $this->tokens[ $echo_or_string_concat ]['code'] === T_ECHO ) {
 			// Very likely inline HTML with <?php tag.
 			$php_open = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
@@ -79,8 +99,6 @@ class ProperEscapingFunctionSniff extends Sniff {
 			// Neither - bailing.
 			return;
 		}
-
-		$data = [ $function_name ];
 
 		if ( $function_name !== 'esc_url' && $this->attr_expects_url( $this->tokens[ $html ]['content'] ) ) {
 			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
