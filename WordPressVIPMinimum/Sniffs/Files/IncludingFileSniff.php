@@ -56,6 +56,17 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	];
 
 	/**
+	 * List of custom keywords for paths.
+	 *
+	 * @var array
+	 */
+	public $customPaths = [
+		'path',
+		'dir',
+		'base',
+	];
+
+	/**
 	 * Functions used for modify slashes.
 	 *
 	 * @var array
@@ -102,6 +113,16 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 		if ( $this->tokens[ $nextToken ]['code'] === T_DIR || $this->tokens[ $nextToken ]['content'] === '__DIR__' ) {
 			// The construct is using __DIR__ which is fine.
 			return;
+		}
+
+		if ( $this->tokens[ $nextToken ]['code'] === T_CONSTANT_ENCAPSED_STRING && filter_var( str_replace( [ '"', "'" ], '', $this->tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
+			$message = 'Include path must be local file source, external URLs are prohibited on WordPress VIP.';
+			$this->phpcsFile->addError( $message, $nextToken, 'ExternalURL' );
+			return;
+		}
+
+		if ( $this->has_custom_path( $nextToken ) !== false && array_key_exists( $this->tokens[ $nextToken ]['content'], $this->restrictedConstants ) === false ) {
+			return; // Bail since it has a keyword from $customPaths but not in list of $restrictedConstants.
 		}
 
 		if ( $this->tokens[ $nextToken ]['code'] === T_VARIABLE ) {
@@ -163,13 +184,35 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 			return;
 		}
 
-		if ( $this->tokens[ $nextToken ]['code'] === T_CONSTANT_ENCAPSED_STRING && filter_var( str_replace( [ '"', "'" ], '', $this->tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
-			$message = 'Include path must be local file source, external URLs are prohibited on WordPress VIP.';
-			$this->phpcsFile->addError( $message, $nextToken, 'ExternalURL' );
-			return;
-		}
-
 		$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
 		$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
+	}
+
+	/**
+	 * Check if a content string contains wording found in custom paths.
+	 *
+	 * @param int    $stackPtr Optional. The position of the current token in the
+	 *                         token stack.
+	 *                         This parameter needs to be passed if no $content is
+	 *                         passed.
+	 * @param string $content  Optionally, the current content string, might be a
+	 *                         substring of the original string.
+	 *                         Defaults to `false` to distinguish between a passed
+	 *                         empty string and not passing the $content string.
+	 *
+	 * @return bool True if the string contains a keyword in $customPaths, false otherwise.
+	 */
+	public function has_custom_path( $stackPtr = null, $content = null ) {
+		if ( $content === null && isset( $stackPtr ) ) {
+			$content = strtolower( $this->tokens[ $stackPtr ]['content'] );
+		}
+
+		foreach ( $this->customPaths as $path ) {
+			if ( false !== strpos( $content, $path ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
