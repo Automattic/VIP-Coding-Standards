@@ -24,10 +24,15 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * @var array
 	 */
 	public $escaping_functions = [
-		'esc_url',
-		'esc_attr',
-		'esc_attr__',
-		'esc_html',
+		'esc_url'    => 'url',
+		'esc_attr'   => 'attr',
+		'esc_attr__' => 'attr',
+		'esc_attr_x' => 'attr',
+		'esc_attr_e' => 'attr',
+		'esc_html'   => 'html',
+		'esc_html__' => 'html',
+		'esc_html_x' => 'html',
+		'esc_html_e' => 'html',
 	];
 
 	/**
@@ -48,7 +53,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( in_array( $this->tokens[ $stackPtr ]['content'], $this->escaping_functions, true ) === false ) {
+		if ( isset( $this->escaping_functions[ $this->tokens[ $stackPtr ]['content'] ] ) === false ) {
 			return;
 		}
 
@@ -56,28 +61,11 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$data = [ $function_name ];
 
-		if ( $function_name === 'esc_attr' || $function_name === 'esc_attr__' ) {
-			// Find esc_attr being used between HTML tags.
-			$tokens = array_merge(
-				Tokens::$emptyTokens,
-				[
-					'T_ECHO'     => T_ECHO,
-					'T_OPEN_TAG' => T_OPEN_TAG,
-				]
-			);
-			$html_tag = $this->phpcsFile->findPrevious( $tokens, $stackPtr - 1, null, true );
-			if ( $this->tokens[ $html_tag ]['type'] === 'T_INLINE_HTML' && false !== strpos( $this->tokens[ $html_tag ]['content'], '>' ) ) {
-				$message =  'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
-				$this->phpcsFile->addError( $message, $html_tag, 'notAttrEscAttr', $data );
-				return;
-			}
-		}
+		$echo_or_concat_or_html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
 
-		$echo_or_string_concat = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
-		
-		if ( $this->tokens[ $echo_or_string_concat ]['code'] === T_ECHO ) {
+		if ( $this->tokens[ $echo_or_concat_or_html ]['code'] === T_ECHO ) {
 			// Very likely inline HTML with <?php tag.
-			$php_open = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
+			$php_open = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_concat_or_html - 1, null, true );
 
 			if ( $this->tokens[ $php_open ]['code'] !== T_OPEN_TAG ) {
 				return;
@@ -85,14 +73,18 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $php_open - 1, null, true );
 
-			if ( $this->tokens[ $html ]['code'] !== T_INLINE_HTML ) {
+			if ( $this->tokens[ $html ]['code'] === T_INLINE_HTML && $this->is_outside_html_attr_context( $function_name, $this->tokens[ $html ]['content'] ) ) {
+				$message = 'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
+				$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
 				return;
 			}
-		} elseif ( $this->tokens[ $echo_or_string_concat ]['code'] === T_STRING_CONCAT ) {
+		} elseif ( $this->tokens[ $echo_or_concat_or_html ]['code'] === T_STRING_CONCAT || $this->tokens[ $echo_or_concat_or_html ]['code'] === T_COMMA ) {
 			// Very likely string concatenation mixing strings and functions/variables.
-			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
+			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_concat_or_html - 1, null, true );
 
-			if ( $this->tokens[ $html ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
+			if ( $this->tokens[ $html ]['code'] === T_CONSTANT_ENCAPSED_STRING && $this->is_outside_html_attr_context( $function_name, trim( $this->tokens[ $html ]['content'], '"\'' ) ) ) {
+				$message = 'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
+				$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
 				return;
 			}
 		} else {
@@ -170,5 +162,17 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function endswith( $haystack, $needle ) {
 		return substr( $haystack, -strlen( $needle ) ) === $needle;
+	}
+
+	/**
+	 * Tests whether provided string ends with closing HTML tag in an attribute context.
+	 *
+	 * @param string $function_name Escaping attribute function name.
+	 * @param string $content Haystack in which we look for open HTML tag.
+	 *
+	 * @return bool True if string ends with open HTML tag.
+	 */
+	public function is_outside_html_attr_context( $function_name, $content ) {
+		return $this->escaping_functions[ $function_name ] === 'attr' && substr( $content, -1 ) === '>';
 	}
 }

@@ -59,4 +59,7 @@ h1 {
 Test
 </article>
 
-<h1><?php echo esc_attr__( $title, 'domain' ); ?></h1> <!-- Error -->
+<h1><?php echo esc_attr__( $title, 'domain' ); ?></h1> <!-- Error --> ?>
+<?php echo '<h1>' . esc_attr__( $some_var, 'domain' ) . '</h1>'; // Error.
+echo '<h1>',      esc_attr__( $title, 'domain' ), '</h1>'; // Error.
+echo '<h1>',      esc_attr__( $title, 'domain' )      . '</h1>'; // Error.
