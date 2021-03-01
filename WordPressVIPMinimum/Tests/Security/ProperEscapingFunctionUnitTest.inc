@@ -63,3 +63,8 @@ Test
 <?php echo '<h1>' . esc_attr__( $some_var, 'domain' ) . '</h1>'; // Error.
 echo '<h1>',      esc_attr__( $title, 'domain' ), '</h1>'; // Error.
 echo '<h1>',      esc_attr__( $title, 'domain' )      . '</h1>'; // Error.
+?>
+<h1> <?php echo esc_attr( $title ) . '</h1>'; ?> // Error.
+<div><?= esc_attr($attr) ?></div><!-- Error -->
+<div><?php esc_attr_e($attr) ?></div><!-- Error -->
+<div data-tag="<?= esc_attr( $attr ); ?>"> <!-- OK -->

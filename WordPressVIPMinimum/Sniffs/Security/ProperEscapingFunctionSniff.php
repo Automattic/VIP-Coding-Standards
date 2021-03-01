@@ -36,11 +36,27 @@ class ProperEscapingFunctionSniff extends Sniff {
 	];
 
 	/**
+	 * List of tokens we can skip.
+	 *
+	 * @var array
+	 */
+	private $echo_or_concat_tokens =
+	[
+		T_ECHO               => T_ECHO,
+		T_OPEN_TAG           => T_OPEN_TAG,
+		T_OPEN_TAG_WITH_ECHO => T_OPEN_TAG_WITH_ECHO,
+		T_STRING_CONCAT      => T_STRING_CONCAT,
+		T_COMMA              => T_COMMA,
+	];
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
 	 */
 	public function register() {
+		$this->echo_or_concat_tokens += Tokens::$emptyTokens;
+
 		return [ T_STRING ];
 	}
 
@@ -59,36 +75,17 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$function_name = $this->tokens[ $stackPtr ]['content'];
 
+		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
+
 		$data = [ $function_name ];
 
-		$echo_or_concat_or_html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
+		if ( isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) { // Use $textStringTokens b/c heredoc and nowdoc tokens shouldn't be matched anyways.
+			return;
+		}
 
-		if ( $this->tokens[ $echo_or_concat_or_html ]['code'] === T_ECHO ) {
-			// Very likely inline HTML with <?php tag.
-			$php_open = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_concat_or_html - 1, null, true );
-
-			if ( $this->tokens[ $php_open ]['code'] !== T_OPEN_TAG ) {
-				return;
-			}
-
-			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $php_open - 1, null, true );
-
-			if ( $this->tokens[ $html ]['code'] === T_INLINE_HTML && $this->is_outside_html_attr_context( $function_name, $this->tokens[ $html ]['content'] ) ) {
-				$message = 'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
-				$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
-				return;
-			}
-		} elseif ( $this->tokens[ $echo_or_concat_or_html ]['code'] === T_STRING_CONCAT || $this->tokens[ $echo_or_concat_or_html ]['code'] === T_COMMA ) {
-			// Very likely string concatenation mixing strings and functions/variables.
-			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_concat_or_html - 1, null, true );
-
-			if ( $this->tokens[ $html ]['code'] === T_CONSTANT_ENCAPSED_STRING && $this->is_outside_html_attr_context( $function_name, trim( $this->tokens[ $html ]['content'], '"\'' ) ) ) {
-				$message = 'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
-				$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
-				return;
-			}
-		} else {
-			// Neither - bailing.
+		if ( $this->is_outside_html_attr_context( $function_name, Sniff::strip_quotes( $this->tokens[ $html ]['content'] ) ) ) {
+			$message = 'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
+			$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
 			return;
 		}
 
@@ -97,6 +94,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
+
 		if ( $function_name === 'esc_html' && $this->is_html_attr( $this->tokens[ $html ]['content'] ) ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
@@ -167,12 +165,12 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * Tests whether provided string ends with closing HTML tag in an attribute context.
 	 *
-	 * @param string $function_name Escaping attribute function name.
-	 * @param string $content Haystack in which we look for open HTML tag.
+	 * @param string $function_name Name of function found.
+	 * @param string $content       Haystack in which we look for open HTML tag.
 	 *
 	 * @return bool True if string ends with open HTML tag.
 	 */
 	public function is_outside_html_attr_context( $function_name, $content ) {
-		return $this->escaping_functions[ $function_name ] === 'attr' && substr( $content, -1 ) === '>';
+		return $this->escaping_functions[ $function_name ] === 'attr' && substr( trim( $content ), -1 ) === '>';
 	}
 }
