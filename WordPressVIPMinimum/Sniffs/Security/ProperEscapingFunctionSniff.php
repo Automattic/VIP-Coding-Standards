@@ -158,6 +158,18 @@ class ProperEscapingFunctionSniff extends Sniff {
 	}
 
 	/**
+	 * Tests whether string ends with opening HTML tag for detection in attribute escaping.
+	 *
+	 * @param string $function_name Name of function.
+	 * @param string $content       Haystack where we look for the end of opening HTML tag.
+	 *
+	 * @return bool True if escaping attribute function and string ends with opening HTML tag.
+	 */
+	public function is_outside_html_attr_context( $function_name, $content ) {
+		return $this->escaping_functions[ $function_name ] === 'attr' && $this->endswith( trim( $content ), '>' );
+	}
+
+	/**
 	 * A helper function which tests whether string ends with some other.
 	 *
 	 * @param string $haystack String which is being tested.
@@ -167,17 +179,5 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function endswith( $haystack, $needle ) {
 		return substr( $haystack, -strlen( $needle ) ) === $needle;
-	}
-
-	/**
-	 * Tests whether string ends with opening HTML tag for detection in attribute escaping.
-	 *
-	 * @param string $function_name Name of function.
-	 * @param string $content       Haystack where we look for the end of opening HTML tag.
-	 *
-	 * @return bool True if escaping attribute function and string ends with opening HTML tag.
-	 */
-	public function is_outside_html_attr_context( $function_name, $content ) {
-		return $this->escaping_functions[ $function_name ] === 'attr' && substr( trim( $content ), -1 ) === '>';
 	}
 }
