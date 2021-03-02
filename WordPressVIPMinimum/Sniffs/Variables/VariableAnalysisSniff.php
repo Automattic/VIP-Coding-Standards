@@ -47,21 +47,6 @@ class VariableAnalysisSniff extends \VariableAnalysis\Sniffs\CodeAnalysis\Variab
 	];
 
 	/**
-	 * Returns an array of tokens this test wants to listen for.
-	 *
-	 * @return int[]
-	 */
-	public function register() {
-		return [
-			T_VARIABLE,
-			T_DOUBLE_QUOTED_STRING,
-			T_HEREDOC,
-			T_CLOSE_CURLY_BRACKET,
-			T_STRING,
-		];
-	}
-
-	/**
 	 * Don't use.
 	 *
 	 * @since      2.2.0 Added to allow for throwing the deprecation notices.
