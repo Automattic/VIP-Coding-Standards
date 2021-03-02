@@ -86,7 +86,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$content = $this->tokens[ $html ]['content'];
 
-		if ( $this->tokens[ $html ]['code'] !== 'T_INLINE_HTML' ) {
+		if ( isset( Tokens::$stringTokens[ $this->tokens[ $html ]['code'] ] ) === true ) {
 			$content = Sniff::strip_quotes( $content );
 		}
 
