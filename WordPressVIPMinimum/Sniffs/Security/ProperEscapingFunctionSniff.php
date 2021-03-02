@@ -76,7 +76,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
 
 		// Use $textStringTokens b/c heredoc and nowdoc tokens shouldn't be matched anyways.
-		if ( false === $html || false === isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) ) {
+		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
 			return;
 		}
 
