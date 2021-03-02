@@ -261,9 +261,6 @@
 		<!-- We are silencing this one because VIP Go does not use Batcache-->
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta">
-		<severity>0</severity>
-	</rule>
 	<rule ref="Generic.PHP.DisallowShortOpenTag.EchoFound">
 		<severity>0</severity>
 	</rule>

@@ -296,8 +296,8 @@ if ( isset( $_GET['migSource'] ) && wp_verify_nonce( sanitize_text_field( $_GET[
 
 
 
-// WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta
-$query = "SELECT * FROM $wpdb->usermeta"; // Ok.
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option
 delete_site_option( $foo ); // Ok.
