@@ -214,7 +214,7 @@ function foo_bar_bar() {
 
 // VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 function foo_bar_foo() {
-	$a = 'Hello'; // Warning
+	$a = 'Hello'; // OK.  Unused variables warning silenced.
 }
 
 // WordPressVIPMinimum.UserExperience.AdminBarRemoval
@@ -417,7 +417,7 @@ the_sub_field( 'field' ); // Warning.
 the_field( 'field' ); // Warning.
 wp_remote_get( $url ); // Warning.
 get_posts(); // Warning.
-function test_function( $a, $b ) {
+function test_function( $a, $b ) { // OK. Unused variables warning silenced.
 	return create_function( '$a, $b', 'return ( $b / $a ); '); // Warning.
 }
 wpcom_vip_get_term_link(); // Warning.
