@@ -73,29 +73,36 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
-		$function_name = $this->tokens[ $stackPtr ]['content'];
-
 		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
 
-		$data = [ $function_name ];
-
-		if ( isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) { // Use $textStringTokens b/c heredoc and nowdoc tokens shouldn't be matched anyways.
+		// Use $textStringTokens b/c heredoc and nowdoc tokens shouldn't be matched anyways.
+		if ( false === $html || false === isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) ) {
 			return;
 		}
 
-		if ( $this->is_outside_html_attr_context( $function_name, Sniff::strip_quotes( $this->tokens[ $html ]['content'] ) ) ) {
-			$message = 'Wrong escaping function, please do not use `%s()` in a context outside of HTML attributes.';
+		$function_name = $this->tokens[ $stackPtr ]['content'];
+
+		$data = [ $function_name ];
+
+		$content = $this->tokens[ $html ]['content'];
+
+		if ( $this->tokens[ $html ]['code'] !== 'T_INLINE_HTML' ) {
+			$content = Sniff::strip_quotes( $content );
+		}
+
+		if ( $this->is_outside_html_attr_context( $function_name, $content ) ) {
+			$message = 'Wrong escaping function, using `%s()` in a context outside of HTML attributes may not escape properly.';
 			$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
 			return;
 		}
 
-		if ( $function_name !== 'esc_url' && $this->attr_expects_url( $this->tokens[ $html ]['content'] ) ) {
+		if ( $function_name !== 'esc_url' && $this->attr_expects_url( $content ) ) {
 			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
 
-		if ( $function_name === 'esc_html' && $this->is_html_attr( $this->tokens[ $html ]['content'] ) ) {
+		if ( $function_name === 'esc_html' && $this->is_html_attr( $content ) ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
@@ -163,12 +170,12 @@ class ProperEscapingFunctionSniff extends Sniff {
 	}
 
 	/**
-	 * Tests whether provided string ends with closing HTML tag in an attribute context.
+	 * Tests whether string ends with opening HTML tag for detection in attribute escaping.
 	 *
-	 * @param string $function_name Name of function found.
-	 * @param string $content       Haystack in which we look for open HTML tag.
+	 * @param string $function_name Name of function.
+	 * @param string $content       Haystack where we look for the end of opening HTML tag.
 	 *
-	 * @return bool True if string ends with open HTML tag.
+	 * @return bool True if escaping attribute function and string ends with opening HTML tag.
 	 */
 	public function is_outside_html_attr_context( $function_name, $content ) {
 		return $this->escaping_functions[ $function_name ] === 'attr' && substr( trim( $content ), -1 ) === '>';
