@@ -325,10 +325,10 @@ switch_to_blog( $blogid ); // Error.
 get_page_by_title( $page_title ); // Error.
 url_to_postid( $url ); // Error.
 \add_role(); // Error.
-get_user_meta(); // Error.
-update_user_meta(); // Error.
-delete_user_meta(); // Error.
-add_user_meta(); // Error.
+
+
+
+
 term_exists(); // Error.
 count_user_posts(); // Error.
 wp_old_slug_redirect(); // Error.
