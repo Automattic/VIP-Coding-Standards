@@ -291,7 +291,7 @@ class CheckReturnValueSniff extends Sniff {
 	 * Function used as as callback for the array_reduce call.
 	 *
 	 * @param string $carry The final string.
-	 * @param array  $item Processed item.
+	 * @param array  $item  Processed item.
 	 *
 	 * @return string
 	 */

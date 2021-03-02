@@ -17,7 +17,7 @@ namespace WordPressVIPMinimum\Sniffs\Variables;
 use PHP_CodeSniffer\Files\File;
 
 /**
- * Checks the for undefined function variables.
+ * Checks for undefined function variables.
  *
  * This sniff checks that all function variables
  * are defined in the function body.

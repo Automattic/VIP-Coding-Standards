@@ -396,7 +396,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				if ( isset( $skipped[ $this->tokens[ $prev ]['code'] ] ) ) {
 					return false;
 				}
-				// Skip namespaced functions, ie: \foo\bar() not \bar().
+				// Skip namespaced functions, ie: `\foo\bar()` not `\bar()`.
 				if ( $this->tokens[ $prev ]['code'] === \T_NS_SEPARATOR ) {
 					$pprev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $prev - 1, null, true );
 					if ( $pprev !== false && $this->tokens[ $pprev ]['code'] === \T_STRING ) {

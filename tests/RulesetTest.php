@@ -158,7 +158,7 @@ class RulesetTest {
 	/**
 	 * Process the Decoded JSON output from PHP_CodeSniffer.
 	 *
-	 * @param stdClass $output Deconded JSON output from PHP_CodeSniffer.
+	 * @param \stdClass $output Decoded JSON output from PHP_CodeSniffer.
 	 */
 	private function process_output( $output ) {
 		foreach ( $output->files as $file ) {
@@ -310,9 +310,9 @@ class RulesetTest {
 	 * Print out the message reporting found issues.
 	 *
 	 * @param int    $expected Expected number of issues.
-	 * @param string $type The type of the issue.
-	 * @param int    $number Real number of issues.
-	 * @param int    $line Line number.
+	 * @param string $type     The type of the issue.
+	 * @param int    $number   Real number of issues.
+	 * @param int    $line     Line number.
 	 */
 	private function error_warning_message( $expected, $type, $number, $line ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
