@@ -399,7 +399,7 @@ is_multi_author(); // Warning.
 the_sub_field( 'field' ); // Warning.
 the_field( 'field' ); // Warning.
 wp_remote_get( $url ); // Warning.
-setcookie( 'cookie[three]', 'cookiethree' ); // Warning.
+setcookie( 'cookie[three]', 'cookiethree' ); // Error.
 get_posts(); // Warning.
 wp_get_recent_posts(); // Warning.
 $wp_random_testing = create_function( '$a, $b', 'return ( $b / $a ); '); // Warning.
