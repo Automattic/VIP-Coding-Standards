@@ -92,7 +92,7 @@ class RulesetTest {
 		// Travis and Windows support.
 		$phpcs_bin = getenv( 'PHPCS_BIN' );
 		if ( $phpcs_bin === false ) {
-			// phpcs:ignore
+			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv -- This is test code, not production.
 			putenv( 'PHPCS_BIN=phpcs' );
 		} else {
 			$this->phpcs_bin = realpath( $phpcs_bin );
@@ -101,7 +101,6 @@ class RulesetTest {
 		$output = $this->collect_phpcs_result();
 
 		if ( ! is_object( $output ) || empty( $output ) ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			printf( 'The PHPCS command checking the ruleset hasn\'t returned any issues. Bailing ...' . PHP_EOL );
 			exit( 1 ); // Die early, if we don't have any output.
 		}
@@ -149,7 +148,7 @@ class RulesetTest {
 			$this->phpcs_bin,
 			$this->ruleset
 		);
-		// phpcs:ignore
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec -- This is test code, not production.
 		$output = shell_exec( $shell );
 
 		return json_decode( $output );

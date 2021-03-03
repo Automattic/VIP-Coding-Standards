@@ -443,7 +443,7 @@ add_filter( 'robots_txt', function() { // Warning.
 } );
 
 // WordPressVIPMinimum.Performance.BatcacheWhitelistedParams
-// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification,WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 $test = sanitize_text_field( $_GET["utm_medium"] ); // Warning.
 
 // WordPressVIPMinimum.Performance.CacheValueOverride
