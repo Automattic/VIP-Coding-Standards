@@ -21,54 +21,11 @@ php:
   - 7.4
   - "nightly"
 
-# Rather than a `matrix` property, we use build stages. This allows early
-# build failure for basic linting and sniffing issues.
-# @link https://docs.travis-ci.com/user/build-stages/
-
-stages:
-  - lint
-  - sniff
-  - test
-
 jobs:
   allow_failures:
     - php: "nightly"
   include:
-
-    - stage: lint
-      php: 7.4
-      env: PHPCS_BRANCH="dev-master"
-      before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-      install: skip
-      cache: skip
-      script:
-        # Lint the PHP files against parse errors.
-        - ./bin/php-lint
-
-        # Add PHPCS locally for the XSD.
-        - travis_retry composer require squizlabs/php_codesniffer
-        # Validate the XML files and check the code-style consistency of the XML files.
-        - ./bin/xml-lint
-
-        # Validate the composer.json file.
-        # @link https://getcomposer.org/doc/03-cli.md#validate
-        - composer validate --no-check-all --strict
-      addons:
-        apt:
-          packages:
-            - libxml2-utils
-
-    - stage: sniff
-      php: 7.4
-      env: PHPCS_BRANCH="dev-master"
-      before_install: phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-      install: travis_retry composer install --no-suggest
-      script:
-        # Run PHPCS against VIPCS.
-        - ./bin/phpcs
-
     # Builds which need a different distro or specific PHPCS version.
-    - stage: test
     - php: 8.0
       env: PHPCS_BRANCH="dev-master"
     - php: 8.0
@@ -96,7 +53,7 @@ before_install:
   # On stable PHPCS versions, allow for PHP deprecation notices.
   # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
   - |
-    if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" && $PHPCS_BRANCH != "dev-master" ]]; then
+    if [[ $PHPCS_BRANCH != "dev-master" ]]; then
       echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     fi
 

@@ -9,7 +9,6 @@
 #   ./bin/xml-lint
 
 # Validate the ruleset XML files.
-#xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
 xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
 
 # Check the code-style consistency of the XML files.
