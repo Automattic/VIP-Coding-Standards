@@ -45,7 +45,7 @@ echo 'data-param-url="' . esc_html( $share_url ) . '"'; // Error.
 <a href="#link"><?php echo esc_attr( 'testing' ); // Error.
 ?> </a>
 
-<?php echo ' <h' . "2>    " ,        esc_attr( $heading ) . "</h2">; // Error.
+<?php echo ' <h' . "2>    " ,        esc_attr( $heading ) . "</h2>"; // Error.
 ?> <style>
 h1 {
   color: <?php echo esc_attr( $color ) ?>; /* OK */
