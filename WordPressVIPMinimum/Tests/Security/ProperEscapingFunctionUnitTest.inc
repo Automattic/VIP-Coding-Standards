@@ -62,7 +62,7 @@ Test
 <h1><?php echo esc_attr__( $title, 'domain' ); ?></h1> <!-- Error --> ?>
 <?php echo '<h1>' . esc_attr__( $some_var, 'domain' ) . '</h1>'; // Error.
 echo '<h1>',      esc_attr__( $title, 'domain' ), '</h1>'; // Error.
-echo "<" . "h1>" . esc_attr( $test ) . '</h1>'; // Error.
+echo "<$tag>  " , esc_attr( $test ) , "</$tag>"; // Error.
 ?>
 <h1> <?php echo esc_attr( $title ) . '</h1>'; ?> // Error.
 <div><?= esc_attr($attr) ?></div><!-- Error -->
