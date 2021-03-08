@@ -45,6 +45,13 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 			69 => 1,
 			72 => 1,
 			73 => 1,
+			74 => 1,
+			75 => 1,
+			76 => 1,
+			77 => 1,
+			78 => 1,
+			79 => 1,
+			80 => 1,
 		];
 	}
 

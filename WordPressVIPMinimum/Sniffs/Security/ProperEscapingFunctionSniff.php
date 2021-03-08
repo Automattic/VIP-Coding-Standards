@@ -50,6 +50,30 @@ class ProperEscapingFunctionSniff extends Sniff {
 	];
 
 	/**
+	 * List of attributes associated with url outputs.
+	 *
+	 * @var array
+	 */
+	private $url_attrs = [
+		'href',
+		'src',
+		'url',
+		'action',
+	];
+
+	/**
+	 * List of syntaxes for inside attribute detection.
+	 *
+	 * @var array
+	 */
+	private $attr_endings = [
+		'="',
+		"='",
+		"=\\'",
+		'=\\"',
+	];
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -75,7 +99,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
 
-		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways.
+		// Use $textStringTokens b/c heredoc and nowdoc tokens shouldn't be matched anyways.
 		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
 			return;
 		}
@@ -118,13 +142,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function attr_expects_url( $content ) {
 		$attr_expects_url = false;
-		foreach ( [ 'href', 'src', 'url', 'action' ] as $attr ) {
-			foreach ( [
-				'="',
-				"='",
-				'=\'"', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-				'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-			] as $ending ) {
+		foreach ( $this->url_attrs as $attr ) {
+			foreach ( $this->attr_endings as $ending ) {
 				if ( $this->endswith( $content, $attr . $ending ) === true ) {
 					$attr_expects_url = true;
 					break;
@@ -143,12 +162,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function is_html_attr( $content ) {
 		$is_html_attr = false;
-		foreach ( [
-			'="',
-			"='",
-			'=\'"', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-			'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-		] as $ending ) {
+		foreach ( $this->attr_endings as $ending ) {
 			if ( $this->endswith( $content, $ending ) === true ) {
 				$is_html_attr = true;
 				break;
@@ -158,12 +172,12 @@ class ProperEscapingFunctionSniff extends Sniff {
 	}
 
 	/**
-	 * Tests whether string ends with opening HTML tag for detection in attribute escaping.
+	 * Tests whether escaping function is being used outside of HTML tag.
 	 *
-	 * @param string $function_name Name of function.
-	 * @param string $content       Haystack where we look for the end of opening HTML tag.
+	 * @param string $function_name Escaping function.
+	 * @param string $content       Haystack where we look for the end of a HTML tag.
 	 *
-	 * @return bool True if escaping attribute function and string ends with opening HTML tag.
+	 * @return bool True if escaping attribute function and string ends with a HTML tag.
 	 */
 	public function is_outside_html_attr_context( $function_name, $content ) {
 		return $this->escaping_functions[ $function_name ] === 'attr' && $this->endswith( trim( $content ), '>' );

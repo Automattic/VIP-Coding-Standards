@@ -40,7 +40,7 @@ echo 'data-param-url="' . esc_html( $share_url ) . '"'; // Error.
 
 <form method="post" action="<?php echo esc_html(admin_url('admin.php?page='.$base_name.'&amp;mode=logs&amp;id='.$poll_id)); ?>">
 
-?>
+
 
 <a href="#link"><?php echo esc_attr( 'testing' ); // Error.
 ?> </a>
@@ -68,6 +68,13 @@ echo "<$tag>  " , esc_attr( $test ) , "</$tag>"; // Error.
 <div><?= esc_attr($attr) ?></div><!-- Error -->
 <div><?php esc_attr_e($attr) ?></div><!-- Error -->
 <div data-tag="<?= esc_attr( $attr ); ?>"> <!-- OK -->
-<?php echo "<div> {$test} </div>"; // OK.
+<?php echo "<div>" . $test . "</div>"; // OK.
 echo "<{$tag}>" . esc_attr( $tag_content ) . "</{$tag}>"; // Error.
 echo "<$tag" . '   >' . esc_attr( $tag_content ) . "</$tag>"; // Error.
+echo '<div class=\'' . esc_html($class) . '\'>'; // Error.
+echo "<div class=\"" . esc_html($class) . '">'; // Error.
+echo "<div $someAttribute class=\"" . esc_html($class) . '">'; // Error.
+echo '<a href=\'' . esc_html($url) . '\'>'; // Error.
+echo "<img src=\"" . esc_html($src) . '"/>'; // Error.
+echo "<div $someAttributeName-url=\"" . esc_html($url) . '">'; // Error.
+echo '<a href="',  esc_html($url), '">'; // Error.
