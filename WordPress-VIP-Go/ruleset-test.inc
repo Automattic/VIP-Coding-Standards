@@ -182,10 +182,10 @@ _ex( $some_nasty_var, 'context' ); // Error.
 echo esc_html_x( 'Something', 'context' ); // Ok.
 echo esc_html_x( $some_nasty_var, 'context' ); // Ok.
 
-// WordPress.WP.GlobalVariablesOverride.OverrideProhibited
-global $wpdb;
-$wpdb = 'test'; // Error.
-$GLOBALS['domain']['subkey'] = 'something else'; // Error.
+
+
+
+
 
 // WordPress.WP.EnqueuedResources.NonEnqueuedScript
 echo wp_kses( '<script src="' . esc_url( $url ) . '">', [ 'script' => [ 'src' => [], ], ] ); // Warning + Message.
@@ -297,7 +297,7 @@ get_user_meta(); // Ok.
 update_user_meta( $bar, '123', $foo ); // Ok.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta
-$query = "SELECT * FROM $wpdb->usermeta"; // Ok.
+global $wpdb; $query = "SELECT * FROM $wpdb->usermeta"; // Ok.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option
 delete_site_option( $foo ); // Ok.
