@@ -210,6 +210,7 @@
 		<!-- We trust that translations are safe on VIP Go -->
 		<severity>1</severity>
 	</rule>
+	<rule ref="WordPress.WP.GlobalVariablesOverride.Prohibited"/>
 	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedScript">
 		<type>warning</type>
 		<severity>3</severity>
