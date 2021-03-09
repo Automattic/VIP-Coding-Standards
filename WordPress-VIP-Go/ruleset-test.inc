@@ -297,7 +297,7 @@ get_user_meta(); // Ok.
 update_user_meta( $bar, '123', $foo ); // Ok.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta
-$query = "SELECT * FROM $wpdb->usermeta"; // Ok.
+$query = "SELECT * FROM $wpdb->usermeta"; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option
 delete_site_option( $foo ); // Ok.
