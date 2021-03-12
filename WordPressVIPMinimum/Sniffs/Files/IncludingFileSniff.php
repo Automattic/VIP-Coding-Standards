@@ -13,8 +13,7 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
  *
- * Checks that __DIR__, dirname( __FILE__ ) or plugin_dir_path( __FILE__ )
- * is used when including or requiring files.
+ * Checks file inclusion is correctly used.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
@@ -25,13 +24,13 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 *
 	 * @var array
 	 */
-	public $getPathFunctions = [
-		'plugin_dir_path',
-		'dirname',
-		'get_stylesheet_directory',
-		'get_template_directory',
-		'locate_template',
-		'get_parent_theme_file_path',
+	public $allowedPathFunctions = [
+		'plugin_dir_path'            => true,
+		'dirname'                    => true,
+		'get_stylesheet_directory'   => true,
+		'get_template_directory'     => true,
+		'locate_template'            => true,
+		'get_parent_theme_file_path' => true,
 	];
 
 	/**
@@ -50,9 +49,9 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 * @var array
 	 */
 	public $allowedConstants = [
-		'ABSPATH',
-		'WP_CONTENT_DIR',
-		'WP_PLUGIN_DIR',
+		'ABSPATH'        => true,
+		'WP_CONTENT_DIR' => true,
+		'WP_PLUGIN_DIR'  => true,
 	];
 
 	/**
@@ -72,9 +71,9 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 * @var array
 	 */
 	public $slashingFunctions = [
-		'trailingslashit',
-		'user_trailingslashit',
-		'untrailingslashit',
+		'trailingslashit'      => true,
+		'user_trailingslashit' => true,
+		'untrailingslashit'    => true,
 	];
 
 	/**
@@ -115,14 +114,10 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 			return;
 		}
 
-		if ( $this->tokens[ $nextToken ]['code'] === T_CONSTANT_ENCAPSED_STRING && filter_var( str_replace( [ '"', "'" ], '', $this->tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) ) {
+		if ( isset( Tokens::$stringTokens[ $this->tokens[ $nextToken ]['code'] ] ) && filter_var( str_replace( [ '"', "'" ], '', $this->tokens[ $nextToken ]['content'] ), FILTER_VALIDATE_URL ) !== false ) {
 			$message = 'Include path must be local file source, external URLs are prohibited on WordPress VIP.';
 			$this->phpcsFile->addError( $message, $nextToken, 'ExternalURL' );
 			return;
-		}
-
-		if ( $this->has_custom_path( $nextToken ) !== false && array_key_exists( $this->tokens[ $nextToken ]['content'], $this->restrictedConstants ) === false ) {
-			return; // Bail since it has a keyword from $customPaths but not in list of $restrictedConstants.
 		}
 
 		if ( $this->tokens[ $nextToken ]['code'] === T_VARIABLE ) {
@@ -133,55 +128,48 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 		}
 
 		if ( $this->tokens[ $nextToken ]['code'] === T_STRING ) {
-			if ( in_array( $this->tokens[ $nextToken ]['content'], $this->getPathFunctions, true ) === true ) {
-				// The construct is using one of the function for getting correct path which is fine.
-				return;
-			}
+			$is_function = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextToken + 1, null, true, null, true );
+			if ( $this->tokens[ $is_function ]['code'] === T_OPEN_PARENTHESIS ) {
+				if ( isset( $this->allowedPathFunctions[ $this->tokens[ $nextToken ]['content'] ] ) ) {
+					// The construct is using one of the functions for getting correct path which is fine.
+					return;
+				}
 
-			if ( in_array( $this->tokens[ $nextToken ]['content'], $this->allowedConstants, true ) === true ) {
-				// The construct is using one of the allowed constants which is fine.
-				return;
-			}
+				if ( isset( $this->slashingFunctions[ $this->tokens[ $nextToken ]['content'] ] ) ) {
+					// The construct is using one of the slashing functions, it's probably correct.
+					return;
+				}
 
-			if ( array_key_exists( $this->tokens[ $nextToken ]['content'], $this->restrictedConstants ) === true ) {
-				// The construct is using one of the restricted constants.
-				$message = '`%s` constant might not be defined or available. Use `%s()` instead.';
-				$data    = [ $this->tokens[ $nextToken ]['content'], $this->restrictedConstants[ $this->tokens[ $nextToken ]['content'] ] ];
-				$this->phpcsFile->addError( $message, $nextToken, 'RestrictedConstant', $data );
-				return;
-			}
+				if ( $this->is_targetted_token( $nextToken ) ) {
+					$message = 'File inclusion using custom function ( `%s()` ). Must return local file source, as external URLs are prohibited on WordPress VIP. Needs manual inspection.';
+					$data    = [ $this->tokens[ $nextToken ]['content'] ];
+					$this->phpcsFile->addWarning( $message, $nextToken, 'UsingCustomFunction', $data );
+					return;
+				}
+			} else { // We're in constant territory now.
+				if ( isset( $this->restrictedConstants[ $this->tokens[ $nextToken ]['content'] ] ) ) {
+					$message = '`%s` constant might not be defined or available. Use `%s()` instead.';
+					$data    = [ $this->tokens[ $nextToken ]['content'], $this->restrictedConstants[ $this->tokens[ $nextToken ]['content'] ] ];
+					$this->phpcsFile->addError( $message, $nextToken, 'RestrictedConstant', $data );
+					return;
+				}
+				if ( isset( $this->allowedConstants[ $this->tokens[ $nextToken ]['content'] ] ) ) {
+					// The construct is using one of the allowed constants which is fine.
+					return;
+				}
+				if ( $this->has_custom_path( $this->tokens[ $nextToken ]['content'] ) === true ) {
+					// The construct is using a constant with a custom keyword.
+					return;
+				}
 
-			$nextNextToken = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMENT ] ), $nextToken + 1, null, true, null, true );
-			if ( preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $this->tokens[ $nextToken ]['content'] ) === 1 && $this->tokens[ $nextNextToken ]['code'] !== T_OPEN_PARENTHESIS ) {
 				// The construct is using custom constant, which needs manual inspection.
-				$message = 'File inclusion using custom constant (`%s`). Probably needs manual inspection.';
-				$data    = [ $this->tokens[ $nextToken ]['content'] ];
-				$this->phpcsFile->addWarning( $message, $nextToken, 'UsingCustomConstant', $data );
-				return;
+				if ( preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $this->tokens[ $nextToken ]['content'] ) === 1 ) {
+					$message = 'File inclusion using custom constant (`%s`). Probably needs manual inspection.';
+					$data    = [ $this->tokens[ $nextToken ]['content'] ];
+					$this->phpcsFile->addWarning( $message, $nextToken, 'UsingCustomConstant', $data );
+					return;
+				}
 			}
-
-			if ( strpos( $this->tokens[ $nextToken ]['content'], '$' ) === 0 ) {
-				$message = 'File inclusion using variable (`%s`). Probably needs manual inspection.';
-				$data    = [ $this->tokens[ $nextToken ]['content'] ];
-				$this->phpcsFile->addWarning( $message, $nextToken, 'UsingVariable', $data );
-				return;
-			}
-
-			if ( in_array( $this->tokens[ $nextToken ]['content'], $this->slashingFunctions, true ) === true ) {
-				// The construct is using one of the slashing functions, it's probably correct.
-				return;
-			}
-
-			if ( $this->is_targetted_token( $nextToken ) ) {
-				$message = 'File inclusion using custom function ( `%s()` ). Must return local file source, as external URLs are prohibited on WordPress VIP. Probably needs manual inspection.';
-				$data    = [ $this->tokens[ $nextToken ]['content'] ];
-				$this->phpcsFile->addWarning( $message, $nextToken, 'UsingCustomFunction', $data );
-				return;
-			}
-
-			$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
-			$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
-			return;
 		}
 
 		$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
@@ -191,10 +179,6 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Check if a content string contains wording found in custom paths.
 	 *
-	 * @param int    $stackPtr Optional. The position of the current token in the
-	 *                         token stack.
-	 *                         This parameter needs to be passed if no $content is
-	 *                         passed.
 	 * @param string $content  Optionally, the current content string, might be a
 	 *                         substring of the original string.
 	 *                         Defaults to `false` to distinguish between a passed
@@ -202,13 +186,11 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 *
 	 * @return bool True if the string contains a keyword in $customPaths, false otherwise.
 	 */
-	public function has_custom_path( $stackPtr = null, $content = null ) {
-		if ( $content === null && isset( $stackPtr ) ) {
-			$content = strtolower( $this->tokens[ $stackPtr ]['content'] );
-		}
+	private function has_custom_path( $content ) {
+		$content = strtolower( $content );
 
 		foreach ( $this->customPaths as $path ) {
-			if ( false !== strpos( $content, $path ) ) {
+			if ( strpos( $content, $path ) !== false ) {
 				return true;
 			}
 		}

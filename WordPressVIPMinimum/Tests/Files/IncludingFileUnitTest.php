@@ -31,6 +31,8 @@ class IncludingFileUnitTest extends AbstractSniffUnitTest {
 			32 => 1,
 			33 => 1,
 			34 => 1,
+			35 => 1,
+			36 => 1,
 		];
 	}
 
@@ -41,6 +43,7 @@ class IncludingFileUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
+			21 => 1,
 			22 => 1,
 			23 => 1,
 			24 => 1,
