@@ -17,6 +17,8 @@ wp_cache_set( 'key',
 
 [ 1, 2, 3 ], 'userslugs'
 );
+wp_cache_set( $key, [ 1, 2, 3 ],        'post_meta' );
+wp_cache_add($cache, "1", 'themes');
 
 // OK
 $key = 'cache_key';
@@ -24,3 +26,4 @@ wp_cache_set( $key, $data, 'users_stuff' );
 wp_cache_add( $key, 'data', "posts_" );
 wp_cache_set( $key, $data, 'custom_taxonomy_relationships' );
 wp_cache_set( 'key', 'data', $userslugs );
+wp_cache_add( $key, 'post_meta', 'group' );
