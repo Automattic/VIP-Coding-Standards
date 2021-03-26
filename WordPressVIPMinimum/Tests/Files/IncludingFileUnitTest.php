@@ -29,6 +29,7 @@ class IncludingFileUnitTest extends AbstractSniffUnitTest {
 			26 => 1,
 			27 => 1,
 			28 => 1,
+			31 => 1,
 		];
 	}
 
@@ -43,6 +44,8 @@ class IncludingFileUnitTest extends AbstractSniffUnitTest {
 			19 => 1,
 			20 => 1,
 			21 => 1,
+			32 => 1,
+			33 => 1,
 		];
 	}
 

@@ -13,8 +13,7 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
  *
- * Checks that __DIR__, dirname( __FILE__ ) or plugin_dir_path( __FILE__ )
- * is used when including or requiring files.
+ * Checks for custom variables, functions and constants, and external URLs used in file inclusion.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
@@ -53,6 +52,17 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 		'ABSPATH',
 		'WP_CONTENT_DIR',
 		'WP_PLUGIN_DIR',
+	];
+
+	/**
+	 * List of keywords allowed for use in custom constants.
+	 * Note: Customizing this property will overwrite current default values.
+	 *
+	 * @var array
+	 */
+	public $allowedKeywords = [
+		'PATH',
+		'DIR',
 	];
 
 	/**
@@ -122,6 +132,11 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 				return;
 			}
 
+			if ( $this->has_custom_path( $this->tokens[ $nextToken ]['content'] ) === true ) {
+				// The construct is using a constant with an allowed keyword.
+				return;
+			}
+
 			if ( array_key_exists( $this->tokens[ $nextToken ]['content'], $this->restrictedConstants ) === true ) {
 				// The construct is using one of the restricted constants.
 				$message = '`%s` constant might not be defined or available. Use `%s()` instead.';
@@ -171,5 +186,22 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
 		$message = 'Absolute include path must be used. Use `get_template_directory()`, `get_stylesheet_directory()` or `plugin_dir_path()`.';
 		$this->phpcsFile->addError( $message, $nextToken, 'NotAbsolutePath' );
+	}
+
+	/**
+	 * Check if a content string contains a keyword in custom paths.
+	 *
+	 * @param string $content  Content string.
+	 *
+	 * @return bool True if the string partially matches a keyword in $allowedCustomKeywords, false otherwise.
+	 */
+	private function has_custom_path( $content ) {
+		foreach ( $this->allowedKeywords as $keyword ) {
+			if ( strpos( $content, $keyword ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

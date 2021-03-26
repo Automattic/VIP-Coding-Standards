@@ -26,3 +26,12 @@ require '../my_file.php'; // Not absolute path.
 require '../../my_file.php'; // Not absolute path.
 include( 'http://www.google.com/bad_file.php' ); // External URL.
 include_once("http://www.google.com/bad_file.php"); // External URL.
+
+// Allowed keywords
+include 'https://path.com/bad_file.php'; // Error - external URL with keyword from $allowedKeywords.
+require   $path; // Warning - custom variable with keyword from $allowedKeywords.
+include_once   dir_function(); // Error - custom functionm with keyword from $allowedKeywords.
+require CUSTOM_CONSTANT_DIR . 'file.php'; // OK.
+require_once ( VIPCS_PATH ) . 'file.php'; // OK.
+include_once      
+  DIR_CUSTOM , 'file.php'; // OK.
