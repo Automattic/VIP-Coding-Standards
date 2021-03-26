@@ -254,15 +254,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'lchown',
 				],
 			],
-			'site_option' => [
-				'type'      => 'error',
-				'message'   => '%s() will overwrite network option values, please use the `*_option()` equivalent instead (e.g. `update_option()`).',
-				'functions' => [
-					'add_site_option',
-					'update_site_option',
-					'delete_site_option',
-				],
-			],
 			'stats_get_csv' => [
 				'type'      => 'error',
 				'message'   => 'Using `%s` outside of Jetpack context pollutes the stats_cache entry in the wp_options table. We recommend building a custom function instead.',
