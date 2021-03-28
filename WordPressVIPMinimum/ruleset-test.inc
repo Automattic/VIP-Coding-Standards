@@ -390,9 +390,9 @@ chown(); // Error.
 chmod(); // Error.
 lchgrp(); // Error.
 lchown(); // Error.
-add_site_option( 'foo', $bar ); // Error.
-update_site_option( $bar, $foo, true ); // Error.
-delete_site_option( $foo ); // Error.
+
+
+
 wp_mail(); // Warning.
 mail(); // Warning.
 is_multi_author(); // Warning.
