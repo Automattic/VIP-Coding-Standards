@@ -133,7 +133,6 @@ $expected = [
 		41  => 1,
 		44  => 1,
 		47  => 1,
-		60  => 1,
 		63  => 1,
 		66  => 1,
 		85  => 1,
@@ -292,9 +291,6 @@ $expected = [
 		],
 		56  => [
 			'Due to server-side caching, server-side based client related logic might not work. We recommend implementing client side logic in JavaScript instead.',
-		],
-		60  => [
-			'File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as fclose(). For more details, please see: https://docs.wpvip.com/technical-references/vip-go-files-system/local-file-operations/',
 		],
 		63  => [
 			'File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as fopen(). For more details, please see: https://docs.wpvip.com/technical-references/vip-go-files-system/local-file-operations/',
