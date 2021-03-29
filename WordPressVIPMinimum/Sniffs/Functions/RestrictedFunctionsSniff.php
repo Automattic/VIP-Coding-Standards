@@ -25,13 +25,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	public function getGroups() {
 
 		$groups = [
-			'wp_cache_get_multi' => [
-				'type'      => 'error',
-				'message'   => '`%s` is not supported on the WordPress.com VIP platform.',
-				'functions' => [
-					'wp_cache_get_multi',
-				],
-			],
 			'opcache' => [
 				'type'      => 'error',
 				'message'   => '`%s` is prohibited on the WordPress VIP platform due to memory corruption.',
