@@ -11,7 +11,45 @@ on:
   workflow_dispatch:
 
 jobs:
+  #### PHP LINT STAGE ####
+  # Linting against high/low PHP versions should catch everything.
+  # If needs be, we can always add interim versions at a later point in time.
+  lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['5.4', 'latest']
+        experimental: [false]
+
+        include:
+          - php: '8.1'
+            experimental: true
+
+    name: "Lint: PHP ${{ matrix.php }}"
+    continue-on-error: ${{ matrix.experimental }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: cs2pr
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
+
+      - name: Lint against parse errors
+        run: ./bin/php-lint --checkstyle | cs2pr
+
   test:
+    # No use running the tests if there is a linting error somewhere as they would fail anyway.
+    needs: lint
+
     runs-on: ubuntu-latest
 
     strategy:

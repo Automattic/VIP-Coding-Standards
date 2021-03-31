@@ -26,9 +26,6 @@ jobs:
           coverage: none
           tools: cs2pr
 
-      - name: 'Lint PHP against parse errors'
-        run: ./bin/php-lint
-
       - name: Install xmllint
         run: sudo apt-get install --no-install-recommends -y libxml2-utils
 
