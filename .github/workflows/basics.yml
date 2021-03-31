@@ -57,3 +57,9 @@ jobs:
 
       - name: Show PHPCS results in PR
         run: cs2pr ./phpcs-report.xml
+
+      # Check that the sniffs available are feature complete.
+      # For now, just check that all sniffs have unit tests.
+      # At a later stage the documentation check can be activated.
+      - name: Check sniff feature completeness
+        run: composer check-complete
