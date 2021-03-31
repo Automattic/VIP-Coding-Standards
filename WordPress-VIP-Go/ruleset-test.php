@@ -336,9 +336,6 @@ $expected = [
 		196 => [
 			'Stylesheets should be registered/enqueued via `wp_enqueue_style`. This can improve the site\'s performance due to styles concatenation.',
 		],
-		269 => [
-			'Switch to blog may not work as expected since it only changes the database context for the blog and does not load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.',
-		],
 	],
 ];
 

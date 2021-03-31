@@ -246,7 +246,6 @@
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.switch_to_blog_switch_to_blog">
 		<type>warning</type>
 		<severity>3</severity>
-		<message>Switch to blog may not work as expected since it only changes the database context for the blog and does not load the plugins or theme of that site. This means that filters or hooks that the blog you are switching to uses will not run.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn">
 		<severity>3</severity>
