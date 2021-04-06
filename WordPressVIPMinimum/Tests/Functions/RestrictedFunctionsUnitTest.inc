@@ -33,8 +33,8 @@ opcache_get_status(); // Error.
 opcache_get_status( false ); // Error.
 opcache_get_configuration(); // Error.
 
-get_super_admin(); // Ok - similarly-named function to get_super_admins().
-get_super_admins(); // Error.
+
+
 
 vip_irc(); // Ok - similarly-named function to wpcom_vip_irc().
 wpcom_vip_irc(); // Error.

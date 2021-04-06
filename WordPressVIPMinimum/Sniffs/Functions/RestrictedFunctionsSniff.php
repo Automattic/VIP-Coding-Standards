@@ -43,13 +43,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'opcache_get_configuration',
 				],
 			],
-			'get_super_admins' => [
-				'type'      => 'error',
-				'message'   => '`%s` is prohibited on the WordPress.com VIP platform.',
-				'functions' => [
-					'get_super_admins',
-				],
-			],
 			'internal' => [
 				'type'      => 'error',
 				'message'   => '`%1$s()` is for internal use only.',

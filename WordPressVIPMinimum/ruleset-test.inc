@@ -315,7 +315,7 @@ opcache_compile_file( $var ); // Error.
 opcache_is_script_cached( 'test_script.php' ); // Error.
 opcache_get_status(); // Error.
 opcache_get_configuration(); // Error.
-get_super_admins(); // Error.
+
 wpcom_vip_irc(); // Error.
 flush_rewrite_rules(); // Error.
 $wp_rewrite->flush_rules(); // Error.

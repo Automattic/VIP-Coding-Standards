@@ -276,9 +276,6 @@
 	<rule ref="WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta">
 		<severity>0</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_super_admins_get_super_admins">
-		<severity>0</severity>
-	</rule>
 	<rule ref="Generic.PHP.DisallowShortOpenTag.EchoFound">
 		<severity>0</severity>
 	</rule>
