@@ -112,9 +112,6 @@
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
 		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://docs.wpvip.com/technical-references/vip-go-files-system/local-file-operations/</message>
 	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
-		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://docs.wpvip.com/technical-references/vip-go-files-system/local-file-operations/</message>
-	</rule>
 	<rule ref="WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown">
 		<message>%s() is uncached. If the function is being used to fetch a remote file (e.g. a URL starting with https://), please use wpcom_vip_file_get_contents() to ensure the results are cached. For more details, please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/</message>
 	</rule>
@@ -286,6 +283,9 @@
 		<severity>0</severity>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_readfile">
+		<severity>0</severity>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
 		<severity>0</severity>
 	</rule>
 

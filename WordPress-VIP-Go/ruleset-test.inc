@@ -56,8 +56,8 @@ $x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.Validat
 if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'some_value' ) { // Error.
 }
 
-// WordPress.WP.AlternativeFunctions.file_system_read_fclose
-fclose( $fp ); // Warning + Message.
+
+
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fopen
 fopen( 'file.txt', 'r' ); // Warning + Message.
