@@ -25,7 +25,6 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			19  => 1,
 			27  => 1,
 			28  => 1,
 			29  => 1,

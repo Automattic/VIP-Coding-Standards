@@ -15,8 +15,8 @@ $allowed_html = [
 ];
 $url = 'http://www.google.ca';
 
-wp_cache_get_mult(); // Ok - similarly-named function to wp_cache_get_multi().
-wp_cache_get_multi(); // Error.
+
+
 
 opcache_resets(); // Ok - similarly-named custom function to opcache_reset().
 opcach_invalidate ( $test_script ); // Ok - similarly-named custom function to opcache_invalidate().

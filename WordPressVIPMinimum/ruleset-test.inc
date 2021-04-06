@@ -308,7 +308,7 @@ $my_notokay_func = 'extract';
 $my_notokay_func(); // Error.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions
-wp_cache_get_multi(); // Error.
+
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error.
 opcache_compile_file( $var ); // Error.
