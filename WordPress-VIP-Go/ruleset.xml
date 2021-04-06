@@ -285,5 +285,8 @@
 	<rule ref="Generic.PHP.DisallowShortOpenTag.EchoFound">
 		<severity>0</severity>
 	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_readfile">
+		<severity>0</severity>
+	</rule>
 
 </ruleset>
