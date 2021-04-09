@@ -27,9 +27,9 @@ function test_same_option_key() {
 	add_option( $key, 'data' ); // Warning.
 }
 
-function test_same_option_key_var_assignment2() {
-	$delete = delete_option( 'option_key' );
-	add_option( 'option_key', [ 'stuff', '123' ] ); // Warning.
+function test_same_option_key_double_quoted_string() {
+	$delete = delete_option( "option_{$id}" );
+	add_option( "option_{$id}", [ 'stuff', '123' ] ); // Warning.
 }
 
 function test_same_option_key_string() {
@@ -103,10 +103,49 @@ function concurrent_option_writes_with_one_if_different_key() {
 	$test = add_option( 'test_option', [ 1, 2, 3 ] ); // Warning.
 }
 
-function concurrent_option_writes_with_one_if_same_key() {
+function test_concurrent_option_writes_with_if() {
 	$test = delete_option( 'test_option' );
 	if ( $test ) {
 		add_option( 'test_option', [] ); // Warning.
 	}
 	$test = add_option( 'test_option', [ 1, 2, 3 ] ); // Warning.
+}
+
+function test_different_quotes() {
+	delete_option( 'foobar' );
+	add_option( "foobar", 'baz' ); // Warning.
+}
+
+function test_spacing_inside_option_name() {
+	delete_option( 'foobar' );
+	add_option( '     foobar   ', 'baz' ); // Warning.
+}
+
+function test_concat_same_string_var() {
+	delete_option( 'foo_' . $bar );
+	add_option( 'foo_' . $bar, 'baz' ); // Warning.
+}
+
+function test_concat_different_string_var() {
+	delete_option( 'foo_' . $ba );
+	add_option( 'foo_' . $bar, 'baz' ); // OK - Not same option name.
+}
+
+function test_inside_if_concat_option_name( $test ) {
+	$test = delete_option( "foo_" . $bar );
+	if ( $test ) {
+		add_option( 'foo_' . $bar, [ 1, 2, 3 ] ); // Warning.
+	}
+}
+
+function test_long_concat() {
+	delete_option( 'foo_' . $bar . '_' . $id );
+	add_option( "foo_" . $bar . '_' . $id, 'baz' ); // Warning.
+}
+
+function test_long_concat_inside_if() {
+	$test = delete_option( 'foo_' . $bar . '_' . $id );
+	if ( $test ) {
+		$option_added = add_option( "foo_" . $bar . '_' . $id, 'baz' ); // Warning.
+	}
 }

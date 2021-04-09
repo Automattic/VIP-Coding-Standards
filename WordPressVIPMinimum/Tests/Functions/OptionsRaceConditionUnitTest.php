@@ -47,7 +47,12 @@ class OptionsRaceConditionUnitTest extends AbstractSniffUnitTest {
 			103 => 1,
 			109 => 1,
 			111 => 1,
+			116 => 1,
+			121 => 1,
+			126 => 1,
+			137 => 1,
+			143 => 1,
+			149 => 1,
 		];
 	}
-
 }
