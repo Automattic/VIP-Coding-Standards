@@ -47,6 +47,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 		T_OPEN_TAG_WITH_ECHO => T_OPEN_TAG_WITH_ECHO,
 		T_STRING_CONCAT      => T_STRING_CONCAT,
 		T_COMMA              => T_COMMA,
+		T_NS_SEPARATOR       => T_NS_SEPARATOR,
 	];
 
 	/**
