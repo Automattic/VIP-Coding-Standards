@@ -116,7 +116,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$escaping_type = $this->escaping_functions[ $function_name ];
 
-		if ( $this->is_outside_html_attr_context( $function_name, $content ) ) {
+		if ( $escaping_type === 'attr' && $this->is_outside_html_attr_context( $content ) ) {
 			$message = 'Wrong escaping function, using `%s()` in a context outside of HTML attributes may not escape properly.';
 			$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
 			return;
@@ -174,15 +174,14 @@ class ProperEscapingFunctionSniff extends Sniff {
 	}
 
 	/**
-	 * Tests whether escaping function is being used outside of HTML tag.
+	 * Tests whether an attribute escaping function is being used outside of an HTML tag.
 	 *
-	 * @param string $function_name Escaping function.
-	 * @param string $content       Haystack where we look for the end of a HTML tag.
+	 * @param string $content Haystack where we look for the end of a HTML tag.
 	 *
-	 * @return bool True if escaping attribute function and string ends with a HTML tag.
+	 * @return bool True if the passed string ends a HTML tag.
 	 */
-	public function is_outside_html_attr_context( $function_name, $content ) {
-		return $this->escaping_functions[ $function_name ] === 'attr' && $this->endswith( trim( $content ), '>' );
+	public function is_outside_html_attr_context( $content ) {
+		return $this->endswith( trim( $content ), '>' );
 	}
 
 	/**
