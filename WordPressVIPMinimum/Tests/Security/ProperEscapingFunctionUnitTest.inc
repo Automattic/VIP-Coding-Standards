@@ -78,3 +78,5 @@ echo '<a href=\'' . esc_html($url) . '\'>'; // Error.
 echo "<img src=\"" . esc_html($src) . '"/>'; // Error.
 echo "<div $someAttributeName-url=\"" . esc_html($url) . '">'; // Error.
 echo '<a href="',  esc_html($url), '">'; // Error.
+
+echo '<a href=', esc_html($url), '>'; // Error.

@@ -67,6 +67,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * @var array
 	 */
 	private $attr_endings = [
+		'=',
 		'="',
 		"='",
 		"=\\'",
