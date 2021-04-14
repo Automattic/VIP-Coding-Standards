@@ -100,6 +100,12 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
+		$next_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		if ( $next_non_empty === false || $this->tokens[ $next_non_empty ]['code'] !== T_OPEN_PARENTHESIS ) {
+			// Not a function call.
+			return;
+		}
+
 		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
 
 		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways..

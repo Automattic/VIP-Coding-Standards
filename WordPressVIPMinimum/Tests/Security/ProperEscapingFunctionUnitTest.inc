@@ -80,3 +80,5 @@ echo "<div $someAttributeName-url=\"" . esc_html($url) . '">'; // Error.
 echo '<a href="',  esc_html($url), '">'; // Error.
 
 echo '<a href=', esc_html($url), '>'; // Error.
+
+echo 'data-param-url="' . Esc_HTML::static_method( $share_url ) . '"'; // OK.
