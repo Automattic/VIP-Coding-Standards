@@ -23,7 +23,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *
 	 * @var array
 	 */
-	public $escaping_functions = [
+	protected $escaping_functions = [
 		'esc_url'    => 'url',
 		'esc_attr'   => 'attr',
 		'esc_attr__' => 'attr',
