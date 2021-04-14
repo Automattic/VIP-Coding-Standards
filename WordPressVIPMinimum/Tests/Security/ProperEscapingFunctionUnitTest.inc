@@ -34,7 +34,7 @@ echo '<media:content url="' . esc_attr( $post_image ) . '" medium="image">'; // 
 
 echo 'data-param-url="' . esc_url( $share_url ) . '"'; // OK.
 
-echo 'data-param-url="' . esc_html( $share_url ) . '"'; // Error.
+echo 'data-param-url="' . Esc_HTML( $share_url ) . '"'; // Error.
 
 ?>
 

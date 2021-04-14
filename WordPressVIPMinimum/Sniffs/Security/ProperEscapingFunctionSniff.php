@@ -94,7 +94,9 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( isset( $this->escaping_functions[ $this->tokens[ $stackPtr ]['content'] ] ) === false ) {
+		$function_name = strtolower( $this->tokens[ $stackPtr ]['content'] );
+
+		if ( isset( $this->escaping_functions[ $function_name ] ) === false ) {
 			return;
 		}
 
@@ -104,8 +106,6 @@ class ProperEscapingFunctionSniff extends Sniff {
 		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
 			return;
 		}
-
-		$function_name = $this->tokens[ $stackPtr ]['content'];
 
 		$data = [ $function_name ];
 
