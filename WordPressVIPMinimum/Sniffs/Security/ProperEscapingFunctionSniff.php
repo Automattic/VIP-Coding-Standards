@@ -114,19 +114,21 @@ class ProperEscapingFunctionSniff extends Sniff {
 			$content = Sniff::strip_quotes( $content );
 		}
 
+		$escaping_type = $this->escaping_functions[ $function_name ];
+
 		if ( $this->is_outside_html_attr_context( $function_name, $content ) ) {
 			$message = 'Wrong escaping function, using `%s()` in a context outside of HTML attributes may not escape properly.';
 			$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
 			return;
 		}
 
-		if ( $function_name !== 'esc_url' && $this->attr_expects_url( $content ) ) {
+		if ( $escaping_type !== 'url' && $this->attr_expects_url( $content ) ) {
 			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
 
-		if ( $function_name === 'esc_html' && $this->is_html_attr( $content ) ) {
+		if ( $escaping_type === 'html' && $this->is_html_attr( $content ) ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
