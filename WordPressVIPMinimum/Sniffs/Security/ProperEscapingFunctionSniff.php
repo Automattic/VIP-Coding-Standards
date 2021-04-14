@@ -100,7 +100,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
 
-		// Use $textStringTokens b/c heredoc and nowdoc tokens shouldn't be matched anyways.
+		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways..
 		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
 			return;
 		}
@@ -110,7 +110,6 @@ class ProperEscapingFunctionSniff extends Sniff {
 		$data = [ $function_name ];
 
 		$content = $this->tokens[ $html ]['content'];
-
 		if ( isset( Tokens::$stringTokens[ $this->tokens[ $html ]['code'] ] ) === true ) {
 			$content = Sniff::strip_quotes( $content );
 		}
@@ -141,7 +140,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *
 	 * @param string $content Haystack in which we look for an open attribute which exects a URL value.
 	 *
-	 * @return bool True if string ends with open attribute which exects a URL value.
+	 * @return bool True if string ends with open attribute which expects a URL value.
 	 */
 	public function attr_expects_url( $content ) {
 		$attr_expects_url = false;
@@ -189,7 +188,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * A helper function which tests whether string ends with some other.
 	 *
 	 * @param string $haystack String which is being tested.
-	 * @param string $needle The substring, which we try to locate on the end of the $haystack.
+	 * @param string $needle   The substring, which we try to locate on the end of the $haystack.
 	 *
 	 * @return bool True if haystack ends with needle.
 	 */
