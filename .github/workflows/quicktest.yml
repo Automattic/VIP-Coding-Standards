@@ -1,0 +1,90 @@
+name: Quicktest
+
+on:
+  # Run on pushes, including merges, to all branches except `master`.
+  push:
+    branches-ignore:
+      - master
+    paths-ignore:
+      - '**.md'
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  #### QUICK TEST STAGE ####
+  # This is a much quicker test which only runs the unit tests and linting against the low/high
+  # supported PHP/PHPCS combinations.
+  quicktest:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - php: '5.4'
+            phpcs_version: 'dev-master'
+            wpcs_version: '2.3.*'
+          - php: '5.4'
+            phpcs_version: '3.5.5'
+            wpcs_version: '2.3.*'
+
+          - php: 'latest'
+            phpcs_version: 'dev-master'
+            wpcs_version: '2.3.*'
+          - php: 'latest'
+            # PHPCS 3.5.7 is the lowest version of PHPCS which supports PHP 8.0.
+            phpcs_version: '3.5.7'
+            wpcs_version: '2.3.*'
+
+    name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+      - name: Setup ini config
+        id: set_ini
+        run: |
+          if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
+            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED'
+          else
+            echo '::set-output name=PHP_INI::error_reporting=E_ALL'
+          fi
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
+          coverage: none
+
+      - name: 'Composer: set PHPCS and WPCS versions for tests'
+        run: |
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}"
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies - normal
+        if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
+        uses: "ramsey/composer-install@v1"
+
+      # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
+      # requirements to get PHPUnit 7.x to install on nightly.
+      - name: Install Composer dependencies - with ignore platform
+        if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --ignore-platform-reqs
+
+      - name: Lint against parse errors
+        if: matrix.phpcs_version == 'dev-master'
+        run: ./bin/php-lint
+
+      - name: Run the unit tests
+        run: ./bin/unit-tests
+
+      - name: Run the ruleset tests
+        run: ./bin/ruleset-tests
