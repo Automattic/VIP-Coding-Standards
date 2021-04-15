@@ -7,13 +7,14 @@ assignees: GaryJones, rebeccahum
 
 ---
 
-⚠️ DO NOT MERGE (YET) ⚠️
+:warning: DO NOT MERGE (YET) :warning:
 
 [Remaining work for this Milestone](https://github.com/Automattic/VIP-Coding-Standards/milestone/X)
 
 PR for tracking changes for the X.Y.Z release. Target release date: DOW DD MMMM YYYY.
 
 - [ ] Add change log for this release: PR #XXX
+- [ ] Double-check whether any dependencies need bumping.
 - [ ] Merge this PR.
 - [ ] Add signed release tag against `master`.
 - [ ] Close the current milestone.
