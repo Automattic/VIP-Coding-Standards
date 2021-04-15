@@ -77,6 +77,10 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 		$reportPtr      = null;
 		$openParens     = 0;
 
+		$message    = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
+		$error_code = 'CacheTimeUndetermined';
+		$data       = [ $matched_content, $parameters[4]['raw'] ];
+
 		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				$tokensAsString .= ' ';
@@ -151,9 +155,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			}
 
 			// Encountered an unexpected token. Manual inspection needed.
-			$message = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
-			$data    = [ $matched_content, $parameters[4]['raw'] ];
-			$this->phpcsFile->addWarning( $message, $reportPtr, 'CacheTimeUndetermined', $data );
+			$this->phpcsFile->addWarning( $message, $reportPtr, $error_code, $data );
 
 			return;
 		}
@@ -177,7 +179,17 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			}
 		}
 
-		$time = eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
+		$time = @eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval,WordPress.PHP.NoSilencedErrors -- No harm here.
+
+		if ( $time === false ) {
+			/*
+			 * The eval resulted in a parse error. This will only happen for backfilled
+			 * arithmetic operator tokens, like T_POW, on PHP versions in which the token
+			 * did not exist. In that case, flag for manual inspection.
+			 */
+			$this->phpcsFile->addWarning( $message, $reportPtr, $error_code, $data );
+			return;
+		}
 
 		if ( $time < 300 && (int) $time !== 0 ) {
 			$message = 'Low cache expiry time of %s seconds detected. It is recommended to have 300 seconds or more.';

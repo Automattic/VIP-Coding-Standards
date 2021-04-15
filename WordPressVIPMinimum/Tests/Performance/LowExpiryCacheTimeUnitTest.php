@@ -55,6 +55,7 @@ class LowExpiryCacheTimeUnitTest extends AbstractSniffUnitTest {
 			77  => 1,
 			78  => 1,
 			79  => 1,
+			82  => ( PHP_VERSION_ID > 50600 ) ? 0 : 1,
 			88  => 1,
 			94  => 1,
 			95  => 1,
