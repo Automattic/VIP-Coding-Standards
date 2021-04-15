@@ -342,7 +342,6 @@ require __DIR__ . '/../tests/RulesetTest.php';
 // Run the tests!
 $test = new RulesetTest( 'WordPress-VIP-Go', $expected );
 if ( $test->passes() ) {
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	printf( 'All WordPress-VIP-Go tests passed!' . PHP_EOL );
 	exit( 0 );
 }

@@ -323,7 +323,7 @@ require __DIR__ . '/../tests/RulesetTest.php';
 // Run the tests!
 $test = new RulesetTest( 'WordPressVIPMinimum', $expected );
 if ( $test->passes() ) {
-	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL );
 	exit( 0 );
 }
 
