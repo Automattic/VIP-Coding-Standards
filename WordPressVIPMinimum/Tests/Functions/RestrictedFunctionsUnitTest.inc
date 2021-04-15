@@ -75,14 +75,14 @@ $y = Bar::add_role(); // Ok - calling static function of another class and not a
 add_role( 'test' ); // Error.
 \add_role(); // Error.
 
-get_post_meta( 123, 'test' ); // Ok - not using get_user_meta().
-update_post_meta( 1234, 'test', $test ); // Ok - not using update_user_meta().
-delete_post_meta( $int, $test ); // Ok - not using delete_user_meta().
-add_post_meta( $int, $test, $test ); // Ok - not using add_user_meta().
-get_user_meta(); // Error.
-update_user_meta(); // Error.
-delete_user_meta(); // Error.
-add_user_meta(); // Error.
+
+
+
+
+
+
+
+
 
 wpcom_vip_term_exists(); // Ok - VIP recommended version of term_exists().
 term_exists(); // Error.

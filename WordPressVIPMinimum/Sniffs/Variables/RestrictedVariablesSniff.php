@@ -39,10 +39,9 @@ class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 		return [
 			'user_meta' => [
 				'type'        => 'error',
-				'message'     => 'Usage of users/usermeta tables is highly discouraged in VIP context, For storing user additional user metadata, you should look at User Attributes.',
+				'message'     => 'Usage of users tables is highly discouraged in VIP context',
 				'object_vars' => [
 					'$wpdb->users',
-					'$wpdb->usermeta',
 				],
 			],
 			'session' => [

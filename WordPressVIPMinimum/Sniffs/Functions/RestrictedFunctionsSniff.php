@@ -111,16 +111,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'add_role',
 				],
 			],
-			'user_meta' => [
-				'type'      => 'error',
-				'message'   => '%s() usage is highly discouraged on WordPress.com VIP due to it being a multisite, please see https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.',
-				'functions' => [
-					'get_user_meta',
-					'update_user_meta',
-					'delete_user_meta',
-					'add_user_meta',
-				],
-			],
 			'term_exists' => [
 				'type'      => 'error',
 				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_term_exists() instead.',

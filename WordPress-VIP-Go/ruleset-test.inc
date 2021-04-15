@@ -284,20 +284,20 @@ if ( isset( $_GET['migSource'] ) && wp_verify_nonce( sanitize_text_field( $_GET[
 	$test = sanitize_text_field( $_GET['migSource'] ); // Ok.
 }
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_add_user_meta
-add_user_meta( 123, $foo, $bar ); // Ok.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_delete_user_meta
-delete_user_meta( $foo, $bar, '123' ); // Ok.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_get_user_meta
-get_user_meta(); // Ok.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_update_user_meta
-update_user_meta( $bar, '123', $foo ); // Ok.
 
-// WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta
-$query = "SELECT * FROM $wpdb->usermeta"; // Ok.
+
+
+
+
+
+
+
+
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option
 delete_site_option( $foo ); // Ok.
