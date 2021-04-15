@@ -244,7 +244,6 @@
 		<severity>1</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.switch_to_blog_switch_to_blog">
-		<type>warning</type>
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn">

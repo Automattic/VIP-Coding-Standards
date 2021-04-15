@@ -97,7 +97,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			],
 			// @link https://docs.wpvip.com/technical-references/code-review/vip-notices/#h-switch_to_blog
 			'switch_to_blog' => [
-				'type'      => 'error',
+				'type'      => 'warning',
 				'message'   => '%s() may not work as expected since it only changes the database context for the blog and does not load the plugins or theme of that site. Filters or hooks on the blog you are switching to will not run.',
 				'functions' => [
 					'switch_to_blog',
