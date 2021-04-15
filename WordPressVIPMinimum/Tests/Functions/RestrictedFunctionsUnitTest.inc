@@ -53,7 +53,7 @@ db_delta(); // Ok - similarly-named function to dbDelta().
 dbDelta(); // Error.
 
 switch_blog(); // Ok - similarly-named function to switch_to_blog().
-switch_to_blog( $blogid ); // Error.
+switch_to_blog( $blogid ); // Warning.
 
 wpcom_vip_get_page_by_title(); // Ok - VIP recommended version of get_page_by_title().
 get_page_by_title( $page_title ); // Error.
