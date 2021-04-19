@@ -82,27 +82,20 @@ $expected = [
 		303 => 1,
 		304 => 1,
 		308 => 1,
-		311 => 1,
 		312 => 1,
 		313 => 1,
 		314 => 1,
 		315 => 1,
 		316 => 1,
 		317 => 1,
-		318 => 1,
 		319 => 1,
 		320 => 1,
 		321 => 1,
 		322 => 1,
 		323 => 1,
-		324 => 1,
 		325 => 1,
 		326 => 1,
 		327 => 1,
-		328 => 1,
-		329 => 1,
-		330 => 1,
-		331 => 1,
 		332 => 1,
 		333 => 1,
 		334 => 1,
@@ -161,9 +154,7 @@ $expected = [
 		390 => 1,
 		391 => 1,
 		392 => 1,
-		393 => 1,
-		394 => 1,
-		395 => 1,
+		402 => 1,
 		415 => 1,
 		425 => 1,
 		451 => 1,
@@ -263,13 +254,13 @@ $expected = [
 		288 => 1,
 		293 => 1,
 		294 => 1,
+		324 => 1,
 		396 => 1,
 		397 => 1,
 		398 => 1,
 		399 => 1,
 		400 => 1,
 		401 => 1,
-		402 => 1,
 		403 => 1,
 		404 => 1,
 		405 => 1,
@@ -309,13 +300,13 @@ $expected = [
 			'`eval()` is a security risk, please refrain from using it.',
 		],
 		242 => [
-			'Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.',
+			'Using cURL functions is highly discouraged within VIP context. Please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.',
 		],
 		243 => [
-			'Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.',
+			'Using cURL functions is highly discouraged within VIP context. Please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.',
 		],
 		244 => [
-			'Using cURL functions is highly discouraged within VIP context. Please see: https://lobby.vip.wordpress.com/wordpress-com-documentation/fetching-remote-data/.',
+			'Using cURL functions is highly discouraged within VIP context. Please see: https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.',
 		],
 		259 => [
 			'`get_children()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `get_children()` will do a -1 query by default, a maximum of 100 should be used.',
@@ -328,7 +319,7 @@ require __DIR__ . '/../tests/RulesetTest.php';
 // Run the tests!
 $test = new RulesetTest( 'WordPressVIPMinimum', $expected );
 if ( $test->passes() ) {
-	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL );
 	exit( 0 );
 }
 

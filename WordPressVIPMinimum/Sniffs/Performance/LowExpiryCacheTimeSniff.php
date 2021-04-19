@@ -7,10 +7,13 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
+use PHP_CodeSniffer\Util\Tokens;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * This sniff throws a warning when low cache times are set.
+ *
+ * {@internal VIP uses the Memcached object cache implementation. {@link https://github.com/Automattic/wp-memcached}}
  *
  * @package VIPCS\WordPressVIPMinimum
  *
@@ -69,21 +72,135 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$time = $parameters[4]['raw'];
+		$param          = $parameters[4];
+		$tokensAsString = '';
+		$reportPtr      = null;
+		$openParens     = 0;
 
-		if ( is_numeric( $time ) === false ) {
+		$message    = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
+		$error_code = 'CacheTimeUndetermined';
+		$data       = [ $matched_content, $parameters[4]['raw'] ];
+
+		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
+			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
+				$tokensAsString .= ' ';
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_NS_SEPARATOR ) {
+				/*
+				 * Ignore namespace separators. If it's part of a global WP time constant, it will be
+				 * handled correctly. If it's used in any other context, another token *will* trigger the
+				 * "undetermined" warning anyway.
+				 */
+				continue;
+			}
+
+			if ( isset( $reportPtr ) === false ) {
+				// Set the report pointer to the first non-empty token we encounter.
+				$reportPtr = $i;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_LNUMBER
+				|| $this->tokens[ $i ]['code'] === T_DNUMBER
+			) {
+				// Integer or float.
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_FALSE
+				|| $this->tokens[ $i ]['code'] === T_NULL
+			) {
+				$tokensAsString .= 0;
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_TRUE ) {
+				$tokensAsString .= 1;
+				continue;
+			}
+
+			if ( isset( Tokens::$arithmeticTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				continue;
+			}
+
 			// If using time constants, we need to convert to a number.
-			$time = str_replace( array_keys( $this->wp_time_constants ), $this->wp_time_constants, $time );
+			if ( $this->tokens[ $i ]['code'] === T_STRING
+				&& isset( $this->wp_time_constants[ $this->tokens[ $i ]['content'] ] ) === true
+			) {
+				$tokensAsString .= $this->wp_time_constants[ $this->tokens[ $i ]['content'] ];
+				continue;
+			}
 
-			if ( preg_match( '#^[\s\d+*/-]+$#', $time ) > 0 ) {
-				$time = eval( "return $time;" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
+			if ( $this->tokens[ $i ]['code'] === T_OPEN_PARENTHESIS ) {
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				++$openParens;
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_CLOSE_PARENTHESIS ) {
+				$tokensAsString .= $this->tokens[ $i ]['content'];
+				--$openParens;
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
+				$content = $this->strip_quotes( $this->tokens[ $i ]['content'] );
+				if ( is_numeric( $content ) === true ) {
+					$tokensAsString .= $content;
+					continue;
+				}
+			}
+
+			// Encountered an unexpected token. Manual inspection needed.
+			$this->phpcsFile->addWarning( $message, $reportPtr, $error_code, $data );
+
+			return;
+		}
+
+		if ( $tokensAsString === '' ) {
+			// Nothing found to evaluate.
+			return;
+		}
+
+		$tokensAsString = trim( $tokensAsString );
+
+		if ( $openParens !== 0 ) {
+			/*
+			 * Shouldn't be possible as that would indicate a parse error in the original code,
+			 * but let's prevent getting parse errors in the `eval`-ed code.
+			 */
+			if ( $openParens > 0 ) {
+				$tokensAsString .= str_repeat( ')', $openParens );
+			} else {
+				$tokensAsString = str_repeat( '(', abs( $openParens ) ) . $tokensAsString;
 			}
 		}
 
-		if ( $time < 300 ) {
-			$message = 'Low cache expiry time of "%s", it is recommended to have 300 seconds or more.';
-			$data    = [ $parameters[4]['raw'] ];
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'LowCacheTime', $data );
+		$time = @eval( "return $tokensAsString;" ); // phpcs:ignore Squiz.PHP.Eval,WordPress.PHP.NoSilencedErrors -- No harm here.
+
+		if ( $time === false ) {
+			/*
+			 * The eval resulted in a parse error. This will only happen for backfilled
+			 * arithmetic operator tokens, like T_POW, on PHP versions in which the token
+			 * did not exist. In that case, flag for manual inspection.
+			 */
+			$this->phpcsFile->addWarning( $message, $reportPtr, $error_code, $data );
+			return;
+		}
+
+		if ( $time < 300 && (int) $time !== 0 ) {
+			$message = 'Low cache expiry time of %s seconds detected. It is recommended to have 300 seconds or more.';
+			$data    = [ $time ];
+
+			if ( (string) $time !== $tokensAsString ) {
+				$message .= ' Found: "%s"';
+				$data[]   = $tokensAsString;
+			}
+
+			$this->phpcsFile->addWarning( $message, $reportPtr, 'LowCacheTime', $data );
 		}
 	}
 }

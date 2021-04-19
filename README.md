@@ -7,31 +7,28 @@ This project contains two rulesets:
  - `WordPressVIPMinimum` - for use with projects on the (older) WordPress.com VIP platform.
  - `WordPress-VIP-Go` - for use with projects on the (newer) VIP Go platform.
 
-These rulesets contain only the rules which are considered to be "errors" and "warnings" according to the [WordPress VIP Go documentation](https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/)
+These rulesets contain only the rules which are considered to be ["errors"](https://docs.wpvip.com/technical-references/code-review/vip-errors/) and ["warnings"](https://docs.wpvip.com/technical-references/code-review/vip-warnings/) according to the WordPress VIP Go documentation.
 
-The rulesets use rules from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) (WPCS) project.
+The rulesets use rules from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) (WPCS) project, as well as the [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis) standard.
 
-Go to https://wpvip.com/documentation/phpcs-review-feedback/ to learn about why violations are flagged as errors vs warnings and what the levels mean.
+Go to https://docs.wpvip.com/technical-references/code-review/phpcs-report/ to learn about why violations are flagged as errors vs warnings and what the levels mean.
 
 ## Minimal requirements
 
 * PHP 5.4+
 * [PHPCS 3.5.5+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
 * [WPCS 2.3.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
+* [VariableAnalysis 2.8.3+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
 
 ## Installation
 
 `composer require automattic/vipwpcs`, or `composer g require automattic/vipwpcs` if installing globally. 
 
-This will install the latest compatible versions of PHPCS and WPCS. 
+This will install the latest compatible versions of PHPCS, WPCS and VariableAnalysis and register the external standards with PHP_CodeSniffer.
 
-Please refer to the [installation instructions for installing PHP_CodeSniffer for WordPress.com VIP](https://wpvip.com/documentation/how-to-install-php-code-sniffer-for-wordpress-com-vip/) for more details.
+Please refer to the [installation instructions for installing PHP_CodeSniffer for WordPress.com VIP](https://docs.wpvip.com/how-tos/code-review/php_codesniffer/) for more details.
 
-We recommend the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer), which handles the registration of all of the installed standards, so there is no need to set the `installed_paths` config value manually, for single or multiple standards.
-
-Alternatively, you should register the standard to PHPCS by appending the VIPCS directory to the end of the installed paths. e.g.
-
-`phpcs --config-set installed_paths /path/to/wpcsstandard,path/to/vipcsstandard`
+As of VIPCS version 2.3.0, there is no need to `require` the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer) anymore as it is now a requirement of VIPCS itself.
 
 ## Contribution
 

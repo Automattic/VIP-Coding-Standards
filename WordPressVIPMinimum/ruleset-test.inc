@@ -308,27 +308,27 @@ $my_notokay_func = 'extract';
 $my_notokay_func(); // Error.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions
-wp_cache_get_multi(); // Error.
+
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error.
 opcache_compile_file( $var ); // Error.
 opcache_is_script_cached( 'test_script.php' ); // Error.
 opcache_get_status(); // Error.
 opcache_get_configuration(); // Error.
-get_super_admins(); // Error.
+
 wpcom_vip_irc(); // Error.
 flush_rewrite_rules(); // Error.
 $wp_rewrite->flush_rules(); // Error.
 attachment_url_to_postid( $url ); // Error.
 dbDelta(); // Error.
-switch_to_blog( $blogid ); // Error.
+switch_to_blog( $blogid ); // Warning.
 get_page_by_title( $page_title ); // Error.
 url_to_postid( $url ); // Error.
 \add_role(); // Error.
-get_user_meta(); // Error.
-update_user_meta(); // Error.
-delete_user_meta(); // Error.
-add_user_meta(); // Error.
+
+
+
+
 term_exists(); // Error.
 count_user_posts(); // Error.
 wp_old_slug_redirect(); // Error.
@@ -390,16 +390,16 @@ chown(); // Error.
 chmod(); // Error.
 lchgrp(); // Error.
 lchown(); // Error.
-add_site_option( 'foo', $bar ); // Error.
-update_site_option( $bar, $foo, true ); // Error.
-delete_site_option( $foo ); // Error.
+
+
+
 wp_mail(); // Warning.
 mail(); // Warning.
 is_multi_author(); // Warning.
 the_sub_field( 'field' ); // Warning.
 the_field( 'field' ); // Warning.
 wp_remote_get( $url ); // Warning.
-setcookie( 'cookie[three]', 'cookiethree' ); // Warning.
+setcookie( 'cookie[three]', 'cookiethree' ); // Error.
 get_posts(); // Warning.
 wp_get_recent_posts(); // Warning.
 $wp_random_testing = create_function( '$a, $b', 'return ( $b / $a ); '); // Warning.
@@ -443,7 +443,7 @@ add_filter( 'robots_txt', function() { // Warning.
 } );
 
 // WordPressVIPMinimum.Performance.BatcacheWhitelistedParams
-// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification,WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 $test = sanitize_text_field( $_GET["utm_medium"] ); // Warning.
 
 // WordPressVIPMinimum.Performance.CacheValueOverride

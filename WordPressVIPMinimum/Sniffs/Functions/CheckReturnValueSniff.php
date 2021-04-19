@@ -60,7 +60,7 @@ class CheckReturnValueSniff extends Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return Tokens::$functionNameTokens;
+		return [ T_STRING ];
 	}
 
 	/**
@@ -86,7 +86,7 @@ class CheckReturnValueSniff extends Sniff {
 	 */
 	private function isFunctionCall( $stackPtr ) {
 
-		if ( in_array( $this->tokens[ $stackPtr ]['code'], Tokens::$functionNameTokens, true ) === false ) {
+		if ( $this->tokens[ $stackPtr ]['code'] !== T_STRING ) {
 			return false;
 		}
 
@@ -162,14 +162,14 @@ class CheckReturnValueSniff extends Sniff {
 		$closeBracket = $this->tokens[ $openBracket ]['parenthesis_closer'];
 
 		$startNext = $openBracket + 1;
-		$next      = $this->phpcsFile->findNext( Tokens::$functionNameTokens, $startNext, $closeBracket, false, null, true );
+		$next      = $this->phpcsFile->findNext( T_STRING, $startNext, $closeBracket, false, null, true );
 		while ( $next ) {
 			if ( in_array( $this->tokens[ $next ]['content'], $this->catch[ $functionName ], true ) === true ) {
 				$message = "`%s`'s return type must be checked before calling `%s` using that value.";
 				$data    = [ $this->tokens[ $next ]['content'], $functionName ];
 				$this->phpcsFile->addError( $message, $next, 'DirectFunctionCall', $data );
 			}
-			$next = $this->phpcsFile->findNext( Tokens::$functionNameTokens, $next + 1, $closeBracket, false, null, true );
+			$next = $this->phpcsFile->findNext( T_STRING, $next + 1, $closeBracket, false, null, true );
 		}
 	}
 
@@ -269,7 +269,7 @@ class CheckReturnValueSniff extends Sniff {
 		foreach ( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : [];
 			// Check whether the found token is one of the function calls (or foreach call) we are interested in.
-			if ( in_array( $this->tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( Tokens::$functionNameTokens, $notFunctionsCallee ), true ) === true
+			if ( in_array( $this->tokens[ $nextFunctionCallWithVariable ]['code'], array_merge( [ T_STRING ], $notFunctionsCallee ), true ) === true
 				&& $this->tokens[ $nextFunctionCallWithVariable ]['content'] === $callee
 			) {
 				$this->addNonCheckedVariableError( $nextFunctionCallWithVariable, $variableName, $callee );
@@ -278,7 +278,7 @@ class CheckReturnValueSniff extends Sniff {
 
 			$search = array_merge( Tokens::$emptyTokens, [ T_EQUAL ] );
 			$next   = $this->phpcsFile->findNext( $search, $nextVariableOccurrence + 1, null, true );
-			if ( in_array( $this->tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) === true
+			if ( $this->tokens[ $next ]['code'] === T_STRING
 				&& $this->tokens[ $next ]['content'] === $callee
 			) {
 				$this->addNonCheckedVariableError( $next, $variableName, $callee );
@@ -291,7 +291,7 @@ class CheckReturnValueSniff extends Sniff {
 	 * Function used as as callback for the array_reduce call.
 	 *
 	 * @param string $carry The final string.
-	 * @param array  $item Processed item.
+	 * @param array  $item  Processed item.
 	 *
 	 * @return string
 	 */

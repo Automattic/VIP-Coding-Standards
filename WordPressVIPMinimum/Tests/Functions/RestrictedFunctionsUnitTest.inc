@@ -15,8 +15,8 @@ $allowed_html = [
 ];
 $url = 'http://www.google.ca';
 
-wp_cache_get_mult(); // Ok - similarly-named function to wp_cache_get_multi().
-wp_cache_get_multi(); // Error.
+
+
 
 opcache_resets(); // Ok - similarly-named custom function to opcache_reset().
 opcach_invalidate ( $test_script ); // Ok - similarly-named custom function to opcache_invalidate().
@@ -33,8 +33,8 @@ opcache_get_status(); // Error.
 opcache_get_status( false ); // Error.
 opcache_get_configuration(); // Error.
 
-get_super_admin(); // Ok - similarly-named function to get_super_admins().
-get_super_admins(); // Error.
+
+
 
 vip_irc(); // Ok - similarly-named function to wpcom_vip_irc().
 wpcom_vip_irc(); // Error.
@@ -53,7 +53,7 @@ db_delta(); // Ok - similarly-named function to dbDelta().
 dbDelta(); // Error.
 
 switch_blog(); // Ok - similarly-named function to switch_to_blog().
-switch_to_blog( $blogid ); // Error.
+switch_to_blog( $blogid ); // Warning.
 
 wpcom_vip_get_page_by_title(); // Ok - VIP recommended version of get_page_by_title().
 get_page_by_title( $page_title ); // Error.
@@ -75,14 +75,14 @@ $y = Bar::add_role(); // Ok - calling static function of another class and not a
 add_role( 'test' ); // Error.
 \add_role(); // Error.
 
-get_post_meta( 123, 'test' ); // Ok - not using get_user_meta().
-update_post_meta( 1234, 'test', $test ); // Ok - not using update_user_meta().
-delete_post_meta( $int, $test ); // Ok - not using delete_user_meta().
-add_post_meta( $int, $test, $test ); // Ok - not using add_user_meta().
-get_user_meta(); // Error.
-update_user_meta(); // Error.
-delete_user_meta(); // Error.
-add_user_meta(); // Error.
+
+
+
+
+
+
+
+
 
 wpcom_vip_term_exists(); // Ok - VIP recommended version of term_exists().
 term_exists(); // Error.
@@ -122,7 +122,7 @@ vip_safe_wp_remote_get(); // Ok - VIP recommended version of wp_remote_get().
 wp_remote_get( $url ); // Warning.
 
 cookie( $_GET['test'] ); // Ok - similarly-named function to setcookie().
-setcookie( 'cookie[three]', 'cookiethree' ); // Warning.
+setcookie( 'cookie[three]', 'cookiethree' ); // Error.
 
 get_post( 123 ); // Ok - not using get_posts().
 wp_get_recent_post(); // Ok - similarly-named function to wp_get_recent_posts().
@@ -215,12 +215,12 @@ $c->create_function = 'bar' . ( 1 === 1 ?? 'foo' ); // Ok.
 $wp_random_testing = create_function2( '$a, $b', 'return ( $b / $a ); '); // Ok.
 $wp_random_testing = create_function3( '$a, $b', 'return ( $b / $a ); '); // Ok.
 
-add_site_option( $foo, 'bar' ); // Warning.
-add_option( $foo, 'bar' ); // Ok.
-update_site_option(  $bar, 'foo' ); // Warning.
-update_option( 'foo', $bar ); // Ok.
-delete_site_option( $foo   ); // Warning.
-delete_option(  $bar ); // Ok.
+
+
+
+
+
+
 
 wpcom_vip_get_page_by_path(); // Ok - VIP recommended version of get_page_by_path().
 get_page_by_path( $page_path ); // Warning.

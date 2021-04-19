@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * Discourages removal of the admin bar.
  *
- * @link https://wpvip.com/documentation/vip-go/code-review-blockers-warnings-notices/#removing-the-admin-bar
+ * @link https://docs.wpvip.com/technical-references/code-review/vip-warnings/#h-removing-the-admin-bar
  *
  * @package VIPCS\WordPressVIPMinimum
  *
@@ -319,7 +319,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Processes this test for T_STYLE tokens in CSS files.
 	 *
-	 * @param int $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
@@ -370,7 +370,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Consolidated violation.
 	 *
-	 * @param int $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 */
 	private function addHidingDetectedError( $stackPtr ) {
 		$message = 'Hiding of the admin bar is not allowed.';

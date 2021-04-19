@@ -7,19 +7,40 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use PHP_CodeSniffer\Files\File;
 use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingNonPHPFileSniff.
+ * Ensure that non-PHP files are included via `file_get_contents()` instead of using `include/require[_once]`.
  *
- * Checks that __DIR__, dirname( __FILE__ ) or plugin_dir_path( __FILE__ )
- * is used when including or requiring files.
+ * This prevents potential PHP code embedded in those files from being automatically executed.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
 class IncludingNonPHPFileSniff extends Sniff {
+
+	/**
+	 * File extensions used for PHP files.
+	 *
+	 * Files with these extensions are allowed to be `include`d.
+	 *
+	 * @var array Key is the extension, value is irrelevant.
+	 */
+	private $php_extensions = [
+		'php'  => true,
+		'inc'  => true,
+		'phar' => true,
+	];
+
+	/**
+	 * File extensions used for SVG and CSS files.
+	 *
+	 * @var array Key is the extension, value is irrelevant.
+	 */
+	private $svg_css_extensions = [
+		'css' => true,
+		'svg' => true,
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -30,7 +51,6 @@ class IncludingNonPHPFileSniff extends Sniff {
 		return Tokens::$includeTokens;
 	}
 
-
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
@@ -39,39 +59,47 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
-		$curStackPtr = $stackPtr;
-		while ( $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true ) !== false ) {
-			$curStackPtr = $this->phpcsFile->findNext( Tokens::$stringTokens, $curStackPtr + 1, null, false, null, true );
+		$end_of_statement = $this->phpcsFile->findEndOfStatement( $stackPtr );
+		$curStackPtr      = ( $end_of_statement + 1 );
 
-			if ( $this->tokens[ $curStackPtr ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-				$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
-			} else {
-				$stringWithoutEnclosingQuotationMarks = $this->tokens[ $curStackPtr ]['content'];
-			}
-
-			$isFileName = preg_match( '/.*(\.[a-z]{2,})$/i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
-
-			if ( $isFileName === false || $isFileName === 0 ) {
-				continue;
-			}
-
-			$extension = $regexMatches[1];
-			if ( in_array( $extension, [ '.php', '.inc' ], true ) === true ) {
+		do {
+			$curStackPtr = $this->phpcsFile->findPrevious( Tokens::$stringTokens, $curStackPtr - 1, $stackPtr );
+			if ( $curStackPtr === false ) {
 				return;
 			}
 
-			$message = 'Local non-PHP file should be loaded via `file_get_contents` rather than via `%s`.';
-			$data    = [ $this->tokens[ $stackPtr ]['content'] ];
+			$stringWithoutEnclosingQuotationMarks = trim( $this->tokens[ $curStackPtr ]['content'], "\"'" );
+
+			$isFileName = preg_match( '`\.([a-z]{2,})$`i', $stringWithoutEnclosingQuotationMarks, $regexMatches );
+
+			if ( $isFileName !== 1 ) {
+				continue;
+			}
+
+			$extension = strtolower( $regexMatches[1] );
+			if ( isset( $this->php_extensions[ $extension ] ) === true ) {
+				return;
+			}
+
+			$message = 'Local non-PHP file should be loaded via `file_get_contents` rather than via `%s`. Found: %s';
+			$data    = [
+				strtolower( $this->tokens[ $stackPtr ]['content'] ),
+				$this->tokens[ $curStackPtr ]['content'],
+			];
 			$code    = 'IncludingNonPHPFile';
 
-			if ( in_array( $extension, [ '.svg', '.css' ], true ) === true ) {
+			if ( isset( $this->svg_css_extensions[ $extension ] ) === true ) {
 				// Be more specific for SVG and CSS files.
-				$message = 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`.';
+				$message = 'Local SVG and CSS files should be loaded via `file_get_contents` rather than via `%s`. Found: %s';
 				$code    = 'IncludingSVGCSSFile';
 			}
 
 			$this->phpcsFile->addError( $message, $curStackPtr, $code, $data );
-		}
+
+			// Don't throw more than one error for any one statement.
+			return;
+
+		} while ( $curStackPtr > $stackPtr );
 	}
 
 }

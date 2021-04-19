@@ -17,7 +17,7 @@ namespace WordPressVIPMinimum\Sniffs\Variables;
 use PHP_CodeSniffer\Files\File;
 
 /**
- * Checks the for undefined function variables.
+ * Checks for undefined function variables.
  *
  * This sniff checks that all function variables
  * are defined in the function body.
@@ -45,21 +45,6 @@ class VariableAnalysisSniff extends \VariableAnalysis\Sniffs\CodeAnalysis\Variab
 		'DeprecatedSniff'                 => false,
 		'FoundPropertyForDeprecatedSniff' => false,
 	];
-
-	/**
-	 * Returns an array of tokens this test wants to listen for.
-	 *
-	 * @return int[]
-	 */
-	public function register() {
-		return [
-			T_VARIABLE,
-			T_DOUBLE_QUOTED_STRING,
-			T_HEREDOC,
-			T_CLOSE_CURLY_BRACKET,
-			T_STRING,
-		];
-	}
 
 	/**
 	 * Don't use.

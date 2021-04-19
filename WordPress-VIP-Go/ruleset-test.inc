@@ -47,17 +47,17 @@ touch( $file ); // Warning + Message.
 unlink( $file ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.cookies_setcookie
-setcookie( 'cookie[three]', 'cookiethree' ); // Error + Message.
+setcookie( 'cookie[three]', 'cookiethree' ); // Error.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
-$x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error + Message.
+$x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Error.
 
 // WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__
-if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'some_value' ) { // Error + Message.
+if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'some_value' ) { // Error.
 }
 
-// WordPress.WP.AlternativeFunctions.file_system_read_fclose
-fclose( $fp ); // Warning + Message.
+
+
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fopen
 fopen( 'file.txt', 'r' ); // Warning + Message.
@@ -67,7 +67,7 @@ $external_resource = file_get_contents( $test ); // Warning + Message.
 $file_content = file_get_contents( 'my-file.svg' ); // Ok.
 wpcom_vip_file_get_contents( $bar ); // Ok.
 
-// WordPress.Security.NonceVerification.NoNonceVerification
+// WordPress.Security.NonceVerification (inherited from parent)
 function bar_foo() {
 	if ( ! isset( $_POST['test'] ) ) { // Error.
 		return;
@@ -214,7 +214,7 @@ function foo_bar_bar() {
 
 // VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 function foo_bar_foo() {
-	$a = 'Hello'; // Warning
+	$a = 'Hello'; // OK.  Unused variables warning silenced.
 }
 
 // WordPressVIPMinimum.UserExperience.AdminBarRemoval
@@ -284,20 +284,20 @@ if ( isset( $_GET['migSource'] ) && wp_verify_nonce( sanitize_text_field( $_GET[
 	$test = sanitize_text_field( $_GET['migSource'] ); // Ok.
 }
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_add_user_meta
-add_user_meta( 123, $foo, $bar ); // Ok.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_delete_user_meta
-delete_user_meta( $foo, $bar, '123' ); // Ok.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_get_user_meta
-get_user_meta(); // Ok.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.user_meta_update_user_meta
-update_user_meta( $bar, '123', $foo ); // Ok.
 
-// WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__usermeta
-$query = "SELECT * FROM $wpdb->usermeta"; // Ok.
+
+
+
+
+
+
+
+
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.site_option_delete_site_option
 delete_site_option( $foo ); // Ok.
@@ -346,7 +346,7 @@ $my_notokay_func = 'extract';
 $my_notokay_func(); // Error.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions
-wp_cache_get_multi(); // Error.
+
 opcache_reset(); // Error.
 opcache_invalidate( 'test_script.php' ); // Error.
 opcache_compile_file( $var ); // Error.
@@ -417,7 +417,7 @@ the_sub_field( 'field' ); // Warning.
 the_field( 'field' ); // Warning.
 wp_remote_get( $url ); // Warning.
 get_posts(); // Warning.
-function test_function( $a, $b ) {
+function test_function( $a, $b ) { // OK. Unused variables warning silenced.
 	return create_function( '$a, $b', 'return ( $b / $a ); '); // Warning.
 }
 wpcom_vip_get_term_link(); // Warning.

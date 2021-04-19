@@ -25,7 +25,7 @@ class PreGetPostsSniff extends Sniff {
 	 * @return array(int)
 	 */
 	public function register() {
-		return Tokens::$functionNameTokens;
+		return [ T_STRING ];
 	}
 
 	/**
@@ -120,7 +120,7 @@ class PreGetPostsSniff extends Sniff {
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
-			Tokens::$functionNameTokens,
+			T_STRING,
 			0,
 			null,
 			false,
@@ -195,7 +195,7 @@ class PreGetPostsSniff extends Sniff {
 	/**
 	 * Process function's body
 	 *
-	 * @param int    $stackPtr The position in the stack where the token was found.
+	 * @param int    $stackPtr     The position in the stack where the token was found.
 	 * @param string $variableName Variable name.
 	 */
 	private function processFunctionBody( $stackPtr, $variableName ) {
@@ -363,7 +363,7 @@ class PreGetPostsSniff extends Sniff {
 	 * Is the current code a WP_Query call?
 	 *
 	 * @param int  $stackPtr The position in the stack where the token was found.
-	 * @param null $method Method.
+	 * @param null $method   Method.
 	 *
 	 * @return bool
 	 */
@@ -394,7 +394,7 @@ class PreGetPostsSniff extends Sniff {
 			true
 		);
 
-		return $next && in_array( $this->tokens[ $next ]['code'], Tokens::$functionNameTokens, true ) === true && $method === $this->tokens[ $next ]['content'];
+		return $next && $this->tokens[ $next ]['code'] === T_STRING && $method === $this->tokens[ $next ]['content'];
 	}
 
 	/**

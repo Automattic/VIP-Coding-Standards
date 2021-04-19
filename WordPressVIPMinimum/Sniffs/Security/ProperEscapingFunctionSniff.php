@@ -23,10 +23,56 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *
 	 * @var array
 	 */
-	public $escaping_functions = [
-		'esc_url',
-		'esc_attr',
-		'esc_html',
+	protected $escaping_functions = [
+		'esc_url'    => 'url',
+		'esc_attr'   => 'attr',
+		'esc_attr__' => 'attr',
+		'esc_attr_x' => 'attr',
+		'esc_attr_e' => 'attr',
+		'esc_html'   => 'html',
+		'esc_html__' => 'html',
+		'esc_html_x' => 'html',
+		'esc_html_e' => 'html',
+	];
+
+	/**
+	 * List of tokens we can skip.
+	 *
+	 * @var array
+	 */
+	private $echo_or_concat_tokens =
+	[
+		T_ECHO               => T_ECHO,
+		T_OPEN_TAG           => T_OPEN_TAG,
+		T_OPEN_TAG_WITH_ECHO => T_OPEN_TAG_WITH_ECHO,
+		T_STRING_CONCAT      => T_STRING_CONCAT,
+		T_COMMA              => T_COMMA,
+		T_NS_SEPARATOR       => T_NS_SEPARATOR,
+	];
+
+	/**
+	 * List of attributes associated with url outputs.
+	 *
+	 * @var array
+	 */
+	private $url_attrs = [
+		'href',
+		'src',
+		'url',
+		'action',
+	];
+
+	/**
+	 * List of syntaxes for inside attribute detection.
+	 *
+	 * @var array
+	 */
+	private $attr_endings = [
+		'=',
+		'="',
+		"='",
+		"=\\'",
+		'=\\"',
 	];
 
 	/**
@@ -35,7 +81,9 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return Tokens::$functionNameTokens;
+		$this->echo_or_concat_tokens += Tokens::$emptyTokens;
+
+		return [ T_STRING ];
 	}
 
 	/**
@@ -47,47 +95,47 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( in_array( $this->tokens[ $stackPtr ]['content'], $this->escaping_functions, true ) === false ) {
+		$function_name = strtolower( $this->tokens[ $stackPtr ]['content'] );
+
+		if ( isset( $this->escaping_functions[ $function_name ] ) === false ) {
 			return;
 		}
 
-		$function_name = $this->tokens[ $stackPtr ]['content'];
+		$next_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		if ( $next_non_empty === false || $this->tokens[ $next_non_empty ]['code'] !== T_OPEN_PARENTHESIS ) {
+			// Not a function call.
+			return;
+		}
 
-		$echo_or_string_concat = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
+		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
 
-		if ( $this->tokens[ $echo_or_string_concat ]['code'] === T_ECHO ) {
-			// Very likely inline HTML with <?php tag.
-			$php_open = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
-
-			if ( $this->tokens[ $php_open ]['code'] !== T_OPEN_TAG ) {
-				return;
-			}
-
-			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $php_open - 1, null, true );
-
-			if ( $this->tokens[ $html ]['code'] !== T_INLINE_HTML ) {
-				return;
-			}
-		} elseif ( $this->tokens[ $echo_or_string_concat ]['code'] === T_STRING_CONCAT ) {
-			// Very likely string concatenation mixing strings and functions/variables.
-			$html = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $echo_or_string_concat - 1, null, true );
-
-			if ( $this->tokens[ $html ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
-				return;
-			}
-		} else {
-			// Neither - bailing.
+		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways..
+		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
 			return;
 		}
 
 		$data = [ $function_name ];
 
-		if ( $function_name !== 'esc_url' && $this->attr_expects_url( $this->tokens[ $html ]['content'] ) ) {
+		$content = $this->tokens[ $html ]['content'];
+		if ( isset( Tokens::$stringTokens[ $this->tokens[ $html ]['code'] ] ) === true ) {
+			$content = Sniff::strip_quotes( $content );
+		}
+
+		$escaping_type = $this->escaping_functions[ $function_name ];
+
+		if ( $escaping_type === 'attr' && $this->is_outside_html_attr_context( $content ) ) {
+			$message = 'Wrong escaping function, using `%s()` in a context outside of HTML attributes may not escape properly.';
+			$this->phpcsFile->addError( $message, $html, 'notAttrEscAttr', $data );
+			return;
+		}
+
+		if ( $escaping_type !== 'url' && $this->attr_expects_url( $content ) ) {
 			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
-		if ( $function_name === 'esc_html' && $this->is_html_attr( $this->tokens[ $html ]['content'] ) ) {
+
+		if ( $escaping_type === 'html' && $this->is_html_attr( $content ) ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
@@ -99,17 +147,12 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *
 	 * @param string $content Haystack in which we look for an open attribute which exects a URL value.
 	 *
-	 * @return bool True if string ends with open attribute which exects a URL value.
+	 * @return bool True if string ends with open attribute which expects a URL value.
 	 */
 	public function attr_expects_url( $content ) {
 		$attr_expects_url = false;
-		foreach ( [ 'href', 'src', 'url', 'action' ] as $attr ) {
-			foreach ( [
-				'="',
-				"='",
-				'=\'"', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-				'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-			] as $ending ) {
+		foreach ( $this->url_attrs as $attr ) {
+			foreach ( $this->attr_endings as $ending ) {
 				if ( $this->endswith( $content, $attr . $ending ) === true ) {
 					$attr_expects_url = true;
 					break;
@@ -128,12 +171,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 */
 	public function is_html_attr( $content ) {
 		$is_html_attr = false;
-		foreach ( [
-			'="',
-			"='",
-			'=\'"', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-			'="\'', // The tokenizer does some fun stuff when it comes to mixing double and single quotes.
-		] as $ending ) {
+		foreach ( $this->attr_endings as $ending ) {
 			if ( $this->endswith( $content, $ending ) === true ) {
 				$is_html_attr = true;
 				break;
@@ -143,10 +181,21 @@ class ProperEscapingFunctionSniff extends Sniff {
 	}
 
 	/**
+	 * Tests whether an attribute escaping function is being used outside of an HTML tag.
+	 *
+	 * @param string $content Haystack where we look for the end of a HTML tag.
+	 *
+	 * @return bool True if the passed string ends a HTML tag.
+	 */
+	public function is_outside_html_attr_context( $content ) {
+		return $this->endswith( trim( $content ), '>' );
+	}
+
+	/**
 	 * A helper function which tests whether string ends with some other.
 	 *
 	 * @param string $haystack String which is being tested.
-	 * @param string $needle The substring, which we try to locate on the end of the $haystack.
+	 * @param string $needle   The substring, which we try to locate on the end of the $haystack.
 	 *
 	 * @return bool True if haystack ends with needle.
 	 */
