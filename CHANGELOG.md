@@ -4,6 +4,70 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2021-04-19
+
+Props: jrfnl, rebeccahum, kevinfodness, GaryJones.
+
+** There is a minor breaking change in the ProperEscapingFunction sniff from PR #624. The `escaping_function` property can no longer be overruled via custom rulesets. Please remove any usages of the property in custom rulesets.
+** Composer now requires the [phpcodesniffer-composer-installer](https://github.com/Dealerdirect/phpcodesniffer-composer-installer) plugin per #583. Note: If you either include it in the "require-dev" of your `composer.json`, use another Composer PHPCS plugin, or run bash commands to register PHPCS standards, please remove it from those sources to prevent interferences or version constraint conflicts.
+
+### Added
+- [#581](https://github.com/Automattic/VIP-Coding-Standards/pull/581): AlwaysReturnInFilter: flag abstract methods for manual inspection.
+- [#583](https://github.com/Automattic/VIP-Coding-Standards/pull/583): Composer: require phpcs-composer-installer plugin.
+- [#586](https://github.com/Automattic/VIP-Coding-Standards/pull/586): IncludingNonPHPFile: recognition of .phar file extensions.
+- [#589](https://github.com/Automattic/VIP-Coding-Standards/pull/589): WPQueryParams: flags 'exclude' array key.
+- [#595](https://github.com/Automattic/VIP-Coding-Standards/pull/595): Underscorejs: checks for additional print syntaxes and now throws an additional error for each occurrence of unescaped notation.
+- [#624](https://github.com/Automattic/VIP-Coding-Standards/pull/624): ProperEscapingFunction: account for additional escaping functions and check for `esc_attr()` usage in non-HTML attributes.
+- [#638](https://github.com/Automattic/VIP-Coding-Standards/pull/638): IncludingFile: new public property `$allowedKeywords` for allowing custom partial keywords in constants to reduce false positives.
+
+### Changed
+- [#586](https://github.com/Automattic/VIP-Coding-Standards/pull/586): IncludingNonPHPFile: various performance improvements.
+- [#587](https://github.com/Automattic/VIP-Coding-Standards/pull/587): LowExpiryCacheTime: new warning added for manual inspection along with various improvements.
+- [#592](https://github.com/Automattic/VIP-Coding-Standards/pull/592): DynamicCalls: various improvements.
+- [#595](https://github.com/Automattic/VIP-Coding-Standards/pull/595): Underscorejs: various improvements.
+- [#618](https://github.com/Automattic/VIP-Coding-Standards/pull/618): RestrictedFunctions: upgrade setcookie() to error at sniff level and remove Batcache references from messaging.
+- [#620](https://github.com/Automattic/VIP-Coding-Standards/pull/620): Ruleset: silence UnusedVariable from VariableAnalysis to reduce noise.
+- [#630](https://github.com/Automattic/VIP-Coding-Standards/pull/630): VariableAnalysis: fix incompatibility for VariableAnalysis standard with previously deprecated native VIPCS sniff.
+- [#639](https://github.com/Automattic/VIP-Coding-Standards/pull/639): RestrictedFunctions: remove site_option group.
+- [#644](https://github.com/Automattic/VIP-Coding-Standards/pull/644): RestrictedFunctions: remove wp_cache_get_multi group.
+- [#645](https://github.com/Automattic/VIP-Coding-Standards/pull/645): Ruleset: silence WordPress.WP.AlternativeFunctions.file_system_read_readfile.
+- [#646](https://github.com/Automattic/VIP-Coding-Standards/pull/646): Ruleset: silence WordPress.WP.AlternativeFunctions.file_system_read_fclose.
+- [#647](https://github.com/Automattic/VIP-Coding-Standards/pull/647): RestrictedFunctions: remove get_super_admins group.
+- [#649](https://github.com/Automattic/VIP-Coding-Standards/pull/649): RestrictedFunctions: downgrade switch_to_blog() to warning and change messaging.
+- [#652](https://github.com/Automattic/VIP-Coding-Standards/pull/652): RestrictedFunctions/RestrictedVariables: remove usermeta related errors.
+
+### Fixed
+- [#444](https://github.com/Automattic/VIP-Coding-Standards/pull/444): ConstantString: only error when a plain constant is passed as constant name parameter.
+- [#581](https://github.com/Automattic/VIP-Coding-Standards/pull/581): AlwaysReturnInFilter: fix runtime failure on abstract methods.
+- [#584](https://github.com/Automattic/VIP-Coding-Standards/pull/584): Performance: more selective sniffing for efficiency.
+- [#586](https://github.com/Automattic/VIP-Coding-Standards/pull/586): IncludingNonPHPFile: various bug fixes such as recognition of interpolated strings and case insensitivity in file extensions. 
+- [#587](https://github.com/Automattic/VIP-Coding-Standards/pull/587): LowExpiryCacheTime: allow arithmetic operators, simple floats, numerical strings, zeroes and parentheses in calculations, and FQN time constants.
+- [#592](https://github.com/Automattic/VIP-Coding-Standards/pull/592): DynamicCalls: ignore comments, allow double quotes and remove potential memory leak.
+- [#595](https://github.com/Automattic/VIP-Coding-Standards/pull/595): Underscorejs: fixed false positive for when a variable is `_.escape()`-ed.
+- [#624](https://github.com/Automattic/VIP-Coding-Standards/pull/624): ProperEscapingFunction: slash escaped quotes and non-quoted strings in HTML attributes are now parsed as expected.
+
+### Removed
+- [#624](https://github.com/Automattic/VIP-Coding-Standards/pull/624): ProperEscapingFunction: remove `$escaping_functions` public property.
+
+### Maintenance
+- [#582](https://github.com/Automattic/VIP-Coding-Standards/pull/582): CI: re-try composer install on failure.
+- [#599](https://github.com/Automattic/VIP-Coding-Standards/pull/599): CI: add build against PHP 8.
+- [#606](https://github.com/Automattic/VIP-Coding-Standards/pull/606): Ruleset: remove redundant rule ref.
+- [#607](https://github.com/Automattic/VIP-Coding-Standards/pull/607): Ruleset: remove redundant rule ref.
+- [#608](https://github.com/Automattic/VIP-Coding-Standards/pull/608): Ruleset: remove duplicate rule ref.
+- [#611](https://github.com/Automattic/VIP-Coding-Standards/pull/611): Ruleset: remove redundant notice type declaration.
+- [#617](https://github.com/Automattic/VIP-Coding-Standards/pull/617): Ruleset: remove redundant notice type declaration.
+- [#619](https://github.com/Automattic/VIP-Coding-Standards/pull/619): Docs: Update links to wpvip.com.
+- [#631](https://github.com/Automattic/VIP-Coding-Standards/pull/631): QA: remove unused use statements.
+- [#632](https://github.com/Automattic/VIP-Coding-Standards/pull/632): Docs: various minor improvements (typos, alignment and code examples).
+- [#633](https://github.com/Automattic/VIP-Coding-Standards/pull/633): CI: switch to GitHub Actions.
+- [#635](https://github.com/Automattic/VIP-Coding-Standards/pull/635): Ruleset: remove redundant rule ref.
+- [#653](https://github.com/Automattic/VIP-Coding-Standards/pull/653): CI: use parallel linting of PHP files.
+- [#655](https://github.com/Automattic/VIP-Coding-Standards/pull/655): QA: remove redundant ignore annotations.
+- [#656](https://github.com/Automattic/VIP-Coding-Standards/pull/656): CI: always check that sniffs are feature complete.
+- [#657](https://github.com/Automattic/VIP-Coding-Standards/pull/657): CI: add "quicktest" stage for non-PR/merge builds.
+- [#658](https://github.com/Automattic/VIP-Coding-Standards/pull/658): Release template: add checkbox for dependency check.
+
 ## [2.2.0] - 2020-09-09
 
 Props: GaryJones, jrfnl, rebeccahum.
@@ -474,6 +538,7 @@ Initial release.
 Props: david-binda, pkevan.
 
 
+[2.3.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/1.0.0...2.0.0
