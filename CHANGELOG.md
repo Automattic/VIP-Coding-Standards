@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Props: jrfnl, rebeccahum, kevinfodness, GaryJones.
 
-** There is a minor breaking change in the ProperEscapingFunction sniff from PR #624. The `escaping_function` property can no longer be overruled via custom rulesets. Please remove any usages of the property in custom rulesets.
+** There is a minor breaking change in the ProperEscapingFunction sniff from PR [#624](https://github.com/Automattic/VIP-Coding-Standards/pull/624). The `escaping_function` property can no longer be overruled via custom rulesets. Please remove any usages of the property in custom rulesets.
 
 ** Composer now requires the [phpcodesniffer-composer-installer](https://github.com/Dealerdirect/phpcodesniffer-composer-installer) plugin per [#583](https://github.com/Automattic/VIP-Coding-Standards/pull/583). Note: If you either include it in the "require-dev" of your `composer.json`, use another Composer PHPCS plugin, or run bash commands to register PHPCS standards, please remove it from those sources to prevent interferences or version constraint conflicts.
 
