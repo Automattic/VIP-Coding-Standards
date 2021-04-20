@@ -46,7 +46,6 @@ class ProperEscapingFunctionSniff extends Sniff {
 		T_OPEN_TAG           => T_OPEN_TAG,
 		T_OPEN_TAG_WITH_ECHO => T_OPEN_TAG_WITH_ECHO,
 		T_STRING_CONCAT      => T_STRING_CONCAT,
-		T_COMMA              => T_COMMA,
 		T_NS_SEPARATOR       => T_NS_SEPARATOR,
 	];
 
@@ -107,7 +106,13 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
-		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
+		$ignore             = $this->echo_or_concat_tokens;
+		$start_of_statement = $this->phpcsFile->findStartOfStatement( $stackPtr, T_COMMA );
+		if ( $this->tokens[ $start_of_statement ]['code'] === T_ECHO ) {
+			$ignore[ T_COMMA ] = T_COMMA;
+		}
+
+		$html = $this->phpcsFile->findPrevious( $ignore, $stackPtr - 1, null, true );
 
 		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways..
 		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
