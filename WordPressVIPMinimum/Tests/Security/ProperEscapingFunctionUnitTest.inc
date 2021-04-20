@@ -38,9 +38,9 @@ echo 'data-param-url="' . Esc_HTML( $share_url ) . '"'; // Error.
 
 ?>
 
-<form method="post" action="<?php echo esc_html(admin_url('admin.php?page='.$base_name.'&amp;mode=logs&amp;id='.$poll_id)); ?>">
-
-
+<form method="post" action="<?php echo esc_html(admin_url('admin.php?page='.$base_name.'&amp;mode=logs&amp;id='.$poll_id)); ?>"><!-- Error. -->
+<input data-action="<?php echo esc_attr( $my_var ); ?>"><!-- OK. -->
+<a href='https://demo.com?foo=bar&my-action=<?php echo esc_attr( $var ); ?>'>link</a><!-- OK. -->
 
 <a href="#link"><?php echo esc_attr( 'testing' ); // Error.
 ?> </a>
