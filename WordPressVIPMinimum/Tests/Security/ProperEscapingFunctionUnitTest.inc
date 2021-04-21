@@ -82,3 +82,6 @@ echo '<a href="',  esc_html($url), '">'; // Error.
 echo '<a href=', esc_html($url), '>'; // Error.
 
 echo 'data-param-url="' . Esc_HTML::static_method( $share_url ) . '"'; // OK.
+
+// Not a target for this sniff (yet).
+printf( '<meta name="generator" content="%s">', esc_attr( $content ) ); // OK.
