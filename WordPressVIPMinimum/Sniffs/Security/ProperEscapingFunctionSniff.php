@@ -57,6 +57,39 @@ class ProperEscapingFunctionSniff extends Sniff {
 	];
 
 	/**
+	 * List of attributes associated with url outputs.
+	 *
+	 * @deprecated 2.3.1 Currently unused by the sniff, but needed for
+	 *                   for public methods which extending sniffs may be
+	 *                   relying on.
+	 *
+	 * @var array
+	 */
+	private $url_attrs = [
+		'href',
+		'src',
+		'url',
+		'action',
+	];
+
+	/**
+	 * List of syntaxes for inside attribute detection.
+	 *
+	 * @deprecated 2.3.1 Currently unused by the sniff, but needed for
+	 *                   for public methods which extending sniffs may be
+	 *                   relying on.
+	 *
+	 * @var array
+	 */
+	private $attr_endings = [
+		'=',
+		'="',
+		"='",
+		"=\\'",
+		'=\\"',
+	];
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -131,6 +164,48 @@ class ProperEscapingFunctionSniff extends Sniff {
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
 		}
+	}
+
+	/**
+	 * Tests whether provided string ends with open attribute which expects a URL value.
+	 *
+	 * @deprecated 2.3.1
+	 *
+	 * @param string $content Haystack in which we look for an open attribute which exects a URL value.
+	 *
+	 * @return bool True if string ends with open attribute which expects a URL value.
+	 */
+	public function attr_expects_url( $content ) {
+		$attr_expects_url = false;
+		foreach ( $this->url_attrs as $attr ) {
+			foreach ( $this->attr_endings as $ending ) {
+				if ( $this->endswith( $content, $attr . $ending ) === true ) {
+					$attr_expects_url = true;
+					break;
+				}
+			}
+		}
+		return $attr_expects_url;
+	}
+
+	/**
+	 * Tests whether provided string ends with open HMTL attribute.
+	 *
+	 * @deprecated 2.3.1
+	 *
+	 * @param string $content Haystack in which we look for open HTML attribute.
+	 *
+	 * @return bool True if string ends with open HTML attribute.
+	 */
+	public function is_html_attr( $content ) {
+		$is_html_attr = false;
+		foreach ( $this->attr_endings as $ending ) {
+			if ( $this->endswith( $content, $ending ) === true ) {
+				$is_html_attr = true;
+				break;
+			}
+		}
+		return $is_html_attr;
 	}
 
 	/**
