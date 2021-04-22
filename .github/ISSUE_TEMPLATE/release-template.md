@@ -1,7 +1,7 @@
 ---
 name: Release template
 about: Internally used for new releases
-title: Release 2.x.y
+title: Release x.y.z
 labels: 'Type: Maintenance'
 assignees: GaryJones, rebeccahum
 
@@ -13,6 +13,7 @@ assignees: GaryJones, rebeccahum
 
 PR for tracking changes for the X.Y.Z release. Target release date: DOW DD MMMM YYYY.
 
+- [ ] Scan WordPress (or just wp-admin folder) with prior version and compare results against new release for potential new bugs. 
 - [ ] Add change log for this release: PR #XXX
 - [ ] Double-check whether any dependencies need bumping.
 - [ ] Merge this PR.

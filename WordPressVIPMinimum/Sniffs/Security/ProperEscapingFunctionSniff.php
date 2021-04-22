@@ -19,6 +19,13 @@ use PHP_CodeSniffer\Util\Tokens;
 class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
+	 * Regular expression to match the end of HTML attributes.
+	 *
+	 * @var string
+	 */
+	const ATTR_END_REGEX = '`(?<attrname>href|src|url|(^|\s+)action)?=(?:\\\\)?["\']*$`i';
+
+	/**
 	 * List of escaping functions which are being tested.
 	 *
 	 * @var array
@@ -46,12 +53,15 @@ class ProperEscapingFunctionSniff extends Sniff {
 		T_OPEN_TAG           => T_OPEN_TAG,
 		T_OPEN_TAG_WITH_ECHO => T_OPEN_TAG_WITH_ECHO,
 		T_STRING_CONCAT      => T_STRING_CONCAT,
-		T_COMMA              => T_COMMA,
 		T_NS_SEPARATOR       => T_NS_SEPARATOR,
 	];
 
 	/**
 	 * List of attributes associated with url outputs.
+	 *
+	 * @deprecated 2.3.1 Currently unused by the sniff, but needed for
+	 *                   for public methods which extending sniffs may be
+	 *                   relying on.
 	 *
 	 * @var array
 	 */
@@ -65,6 +75,10 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * List of syntaxes for inside attribute detection.
 	 *
+	 * @deprecated 2.3.1 Currently unused by the sniff, but needed for
+	 *                   for public methods which extending sniffs may be
+	 *                   relying on.
+	 *
 	 * @var array
 	 */
 	private $attr_endings = [
@@ -76,6 +90,14 @@ class ProperEscapingFunctionSniff extends Sniff {
 	];
 
 	/**
+	 * Keep track of whether or not we're currently in the first statement of a short open echo tag.
+	 *
+	 * @var int|false Integer stack pointer to the end of the first statement in the current
+	 *                short open echo tag or false when not in a short open echo tag.
+	 */
+	private $in_short_echo = false;
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -83,7 +105,10 @@ class ProperEscapingFunctionSniff extends Sniff {
 	public function register() {
 		$this->echo_or_concat_tokens += Tokens::$emptyTokens;
 
-		return [ T_STRING ];
+		return [
+			T_STRING,
+			T_OPEN_TAG_WITH_ECHO,
+		];
 	}
 
 	/**
@@ -94,6 +119,35 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
+		/*
+		 * Short open echo tags will act as an echo for the first expression and
+		 * allow for passing multiple comma-separated parameters.
+		 * However, short open echo tags also allow for additional statements after, but
+		 * those have to be full PHP statements, not expressions.
+		 *
+		 * This snippet of code will keep track of whether or not we're in the first
+		 * expression in a short open echo tag.
+		 * $phpcsFile->findStartOfStatement() unfortunately is useless, as it will return
+		 * the first token in the statement, which can be anything - variable, text string -
+		 * without any indication of whether this is the start of a normal statement or
+		 * a short open echo expression.
+		 * So, if we used that, we'd need to walk back from every start of statement to
+		 * the previous non-empty to see if it is the short open echo tag.
+		 */
+		if ( $this->tokens[ $stackPtr ]['code'] === T_OPEN_TAG_WITH_ECHO ) {
+			$end_of_echo = $this->phpcsFile->findNext( [ T_SEMICOLON, T_CLOSE_TAG ], ( $stackPtr + 1 ) );
+			if ( $end_of_echo === false ) {
+				$this->in_short_echo = $this->phpcsFile->numTokens;
+			} else {
+				$this->in_short_echo = $end_of_echo;
+			}
+
+			return;
+		}
+
+		if ( $this->in_short_echo !== false && $this->in_short_echo < $stackPtr ) {
+			$this->in_short_echo = false;
+		}
 
 		$function_name = strtolower( $this->tokens[ $stackPtr ]['content'] );
 
@@ -107,7 +161,17 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
-		$html = $this->phpcsFile->findPrevious( $this->echo_or_concat_tokens, $stackPtr - 1, null, true );
+		$ignore = $this->echo_or_concat_tokens;
+		if ( $this->in_short_echo !== false ) {
+			$ignore[ T_COMMA ] = T_COMMA;
+		} else {
+			$start_of_statement = $this->phpcsFile->findStartOfStatement( $stackPtr, T_COMMA );
+			if ( $this->tokens[ $start_of_statement ]['code'] === T_ECHO ) {
+				$ignore[ T_COMMA ] = T_COMMA;
+			}
+		}
+
+		$html = $this->phpcsFile->findPrevious( $ignore, $stackPtr - 1, null, true );
 
 		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways..
 		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
@@ -129,13 +193,17 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
-		if ( $escaping_type !== 'url' && $this->attr_expects_url( $content ) ) {
+		if ( preg_match( self::ATTR_END_REGEX, $content, $matches ) !== 1 ) {
+			return;
+		}
+
+		if ( $escaping_type !== 'url' && empty( $matches['attrname'] ) === false ) {
 			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
 
-		if ( $escaping_type === 'html' && $this->is_html_attr( $content ) ) {
+		if ( $escaping_type === 'html' ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
@@ -144,6 +212,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
 	 * Tests whether provided string ends with open attribute which expects a URL value.
+	 *
+	 * @deprecated 2.3.1
 	 *
 	 * @param string $content Haystack in which we look for an open attribute which exects a URL value.
 	 *
@@ -164,6 +234,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
 	 * Tests whether provided string ends with open HMTL attribute.
+	 *
+	 * @deprecated 2.3.1
 	 *
 	 * @param string $content Haystack in which we look for open HTML attribute.
 	 *

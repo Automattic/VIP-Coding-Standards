@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2021-04-23
+
+Props: jrfnl
+
+### Fixed
+- [#668](https://github.com/Automattic/VIP-Coding-Standards/pull/668): ProperEscapingFunction: fix overreach of comma usage in non-echo expressions for notAttrEscAttr.
+- [#670](https://github.com/Automattic/VIP-Coding-Standards/pull/670): ProperEscapingFunction: improve "action" match precision for hrefSrcEscUrl.
+
+## Deprecated
+- [#670](https://github.com/Automattic/VIP-Coding-Standards/pull/670): ProperEscapingFunction: private properties `$url_attrs` and `$attr_endings` are deprecated along with the public methods `is_html_attr()` and `attr_expects_url()`.
+
 ## [2.3.0] - 2021-04-19
 
 Props: jrfnl, rebeccahum, kevinfodness, GaryJones.
@@ -539,6 +550,7 @@ Initial release.
 Props: david-binda, pkevan.
 
 
+[2.3.1]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.0.0...2.1.0
