@@ -38,9 +38,9 @@ echo 'data-param-url="' . Esc_HTML( $share_url ) . '"'; // Error.
 
 ?>
 
-<form method="post" action="<?php echo esc_html(admin_url('admin.php?page='.$base_name.'&amp;mode=logs&amp;id='.$poll_id)); ?>">
-
-
+<form method="post" action="<?php echo esc_html(admin_url('admin.php?page='.$base_name.'&amp;mode=logs&amp;id='.$poll_id)); ?>"><!-- Error. -->
+<input data-action="<?php echo esc_attr( $my_var ); ?>"><!-- OK. -->
+<a href='https://demo.com?foo=bar&my-action=<?php echo esc_attr( $var ); ?>'>link</a><!-- OK. -->
 
 <a href="#link"><?php echo esc_attr( 'testing' ); // Error.
 ?> </a>
@@ -85,3 +85,13 @@ echo 'data-param-url="' . Esc_HTML::static_method( $share_url ) . '"'; // OK.
 
 // Not a target for this sniff (yet).
 printf( '<meta name="generator" content="%s">', esc_attr( $content ) ); // OK.
+?>
+
+// Making sure tabs and new lines before "action" are handled correctly.
+<input class="something something-else something-more"
+	action="<?php echo esc_attr( $my_var ); ?>"><!-- Error. -->
+<?php
+echo '<input class="something something-else something-more"
+	action="', esc_url( $my_var ), '">'; // OK.
+echo '<input class="something something-else something-more"
+action="', esc_attr( $my_var ), '">'; // Error.

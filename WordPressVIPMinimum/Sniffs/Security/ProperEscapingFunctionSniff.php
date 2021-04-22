@@ -19,6 +19,13 @@ use PHP_CodeSniffer\Util\Tokens;
 class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
+	 * Regular expression to match the end of HTML attributes.
+	 *
+	 * @var string
+	 */
+	const ATTR_END_REGEX = '`(?<attrname>href|src|url|(^|\s+)action)?=(?:\\\\)?["\']*$`i';
+
+	/**
 	 * List of escaping functions which are being tested.
 	 *
 	 * @var array
@@ -52,6 +59,10 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * List of attributes associated with url outputs.
 	 *
+	 * @deprecated 2.3.1 Currently unused by the sniff, but needed for
+	 *                   for public methods which extending sniffs may be
+	 *                   relying on.
+	 *
 	 * @var array
 	 */
 	private $url_attrs = [
@@ -63,6 +74,10 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
 	 * List of syntaxes for inside attribute detection.
+	 *
+	 * @deprecated 2.3.1 Currently unused by the sniff, but needed for
+	 *                   for public methods which extending sniffs may be
+	 *                   relying on.
 	 *
 	 * @var array
 	 */
@@ -134,13 +149,17 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
-		if ( $escaping_type !== 'url' && $this->attr_expects_url( $content ) ) {
+		if ( preg_match( self::ATTR_END_REGEX, $content, $matches ) !== 1 ) {
+			return;
+		}
+
+		if ( $escaping_type !== 'url' && empty( $matches['attrname'] ) === false ) {
 			$message = 'Wrong escaping function. href, src, and action attributes should be escaped by `esc_url()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'hrefSrcEscUrl', $data );
 			return;
 		}
 
-		if ( $escaping_type === 'html' && $this->is_html_attr( $content ) ) {
+		if ( $escaping_type === 'html' ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
 			return;
@@ -149,6 +168,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
 	 * Tests whether provided string ends with open attribute which expects a URL value.
+	 *
+	 * @deprecated 2.3.1
 	 *
 	 * @param string $content Haystack in which we look for an open attribute which exects a URL value.
 	 *
@@ -169,6 +190,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 	/**
 	 * Tests whether provided string ends with open HMTL attribute.
+	 *
+	 * @deprecated 2.3.1
 	 *
 	 * @param string $content Haystack in which we look for open HTML attribute.
 	 *

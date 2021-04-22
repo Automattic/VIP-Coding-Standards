@@ -53,6 +53,8 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 			79 => 1,
 			80 => 1,
 			82 => 1,
+			92 => 1,
+			97 => 1,
 		];
 	}
 
