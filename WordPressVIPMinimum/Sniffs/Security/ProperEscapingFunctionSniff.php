@@ -23,7 +23,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *
 	 * @var string
 	 */
-	const ATTR_END_REGEX = '`(?<attrname>href|src|url|\s+action)?=(?:(?:\\\\)?["\'])?$`i';
+	const ATTR_END_REGEX = '`(?<attrname>href|src|url|(^|\s+)action)?=(?:\\\\)?["\']*$`i';
 
 	/**
 	 * List of escaping functions which are being tested.

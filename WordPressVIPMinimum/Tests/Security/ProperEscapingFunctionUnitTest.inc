@@ -85,3 +85,13 @@ echo 'data-param-url="' . Esc_HTML::static_method( $share_url ) . '"'; // OK.
 
 // Not a target for this sniff (yet).
 printf( '<meta name="generator" content="%s">', esc_attr( $content ) ); // OK.
+?>
+
+// Making sure tabs and new lines before "action" are handled correctly.
+<input class="something something-else something-more"
+	action="<?php echo esc_attr( $my_var ); ?>"><!-- Error. -->
+<?php
+echo '<input class="something something-else something-more"
+	action="', esc_url( $my_var ), '">'; // OK.
+echo '<input class="something something-else something-more"
+action="', esc_attr( $my_var ), '">'; // Error.
