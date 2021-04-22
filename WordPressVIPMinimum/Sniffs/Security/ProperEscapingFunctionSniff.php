@@ -90,6 +90,14 @@ class ProperEscapingFunctionSniff extends Sniff {
 	];
 
 	/**
+	 * Keep track of whether or not we're currently in the first statement of a short open echo tag.
+	 *
+	 * @var int|false Integer stack pointer to the end of the first statement in the current
+	 *                short open echo tag or false when not in a short open echo tag.
+	 */
+	private $in_short_echo = false;
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -97,7 +105,10 @@ class ProperEscapingFunctionSniff extends Sniff {
 	public function register() {
 		$this->echo_or_concat_tokens += Tokens::$emptyTokens;
 
-		return [ T_STRING ];
+		return [
+			T_STRING,
+			T_OPEN_TAG_WITH_ECHO,
+		];
 	}
 
 	/**
@@ -108,6 +119,35 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
+		/*
+		 * Short open echo tags will act as an echo for the first expression and
+		 * allow for passing multiple comma-separated parameters.
+		 * However, short open echo tags also allow for additional statements after, but
+		 * those have to be full PHP statements, not expressions.
+		 *
+		 * This snippet of code will keep track of whether or not we're in the first
+		 * expression in a short open echo tag.
+		 * $phpcsFile->findStartOfStatement() unfortunately is useless, as it will return
+		 * the first token in the statement, which can be anything - variable, text string -
+		 * without any indication of whether this is the start of a normal statement or
+		 * a short open echo expression.
+		 * So, if we used that, we'd need to walk back from every start of statement to
+		 * the previous non-empty to see if it is the short open echo tag.
+		 */
+		if ( $this->tokens[ $stackPtr ]['code'] === T_OPEN_TAG_WITH_ECHO ) {
+			$end_of_echo = $this->phpcsFile->findNext( [ T_SEMICOLON, T_CLOSE_TAG ], ( $stackPtr + 1 ) );
+			if ( $end_of_echo === false ) {
+				$this->in_short_echo = $this->phpcsFile->numTokens;
+			} else {
+				$this->in_short_echo = $end_of_echo;
+			}
+
+			return;
+		}
+
+		if ( $this->in_short_echo !== false && $this->in_short_echo < $stackPtr ) {
+			$this->in_short_echo = false;
+		}
 
 		$function_name = strtolower( $this->tokens[ $stackPtr ]['content'] );
 
@@ -121,10 +161,14 @@ class ProperEscapingFunctionSniff extends Sniff {
 			return;
 		}
 
-		$ignore             = $this->echo_or_concat_tokens;
-		$start_of_statement = $this->phpcsFile->findStartOfStatement( $stackPtr, T_COMMA );
-		if ( $this->tokens[ $start_of_statement ]['code'] === T_ECHO ) {
+		$ignore = $this->echo_or_concat_tokens;
+		if ( $this->in_short_echo !== false ) {
 			$ignore[ T_COMMA ] = T_COMMA;
+		} else {
+			$start_of_statement = $this->phpcsFile->findStartOfStatement( $stackPtr, T_COMMA );
+			if ( $this->tokens[ $start_of_statement ]['code'] === T_ECHO ) {
+				$ignore[ T_COMMA ] = T_COMMA;
+			}
 		}
 
 		$html = $this->phpcsFile->findPrevious( $ignore, $stackPtr - 1, null, true );

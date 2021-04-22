@@ -95,3 +95,14 @@ echo '<input class="something something-else something-more"
 	action="', esc_url( $my_var ), '">'; // OK.
 echo '<input class="something something-else something-more"
 action="', esc_attr( $my_var ), '">'; // Error.
+
+// Verify correct handling of comma's in short open echo tags, without affecting subsequent statements.
+?>
+<div>html</div>
+<?= '<h1>' , esc_attr( $test ) , '</h1>'; // Error.
+printf( '<meta name="generator" content="%s">', esc_attr( $content ) ); // OK.
+echo '<a href="',  esc_html($url), '">'; // Error.
+?>
+<div>html</div>
+<?= '<h1 class="', esc_attr( $test ), '">'; ?><!-- OK -->
+<div>html</div>
