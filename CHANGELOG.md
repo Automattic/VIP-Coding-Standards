@@ -12,7 +12,7 @@ Props: jrfnl
 - [#668](https://github.com/Automattic/VIP-Coding-Standards/pull/668): ProperEscapingFunction: fix overreach of comma usage in non-echo expressions for notAttrEscAttr.
 - [#670](https://github.com/Automattic/VIP-Coding-Standards/pull/670): ProperEscapingFunction: improve "action" match precision for hrefSrcEscUrl.
 
-## Deprecated
+### Deprecated
 - [#670](https://github.com/Automattic/VIP-Coding-Standards/pull/670): ProperEscapingFunction: private properties `$url_attrs` and `$attr_endings` are deprecated along with the public methods `is_html_attr()` and `attr_expects_url()`.
 
 ## [2.3.0] - 2021-04-19
