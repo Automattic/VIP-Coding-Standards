@@ -106,3 +106,10 @@ echo '<a href="',  esc_html($url), '">'; // Error.
 <div>html</div>
 <?= '<h1 class="', esc_attr( $test ), '">'; ?><!-- OK -->
 <div>html</div>
+
+// Issue #680 - only match = when preceeded by something which could be an HTML attribute.
+<option value="<?php echo esc_attr( $i ); ?>" <?php echo ( $filter_importance === $i ) ? 'selected' : ''; ?> >
+	&gt;=<?php echo esc_html( $i ); ?>
+</option>
+
+<A HREF="<?= esc_url($url) ?>" data-num2=<?= esc_attr( $num2 )><?php echo esc_html( $link ); ?><a/>
