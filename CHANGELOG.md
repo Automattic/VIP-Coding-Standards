@@ -557,7 +557,7 @@ Initial release.
 Props: david-binda, pkevan.
 
 
-[2.3.1]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.1...2.3.2
+[2.3.2]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.1.0...2.2.0
