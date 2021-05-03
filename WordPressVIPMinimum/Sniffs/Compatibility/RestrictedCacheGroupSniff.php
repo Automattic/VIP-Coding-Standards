@@ -8,13 +8,15 @@
 namespace WordPressVIPMinimum\Sniffs\Compatibility;
 
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * This sniff checks if global memcached group names are being used.
+ * Check if cache group name is already in use by wp-memcached plugin to avoid naming collision.
+ * Note: wp-memcached is automatically enabled on WordPress VIP.
  *
  * @package VIPCS\WordPressVIPMinimum
  *
- * @since 2.3.0
+ * @since 2.4.0
  */
 class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 
@@ -26,21 +28,20 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	protected $group_name = 'wp_cache_functions';
 
 	/**
-	 * Functions this sniff is looking for.
+	 * Functions that can assign or modify cache key.
 	 *
-	 * @var array The only requirement for this array is that the top level
-	 *            array keys are the names of the functions you're looking for.
-	 *            Other than that, the array can have arbitrary content
-	 *            depending on your needs.
+	 * @var array <string function name> => <bool (true)>
 	 */
 	protected $target_functions = [
-		'wp_cache_add' => true,
-		'wp_cache_set' => true,
+		'wp_cache_add'     => true,
+		'wp_cache_set'     => true,
+		'wp_cache_replace' => true,
 	];
 
 	/**
 	 * List of cache group names already in use by wp-memcached.
 	 *
+	 * @link https://github.com/Automattic/wp-memcached/blob/master/readme.txt
 	 * @var array
 	 */
 	private $wp_memcached_groups = [
@@ -92,8 +93,42 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( count( $parameters ) > 2 && isset( $this->wp_memcached_groups[ trim( $parameters[3]['raw'], '"\'' ) ] ) ) {
-			$this->phpcsFile->addError( 'Please do not use cache group %s, as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.', $stackPtr, 'Wp_memcached', $parameters[3]['raw'] );
+		if ( ! isset( $parameters[3] ) ) {
+			return; // Bail, less than 3 parameters.
+		}
+
+		$scope_end = $parameters[3]['end'] + 1;
+
+		$group = $this->phpcsFile->findNext(
+			Tokens::$textStringTokens,
+			$parameters[3]['start'],
+			$scope_end
+		);
+
+		if ( $group === false ) {
+			return;
+		}
+
+		$is_concat = $this->phpcsFile->findNext(
+			Tokens::$emptyTokens,
+			$group + 1,
+			$scope_end,
+			true
+		);
+
+		if ( $this->tokens[ $is_concat ]['code'] === T_STRING_CONCAT ) {
+			return; // Bail, indeterminable.
+		}
+
+		$content = $this->strip_quotes( trim( $this->tokens[ $group ]['content'] ) );
+
+		if ( isset( $this->wp_memcached_groups[ $content ] ) ) {
+			$this->phpcsFile->addError(
+				'Please do not use cache group named "%s", as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.',
+				$stackPtr,
+				'MemcachedGroupNameFound',
+				[ $content ]
+			);
 		}
 	}
 }
