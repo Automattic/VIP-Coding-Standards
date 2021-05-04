@@ -614,6 +614,9 @@ class MyClass {
 >>>>>>> // Error.
 <?php
 
+// WordPressVIPMinimum.Compatibility.RestrictedCacheGroup.MemcachedGroupNameFound
+wp_cache_set( 'key', [ 1, 2, 3 ],        'post_meta' ); // Error.
+
 // Squiz.WhiteSpace.SuperfluousWhitespace
 // Error. ?>
 
