@@ -252,8 +252,7 @@
 		<severity>0</severity>
 	</rule>
 
-	<!-- Do not report on undefined variables before require nor
-	     in file scope. See discussion here: https://github.com/Automattic/vip-go-ci/issues/120 --> 
+	<!-- Do not report on undefined variables before require nor in file scope. -->
 	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
 		<properties>
 			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
