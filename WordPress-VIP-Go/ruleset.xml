@@ -251,6 +251,16 @@
 	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
 		<severity>0</severity>
 	</rule>
+
+	<!-- Do not report on undefined variables before require nor
+	     in file scope. See discussion here: https://github.com/Automattic/vip-go-ci/issues/120 --> 
+	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
+		<properties>
+			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
+			<property name="allowUndefinedVariablesInFileScope" value="true"/>
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">
 		<!-- We are silencing this one because VIP Go has a combined index on meta_key, meta_value-->
 		<severity>0</severity>
