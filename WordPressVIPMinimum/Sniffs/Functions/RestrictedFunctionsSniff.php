@@ -74,13 +74,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'attachment_url_to_postid',
 				],
 			],
-			'dbDelta' => [
-				'type'      => 'error',
-				'message'   => 'All database modifications have to approved by the WordPress.com VIP team.',
-				'functions' => [
-					'dbDelta',
-				],
-			],
 			// @link https://docs.wpvip.com/technical-references/code-review/vip-notices/#h-switch_to_blog
 			'switch_to_blog' => [
 				'type'      => 'warning',
