@@ -49,8 +49,8 @@ flush_rules(); // Ok - not in global class.
 $wp_write->flush_rules(); // Ok - not in global class $wp_rewrite.
 $wp_rewrite->flush_rules(); // Error.
 
-db_delta(); // Ok - similarly-named function to dbDelta().
-dbDelta(); // Error.
+
+
 
 switch_blog(); // Ok - similarly-named function to switch_to_blog().
 switch_to_blog( $blogid ); // Warning.
