@@ -132,10 +132,6 @@
 	<rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions">
 		<severity>10</severity>
 	</rule>
-	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.dbDelta_dbdelta">
-		<type>warning</type>
-		<severity>7</severity>
-	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail">
 		<severity>7</severity>
 	</rule>
