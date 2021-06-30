@@ -253,10 +253,10 @@ $test = @in_array( $array, $needle, true ); // Error.
 
 // WordPressVIPMinimum.Security.ProperEscapingFunction.htmlAttrNotByEscHTML
 echo '<a href="' . esc_attr( $some_var ) . '"></a>'; // Error.
-echo '<a title="' . esc_html( $some_var ) . '"></a>'; // Error.
+echo '<a title="' . esc_html( $some_var ) . '"></a>'; // Warning.
 echo '<a href="' . esc_url( $some_var ) . '"></a>'; // OK.
 ?><a href="<?php echo esc_attr( $some_var ); ?>">Hello</a> <!-- Error. -->
-<a href="" class="<?php echo esc_html( $some_var); ?>">Hey</a> <!-- Error. -->
+<a href="" class="<?php echo esc_html( $some_var); ?>">Hey</a> <!-- Warning. -->
 <a href="<?php esc_url( $url );?>"></a> <!-- Ok. -->
 <a title="<?php esc_attr( $url );?>"></a> <?php // Ok.
 

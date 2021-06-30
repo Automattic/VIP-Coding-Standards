@@ -548,7 +548,7 @@ echo '<a href="{{href}}">{{{data}}}</div></a>'; // Warning.
 
 // WordPressVIPMinimum.Security.ProperEscapingFunction
 echo '<a href="' . esc_attr( $some_var ) . '"></a>'; // Error.
-echo '<a title="' . esc_html( $some_var ) . '"></a>'; // Error.
+echo '<a title="' . esc_html( $some_var ) . '"></a>'; // Warning.
 
 // WordPressVIPMinimum.Security.StaticStrreplace
 str_replace( 'foo', array( 'bar', 'foo' ), 'foobar' ); // Error.
