@@ -13,6 +13,9 @@
 	<arg name="extensions" value="php"/>
 	<arg name="parallel" value="50"/>
 
+	<!-- Cache the results between runs. -->
+	<arg name="cache" value="./phpcs.cache"/>
+
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.Files.FileName"/>
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
