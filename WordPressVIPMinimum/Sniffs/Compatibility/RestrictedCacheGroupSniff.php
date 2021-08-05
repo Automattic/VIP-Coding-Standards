@@ -141,7 +141,7 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( isset( $this->wp_memcached_groups[ $content ] ) ) {
-			$msg = 'Please do not use cache group named "%s", as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.';
+			$msg = 'Please do not use cache group name "%s", as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.';
 
 			$this->phpcsFile->addError(
 				$msg,
