@@ -31,12 +31,13 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions that can assign or modify cache key.
 	 *
-	 * @var array <string function name> => <bool (true)>
+	 * @var array <string function name> => <int target parameter position>
 	 */
 	protected $target_functions = [
-		'wp_cache_add'     => true,
-		'wp_cache_set'     => true,
-		'wp_cache_replace' => true,
+		'wp_cache_add'     => 3,
+		'wp_cache_set'     => 3,
+		'wp_cache_replace' => 3,
+		'wp_cache_delete'  => 2,
 	];
 
 	/**
@@ -102,8 +103,9 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( ! isset( $parameters[3] ) ) {
-			return; // Bail, less than 3 parameters.
+		$position = $this->target_functions[ $matched_content ];
+		if ( ! isset( $parameters[ $position ] ) ) {
+			return; // Bail, less than required parameters.
 		}
 
 		if ( $this->safe_tokens === [] ) {
@@ -111,8 +113,8 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 			unset( $this->safe_tokens[ T_DOUBLE_QUOTED_STRING ], $this->safe_tokens[ T_INLINE_HTML ] );
 		}
 
-		$scope_start = $parameters[3]['start'];
-		$scope_end   = $parameters[3]['end'] + 1;
+		$scope_start = $parameters[ $position ]['start'];
+		$scope_end   = $parameters[ $position ]['end'] + 1;
 
 		$nonTextStringToken = $this->phpcsFile->findNext(
 			$this->safe_tokens,
