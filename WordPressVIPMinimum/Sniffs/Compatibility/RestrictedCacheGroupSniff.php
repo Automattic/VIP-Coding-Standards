@@ -11,7 +11,7 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Check if cache group name is already in use by wp-memcached plugin to avoid naming collision.
+ * Check if cache group is persisted by wp-memcached to avoid cache value corruption.
  *
  * Note: wp-memcached is automatically enabled on WordPress VIP.
  *
@@ -47,7 +47,7 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 	private $safe_tokens = [];
 
 	/**
-	 * List of cache group names already in use by wp-memcached.
+	 * List of global cache groups persisted by wp-memcached.
 	 *
 	 * @link https://github.com/Automattic/wp-memcached/blob/master/readme.txt
 	 *
@@ -141,8 +141,7 @@ class RestrictedCacheGroupSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( isset( $this->wp_memcached_groups[ $content ] ) ) {
-			$msg = 'Please do not use cache group name "%s", as it is already in use by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.';
-
+			$msg = 'Please do not use or override the global cache group name "%s", as it is being persisted by wp-memcached: https://docs.wpvip.com/technical-references/caching/object-cache/.';
 			$this->phpcsFile->addError(
 				$msg,
 				$textString,

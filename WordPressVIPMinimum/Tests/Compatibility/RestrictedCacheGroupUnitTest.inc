@@ -1,6 +1,6 @@
 <?php
 
-$data = [ 'foo', 'bar' ];
+
 
 // Error
 wp_cache_set( 'cache_key', $data, 'users', 10 * MINUTE_IN_SECONDS );
