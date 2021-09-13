@@ -38,6 +38,8 @@ EOD
 
 \wp_cache_set( 'cache_key', $data, "userlogins" );
 
+wp_cache_delete( $key, 'plugins' );
+
 // OK
 $key = 'cache_key';
 wp_cache_set( $key, $data, 'users_stuff' );
@@ -52,3 +54,4 @@ namespace\wp_cache_set( 'cache_key', $data, "userlogins" ); // Not native WP fun
 MyNamespace\wp_cache_set( 'cache_key', $data, "userlogins" );
 $myOwnObj->wp_cache_set( 'cache_key', $data, "userlogins" );
 ClassName::wp_cache_set( 'cache_key', $data, "userlogins" );
+wp_cache_delete( 'plugins' ); // Not second parameter.

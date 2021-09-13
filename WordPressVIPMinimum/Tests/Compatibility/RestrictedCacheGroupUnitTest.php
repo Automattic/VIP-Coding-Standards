@@ -37,6 +37,7 @@ class RestrictedCacheGroupUnitTest extends AbstractSniffUnitTest {
 			30 => 1,
 			35 => 1,
 			39 => 1,
+			41 => 1,
 		];
 	}
 
