@@ -229,6 +229,10 @@
 	<rule ref="Generic.PHP.NoSilencedErrors">
 		<severity>1</severity>
 	</rule>
+	<rule ref="WordPressVIPMinimum.Security.ProperEscapingFunction.htmlAttrNotByEscHTML">
+		<!-- This is still safe, just sub-optimal-->
+		<severity>3</severity>
+	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.is_multi_author_is_multi_author">
 		<severity>1</severity>
 	</rule>

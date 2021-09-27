@@ -205,8 +205,8 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		if ( $escaping_type === 'html' ) {
 			$message = 'Wrong escaping function. HTML attributes should be escaped by `esc_attr()`, not by `%s()`.';
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
-			return; // Warning level because sub-optimal due to different filters, but still OK.
+			$this->phpcsFile->addError( $message, $stackPtr, 'htmlAttrNotByEscHTML', $data );
+			return;
 		}
 	}
 
