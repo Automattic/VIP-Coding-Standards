@@ -12,15 +12,15 @@ echo '<a title="' . esc_attr( $some_var ) . '"></a>'; // OK.
 
 echo "<a title='" . \esc_attr( $some_var ) . "'></a>"; // OK.
 
-echo '<a title="' . esc_html_x( $some_var ) . '"></a>'; // Warning.
+echo '<a title="' . esc_html_x( $some_var ) . '"></a>'; // Error.
 
-echo "<a title='" . \esc_html( $some_var ) . "'></a>"; // Warning.
+echo "<a title='" . \esc_html( $some_var ) . "'></a>"; // Error.
 
 ?>
 
 <a href="<?php echo esc_attr( $some_var ); ?>">Hello</a> <!-- Error. -->
 
-<a href="" class="<?php esc_html_e( $some_var); ?>">Hey</a> <!-- Warning. -->
+<a href="" class="<?php esc_html_e( $some_var); ?>">Hey</a> <!-- Error. -->
 
 <a href="<?php esc_url( $url );?>"></a> <!-- OK. -->
 
@@ -71,9 +71,9 @@ echo "<$tag>  " , esc_attr( $test ) , "</$tag>"; // Error.
 <?php echo "<div>" . $test . "</div>"; // OK.
 echo "<{$tag}>" . esc_attr( $tag_content ) . "</{$tag}>"; // Error.
 echo "<$tag" . '   >' . esc_attr( $tag_content ) . "</$tag>"; // Error.
-echo '<div class=\'' . esc_html($class) . '\'>'; // Warning.
-echo "<div class=\"" . \esc_html__($class) . '">'; // Warning.
-echo "<div $someAttribute class=\"" . esc_html($class) . '">'; // Warning.
+echo '<div class=\'' . esc_html($class) . '\'>'; // Error.
+echo "<div class=\"" . \esc_html__($class) . '">'; // Error.
+echo "<div $someAttribute class=\"" . esc_html($class) . '">'; // Error.
 echo '<a href=\'' . esc_html($url) . '\'>'; // Error.
 echo "<img src=\"" . esc_html($src) . '"/>'; // Error.
 echo "<div $someAttributeName-url=\"" . esc_html($url) . '">'; // Error.
