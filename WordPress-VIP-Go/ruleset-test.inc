@@ -111,8 +111,8 @@ filter_var_array( $array, FILTER_SANITIZE_STRING ); // Ok.
 filter_input_array( $array,FILTER_SANITIZE_STRING      ); // Ok.
 filter_input( INPUT_GET, 'foo', FILTER_DEFAULT ); // Warning.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.dbDelta_dbdelta
-dbDelta( $query, true ); // Warning.
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 wp_mail(); // Warning.
