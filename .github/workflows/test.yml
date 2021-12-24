@@ -44,7 +44,7 @@ jobs:
           tools: cs2pr
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: Lint against parse errors
         run: ./bin/php-lint --checkstyle | cs2pr
@@ -132,20 +132,20 @@ jobs:
 
       - name: 'Composer: set PHPCS and WPCS versions for tests'
         run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}"
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
       # requirements to get PHPUnit 7.x to install on nightly.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php, '8' ) }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
 
