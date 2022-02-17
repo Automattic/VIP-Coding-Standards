@@ -38,7 +38,7 @@ This will install the latest compatible versions of PHPCS, WPCS and VariableAnal
 
 Please refer to the [installation instructions for installing PHP_CodeSniffer for WordPress.com VIP](https://docs.wpvip.com/how-tos/code-review/php_codesniffer/) for more details.
 
-As of VIPCS version 2.3.0, there is no need to `require` the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer) anymore as it is now a requirement of VIPCS itself. Permission to run the plugin will still need to be granted though when using Composer 2.2 or higher.
+As of VIPCS version 2.3.0, there is no need to `require` the [PHP_CodeSniffer Standards Composer Installer Plugin](https://github.com/PHPCSStandards/composer-installer) anymore as it is now a requirement of VIPCS itself. Permission to run the plugin will still need to be granted though when using Composer 2.2 or higher.
 
 ## Contribution
 
