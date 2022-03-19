@@ -33,7 +33,9 @@ jobs:
           tools: cs2pr
 
       - name: Install xmllint
-        run: sudo apt-get install --no-install-recommends -y libxml2-utils
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libxml2-utils
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
