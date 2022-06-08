@@ -27,7 +27,7 @@
 		"php-parallel-lint/php-parallel-lint": "^1.4.0",
 		"php-parallel-lint/php-console-highlighter": "^1.0.0",
 		"phpcompatibility/php-compatibility": "^9",
-		"phpcsstandards/phpcsdevtools": "^1.2.3",
+		"phpcsstandards/phpcsdevtools": "^2.0",
 		"phpunit/phpunit": "^4 || ^5 || ^6 || ^7 || ^8 || ^9"
 	},
 	"config": {
@@ -45,7 +45,7 @@
 		"test": "bin/unit-tests",
 		"test-coverage": "bin/unit-tests-coverage",
 		"feature-completeness": [
-			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
+			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness --no-docs ./WordPressVIPMinimum"
 		],
 		"check": [
 			"@lint",
