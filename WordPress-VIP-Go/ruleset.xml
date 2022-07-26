@@ -188,7 +188,7 @@
 	<rule ref="WordPress.PHP.DontExtract">
 		<severity>3</severity>
 	</rule>
-	<rule ref="WordPress.PHP.StrictComparisons.LooseComparison">
+	<rule ref="Universal.Operators.StrictComparisons">
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPress.PHP.StrictInArray.MissingTrueStrict">

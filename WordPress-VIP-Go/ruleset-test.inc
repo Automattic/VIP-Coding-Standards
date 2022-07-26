@@ -165,7 +165,7 @@ rawurlencode(); // Ok.
 extract( array( 'a' => 1 ) ); // Error.
 $obj->extract(); // Ok.
 
-// WordPress.PHP.StrictComparisons.LooseComparison
+// Universal.Operators.StrictComparisons
 true == $true; // Warning.
 false === $true; // Ok.
 

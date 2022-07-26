@@ -72,7 +72,7 @@ new WP_Query( array(
 // WordPress.WP.GlobalVariablesOverride
 $GLOBALS['wpdb'] = 'test'; // Error.
 
-// WordPress.PHP.StrictComparisons
+// Universal.Operators.StrictComparisons
 if ( true == $true ) { // Warning.
 }
 

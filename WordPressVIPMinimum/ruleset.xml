@@ -36,7 +36,9 @@
 	<rule ref="WordPress.DB.DirectDatabaseQuery"/>
 	<rule ref="WordPress.DB.SlowDBQuery"/>
 	<rule ref="WordPress.WP.GlobalVariablesOverride"/>
-	<rule ref="WordPress.PHP.StrictComparisons"/>
+	<rule ref="Universal.Operators.StrictComparisons" phpcs-only="true">
+		<type>warning</type>
+	</rule>
 	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition"/>
 	<rule ref="WordPress.PHP.StrictInArray"/>
 	<rule ref="WordPress.PHP.DontExtract"/>
