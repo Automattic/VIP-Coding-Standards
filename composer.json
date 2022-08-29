@@ -4,6 +4,7 @@
 	"description": "PHP_CodeSniffer rules (sniffs) to enforce WordPress VIP minimum coding conventions",
 	"keywords": [
 		"phpcs",
+		"static analysis",
 		"standards",
 		"WordPress"
 	],
