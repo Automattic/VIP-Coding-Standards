@@ -39,7 +39,7 @@ jobs:
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - uses: korelstar/xmllint-problem-matcher@v1
+      - uses: korelstar/xmllint-problem-matcher@v1.1
 
       # Validate the composer.json file.
       # @link https://getcomposer.org/doc/03-cli.md#validate
