@@ -54,11 +54,11 @@ jobs:
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED'
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
           elif [[ "${{ matrix.php }}" == "latest" ]]; then
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED'
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=PHP_INI::error_reporting=-1'
+            echo 'PHP_INI=error_reporting=-1' >> $GITHUB_OUTPUT
           fi
 
       - name: Install PHP
