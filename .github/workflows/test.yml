@@ -45,6 +45,9 @@ jobs:
 
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: Lint against parse errors
         run: ./bin/php-lint --checkstyle | cs2pr
@@ -140,6 +143,9 @@ jobs:
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false }}
         uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
       # requirements to get PHPUnit 7.x to install on nightly.
@@ -148,6 +154,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: Run the unit tests - PHP 5.4 - 8.0
         if: matrix.php < '8.1'
