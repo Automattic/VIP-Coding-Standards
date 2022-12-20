@@ -9,7 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
+use PHPCSUtils\Utils\MessageHelper;
 
 /**
  * Restricts usage of some variables.
