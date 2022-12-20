@@ -19,7 +19,7 @@
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.Files.FileName"/>
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 		<exclude name="WordPress.PHP.YodaConditions"/>
 	</rule>
 
