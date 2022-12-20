@@ -98,6 +98,9 @@ class RulesetTest {
 			$this->phpcs_bin = realpath( $phpcs_bin );
 		}
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		printf( 'Testing ' . $this->ruleset . ' ruleset.' . PHP_EOL );
+
 		$output = $this->collect_phpcs_result();
 
 		if ( ! is_object( $output ) || empty( $output ) ) {
@@ -148,6 +151,7 @@ class RulesetTest {
 			$this->phpcs_bin,
 			$this->ruleset
 		);
+
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec -- This is test code, not production.
 		$output = shell_exec( $shell );
 
