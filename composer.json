@@ -35,25 +35,27 @@
 		}
 	},
 	"scripts": {
-		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-		"ruleset": "bin/ruleset-tests",
+		"check-all": [
+			"@lint",
+			"@check-cs",
+			"@run-tests",
+			"@check-complete-strict",
+			"@ruleset"
+		],
+		"check-complete": [
+			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
+		],
+		"check-complete-strict": [
+			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./WordPressVIPMinimum"
+		],
+		"check-cs": "bin/phpcs",
 		"lint": [
 			"bin/php-lint",
 			"bin/xml-lint"
 		],
-		"phpcs": "bin/phpcs",
-		"phpunit": "bin/unit-tests",
-		"coverage": "bin/unit-tests-coverage",
-		"check-complete": [
-			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
-		],
-		"test": [
-			"@lint",
-			"@ruleset",
-			"@phpunit",
-			"@phpcs",
-			"@check-complete"
-		]
+		"ruleset": "bin/ruleset-tests",
+		"run-tests": "bin/unit-tests",
+		"run-tests-coverage": "bin/unit-tests-coverage"
 	},
 	"support": {
 		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
