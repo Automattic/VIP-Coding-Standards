@@ -200,11 +200,13 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 				continue;
 			}
 
-			$this->addMessage(
+			$code = MessageHelper::stringToErrorcode( $groupName . '_' . $match[1] );
+			MessageHelper::addMessage(
+				$this->phpcsFile,
 				$group['message'],
 				$stackPtr,
 				$group['type'] === 'error',
-				$this->string_to_errorcode( $groupName . '_' . $match[1] ),
+				$code,
 				[ $var ]
 			);
 
