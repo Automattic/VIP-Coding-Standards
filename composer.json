@@ -57,6 +57,14 @@
 		"run-tests": "bin/unit-tests",
 		"run-tests-coverage": "bin/unit-tests-coverage"
 	},
+	"scripts-descriptions": {
+		"check-all": "Run all checks (lint, phpcs, feature completeness) and tests.",
+		"check-complete": "Check if all the sniffs have tests.",
+		"check-complete-strict": "Check if all the sniffs have unit tests and XML documentation.",
+		"check-cs": "Run the PHPCS script against the entire codebase.",
+		"lint": "Lint PHP files against parse errors.",
+		"run-tests": "Run all the unit tests for the VIP Coding Standards sniffs."
+	},
 	"support": {
 		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
 		"wiki": "https://github.com/Automattic/VIP-Coding-Standards/wiki",
