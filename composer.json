@@ -47,7 +47,8 @@
 			"@lint",
 			"@check-cs",
 			"@run-tests",
-			"@check-complete-strict"
+			"@run-ruleset-tests",
+			"@check-complete"
 		],
 		"check-complete": [
 			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
@@ -60,7 +61,7 @@
 			"bin/php-lint",
 			"bin/xml-lint"
 		],
-		"ruleset": "bin/ruleset-tests",
+		"run-ruleset-tests": "bin/ruleset-tests",
 		"run-tests": "bin/unit-tests",
 		"run-tests-coverage": "bin/unit-tests-coverage"
 	},
