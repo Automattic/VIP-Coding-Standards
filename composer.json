@@ -47,8 +47,7 @@
 			"@lint",
 			"@check-cs",
 			"@run-tests",
-			"@check-complete-strict",
-			"@ruleset"
+			"@check-complete-strict"
 		],
 		"check-complete": [
 			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
