@@ -8,8 +8,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\PassedParameters;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Sniff for properly using constant name when checking whether a constant is defined.
@@ -55,7 +56,7 @@ class ConstantStringSniff extends Sniff {
 			return;
 		}
 
-		$param = $this->get_function_call_parameter( $stackPtr, 1 );
+		$param = PassedParameters::getParameter( $this->phpcsFile, $stackPtr, 1, 'constant_name' );
 		if ( $param === false ) {
 			// Target parameter not found.
 			return;
