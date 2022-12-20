@@ -28,14 +28,14 @@ jobs:
         include:
           - php: '5.4'
             phpcs_version: 'dev-master'
-            wpcs_version: '2.3.*'
+            wpcs_version: 'dev-develop'
           - php: '5.4'
             phpcs_version: '3.7.1'
-            wpcs_version: '2.3.*'
+            wpcs_version: 'dev-develop'
 
           - php: 'latest'
             phpcs_version: 'dev-master'
-            wpcs_version: '2.3.*'
+            wpcs_version: 'dev-develop'
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
@@ -50,24 +50,23 @@ jobs:
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
-          elif [[ "${{ matrix.php }}" == "latest" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
-            echo 'PHP_INI=error_reporting=-1' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
           fi
 
-      - name: Install PHP
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: set PHPCS and WPCS versions for tests'
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-interaction
+      - name: 'Composer: set PHPCS version for tests'
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
+
+      - name: 'Composer: set WPCS version for tests'
+        run: composer require wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
