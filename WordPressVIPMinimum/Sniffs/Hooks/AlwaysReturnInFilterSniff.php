@@ -7,8 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Arrays;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * This sniff validates that filters always return a value
@@ -94,7 +95,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processArray( $stackPtr ) {
 
-		$open_close = $this->find_array_open_close( $stackPtr );
+		$open_close = Arrays::getOpenClose( $this->phpcsFile, $stackPtr );
 		if ( $open_close === false ) {
 			return;
 		}
