@@ -99,7 +99,7 @@ class RulesetTest {
 		}
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf( 'Testing ' . $this->ruleset . ' ruleset.' . PHP_EOL );
+		printf( 'Testing the ' . $this->ruleset . ' ruleset.' . PHP_EOL );
 
 		$output = $this->collect_phpcs_result();
 
@@ -147,7 +147,7 @@ class RulesetTest {
 
 		$shell = sprintf(
 			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
-			$php, // Current PHP executable if avaiable.
+			$php, // Current PHP executable if available.
 			$this->phpcs_bin,
 			$this->ruleset
 		);
