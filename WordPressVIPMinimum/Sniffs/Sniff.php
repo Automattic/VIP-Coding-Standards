@@ -39,8 +39,8 @@ abstract class Sniff extends \WordPressCS\WordPress\Sniff {
 	 *                      Defaults to true.
 	 * @return array
 	 */
-	protected static function merge_custom_array( $custom, $base = array(), $flip = true ) {
-		if ( true === $flip ) {
+	public static function merge_custom_array( $custom, $base = [], $flip = true ) {
+		if ( $flip === true ) {
 			$base = array_filter( $base );
 		}
 
@@ -48,7 +48,7 @@ abstract class Sniff extends \WordPressCS\WordPress\Sniff {
 			return $base;
 		}
 
-		if ( true === $flip ) {
+		if ( $flip === true ) {
 			$custom = array_fill_keys( $custom, false );
 		}
 
