@@ -72,7 +72,7 @@ new WP_Query( array(
 // WordPress.WP.GlobalVariablesOverride
 $GLOBALS['wpdb'] = 'test'; // Error.
 
-// WordPress.PHP.StrictComparisons
+// Universal.Operators.StrictComparisons
 if ( true == $true ) { // Warning.
 }
 
@@ -555,7 +555,7 @@ str_replace( 'foo', array( 'bar', 'foo' ), 'foobar' ); // Error.
 
 // WordPressVIPMinimum.Security.Underscorejs
 echo "<script>
- _.templateSettings = { 
+ _.templateSettings = {
 	interpolate: /\{\{(.+?)\}\}/g" . // Warning.
 "};
  </script>";

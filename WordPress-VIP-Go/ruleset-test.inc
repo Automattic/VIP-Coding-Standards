@@ -165,7 +165,7 @@ rawurlencode(); // Ok.
 extract( array( 'a' => 1 ) ); // Error.
 $obj->extract(); // Ok.
 
-// WordPress.PHP.StrictComparisons.LooseComparison
+// Universal.Operators.StrictComparisons.LooseComparison
 true == $true; // Warning.
 false === $true; // Ok.
 
@@ -546,7 +546,7 @@ str_replace( 'foo', array( 'bar', 'foo' ), 'foobar' ); // Error.
 
 // WordPressVIPMinimum.Security.Underscorejs
 echo "<script>
- _.templateSettings = { 
+ _.templateSettings = {
 	interpolate: /\{\{(.+?)\}\}/g" . // Warning.
 "};
  </script>";
