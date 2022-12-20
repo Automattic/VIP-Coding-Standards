@@ -9,6 +9,7 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -72,7 +73,7 @@ class UnderscorejsSniff extends Sniff {
 		/*
 		 * Ignore Gruntfile.js files as they are configuration, not code.
 		 */
-		$file_name = $this->strip_quotes( $this->phpcsFile->getFileName() );
+		$file_name = TextStrings::stripQuotes( $this->phpcsFile->getFileName() );
 		$file_name = strtolower( basename( $file_name ) );
 
 		if ( $file_name === 'gruntfile.js' ) {
@@ -120,7 +121,7 @@ class UnderscorejsSniff extends Sniff {
 			return;
 		}
 
-		$content = $this->strip_quotes( $this->tokens[ $stackPtr ]['content'] );
+		$content = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 
 		$match_count = preg_match_all( self::UNESCAPED_INTERPOLATE_REGEX, $content, $matches );
 		if ( $match_count > 0 ) {

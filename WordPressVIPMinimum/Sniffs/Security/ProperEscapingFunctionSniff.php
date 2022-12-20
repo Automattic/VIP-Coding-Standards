@@ -8,8 +8,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Checks whether proper escaping function is used.
@@ -182,7 +183,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$content = $this->tokens[ $html ]['content'];
 		if ( isset( Tokens::$stringTokens[ $this->tokens[ $html ]['code'] ] ) === true ) {
-			$content = Sniff::strip_quotes( $content );
+			$content = TextStrings::stripQuotes( $content );
 		}
 
 		$escaping_type = $this->escaping_functions[ $function_name ];
