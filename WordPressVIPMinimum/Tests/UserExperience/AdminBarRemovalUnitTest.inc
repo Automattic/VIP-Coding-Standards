@@ -105,4 +105,5 @@ EOT;
 		opacity: 1; /* Bad. */
 	}
 </style>
+<?php
 /* phpcs:set WordPressVIPMinimum.UserExperience.AdminBarRemoval remove_only true */
