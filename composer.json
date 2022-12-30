@@ -68,7 +68,7 @@
 		"check-all": "Run all checks (lint, phpcs, feature completeness) and tests.",
 		"check-complete": "Check if all the sniffs have unit tests.",
 		"check-complete-strict": "Check if all the sniffs have unit tests and XML documentation.",
-		"check-cs": "Run the PHPCS script against the entire codebase.",
+		"check-cs": "Check the code style and code quality of the codebase via PHPCS.",
 		"lint": "Lint PHP files against parse errors.",
 		"run-tests": "Run all the unit tests for the VIP Coding Standards sniffs."
 	}
