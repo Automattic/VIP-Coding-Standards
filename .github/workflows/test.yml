@@ -156,13 +156,8 @@ jobs:
           composer-options: --ignore-platform-reqs
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-      - name: Run the unit tests - PHP 5.4 - 8.0
-        if: matrix.php < '8.1'
+      - name: Run the unit tests
         run: ./bin/unit-tests
-
-      - name: Run the unit tests - PHP > 8.1
-        if: matrix.php >= '8.1'
-        run: vendor/bin/phpunit --filter WordPressVIPMinimum ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --no-coverage --no-configuration --bootstrap=./tests/bootstrap.php --dont-report-useless-tests
 
       - name: Run the ruleset tests
         run: ./bin/ruleset-tests

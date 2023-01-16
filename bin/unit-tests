@@ -16,4 +16,8 @@
 #   ./bin/unit-tests --filter SniffName
 #
 
-"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php" --no-coverage $@
+if [[ $(php -r 'echo PHP_VERSION_ID;') -ge 80100 ]]; then
+	"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php" --no-coverage --no-configuration --bootstrap=./tests/bootstrap.php --dont-report-useless-tests $@
+else
+	"$(pwd)/vendor/bin/phpunit" --filter WordPressVIPMinimum "$(pwd)/vendor/squizlabs/php_codesniffer/tests/AllTests.php" --no-coverage $@
+fi
