@@ -96,7 +96,6 @@ jobs:
         run: ./bin/php-lint
 
       - name: Run the unit tests
-        if: matrix.php != 'latest'
         run: ./bin/unit-tests
 
       - name: Run the ruleset tests

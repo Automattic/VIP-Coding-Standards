@@ -157,7 +157,6 @@ jobs:
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: Run the unit tests
-        if: matrix.php < '8.1'
         run: ./bin/unit-tests
 
       - name: Run the ruleset tests
