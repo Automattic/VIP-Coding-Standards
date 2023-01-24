@@ -40,7 +40,7 @@
 			"bin/php-lint",
 			"bin/xml-lint"
 		],
-		"cs": "bin/phpcs",
+		"cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
 		"test": "bin/unit-tests",
 		"test-coverage": "bin/unit-tests-coverage",
 		"feature-completeness": [
