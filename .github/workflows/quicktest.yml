@@ -30,15 +30,14 @@ jobs:
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
           - php: '5.4'
-            phpcs_version: '3.5.5'
+            phpcs_version: '3.7.1'
             wpcs_version: '2.3.*'
 
           - php: 'latest'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
           - php: 'latest'
-            # PHPCS 3.6.1 is the lowest version of PHPCS which supports PHP 8.1.
-            phpcs_version: '3.6.1'
+            phpcs_version: '3.7.1'
             wpcs_version: '2.3.*'
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
