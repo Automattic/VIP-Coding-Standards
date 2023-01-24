@@ -36,23 +36,23 @@
 	},
 	"scripts": {
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-		"ruleset": "bin/ruleset-tests",
+		"test-ruleset": "bin/ruleset-tests",
 		"lint": [
 			"bin/php-lint",
 			"bin/xml-lint"
 		],
-		"phpcs": "bin/phpcs",
-		"phpunit": "bin/unit-tests",
-		"coverage": "bin/unit-tests-coverage",
-		"check-complete": [
+		"cs": "bin/phpcs",
+		"test": "bin/unit-tests",
+		"test-coverage": "bin/unit-tests-coverage",
+		"feature-completeness": [
 			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
 		],
-		"test": [
+		"check": [
 			"@lint",
-			"@ruleset",
-			"@phpunit",
-			"@phpcs",
-			"@check-complete"
+			"@tests-ruleset",
+			"@tests",
+			"@cs",
+			"@feature-completeness"
 		]
 	},
 	"support": {

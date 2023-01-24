@@ -34,11 +34,11 @@ This package contains Composer scripts to quickly run the developer checks which
 
 After `composer install`, you can do:
 
- - `composer test`: **Run all checks and tests** - this should pass cleanly before you submit a pull request.
+ - `composer check`: **Run all checks and tests** - this should pass cleanly before you submit a pull request.
      - `composer lint`: Just run PHP and XML linters.
-     - `composer phpcs`: Just run PHPCS against this package.
-     - `composer phpunit`: Just run the unit tests.
-     - `composer ruleset`: Just run the ruleset tests.
+     - `composer cs`: Just run PHPCS against this package.
+     - `composer test`: Just run the unit tests.
+     - `composer test-ruleset`: Just run the ruleset tests.
 
 ## Branches
 
@@ -190,7 +190,7 @@ The ruleset tests, previously named here as _integration tests_, are our way of 
 
 An example where it might not would be when a ruleset references a local sniff or a sniff from upstream (WPCS or PHPCS), but that the violation code, sniff name or category name has changed. Without a ruleset test, this would go unnoticed.
 
-The `composer test` or `composer ruleset` commands run the `ruleset-test.php` files (one for each standard), which internally run `phpcs` against the "dirty" test files (`ruleset-test.inc`), and looks out for a known number of errors, warnings, and messages on each line. This is then compared against the expected errors, warnings and messages to see if there are any missing or unexpected violations or difference in messages.
+The `composer check` or `composer test-ruleset` commands run the `ruleset-test.php` files (one for each standard), which internally run `phpcs` against the "dirty" test files (`ruleset-test.inc`), and looks out for a known number of errors, warnings, and messages on each line. This is then compared against the expected errors, warnings and messages to see if there are any missing or unexpected violations or difference in messages.
 
 When adding or changing a sniff, the ruleset test files should be updated to match.
 
