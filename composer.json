@@ -55,6 +55,15 @@
 			"@feature-completeness"
 		]
 	},
+	"scripts-descriptions": {
+		"lint": "VIPCS: Lint PHP and XML files in against parse errors.",
+		"cs": "VIPCS: Check the code style and code quality of the codebase via PHPCS.",
+		"test": "VIPCS: Run the unit tests for the VIPCS sniffs.",
+		"test-coverage": "VIPCS: Run the unit tests for the VIPCS sniffs with coverage enabled.",
+		"test-ruleset": "VIPCS: Run the ruleset tests for the VIPCS sniffs.",
+		"feature-completeness": "VIPCS: Check if all the VIPCS sniffs have tests.",
+		"check": "VIPCS: Run all checks (lint, CS, feature completeness) and tests."
+	},
 	"support": {
 		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
 		"wiki": "https://github.com/Automattic/VIP-Coding-Standards/wiki",

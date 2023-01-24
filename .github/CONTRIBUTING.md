@@ -34,11 +34,13 @@ This package contains Composer scripts to quickly run the developer checks which
 
 After `composer install`, you can do:
 
- - `composer check`: **Run all checks and tests** - this should pass cleanly before you submit a pull request.
-     - `composer lint`: Just run PHP and XML linters.
-     - `composer cs`: Just run PHPCS against this package.
-     - `composer test`: Just run the unit tests.
-     - `composer test-ruleset`: Just run the ruleset tests.
+- `composer lint`: Lint PHP and XML files in against parse errors.
+- `composer cs`: Check the code style and code quality of the codebase via PHPCS.
+- `composer test`: Run the unit tests for the VIPCS sniffs.
+- `composer test-coverage`: Run the unit tests for the VIPCS sniffs with coverage enabled.
+- `composer test-ruleset`: Run the ruleset tests for the VIPCS sniffs.
+- `composer feature-completeness`: Check if all the VIPCS sniffs have tests.
+- `composer check`: Run all checks (lint, CS, feature completeness) and tests - this should pass cleanly before you submit a pull request.
 
 ## Branches
 
