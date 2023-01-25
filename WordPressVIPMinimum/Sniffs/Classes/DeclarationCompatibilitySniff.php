@@ -291,7 +291,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					return;
 				}
 			}
-			$i++;
+			++$i;
 		}
 	}
 

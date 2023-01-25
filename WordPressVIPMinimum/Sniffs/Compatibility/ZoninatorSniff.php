@@ -80,11 +80,11 @@ class ZoninatorSniff extends Sniff {
 	/**
 	 * Removes the quotation marks around T_CONSTANT_ENCAPSED_STRING.
 	 *
-	 * @param string $string T_CONSTANT_ENCAPSED_STRING containing wrapping quotation marks.
+	 * @param string $text_string T_CONSTANT_ENCAPSED_STRING containing wrapping quotation marks.
 	 *
 	 * @return string String w/o wrapping quotation marks.
 	 */
-	public function remove_wrapping_quotation_marks( $string ) {
-		return trim( str_replace( '"', "'", $string ), "'" );
+	public function remove_wrapping_quotation_marks( $text_string ) {
+		return trim( str_replace( '"', "'", $text_string ), "'" );
 	}
 }

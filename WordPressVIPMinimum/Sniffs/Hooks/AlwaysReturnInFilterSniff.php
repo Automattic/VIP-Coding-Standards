@@ -218,9 +218,9 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		while ( $returnTokenPtr ) {
 			if ( $this->isInsideIfConditonal( $returnTokenPtr ) ) {
-				$insideIfConditionalReturn++;
+				++$insideIfConditionalReturn;
 			} else {
-				$outsideConditionalReturn++;
+				++$outsideConditionalReturn;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
 				$message = 'Please, make sure that a callback to `%s` filter is returning void intentionally.';
