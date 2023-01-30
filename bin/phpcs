@@ -9,4 +9,4 @@
 #
 #   ./bin/phpcs
 
-"$(pwd)/vendor/bin/phpcs"
+"$(pwd)/vendor/bin/phpcs" --runtime-set minimum_supported_wp_version 0 --runtime-set prefixes foo --runtime-set text_domain foo
