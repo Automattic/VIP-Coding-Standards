@@ -146,7 +146,7 @@ class RulesetTest {
 		}
 
 		$shell = sprintf(
-			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
+			'%1$s%2$s --severity=1 --standard=%3$s --report=json --runtime-set minimum_supported_wp_version 0 ./%3$s/ruleset-test.inc',
 			$php, // Current PHP executable if available.
 			$this->phpcs_bin,
 			$this->ruleset
