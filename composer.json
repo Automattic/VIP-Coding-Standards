@@ -35,25 +35,33 @@
 		}
 	},
 	"scripts": {
-		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-		"ruleset": "bin/ruleset-tests",
+		"test-ruleset": "bin/ruleset-tests",
 		"lint": [
 			"bin/php-lint",
 			"bin/xml-lint"
 		],
-		"phpcs": "bin/phpcs",
-		"phpunit": "bin/unit-tests",
-		"coverage": "bin/unit-tests-coverage",
-		"check-complete": [
+		"cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"test": "bin/unit-tests",
+		"test-coverage": "bin/unit-tests-coverage",
+		"feature-completeness": [
 			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./WordPressVIPMinimum"
 		],
-		"test": [
+		"check": [
 			"@lint",
-			"@ruleset",
-			"@phpunit",
-			"@phpcs",
-			"@check-complete"
+			"@tests-ruleset",
+			"@tests",
+			"@cs",
+			"@feature-completeness"
 		]
+	},
+	"scripts-descriptions": {
+		"lint": "VIPCS: Lint PHP and XML files in against parse errors.",
+		"cs": "VIPCS: Check the code style and code quality of the codebase via PHPCS.",
+		"test": "VIPCS: Run the unit tests for the VIPCS sniffs.",
+		"test-coverage": "VIPCS: Run the unit tests for the VIPCS sniffs with coverage enabled.",
+		"test-ruleset": "VIPCS: Run the ruleset tests for the VIPCS sniffs.",
+		"feature-completeness": "VIPCS: Check if all the VIPCS sniffs have tests.",
+		"check": "VIPCS: Run all checks (lint, CS, feature completeness) and tests."
 	},
 	"support": {
 		"issues": "https://github.com/Automattic/VIP-Coding-Standards/issues",
