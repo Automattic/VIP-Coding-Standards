@@ -74,4 +74,4 @@ jobs:
       # For now, just check that all sniffs have unit tests.
       # At a later stage the documentation check can be activated.
       - name: Check sniff feature completeness
-        run: composer check-complete
+        run: composer feature-completeness
