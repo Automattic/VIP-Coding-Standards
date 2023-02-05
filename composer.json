@@ -48,8 +48,8 @@
 		],
 		"check": [
 			"@lint",
-			"@tests-ruleset",
-			"@tests",
+			"@test-ruleset",
+			"@test",
 			"@cs",
 			"@feature-completeness"
 		]
