@@ -223,6 +223,13 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'lchown',
 				],
 			],
+			'filemtime' => [
+				'type'      => 'warning',
+				'message'   => 'VIP discourages the use of %s(), as each time a container is created, it would result in a different value for files in that container. See https://docs.wpvip.com/technical-references/vip-platform/file-concatenation-and-minification/ for more info.',
+				'functions' => [
+					'filemtime',
+				],
+			],
 			'stats_get_csv' => [
 				'type'      => 'error',
 				'message'   => 'Using `%s` outside of Jetpack context pollutes the stats_cache entry in the wp_options table. We recommend building a custom function instead.',

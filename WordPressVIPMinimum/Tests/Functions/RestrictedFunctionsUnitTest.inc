@@ -214,14 +214,14 @@ $c = new Foo();
 $c->create_function = 'bar' . ( 1 === 1 ?? 'foo' ); // Ok.
 $wp_random_testing = create_function2( '$a, $b', 'return ( $b / $a ); '); // Ok.
 $wp_random_testing = create_function3( '$a, $b', 'return ( $b / $a ); '); // Ok.
-
-
-
-
-
-
-
-
+filemtime(); // Warning.
+wp_register_script(
+	'script-name',
+	get_template_directory_uri() . '/js/script.js',
+	array(),
+	filemtime( get_template_directory() . '/js/script.js' ), // Warning.
+	false
+);
 wpcom_vip_get_page_by_path(); // Ok - VIP recommended version of get_page_by_path().
 get_page_by_path( $page_path ); // Warning.
 
