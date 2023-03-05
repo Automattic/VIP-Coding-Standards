@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.4] - 2023-07-05
+
+Increases requirements for PHPCS from 3.5.5+ to 3.7.1.
+
+### Fixed
+* Add `get_theme_file_path()` to list of allowed include functions by @kshaner in https://github.com/Automattic/VIP-Coding-Standards/pull/709.
+* ProperEscapingFunction: Fix short tag detection by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/748.
+
+### Changed
+* Composer:
+  * Up the minimum PHPCS version to 3.7.1 by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/742.
+  * Allow for the 1.0.0 version of the Composer PHPCS plugin by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/738.
+  * Update composer.json keywords by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/721.
+  * Update PHP Parallel Lint and Console Highlighter by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/714.
+  * Update script names by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/741.
+  * Fix script references by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/747.
+  * Update references to the Composer plugin by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/708.
+* Tests:
+  * Unit tests: Support PHP >= 8.1 by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/735.
+  * Fix checks for PHP 8.1 and above by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/746.
+  * AdminBarRemovalUnitTest: Ensure final reset is read by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/737.
+* Coding Standards
+  * Fix coding standards of VIPCS sniffs by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/733.
+  * Remove extra line at end of classes by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/756.
+* CI:
+  * Various updates by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/705.
+  * Test Higher PHP versions by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/750.
+  * Fix use of deprecated `set-output` by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/724.
+  * Update the xmllint-problem-matcher by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/725.
+  * Various tweaks by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/726.
+  * Bust the cache semi-regularly by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/728.
+  * Version update for various predefined actions by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/711.
+  * Fix build failure by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/712.
+  * Validate the PHPCS installed standards by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/755.
+  * Test and Quicktest tweaks by @GaryJones in https://github.com/Automattic/VIP-Coding-Standards/pull/757.
+
+* Docs:
+  * Updated Docs link for `ORDER BY RAND()` by @yolih in https://github.com/Automattic/VIP-Coding-Standards/pull/722.
+  * README: update requirements listing by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/707.
+  * README: update for Composer 2.2 by @jrfnl in https://github.com/Automattic/VIP-Coding-Standards/pull/706.
+
 ## [2.3.3] - 2021-09-29
 
 Props: gudmdharalds, jrfnl, BrookeDot, rebeccahum
@@ -570,6 +611,7 @@ Initial release.
 Props: david-binda, pkevan.
 
 
+[2.3.4]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.0...2.3.1
