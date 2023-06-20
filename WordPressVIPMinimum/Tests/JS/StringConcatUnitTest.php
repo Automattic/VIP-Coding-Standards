@@ -37,5 +37,4 @@ class StringConcatUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

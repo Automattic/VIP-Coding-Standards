@@ -101,5 +101,4 @@ class IncludingNonPHPFileSniff extends Sniff {
 
 		} while ( $curStackPtr > $stackPtr );
 	}
-
 }

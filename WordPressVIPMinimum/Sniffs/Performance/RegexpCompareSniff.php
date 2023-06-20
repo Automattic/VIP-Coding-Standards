@@ -61,5 +61,4 @@ class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 			return 'Detected regular expression comparison. `%s` is set to `%s`.';
 		}
 	}
-
 }

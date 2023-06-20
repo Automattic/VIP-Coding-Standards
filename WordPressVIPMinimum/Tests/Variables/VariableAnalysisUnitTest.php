@@ -38,5 +38,4 @@ class VariableAnalysisUnitTest extends AbstractSniffUnitTest {
 			5 => 2,
 		];
 	}
-
 }

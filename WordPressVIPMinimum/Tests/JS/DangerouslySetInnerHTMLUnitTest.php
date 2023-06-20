@@ -37,5 +37,4 @@ class DangerouslySetInnerHTMLUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

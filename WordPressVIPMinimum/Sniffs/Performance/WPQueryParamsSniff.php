@@ -100,5 +100,4 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		return true;
 	}
-
 }

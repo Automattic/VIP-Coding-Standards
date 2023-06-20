@@ -38,5 +38,4 @@ class StaticStrreplaceUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

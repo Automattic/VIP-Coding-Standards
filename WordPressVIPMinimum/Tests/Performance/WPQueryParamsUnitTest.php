@@ -42,5 +42,4 @@ class WPQueryParamsUnitTest extends AbstractSniffUnitTest {
 			21 => 1,
 		];
 	}
-
 }

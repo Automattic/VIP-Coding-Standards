@@ -72,5 +72,4 @@ class StringConcatSniff extends Sniff {
 		$message = 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s.';
 		$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 	}
-
 }

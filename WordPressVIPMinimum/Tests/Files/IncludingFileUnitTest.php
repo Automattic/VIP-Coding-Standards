@@ -48,5 +48,4 @@ class IncludingFileUnitTest extends AbstractSniffUnitTest {
 			33 => 1,
 		];
 	}
-
 }

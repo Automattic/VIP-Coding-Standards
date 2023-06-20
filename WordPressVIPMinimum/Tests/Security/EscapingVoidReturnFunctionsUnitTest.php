@@ -37,5 +37,4 @@ class EscapingVoidReturnFunctionsUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

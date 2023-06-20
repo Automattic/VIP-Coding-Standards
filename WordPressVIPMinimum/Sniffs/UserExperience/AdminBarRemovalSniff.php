@@ -425,5 +425,4 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 
 		return $content !== null && strpos( $content, '<' . $tag_name ) !== false;
 	}
-
 }

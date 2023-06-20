@@ -38,5 +38,4 @@ class ExitAfterRedirectUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

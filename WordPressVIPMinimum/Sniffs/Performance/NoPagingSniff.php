@@ -57,5 +57,4 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 		return false;
 	}
-
 }

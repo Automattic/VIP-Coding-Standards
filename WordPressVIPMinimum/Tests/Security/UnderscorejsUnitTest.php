@@ -84,5 +84,4 @@ class UnderscorejsUnitTest extends AbstractSniffUnitTest {
 				return [];
 		}
 	}
-
 }

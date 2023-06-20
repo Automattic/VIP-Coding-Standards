@@ -37,5 +37,4 @@ class VuejsUnitTest extends AbstractSniffUnitTest {
 			5 => 1,
 		];
 	}
-
 }

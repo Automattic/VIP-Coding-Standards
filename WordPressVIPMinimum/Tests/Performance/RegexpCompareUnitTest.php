@@ -40,5 +40,4 @@ class RegexpCompareUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

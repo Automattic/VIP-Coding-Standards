@@ -42,5 +42,4 @@ class MustacheUnitTest extends AbstractSniffUnitTest {
 			18 => 1,
 		];
 	}
-
 }

@@ -142,5 +142,4 @@ class CacheValueOverrideSniff extends Sniff {
 
 		return $previous;
 	}
-
 }

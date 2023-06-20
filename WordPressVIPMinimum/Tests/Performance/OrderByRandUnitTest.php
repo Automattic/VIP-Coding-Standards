@@ -44,5 +44,4 @@ class OrderByRandUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }
