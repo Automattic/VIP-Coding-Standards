@@ -90,6 +90,9 @@ jobs:
           composer-options: --ignore-platform-reqs
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
+      - name: Display PHPCS installed standards
+        run: ./vendor/bin/phpcs -i
+
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
         run: ./bin/php-lint
