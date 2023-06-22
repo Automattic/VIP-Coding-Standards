@@ -40,5 +40,4 @@ class ServerVariablesUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

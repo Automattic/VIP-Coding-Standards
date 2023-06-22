@@ -158,5 +158,4 @@ class UnderscorejsSniff extends Sniff {
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );
 		}
 	}
-
 }

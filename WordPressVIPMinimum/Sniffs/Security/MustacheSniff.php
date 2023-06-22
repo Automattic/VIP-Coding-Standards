@@ -73,5 +73,4 @@ class MustacheSniff extends Sniff {
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'SafeString' );
 		}
 	}
-
 }

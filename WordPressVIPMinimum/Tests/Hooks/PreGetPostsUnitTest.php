@@ -45,5 +45,4 @@ class PreGetPostsUnitTest extends AbstractSniffUnitTest {
 			133 => 1,
 		];
 	}
-
 }

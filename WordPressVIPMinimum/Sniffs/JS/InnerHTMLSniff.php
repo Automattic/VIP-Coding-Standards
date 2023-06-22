@@ -83,5 +83,4 @@ class InnerHTMLSniff extends Sniff {
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'Found', $data );
 		}
 	}
-
 }

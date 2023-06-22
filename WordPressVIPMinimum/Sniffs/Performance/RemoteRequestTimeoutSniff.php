@@ -57,5 +57,4 @@ class RemoteRequestTimeoutSniff extends AbstractArrayAssignmentRestrictionsSniff
 			return 'Detected high remote request timeout. `%s` is set to `%d`.';
 		}
 	}
-
 }

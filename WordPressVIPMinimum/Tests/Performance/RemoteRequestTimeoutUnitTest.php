@@ -37,5 +37,4 @@ class RemoteRequestTimeoutUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

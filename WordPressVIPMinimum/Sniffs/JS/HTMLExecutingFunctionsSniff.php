@@ -130,5 +130,4 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 			}
 		}
 	}
-
 }

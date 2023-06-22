@@ -76,5 +76,4 @@ class ProperEscapingFunctionUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [];
 	}
-
 }

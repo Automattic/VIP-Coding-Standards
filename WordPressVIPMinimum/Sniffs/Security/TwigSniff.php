@@ -58,5 +58,4 @@ class TwigSniff extends Sniff {
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'RawFound' );
 		}
 	}
-
 }

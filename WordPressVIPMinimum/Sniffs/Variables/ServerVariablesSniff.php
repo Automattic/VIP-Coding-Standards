@@ -71,5 +71,4 @@ class ServerVariablesSniff extends Sniff {
 			$this->phpcsFile->addError( $message, $stackPtr, 'UserControlledHeaders', $data );
 		}
 	}
-
 }

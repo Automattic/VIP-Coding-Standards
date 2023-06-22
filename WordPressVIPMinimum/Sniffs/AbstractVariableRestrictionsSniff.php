@@ -227,5 +227,4 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 		);
 		return $pattern;
 	}
-
 }

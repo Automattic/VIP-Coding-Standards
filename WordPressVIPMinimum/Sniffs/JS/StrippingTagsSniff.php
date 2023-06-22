@@ -72,5 +72,4 @@ class StrippingTagsSniff extends Sniff {
 			$this->phpcsFile->addError( $message, $stackPtr, 'VulnerableTagStripping' );
 		}
 	}
-
 }

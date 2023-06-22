@@ -55,5 +55,4 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 		return false;
 	}
-
 }

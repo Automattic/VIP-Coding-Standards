@@ -311,5 +311,4 @@ class CheckReturnValueSniff extends Sniff {
 		$data    = [ $variableName, $callee ];
 		$this->phpcsFile->addError( $message, $stackPtr, 'NonCheckedVariable', $data );
 	}
-
 }

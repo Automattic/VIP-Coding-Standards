@@ -66,5 +66,4 @@ class EscapingVoidReturnFunctionsSniff extends Sniff {
 			return;
 		}
 	}
-
 }

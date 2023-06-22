@@ -52,5 +52,4 @@ class RestrictedHooksUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 		];
 	}
-
 }

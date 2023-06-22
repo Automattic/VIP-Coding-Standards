@@ -47,5 +47,4 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 			180 => 1,
 		];
 	}
-
 }

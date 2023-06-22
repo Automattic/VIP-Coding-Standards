@@ -42,5 +42,4 @@ class TaxonomyMetaInOptionsUnitTest extends AbstractSniffUnitTest {
 			8 => 1,
 		];
 	}
-
 }
