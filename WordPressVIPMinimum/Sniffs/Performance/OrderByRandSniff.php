@@ -30,8 +30,9 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function getGroups() {
 		return [
 			'orderby' => [
-				'type' => 'error',
-				'keys' => [
+				'type'    => 'error',
+				'message' => 'Detected forbidden query_var "%s" of "%s". Use vip_get_random_posts() instead.',
+				'keys'    => [
 					'orderby',
 				],
 			],
@@ -46,13 +47,10 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @param  mixed  $val   Assigned value.
 	 * @param  int    $line  Token line.
 	 * @param  array  $group Group definition.
-	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches with custom error message passed to ->process().
+	 *
+	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
-		if ( strtolower( $val ) === 'rand' ) {
-			return 'Detected forbidden query_var "%s" of "%s". Use vip_get_random_posts() instead.';
-		}
-
-		return false;
+		return strtolower( $val ) === 'rand';
 	}
 }

@@ -33,8 +33,9 @@ class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function getGroups() {
 		return [
 			'compare' => [
-				'type' => 'error',
-				'keys' => [
+				'type'    => 'error',
+				'message' => 'Detected regular expression comparison. `%s` is set to `%s`.',
+				'keys'    => [
 					'compare',
 					'meta_compare',
 				],
@@ -50,15 +51,13 @@ class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @param  mixed  $val   Assigned value.
 	 * @param  int    $line  Token line.
 	 * @param  array  $group Group definition.
-	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches
-	 *                       with custom error message passed to ->process().
+	 *
+	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
-		if ( strpos( $val, 'NOT REGEXP' ) === 0
+		return ( strpos( $val, 'NOT REGEXP' ) === 0
 			|| strpos( $val, 'REGEXP' ) === 0
 			|| in_array( $val, [ 'REGEXP', 'NOT REGEXP' ], true ) === true
-		) {
-			return 'Detected regular expression comparison. `%s` is set to `%s`.';
-		}
+		);
 	}
 }

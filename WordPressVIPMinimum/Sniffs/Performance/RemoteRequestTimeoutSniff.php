@@ -33,8 +33,9 @@ class RemoteRequestTimeoutSniff extends AbstractArrayAssignmentRestrictionsSniff
 	public function getGroups() {
 		return [
 			'timeout' => [
-				'type' => 'error',
-				'keys' => [
+				'type'    => 'error',
+				'message' => 'Detected high remote request timeout. `%s` is set to `%d`.',
+				'keys'    => [
 					'timeout',
 				],
 			],
@@ -49,12 +50,10 @@ class RemoteRequestTimeoutSniff extends AbstractArrayAssignmentRestrictionsSniff
 	 * @param  mixed  $val   Assigned value.
 	 * @param  int    $line  Token line.
 	 * @param  array  $group Group definition.
-	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches
-	 *                       with custom error message passed to ->process().
+	 *
+	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
-		if ( (int) $val > 3 ) {
-			return 'Detected high remote request timeout. `%s` is set to `%d`.';
-		}
+		return (int) $val > 3;
 	}
 }

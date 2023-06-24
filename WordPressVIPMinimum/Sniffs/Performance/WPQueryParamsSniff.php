@@ -94,8 +94,8 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @param  mixed  $val   Assigned value.
 	 * @param  int    $line  Token line.
 	 * @param  array  $group Group definition.
-	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches
-	 *                       with custom error message passed to ->process().
+	 *
+	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
 		return true;
