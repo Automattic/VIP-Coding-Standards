@@ -34,16 +34,6 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Groups of variables to restrict.
-	 * This should be overridden in extending classes.
-	 *
-	 * Example: groups => array(
-	 *  'groupname' => array(
-	 *      'type'     => 'error' | 'warning',
-	 *      'message'  => 'Dont use this one please!',
-	 *      'keys'     => array( 'key1', 'another_key' ),
-	 *      'callback' => array( 'class', 'method' ), // Optional.
-	 *  )
-	 * )
 	 *
 	 * @return array
 	 */

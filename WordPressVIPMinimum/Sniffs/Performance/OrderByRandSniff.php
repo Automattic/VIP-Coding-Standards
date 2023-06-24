@@ -41,7 +41,6 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Callback to process each confirmed key, to check value
-	 * This must be extended to add the logic to check assignment value
 	 *
 	 * @param  string $key   Array index / key.
 	 * @param  mixed  $val   Assigned value.
