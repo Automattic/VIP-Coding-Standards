@@ -244,7 +244,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		$signatureParams = $phpcsFile->getMethodParameters( $stackPtr );
+		$signatureParams = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
 
 		$parentSignature = $this->checkClasses[ $parentClassName ][ $methodName ];
 
