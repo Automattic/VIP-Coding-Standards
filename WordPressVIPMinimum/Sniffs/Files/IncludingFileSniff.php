@@ -25,13 +25,13 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 * @var array
 	 */
 	public $getPathFunctions = [
-		'plugin_dir_path',
 		'dirname',
+		'get_parent_theme_file_path',
 		'get_stylesheet_directory',
 		'get_template_directory',
-		'locate_template',
-		'get_parent_theme_file_path',
 		'get_theme_file_path',
+		'locate_template',
+		'plugin_dir_path',
 	];
 
 	/**
