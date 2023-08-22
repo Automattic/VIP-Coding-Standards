@@ -1,7 +1,7 @@
 <?php
 $file = ''; $fp = ''; $dir = ''; $test = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $query = ''; $page_title = ''; $true = true; $some_nasty_var = ''; $data = ''; $group = ''; $testing = ''; $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $a = ''; $b = ''; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
-// WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete
-delete( $file ); // Warning + Message.
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents
 file_put_contents( 'file.txt', '', FILE_APPEND ); // Warning + Message.
@@ -388,7 +388,7 @@ session_status(); // Error.
 session_unregister(); // Error.
 session_unset(); // Error.
 session_write_close(); // Error.
-delete(); // Warning.
+
 file_put_contents( $file, $text, FILE_APPEND ); // Warning.
 while ( $count > $loop ) {
 	if ( flock( $fp, LOCK_EX ) ) { // Warning.

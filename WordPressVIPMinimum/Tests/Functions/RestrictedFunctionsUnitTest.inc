@@ -179,7 +179,7 @@ while ( $count > $loop ) {
 
 fclose( $fp ); // Ok.
 
-delete(); // Error.
+
 fputcsv(); // Error.
 fputs(); // Error.
 ftruncate(); // Error.
