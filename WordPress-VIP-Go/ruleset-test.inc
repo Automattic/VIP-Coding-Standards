@@ -322,8 +322,8 @@ class MyWidget extends WP_Widget {
 class BadTestClass extends WP_CLI_Command { // Warning.
 }
 
-// WordPressVIPMinimum.Compatibility.ZoninatorSniff
-wpcom_vip_load_plugin( 'zoninator', 'plugins', '0.8' ); // Warning.
+
+
 
 // WordPressVIPMinimum.Constants.ConstantString
 define( WPCOM_VIP ); // Error.
