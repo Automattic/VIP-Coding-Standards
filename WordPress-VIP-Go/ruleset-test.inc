@@ -557,7 +557,7 @@ echo "<script>
 </article> <?php
 
 // WordPressVIPMinimum.Variables.RestrictedVariables
-foo( $_SESSION['bar'] ); // Error.
+foo( $_SESSION['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Error.
 
 // WordPressVIPMinimum.Variables.ServerVariables
 // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized

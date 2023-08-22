@@ -587,7 +587,7 @@ echo '<style type="text/css">.show-admin-bar { visibility: hidden; }</style>'; /
 // WordPressVIPMinimum.Variables.RestrictedVariables
 $query = "SELECT * FROM $wpdb->users"; // Error.
 $x = foo( sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Warning.
-foo( $_SESSION['bar'] ); // Error.
+foo( $_SESSION['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Error.
 
 // WordPressVIPMinimum.Variables.ServerVariables
 // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
