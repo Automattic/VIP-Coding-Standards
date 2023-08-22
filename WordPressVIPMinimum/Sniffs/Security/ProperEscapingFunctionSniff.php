@@ -9,6 +9,7 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\BackCompat\BCFile;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
@@ -179,7 +180,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 		if ( $this->in_short_echo !== false ) {
 			$ignore[ T_COMMA ] = T_COMMA;
 		} else {
-			$start_of_statement = $this->phpcsFile->findStartOfStatement( $stackPtr, T_COMMA );
+			$start_of_statement = BCFile::findStartOfStatement( $this->phpcsFile, $stackPtr, T_COMMA );
 			if ( $this->tokens[ $start_of_statement ]['code'] === T_ECHO ) {
 				$ignore[ T_COMMA ] = T_COMMA;
 			}
