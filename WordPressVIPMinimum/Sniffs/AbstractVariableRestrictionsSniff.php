@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs;
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\MessageHelper;
 use WordPressCS\WordPress\Helpers\ContextHelper;
+use WordPressCS\WordPress\Helpers\RulesetPropertyHelper;
 
 /**
  * Restricts usage of some variables.
@@ -129,7 +130,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 		$token = $this->tokens[ $stackPtr ];
 
-		$this->excluded_groups = static::merge_custom_array( $this->exclude );
+		$this->excluded_groups = RulesetPropertyHelper::merge_custom_array( $this->exclude );
 		if ( array_diff_key( $this->groups_cache, $this->excluded_groups ) === [] ) {
 			// All groups have been excluded.
 			// Don't remove the listener as the exclude property can be changed inline.
