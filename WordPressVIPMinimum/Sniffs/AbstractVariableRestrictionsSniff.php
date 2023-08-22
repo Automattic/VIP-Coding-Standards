@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs;
 
+use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\MessageHelper;
 
 /**
@@ -179,7 +180,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 				if ( isset( $token['bracket_closer'] ) ) {
 					$owner  = $this->phpcsFile->findPrevious( \T_VARIABLE, $stackPtr );
-					$inside = $this->phpcsFile->getTokensAsString( $stackPtr, $token['bracket_closer'] - $stackPtr + 1 );
+					$inside = GetTokensAsString::normal( $this->phpcsFile, $stackPtr, $token['bracket_closer'] );
 					$var    = implode( '', [ $this->tokens[ $owner ]['content'], $inside ] );
 				}
 			}
