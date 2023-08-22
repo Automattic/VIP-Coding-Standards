@@ -47,7 +47,6 @@ class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		return ( strpos( $val, 'NOT REGEXP' ) === 0
 			|| strpos( $val, 'REGEXP' ) === 0
-			|| in_array( $val, [ 'REGEXP', 'NOT REGEXP' ], true ) === true
 		);
 	}
 }
