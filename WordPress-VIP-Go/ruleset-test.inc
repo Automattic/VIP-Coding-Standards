@@ -56,8 +56,8 @@ $x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.Validat
 if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'some_value' ) { // Error.
 }
 
-
-
+// Make sure nonce verification is done in global scope to silence notices about use of superglobals without later on in the file.
+isset( $_GET['my_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_GET['my_nonce'] ) );
 
 // WordPress.WP.AlternativeFunctions.file_system_read_fopen
 fopen( 'file.txt', 'r' ); // Warning + Message.
@@ -80,7 +80,7 @@ function foo_bar() {
 }
 
 // WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-do_something( $_POST ); // Error.
+do_something( $_POST['key'] ); // Error + warning.
 if ( isset( $_POST['foo2'] ) ) {
 	bar( wp_unslash( $_POST['foo2'] ) ); // Warning.
 }
@@ -279,10 +279,10 @@ $args( [
 $query = new WP_Query( ['meta_key' => 'foo' ] ); // Ok.
 $args = 'foo=bar&meta_key=foo'; // Ok.
 
-// WordPressVIPMinimum.Performance.BatcacheWhitelistedParams
-if ( isset( $_GET['migSource'] ) && wp_verify_nonce( sanitize_text_field( $_GET['migSource'] ) ) ) {
-	$test = sanitize_text_field( $_GET['migSource'] ); // Ok.
-}
+
+
+
+
 
 
 
