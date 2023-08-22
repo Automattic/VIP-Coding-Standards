@@ -70,22 +70,19 @@ jobs:
       # - The `wpcs_version` key is added to allow additional test builds when multiple WPCS versions
       #   would be supported. As, at this time, only the latest stable release of WPCS is supported,
       #   no additional versions are included in the array.
-      # - experimental: Whether the build is "allowed to fail".
       matrix:
         php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
         phpcs_version: ['3.7.1', 'dev-master']
         wpcs_version: ['2.3.*']
-        experimental: [false]
 
         include:
           - php: '8.3'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
-            experimental: true
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
 
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
