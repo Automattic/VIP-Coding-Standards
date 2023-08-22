@@ -9,6 +9,8 @@ namespace WordPressVIPMinimum\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
+use PHPCSUtils\Utils\FunctionDeclarations;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
@@ -201,13 +203,13 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 */
 	protected function processTokenWithinScope( File $phpcsFile, $stackPtr, $currScope ) {
 
-		$className = $phpcsFile->getDeclarationName( $currScope );
+		$className = ObjectDeclarations::getName( $phpcsFile, $currScope );
 
 		if ( $className !== $this->currentClass ) {
 			$this->currentClass = $className;
 		}
 
-		$methodName = $phpcsFile->getDeclarationName( $stackPtr );
+		$methodName = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
 
 		$parentClassName = $phpcsFile->findExtendedClassName( $currScope );
 		if ( $parentClassName === false ) {
