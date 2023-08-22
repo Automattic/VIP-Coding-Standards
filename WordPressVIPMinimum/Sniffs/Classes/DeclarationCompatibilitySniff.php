@@ -211,7 +211,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		$methodName = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
 
-		$parentClassName = $phpcsFile->findExtendedClassName( $currScope );
+		$parentClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $currScope );
 		if ( $parentClassName === false ) {
 			// This class does not extend any other class.
 			return;
