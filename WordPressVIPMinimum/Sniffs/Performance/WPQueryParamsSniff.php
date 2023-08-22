@@ -9,6 +9,7 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
+use WordPressCS\WordPress\Helpers\ContextHelper;
 
 /**
  * Flag suspicious WP_Query and get_posts params.
@@ -18,6 +19,13 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  * @package VIPCS\WordPressVIPMinimum
  */
 class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
+
+	/**
+	 * Whether the current $stackPtr being scanned is nested in a function call to get_users().
+	 *
+	 * @var bool
+	 */
+	private $in_get_users = false;
 
 	/**
 	 * Groups of variables to restrict.
@@ -49,6 +57,20 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	}
 
 	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param int $stackPtr The position of the current token in the stack.
+	 *
+	 * @return void
+	 */
+	public function process_token( $stackPtr ) {
+		$this->in_get_users = ContextHelper::is_in_function_call( $this->phpcsFile, $stackPtr, [ 'get_users' => true ], true, true );
+
+		parent::process_token( $stackPtr );
+	}
+
+
+	/**
 	 * Callback to process a confirmed key which doesn't need custom logic, but should always error.
 	 *
 	 * @param  string $key   Array index / key.
@@ -64,6 +86,11 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 				return ( $val === 'true' );
 
 			case 'PostNotIn':
+				if ( $key === 'exclude' && $this->in_get_users !== false ) {
+					// This is not an array used by get_posts(). See #672.
+					return false;
+				}
+
 				return true;
 
 			default:
