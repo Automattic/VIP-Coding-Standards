@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
+use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 use PHP_CodeSniffer\Util\Tokens;
@@ -344,7 +345,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				}
 			}
 			$start    = ( $i + 1 );
-			$selector = trim( $this->phpcsFile->getTokensAsString( $start, $opener - $start ) );
+			$selector = trim( GetTokensAsString::normal( $this->phpcsFile, $start, ( $opener - 1 ) ) );
 			unset( $i );
 
 			foreach ( $this->target_css_selectors as $target_selector ) {
