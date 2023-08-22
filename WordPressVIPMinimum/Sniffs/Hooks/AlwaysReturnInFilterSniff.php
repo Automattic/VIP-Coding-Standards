@@ -9,6 +9,7 @@ namespace WordPressVIPMinimum\Sniffs\Hooks;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Arrays;
+use PHPCSUtils\Utils\FunctionDeclarations;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -186,7 +187,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
-		$methodProps = $this->phpcsFile->getMethodProperties( $stackPtr );
+		$methodProps = FunctionDeclarations::getProperties( $this->phpcsFile, $stackPtr );
 		if ( $methodProps['is_abstract'] === true ) {
 			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please ensure that child class implementations of this method always return a value.';
 			$data    = [ $filterName ];
