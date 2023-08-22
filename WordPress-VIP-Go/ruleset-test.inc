@@ -59,7 +59,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'so
 // Make sure nonce verification is done in global scope to silence notices about use of superglobals without later on in the file.
 isset( $_GET['my_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_GET['my_nonce'] ) );
 
-// WordPress.WP.AlternativeFunctions.file_system_read_fopen
+// WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 fopen( 'file.txt', 'r' ); // Warning + Message.
 
 // WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown

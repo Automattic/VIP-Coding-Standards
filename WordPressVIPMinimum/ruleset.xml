@@ -135,10 +135,32 @@
 		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
 		<!-- This is already covered in WordPressVIPMinimum.Functions.StripTags.StripTagsOneParameter -->
 		<exclude name="WordPress.WP.AlternativeFunctions.strip_tags_strip_tags"/>
-		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
-		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_fwrite"/>
 		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents -->
-		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents"/>
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fputs -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_fputs"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_fwrite -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_fwrite"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writable -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_is_writable"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_is_writeable -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_is_writeable"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_rename -->
+		<exclude name="WordPress.WP.AlternativeFunctions.rename_rename"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_touch -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_touch"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_unlink -->
+		<exclude name="WordPress.WP.AlternativeFunctions.unlink_unlink"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.directory_mkdir -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_mkdir"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.directory_rmdir -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_rmdir"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.chmod_chgrp -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_chgrp"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.chmod_chown -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_chown"/>
+		<!-- This is already covered in WordPressVIPMinimum.Functions.RestrictedFunctions.chmod_chmod -->
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_operations_chmod"/>
 	</rule>
 	<!-- VIP recommends other functions -->
 	<rule ref="WordPress.WP.AlternativeFunctions.curl_curl_init">
