@@ -7,6 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
@@ -45,6 +46,7 @@ class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
+		$val = TextStrings::stripQuotes( $val );
 		return ( strpos( $val, 'NOT REGEXP' ) === 0
 			|| strpos( $val, 'REGEXP' ) === 0
 		);
