@@ -12,7 +12,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Restricts usage of rewrite rules flushing
+ * Restricts usage of file_get_contents().
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
