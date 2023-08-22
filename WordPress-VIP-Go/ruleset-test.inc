@@ -153,7 +153,7 @@ url_to_postid( $url ); // Warning + Message.
 wpcom_vip_old_slug_redirect(); // Ok.
 wp_old_slug_redirect(); // Warning.
 
-// WordPress.CodeAnalysis.AssignmentInCondition.Found
+// Generic.CodeAnalysis.AssignmentInCondition.Found
 if ($a = 123) { // Warning.
 }
 
@@ -572,3 +572,8 @@ $_SERVER["REMOTE_ADDR"]; // Error.
 <<<<<<< HEAD // Error.
 
 >>>>>>> // Error.
+
+<?php
+
+// WordPress.CodeAnalysis.AssignmentInTernaryCondition
+$var = ($a = 123) ? $a : 0; // Warning.

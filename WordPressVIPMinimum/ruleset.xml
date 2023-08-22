@@ -39,7 +39,8 @@
 	<rule ref="Universal.Operators.StrictComparisons" phpcs-only="true">
 		<type>warning</type>
 	</rule>
-	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition"/>
+	<rule ref="Generic.CodeAnalysis.AssignmentInCondition"/>
+	<rule ref="WordPress.CodeAnalysis.AssignmentInTernaryCondition"/>
 	<rule ref="WordPress.PHP.StrictInArray"/>
 	<rule ref="WordPress.PHP.DontExtract"/>
 	<rule ref="WordPress.WP.CronInterval">

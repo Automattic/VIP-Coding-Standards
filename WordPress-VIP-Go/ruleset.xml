@@ -179,7 +179,10 @@
 	<rule ref="Internal.LineEndings.Mixed">
 		<severity>1</severity>
 	</rule>
-	<rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
+	<rule ref="Generic.CodeAnalysis.AssignmentInCondition">
+		<severity>1</severity>
+	</rule>
+	<rule ref="WordPress.CodeAnalysis.AssignmentInTernaryCondition.FoundInTernaryCondition">
 		<severity>1</severity>
 	</rule>
 	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode">

@@ -76,7 +76,7 @@ $GLOBALS['wpdb'] = 'test'; // Error.
 if ( true == $true ) { // Warning.
 }
 
-// WordPress.CodeAnalysis.AssignmentInCondition
+// Generic.CodeAnalysis.AssignmentInCondition
 if ( $test = get_post( $post ) ) { // Warning.
 }
 
@@ -613,6 +613,9 @@ class MyClass {
 
 >>>>>>> // Error.
 <?php
+
+// WordPress.CodeAnalysis.AssignmentInTernaryCondition
+$var = ( $test = get_post( $post ) ) ? $test : ''; // Warning.
 
 // Squiz.WhiteSpace.SuperfluousWhitespace
 // Error. ?>
