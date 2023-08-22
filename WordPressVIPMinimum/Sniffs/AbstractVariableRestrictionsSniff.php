@@ -11,6 +11,7 @@ namespace WordPressVIPMinimum\Sniffs;
 
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\MessageHelper;
+use WordPressCS\WordPress\Helpers\ContextHelper;
 
 /**
  * Restricts usage of some variables.
@@ -144,7 +145,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 			}
 		}
 
-		if ( $this->is_in_isset_or_empty( $stackPtr ) === true ) {
+		if ( ContextHelper::is_in_isset_or_empty( $this->phpcsFile, $stackPtr ) === true ) {
 			// Checking whether a variable exists is not the same as using it.
 			return;
 		}
