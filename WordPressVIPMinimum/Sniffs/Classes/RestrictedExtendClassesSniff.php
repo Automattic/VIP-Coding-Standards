@@ -12,8 +12,6 @@ use WordPressCS\WordPress\AbstractClassRestrictionsSniff;
 /**
  * WordPressVIPMinimum_Sniffs_Classes_RestrictedExtendClassesSniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @since 0.4.0
  */
 class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {

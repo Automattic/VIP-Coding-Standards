@@ -15,8 +15,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Checks whether proper escaping function is used.
- *
- *  @package VIPCS\WordPressVIPMinimum
  */
 class ProperEscapingFunctionSniff extends Sniff {
 

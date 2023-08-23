@@ -12,8 +12,6 @@ use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
  * Restricts usage of some functions in VIP context.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 

@@ -18,8 +18,6 @@ use WordPressCS\WordPress\Helpers\RulesetPropertyHelper;
  * Restricts usage of some variables.
  *
  * Originally part of WordPress Coding Standards repo.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 abstract class AbstractVariableRestrictionsSniff extends Sniff {
 

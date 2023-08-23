@@ -12,8 +12,6 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 /**
  * This sniff restricts usage of some action and filter hooks.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @since 0.4.0
  */
 class RestrictedHooksSniff extends AbstractFunctionParameterSniff {

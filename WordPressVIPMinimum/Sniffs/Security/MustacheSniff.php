@@ -12,8 +12,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Looks for instances of unescaped output for Mustache templating engine and Handlebars.js.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class MustacheSniff extends Sniff {
 

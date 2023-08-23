@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Looks for instances of unescaped output for Underscore.js templating engine.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class UnderscorejsSniff extends Sniff {
 

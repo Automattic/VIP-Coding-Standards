@@ -12,10 +12,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the VIP_RestrictedVariables sniff.
  *
- * @package WPCS\WordPressCodingStandards
- *
- * @since   0.3.0
- * @since   0.13.0 Class name changed: this class is now namespaced.
+ * @since 0.3.0
+ * @since 0.13.0 Class name changed: this class is now namespaced.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Variables\RestrictedVariablesSniff
  */

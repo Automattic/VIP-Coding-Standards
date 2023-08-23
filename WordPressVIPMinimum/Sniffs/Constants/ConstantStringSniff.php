@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Sniff for properly using constant name when checking whether a constant is defined.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class ConstantStringSniff extends Sniff {
 

@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * This sniff validates that filters always return a value
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class AlwaysReturnInFilterSniff extends Sniff {
 

@@ -16,9 +16,7 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  *
  * @link https://docs.wpvip.com/technical-references/code-review/#no-limit-queries
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  */
 class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 

@@ -12,8 +12,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Looks for instances of unescaped output for Twig templating engine.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class VuejsSniff extends Sniff {
 

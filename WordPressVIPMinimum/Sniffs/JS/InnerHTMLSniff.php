@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  * WordPressVIPMinimum_Sniffs_JS_InnerHTMLSniff.
  *
  * Looks for instances of .innerHMTL.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class InnerHTMLSniff extends Sniff {
 

@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  * WordPressVIPMinimum_Sniffs_JS_StringConcatSniff.
  *
  * Looks for HTML string concatenation.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class StringConcatSniff extends Sniff {
 

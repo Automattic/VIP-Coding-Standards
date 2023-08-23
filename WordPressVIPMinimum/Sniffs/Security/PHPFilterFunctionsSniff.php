@@ -12,8 +12,6 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 /**
  * This sniff ensures that proper sanitization is occurring when PHP's filter_* functions are used.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @since 0.4.0
  */
 class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {

@@ -17,8 +17,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  *
  * E.g. esc_html( _e( 'foo' ) );
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @uses \WordPressCS\WordPress\Helpers\PrintingFunctionsTrait::$customPrintingFunctions
  */
 class EscapingVoidReturnFunctionsSniff extends Sniff {

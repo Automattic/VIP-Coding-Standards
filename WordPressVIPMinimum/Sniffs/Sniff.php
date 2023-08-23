@@ -15,8 +15,6 @@ use WordPressCS\WordPress\Sniff as WPCS_Sniff;
  * Represents a WordPress\Sniff for sniffing VIP coding standards.
  *
  * Provides a bootstrap for the sniffs, to reduce code duplication.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 abstract class Sniff extends WPCS_Sniff {
 }

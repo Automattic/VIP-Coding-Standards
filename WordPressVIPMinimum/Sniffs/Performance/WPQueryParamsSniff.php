@@ -14,8 +14,6 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  * Flag suspicious WP_Query and get_posts params.
  *
  * @link https://docs.wpvip.com/technical-references/caching/uncached-functions/
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 

@@ -12,8 +12,6 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 /**
  * This sniff ensures proper tag stripping.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @since 0.4.0
  */
 class StripTagsSniff extends AbstractFunctionParameterSniff {

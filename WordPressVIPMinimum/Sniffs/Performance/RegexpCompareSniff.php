@@ -12,8 +12,6 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
  * Flag REGEXP and NOT REGEXP in meta compare
- *
- *  @package VIPCS\WordPressVIPMinimum
  */
 class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 

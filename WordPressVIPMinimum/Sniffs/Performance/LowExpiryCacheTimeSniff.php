@@ -16,8 +16,6 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
  *
  * {@internal VIP uses the Memcached object cache implementation. {@link https://github.com/Automattic/wp-memcached}}
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @since 0.4.0
  */
 class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
