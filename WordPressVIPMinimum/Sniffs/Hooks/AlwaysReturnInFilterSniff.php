@@ -223,13 +223,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			$functionBodyScopeEnd
 		);
 
-		$insideIfConditionalReturn = 0;
-		$outsideConditionalReturn  = 0;
+		$outsideConditionalReturn = 0;
 
 		while ( $returnTokenPtr ) {
-			if ( $this->isInsideIfConditonal( $returnTokenPtr ) ) {
-				++$insideIfConditionalReturn;
-			} else {
+			if ( $this->isInsideIfConditonal( $returnTokenPtr ) === false ) {
 				++$outsideConditionalReturn;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
@@ -244,11 +241,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			);
 		}
 
-		if ( $insideIfConditionalReturn >= 0 && $outsideConditionalReturn === 0 ) {
+		if ( $outsideConditionalReturn === 0 ) {
 			$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
 			$data    = [ $filterName ];
 			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
-
 		}
 	}
 
