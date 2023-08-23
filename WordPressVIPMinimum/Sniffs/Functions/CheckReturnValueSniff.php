@@ -112,7 +112,7 @@ class CheckReturnValueSniff extends Sniff {
 	 *
 	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return bool
+	 * @return int|false
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
@@ -290,8 +290,8 @@ class CheckReturnValueSniff extends Sniff {
 	/**
 	 * Function used as as callback for the array_reduce call.
 	 *
-	 * @param string $carry The final string.
-	 * @param array  $item  Processed item.
+	 * @param string|null $carry The final string.
+	 * @param mixed       $item  Processed item.
 	 *
 	 * @return string
 	 */

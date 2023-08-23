@@ -119,7 +119,7 @@ class CacheValueOverrideSniff extends Sniff {
 	 *
 	 * @param int $stackPtr The position of the current token in the stack.
 	 *
-	 * @return bool
+	 * @return int|false
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 

@@ -199,6 +199,7 @@ class RulesetTest {
 	 * Check if violation is an error.
 	 *
 	 * @param \stdClass $violation Violation data.
+	 *
 	 * @return bool True if string matches error type.
 	 */
 	private function violation_type_is_error( $violation ) {

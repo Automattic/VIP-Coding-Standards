@@ -362,8 +362,8 @@ class PreGetPostsSniff extends Sniff {
 	/**
 	 * Is the current code a WP_Query call?
 	 *
-	 * @param int  $stackPtr The position in the stack where the token was found.
-	 * @param null $method   Method.
+	 * @param int         $stackPtr The position in the stack where the token was found.
+	 * @param string|null $method   Method.
 	 *
 	 * @return bool
 	 */

@@ -190,8 +190,9 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 * Process the parameters of a matched function.
 	 *
 	 * @param int    $stackPtr        The position of the current token in the stack.
-	 * @param array  $group_name      The name of the group which was matched.
-	 * @param string $matched_content The token content (function name) which was matched.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
 	 * @param array  $parameters      Array with information about the parameters.
 	 *
 	 * @return void
