@@ -145,6 +145,13 @@
 
 	<!-- Include VariableAnalysis checks -->
 	<rule ref="VariableAnalysis"/>
+	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
+		<properties>
+			<!-- Do not report on unused variables before require nor usused or undefined variables in file scope. -->
+			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
+			<property name="allowUndefinedVariablesInFileScope" value="true"/>
+		</properties>
+	</rule>
 
 	<!-- Prevent deprecation notice when the sniff is not explicitly included. -->
 	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.DeprecatedSniff">
