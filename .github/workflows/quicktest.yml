@@ -77,8 +77,8 @@ jobs:
         if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
         uses: "ramsey/composer-install@v2"
         with:
-          # Bust the cache at least once a month - output format: YYYY-MM-DD.
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
       # requirements to get PHPUnit 7.x to install on nightly.
@@ -87,7 +87,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Display PHPCS installed standards
         run: ./vendor/bin/phpcs -i

@@ -47,8 +47,8 @@ jobs:
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
         with:
-          # Bust the cache at least once a month - output format: YYYY-MM-DD.
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Lint against parse errors
         run: ./bin/php-lint --checkstyle | cs2pr
@@ -70,22 +70,19 @@ jobs:
       # - The `wpcs_version` key is added to allow additional test builds when multiple WPCS versions
       #   would be supported. As, at this time, only the latest stable release of WPCS is supported,
       #   no additional versions are included in the array.
-      # - experimental: Whether the build is "allowed to fail".
       matrix:
         php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
         phpcs_version: ['3.7.1', 'dev-master']
         wpcs_version: ['2.3.*']
-        experimental: [false]
 
         include:
           - php: '8.3'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
-            experimental: true
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
 
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
@@ -124,8 +121,8 @@ jobs:
         if: ${{ startsWith( matrix.php, '8' ) == false }}
         uses: "ramsey/composer-install@v2"
         with:
-          # Bust the cache at least once a month - output format: YYYY-MM-DD.
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
       # requirements to get PHPUnit 7.x to install on nightly.
@@ -134,7 +131,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Run the unit tests
         run: ./bin/unit-tests
