@@ -44,7 +44,7 @@ After `composer install`, you can do:
 
 ## Branches
 
-Ongoing development will be done in feature branches then pulled against the `develop` branch and follows a typical _git-flow_ approach, where merges to `master` only happen when a new release is made.
+Ongoing development will be done in feature branches then pulled against the `develop` branch and follows a typical _git-flow_ approach, where merges to `main` only happen when a new release is made.
 
 To contribute an improvement to this project, fork the repo and open a pull request to the relevant branch. Alternatively, if you have push access to this repo, create a feature branch prefixed by `fix/` (followed by the issue number) or `add/` and then open a PR from that branch to the default (`develop`) branch.
 
@@ -199,9 +199,9 @@ When adding or changing a sniff, the ruleset test files should be updated to mat
 
 - In a `changelog/x.y.z` branch off of `develop`, update the `CHANGELOG.md` with a list of all of the changes following the keepachangelog.com format. Include PR references and GitHub username props.
 - Create a PR of `develop` <-- `changelog/x.y.z`, but do not merge until ready to release.
-- Create a PR of `master` <-- `develop`, and copy-paste the [`release-template.md`](https://github.com/Automattic/VIP-Coding-Standards/blob/develop/.github/ISSUE_TEMPLATE/release-template.md) contents.
-- When ready to release, merge the change log PR into `develop`, then merge the `develop` into `master` PR.
-- Tag the commit in `master` with the appropriate version number. Ideally, have it signed.
+- Create a PR of `main` <-- `develop`, and copy-paste the [`release-template.md`](https://github.com/Automattic/VIP-Coding-Standards/blob/develop/.github/ISSUE_TEMPLATE/release-template.md) contents.
+- When ready to release, merge the change log PR into `develop`, then merge the `develop` into `main` PR.
+- Tag the commit in `main` with the appropriate version number. Ideally, have it signed.
 - Close the current milestone.
 - Open a new milestone for the next release.
 - If any open PRs/issues which were milestoned for this release do not make it into the release, update their milestone.

@@ -1,11 +1,11 @@
 name: Test
 
 on:
-  # Run on pushes to `master` and on all pull requests.
+  # Run on pushes to `main` and on all pull requests.
   # Prevent the "push" build from running when there are only irrelevant changes.
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - '**.md'
   pull_request:
