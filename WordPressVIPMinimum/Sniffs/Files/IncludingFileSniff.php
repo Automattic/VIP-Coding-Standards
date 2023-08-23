@@ -25,13 +25,33 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 * @var array
 	 */
 	public $getPathFunctions = [
-		'plugin_dir_path',
 		'dirname',
-		'get_stylesheet_directory',
-		'get_template_directory',
-		'locate_template',
+		'get_404_template',
+		'get_archive_template',
+		'get_attachment_template',
+		'get_author_template',
+		'get_category_template',
+		'get_date_template',
+		'get_embed_template',
+		'get_front_page_template',
+		'get_page_template',
+		'get_paged_template', // Deprecated, but should still be accepted for the purpose of this sniff.
+		'get_home_template',
+		'get_index_template',
 		'get_parent_theme_file_path',
+		'get_privacy_policy_template',
+		'get_query_template',
+		'get_search_template',
+		'get_single_template',
+		'get_singular_template',
+		'get_stylesheet_directory',
+		'get_tag_template',
+		'get_taxonomy_template',
+		'get_template_directory',
 		'get_theme_file_path',
+		'locate_block_template',
+		'locate_template',
+		'plugin_dir_path',
 	];
 
 	/**

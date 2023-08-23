@@ -35,3 +35,8 @@ require CUSTOM_CONSTANT_DIR . 'file.php'; // OK.
 require_once ( VIPCS_PATH ) . 'file.php'; // OK.
 include_once      
   DIR_CUSTOM , 'file.php'; // OK.
+
+// These are valid (previously false positives).
+include( get_404_template() );
+require get_query_template( 'post' );
+include_once locate_block_template( __DIR__, 'silly_block' );
