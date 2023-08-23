@@ -144,7 +144,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
 		if ( $this->tokens[ $nextToken ]['code'] === T_STRING ) {
 			if ( in_array( $this->tokens[ $nextToken ]['content'], $this->getPathFunctions, true ) === true ) {
-				// The construct is using one of the function for getting correct path which is fine.
+				// The construct is using one of the functions for getting correct path which is fine.
 				return;
 			}
 
@@ -212,7 +212,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Check if a content string contains a keyword in custom paths.
 	 *
-	 * @param string $content  Content string.
+	 * @param string $content Content string.
 	 *
 	 * @return bool True if the string partially matches a keyword in $allowedCustomKeywords, false otherwise.
 	 */

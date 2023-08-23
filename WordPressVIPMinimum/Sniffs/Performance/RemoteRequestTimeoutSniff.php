@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Sniffs\Performance;
 use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
- * Flag REGEXP and NOT REGEXP in meta compare
+ * Flag use of a timeout of more than 3 seconds for remote requests.
  *
  * @package VIPCS\WordPressVIPMinimum
  */

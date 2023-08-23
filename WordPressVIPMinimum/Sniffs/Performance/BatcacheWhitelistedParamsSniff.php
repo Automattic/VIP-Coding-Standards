@@ -12,7 +12,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Checks whether proper escaping function is used.
+ * Checks whether code tries to refer to a batcache URL parameter.
  *
  *  @package VIPCS\WordPressVIPMinimum
  */
