@@ -112,7 +112,7 @@ class CheckReturnValueSniff extends Sniff {
 	 *
 	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return bool
+	 * @return int|false
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
@@ -140,6 +140,8 @@ class CheckReturnValueSniff extends Sniff {
 	 * Find instances in which a function call is directly passed to another one w/o checking the return type
 	 *
 	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
+	 *
+	 * @return void
 	 */
 	public function findDirectFunctionCalls( $stackPtr ) {
 
@@ -290,8 +292,8 @@ class CheckReturnValueSniff extends Sniff {
 	/**
 	 * Function used as as callback for the array_reduce call.
 	 *
-	 * @param string $carry The final string.
-	 * @param array  $item  Processed item.
+	 * @param string|null $carry The final string.
+	 * @param mixed       $item  Processed item.
 	 *
 	 * @return string
 	 */
@@ -305,6 +307,8 @@ class CheckReturnValueSniff extends Sniff {
 	 * @param int    $stackPtr     The position in the stack where the token was found.
 	 * @param string $variableName Variable name.
 	 * @param string $callee       Function name.
+	 *
+	 * @return void
 	 */
 	private function addNonCheckedVariableError( $stackPtr, $variableName, $callee ) {
 		$message = 'Type of `%s` must be checked before calling `%s()` using that variable.';

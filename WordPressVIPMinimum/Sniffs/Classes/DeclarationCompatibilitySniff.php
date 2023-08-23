@@ -27,7 +27,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * A list of classes and methods to check.
 	 *
-	 * @var string[]
+	 * @var array<string, array<string, array<string, mixed>>>
 	 */
 	public $checkClasses = [
 		'WP_Widget' => [
@@ -169,7 +169,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * List of grouped classes with same methods (as they extend the same parent class)
 	 *
-	 * @var string[]
+	 * @var array<string, string[]>
 	 */
 	public $checkClassesGroups = [
 		'Walker' => [
