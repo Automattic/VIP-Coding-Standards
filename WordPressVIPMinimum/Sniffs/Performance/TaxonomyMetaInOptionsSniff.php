@@ -8,8 +8,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Restricts the implementation of taxonomy term meta via options.

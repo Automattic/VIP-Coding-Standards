@@ -7,9 +7,9 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\BCFile;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Ensure that non-PHP files are included via `file_get_contents()` instead of using `include/require[_once]`.

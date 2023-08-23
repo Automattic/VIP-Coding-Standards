@@ -8,8 +8,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Restricts usage of some constants.

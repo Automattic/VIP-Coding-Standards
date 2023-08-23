@@ -8,8 +8,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
  * Flag suspicious WP_Query and get_posts params.
