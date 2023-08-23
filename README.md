@@ -18,7 +18,7 @@ Go to https://docs.wpvip.com/technical-references/code-review/phpcs-report/ to l
 * PHP 5.4+
 * [PHPCS 3.7.1+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
 * [WPCS 2.3.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
-* [VariableAnalysis 2.11.1+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
+* [VariableAnalysis 2.11.17+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
 
 ## Installation
 
