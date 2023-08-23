@@ -372,6 +372,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 * Consolidated violation.
 	 *
 	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
+	 *
+	 * @return void
 	 */
 	private function addHidingDetectedError( $stackPtr ) {
 		$message = 'Hiding of the admin bar is not allowed.';

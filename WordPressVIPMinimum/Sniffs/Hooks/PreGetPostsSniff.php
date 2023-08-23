@@ -92,6 +92,8 @@ class PreGetPostsSniff extends Sniff {
 	 * Process array.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function processArray( $stackPtr ) {
 
@@ -114,6 +116,8 @@ class PreGetPostsSniff extends Sniff {
 	 * Process string.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function processString( $stackPtr ) {
 
@@ -139,6 +143,8 @@ class PreGetPostsSniff extends Sniff {
 	 * Process function.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function processFunction( $stackPtr ) {
 
@@ -172,6 +178,8 @@ class PreGetPostsSniff extends Sniff {
 	 * Process closure.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function processClosure( $stackPtr ) {
 
@@ -197,6 +205,8 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @param int    $stackPtr     The position in the stack where the token was found.
 	 * @param string $variableName Variable name.
+	 *
+	 * @return void
 	 */
 	private function processFunctionBody( $stackPtr, $variableName ) {
 
@@ -236,6 +246,8 @@ class PreGetPostsSniff extends Sniff {
 	 * Consolidated violation.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function addPreGetPostsWarning( $stackPtr ) {
 		$message = 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.';

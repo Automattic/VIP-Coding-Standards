@@ -124,6 +124,8 @@ class RulesetTest {
 
 	/**
 	 * Run all the tests.
+	 *
+	 * @return void
 	 */
 	private function run() {
 		// Check for missing expected values.
@@ -162,6 +164,8 @@ class RulesetTest {
 	 * Process the Decoded JSON output from PHP_CodeSniffer.
 	 *
 	 * @param \stdClass $output Decoded JSON output from PHP_CodeSniffer.
+	 *
+	 * @return void
 	 */
 	private function process_output( $output ) {
 		foreach ( $output->files as $file ) {
@@ -173,6 +177,8 @@ class RulesetTest {
 	 * Process single file of within PHP_CodeSniffer results.
 	 *
 	 * @param \stdClass $file File output.
+	 *
+	 * @return void
 	 */
 	private function process_file( $file ) {
 		foreach ( $file->messages as $violation ) {
@@ -184,6 +190,8 @@ class RulesetTest {
 	 * Process single violation within PHP_CodeSniffer results.
 	 *
 	 * @param \stdClass $violation Violation data.
+	 *
+	 * @return void
 	 */
 	private function process_violation( $violation ) {
 		if ( $this->violation_type_is_error( $violation ) ) {
@@ -210,6 +218,8 @@ class RulesetTest {
 	 * Add 1 to the number of errors for the given line.
 	 *
 	 * @param int $line Line number.
+	 *
+	 * @return void
 	 */
 	private function add_error_for_line( $line ) {
 		$this->errors[ $line ] = isset( $this->errors[ $line ] ) ? ++$this->errors[ $line ] : 1;
@@ -219,6 +229,8 @@ class RulesetTest {
 	 * Add 1 to the number of errors for the given line.
 	 *
 	 * @param int $line Line number.
+	 *
+	 * @return void
 	 */
 	private function add_warning_for_line( $line ) {
 		$this->warnings[ $line ] = isset( $this->warnings[ $line ] ) ? ++$this->warnings[ $line ] : 1;
@@ -229,6 +241,8 @@ class RulesetTest {
 	 *
 	 * @param int    $line    Line number.
 	 * @param string $message Message.
+	 *
+	 * @return void
 	 */
 	private function add_message_for_line( $line, $message ) {
 		$this->messages[ $line ] = ( ! isset( $this->messages[ $line ] ) || ! is_array( $this->messages[ $line ] ) ) ? [ $message ] : array_merge( $this->messages[ $line ], [ $message ] );
@@ -236,6 +250,8 @@ class RulesetTest {
 
 	/**
 	 * Check whether all expected numbers of errors and warnings are present in the output.
+	 *
+	 * @return void
 	 */
 	private function check_missing_expected_values() {
 		foreach ( $this->expected as $type => $lines ) {
@@ -261,6 +277,8 @@ class RulesetTest {
 
 	/**
 	 * Check whether there are no unexpected numbers of errors and warnings.
+	 *
+	 * @return void
 	 */
 	private function check_unexpected_values() {
 		foreach ( [ 'errors', 'warnings' ] as $type ) {
@@ -317,6 +335,8 @@ class RulesetTest {
 	 * @param string $type     The type of the issue.
 	 * @param int    $number   Real number of issues.
 	 * @param int    $line     Line number.
+	 *
+	 * @return void
 	 */
 	private function error_warning_message( $expected, $type, $number, $line ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
