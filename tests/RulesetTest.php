@@ -103,7 +103,7 @@ class RulesetTest {
 
 		$output = $this->collect_phpcs_result();
 
-		if ( ! is_object( $output ) || empty( $output ) ) {
+		if ( empty( $output ) || ! is_object( $output ) ) {
 			printf( 'The PHPCS command checking the ruleset hasn\'t returned any issues. Bailing ...' . PHP_EOL );
 			exit( 1 ); // Die early, if we don't have any output.
 		}
