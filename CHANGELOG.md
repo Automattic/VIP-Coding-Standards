@@ -17,6 +17,7 @@ Increases requirements for PHPCS from 3.5.5+ to 3.7.1.
 - [#760](https://github.com/Automattic/VIP-Coding-Standards/pull/760): RestrictedFunctions: remove reference to function which doesn't exist.
 
 ### Changed
+- [#768](https://github.com/Automattic/VIP-Coding-Standards/pull/768): DeclarationCompatibility: performance improvement.
 
 - Rulesets:
     * [#763](https://github.com/Automattic/VIP-Coding-Standards/pull/763): Move VariableAnalysis configuration from Go to Minimum.
@@ -39,6 +40,7 @@ Increases requirements for PHPCS from 3.5.5+ to 3.7.1.
     * [#756](https://github.com/Automattic/VIP-Coding-Standards/pull/756): Remove extra line at end of classes.
     * [#758](https://github.com/Automattic/VIP-Coding-Standards/pull/758): Simplifications of sniffs extending the WPCS AbstractArrayAssignmentRestrictionsSniff.
     * [#761](https://github.com/Automattic/VIP-Coding-Standards/pull/761): RegexpCompare: remove redundant condition.
+    * [#771](https://github.com/Automattic/VIP-Coding-Standards/pull/771): QA: fix condition order.
 - CI:
     * [#705](https://github.com/Automattic/VIP-Coding-Standards/pull/705): Various updates.
     * [#750](https://github.com/Automattic/VIP-Coding-Standards/pull/750): Test Higher PHP versions.
@@ -51,12 +53,14 @@ Increases requirements for PHPCS from 3.5.5+ to 3.7.1.
     * [#755](https://github.com/Automattic/VIP-Coding-Standards/pull/755): Validate the PHPCS installed standards.
     * [#757](https://github.com/Automattic/VIP-Coding-Standards/pull/757): Test and Quicktest tweaks.
     * [#767](https://github.com/Automattic/VIP-Coding-Standards/pull/767): Minor simplifications.
+    * [#769](https://github.com/Automattic/VIP-Coding-Standards/pull/769): .gitattributes: readability improvement.
 - Docs:
     * [#722](https://github.com/Automattic/VIP-Coding-Standards/pull/722): Updated Docs link for `ORDER BY RAND()`.
     * [#707](https://github.com/Automattic/VIP-Coding-Standards/pull/707): README: update requirements listing.
     * [#706](https://github.com/Automattic/VIP-Coding-Standards/pull/706): README: update for Composer 2.2.
     * [#766](https://github.com/Automattic/VIP-Coding-Standards/pull/766): Various minor doc fixes.
     * [#759](https://github.com/Automattic/VIP-Coding-Standards/pull/759): Bug template: make version table more comprehensive.
+    * [#770](https://github.com/Automattic/VIP-Coding-Standards/pull/770): Docs: various tag improvements.
 
 ### Deprecated
 * [#612](https://github.com/Automattic/VIP-Coding-Standards/pull/612): The `WordPressVIPMinimum.Compatibility.Zoninator` sniff is (soft) deprecated and will be removed in the 3.0.0 release.
