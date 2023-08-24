@@ -64,6 +64,7 @@ When you introduce new `public` sniff properties, or your sniff extends a class 
 ### Pre-requisites
 * VIP Coding Standards
 * WordPress-Coding-Standards
+* PHPCSUtils 1.x
 * PHP_CodeSniffer 3.x
 * PHPUnit 4.x, 5.x, 6.x or 7.x
 

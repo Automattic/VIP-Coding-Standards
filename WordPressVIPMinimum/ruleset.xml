@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPressVIPMinimum" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>WordPress VIP Minimum Coding Standards</description>
+
+	<!--
+		 Trigger error if PHPCSUtils cannot be found.
+		 PHPCSUtils does not contain any sniffs, so this rule isn't strictly necessary, but
+		 by having this here anyway, if PHPCSUtils is missing, the user will get a
+		 descriptive error message during the loading of the ruleset instead of
+		 a fatal "class not found" error once the sniffs start running.
+	-->
+	<rule ref="PHPCSUtils"/>
+
 	<rule ref="Generic.PHP.Syntax"/>
 	<rule ref="Generic.PHP.NoSilencedErrors">
 		<properties>
@@ -151,34 +161,6 @@
 			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
 			<property name="allowUndefinedVariablesInFileScope" value="true"/>
 		</properties>
-	</rule>
-
-	<!-- Prevent deprecation notice when the sniff is not explicitly included. -->
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.DeprecatedSniff">
-		<severity>0</severity>
-	</rule>
-
-	<!-- Prevent duplicate messages from deprecated sniff. -->
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.VariableRedeclaration">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.SelfInsideClosure">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.SelfOutsideClass">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.StaticInsideClosure">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.StaticOutsideClass">
-		<severity>0</severity>
 	</rule>
 
 </ruleset>

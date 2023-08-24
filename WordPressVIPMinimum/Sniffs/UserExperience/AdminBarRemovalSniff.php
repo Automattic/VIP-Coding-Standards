@@ -9,6 +9,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
+use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
@@ -208,13 +210,13 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				break;
 
 			case 'add_filter':
-				$filter_name = $this->strip_quotes( $parameters[1]['raw'] );
+				$filter_name = TextStrings::stripQuotes( $parameters[1]['raw'] );
 				if ( $filter_name !== 'show_admin_bar' ) {
 					break;
 				}
 
 				$error = true;
-				if ( $this->remove_only === true && isset( $parameters[2]['raw'] ) && $this->strip_quotes( $parameters[2]['raw'] ) === '__return_true' ) {
+				if ( $this->remove_only === true && isset( $parameters[2]['raw'] ) && TextStrings::stripQuotes( $parameters[2]['raw'] ) === '__return_true' ) {
 					$error = false;
 				}
 				break;
@@ -343,7 +345,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				}
 			}
 			$start    = ( $i + 1 );
-			$selector = trim( $this->phpcsFile->getTokensAsString( $start, $opener - $start ) );
+			$selector = trim( GetTokensAsString::normal( $this->phpcsFile, $start, ( $opener - 1 ) ) );
 			unset( $i );
 
 			foreach ( $this->target_css_selectors as $target_selector ) {

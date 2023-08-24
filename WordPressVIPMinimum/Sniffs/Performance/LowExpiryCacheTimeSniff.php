@@ -8,6 +8,7 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -149,7 +150,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			}
 
 			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-				$content = $this->strip_quotes( $this->tokens[ $i ]['content'] );
+				$content = TextStrings::stripQuotes( $this->tokens[ $i ]['content'] );
 				if ( is_numeric( $content ) === true ) {
 					$tokensAsString .= $content;
 					continue;
