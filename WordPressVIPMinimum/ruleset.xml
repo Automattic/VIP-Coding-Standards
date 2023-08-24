@@ -153,32 +153,4 @@
 		</properties>
 	</rule>
 
-	<!-- Prevent deprecation notice when the sniff is not explicitly included. -->
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.DeprecatedSniff">
-		<severity>0</severity>
-	</rule>
-
-	<!-- Prevent duplicate messages from deprecated sniff. -->
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.VariableRedeclaration">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UndefinedVariable">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.UnusedVariable">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.SelfInsideClosure">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.SelfOutsideClass">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.StaticInsideClosure">
-		<severity>0</severity>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Variables.VariableAnalysis.StaticOutsideClass">
-		<severity>0</severity>
-	</rule>
-
 </ruleset>
