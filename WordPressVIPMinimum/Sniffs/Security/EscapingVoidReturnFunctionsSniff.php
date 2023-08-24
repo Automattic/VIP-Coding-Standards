@@ -8,8 +8,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Flag functions that don't return anything, yet are wrapped in an escaping function call.

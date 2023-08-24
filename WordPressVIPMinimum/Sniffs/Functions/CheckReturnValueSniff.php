@@ -7,8 +7,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * This sniff enforces checking the return value of a function before passing it to another one.
