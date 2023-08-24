@@ -9,7 +9,8 @@
 
 namespace WordPressVIPMinimum\Sniffs;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
+use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\MessageHelper;
 
 /**
  * Restricts usage of some variables.
@@ -179,7 +180,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 				if ( isset( $token['bracket_closer'] ) ) {
 					$owner  = $this->phpcsFile->findPrevious( \T_VARIABLE, $stackPtr );
-					$inside = $this->phpcsFile->getTokensAsString( $stackPtr, $token['bracket_closer'] - $stackPtr + 1 );
+					$inside = GetTokensAsString::normal( $this->phpcsFile, $stackPtr, $token['bracket_closer'] );
 					$var    = implode( '', [ $this->tokens[ $owner ]['content'], $inside ] );
 				}
 			}
@@ -200,11 +201,13 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 				continue;
 			}
 
-			$this->addMessage(
+			$code = MessageHelper::stringToErrorcode( $groupName . '_' . $match[1] );
+			MessageHelper::addMessage(
+				$this->phpcsFile,
 				$group['message'],
 				$stackPtr,
 				$group['type'] === 'error',
-				$this->string_to_errorcode( $groupName . '_' . $match[1] ),
+				$code,
 				[ $var ]
 			);
 

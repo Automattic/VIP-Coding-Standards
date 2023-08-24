@@ -44,6 +44,7 @@ Use `php -v` and `composer show` to get versions.
 | ------------------------ | -------
 | PHP version              | x.y.z
 | PHP_CodeSniffer version  | x.y.z
+| PHPCSUtils version       | x.y.z
 | VIPCS version            | x.y.z
 | WordPressCS version      | x.y.z
 | VariableAnalysis version | x.y.z
