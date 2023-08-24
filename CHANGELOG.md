@@ -4,6 +4,69 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.4] - 2023-07-05
+
+Props: kshaner, GaryJones, jrfnl, yolih
+
+Increases requirements for PHPCS from 3.5.5+ to 3.7.1.
+
+### Fixed
+- [#709](https://github.com/Automattic/VIP-Coding-Standards/pull/709): Add `get_theme_file_path()` to list of allowed include functions.
+- [#762](https://github.com/Automattic/VIP-Coding-Standards/pull/762): IncludingFile: allow for more path-returning functions.
+- [#748](https://github.com/Automattic/VIP-Coding-Standards/pull/748): ProperEscapingFunction: Fix short tag detection.
+- [#760](https://github.com/Automattic/VIP-Coding-Standards/pull/760): RestrictedFunctions: remove reference to function which doesn't exist.
+
+### Changed
+- [#768](https://github.com/Automattic/VIP-Coding-Standards/pull/768): DeclarationCompatibility: performance improvement.
+
+- Rulesets:
+    * [#763](https://github.com/Automattic/VIP-Coding-Standards/pull/763): Move VariableAnalysis configuration from Go to Minimum.
+    * [#765](https://github.com/Automattic/VIP-Coding-Standards/pull/765): Fix the names.
+- Composer:
+    * [#742](https://github.com/Automattic/VIP-Coding-Standards/pull/742): Up the minimum PHPCS version to 3.7.1.
+    * [#764](https://github.com/Automattic/VIP-Coding-Standards/pull/764): Update VariableAnalysis dependency to 2.11.17.
+    * [#738](https://github.com/Automattic/VIP-Coding-Standards/pull/738): Allow for the 1.0.0 version of the Composer PHPCS plugin.
+    * [#721](https://github.com/Automattic/VIP-Coding-Standards/pull/721): Update composer.json keywords.
+    * [#714](https://github.com/Automattic/VIP-Coding-Standards/pull/714): Update PHP Parallel Lint and Console Highlighter.
+    * [#741](https://github.com/Automattic/VIP-Coding-Standards/pull/741): Update script names.
+    * [#747](https://github.com/Automattic/VIP-Coding-Standards/pull/747): Fix script references.
+    * [#708](https://github.com/Automattic/VIP-Coding-Standards/pull/708): Update references to the Composer plugin.
+- Tests:
+    * [#735](https://github.com/Automattic/VIP-Coding-Standards/pull/735): Unit tests: Support PHP >= 8.1.
+    * [#746](https://github.com/Automattic/VIP-Coding-Standards/pull/746): Fix checks for PHP 8.1 and above.
+    * [#737](https://github.com/Automattic/VIP-Coding-Standards/pull/737): AdminBarRemovalUnitTest: Ensure final reset is read.
+- Coding Standards
+    * [#733](https://github.com/Automattic/VIP-Coding-Standards/pull/733): Fix coding standards of VIPCS sniffs.
+    * [#756](https://github.com/Automattic/VIP-Coding-Standards/pull/756): Remove extra line at end of classes.
+    * [#758](https://github.com/Automattic/VIP-Coding-Standards/pull/758): Simplifications of sniffs extending the WPCS AbstractArrayAssignmentRestrictionsSniff.
+    * [#761](https://github.com/Automattic/VIP-Coding-Standards/pull/761): RegexpCompare: remove redundant condition.
+    * [#771](https://github.com/Automattic/VIP-Coding-Standards/pull/771): QA: fix condition order.
+- CI:
+    * [#705](https://github.com/Automattic/VIP-Coding-Standards/pull/705): Various updates.
+    * [#750](https://github.com/Automattic/VIP-Coding-Standards/pull/750): Test Higher PHP versions.
+    * [#724](https://github.com/Automattic/VIP-Coding-Standards/pull/724): Fix use of deprecated `set-output`.
+    * [#725](https://github.com/Automattic/VIP-Coding-Standards/pull/725): Update the xmllint-problem-matcher.
+    * [#726](https://github.com/Automattic/VIP-Coding-Standards/pull/726): Various tweaks.
+    * [#728](https://github.com/Automattic/VIP-Coding-Standards/pull/728): Bust the cache semi-regularly.
+    * [#711](https://github.com/Automattic/VIP-Coding-Standards/pull/711): Version update for various predefined actions.
+    * [#712](https://github.com/Automattic/VIP-Coding-Standards/pull/712): Fix build failure.
+    * [#755](https://github.com/Automattic/VIP-Coding-Standards/pull/755): Validate the PHPCS installed standards.
+    * [#757](https://github.com/Automattic/VIP-Coding-Standards/pull/757): Test and Quicktest tweaks.
+    * [#767](https://github.com/Automattic/VIP-Coding-Standards/pull/767): Minor simplifications.
+    * [#769](https://github.com/Automattic/VIP-Coding-Standards/pull/769): .gitattributes: readability improvement.
+- Docs:
+    * [#722](https://github.com/Automattic/VIP-Coding-Standards/pull/722): Updated Docs link for `ORDER BY RAND()`.
+    * [#707](https://github.com/Automattic/VIP-Coding-Standards/pull/707): README: update requirements listing.
+    * [#706](https://github.com/Automattic/VIP-Coding-Standards/pull/706): README: update for Composer 2.2.
+    * [#766](https://github.com/Automattic/VIP-Coding-Standards/pull/766): Various minor doc fixes.
+    * [#759](https://github.com/Automattic/VIP-Coding-Standards/pull/759): Bug template: make version table more comprehensive.
+    * [#770](https://github.com/Automattic/VIP-Coding-Standards/pull/770): Docs: various tag improvements.
+
+### Deprecated
+* [#612](https://github.com/Automattic/VIP-Coding-Standards/pull/612): The `WordPressVIPMinimum.Compatibility.Zoninator` sniff is (soft) deprecated and will be removed in the 3.0.0 release.
+* [#613](https://github.com/Automattic/VIP-Coding-Standards/pull/613): The `WordPressVIPMinimum.Performance.BatcacheWhitelistedParams` sniff is (soft) deprecated and will be removed in the 3.0.0 release.
+
+
 ## [2.3.3] - 2021-09-29
 
 Props: gudmdharalds, jrfnl, BrookeDot, rebeccahum
@@ -570,6 +633,7 @@ Initial release.
 Props: david-binda, pkevan.
 
 
+[2.3.4]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.0...2.3.1
