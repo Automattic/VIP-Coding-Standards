@@ -442,9 +442,9 @@ add_filter( 'robots_txt', function() { // Warning.
 	return 'test';
 } );
 
-// WordPressVIPMinimum.Performance.BatcacheWhitelistedParams
-// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-$test = sanitize_text_field( $_GET["utm_medium"] ); // Warning.
+
+
+
 
 // WordPressVIPMinimum.Performance.CacheValueOverride
 $bad_wp_users = wp_cache_get( md5( self::CACHE_KEY . '_wp_users'), self::CACHE_GROUP );
