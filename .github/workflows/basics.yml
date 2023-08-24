@@ -7,8 +7,15 @@ on:
     paths-ignore:
       - '**.md'
   pull_request:
+
   # Allow manually triggering the workflow.
   workflow_dispatch:
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   checkcs:
@@ -17,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -27,7 +34,9 @@ jobs:
           tools: cs2pr
 
       - name: Install xmllint
-        run: sudo apt-get install --no-install-recommends -y libxml2-utils
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libxml2-utils
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
@@ -40,26 +49,30 @@ jobs:
 
       - name: 'Composer: adjust dependencies'
         # Using PHPCS `master` as an early detection system for bugs upstream.
-        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master"
+        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: 'Validate XML against schema and check code style'
         run: ./bin/xml-lint
 
       # Check the code-style consistency of the PHP files.
       - name: Check PHP code style
-        continue-on-error: true
+        id: phpcs
         run: vendor/bin/phpcs --report-full --report-checkstyle=./phpcs-report.xml
 
       - name: Show PHPCS results in PR
+        if: ${{ always() && steps.phpcs.outcome == 'failure' }}
         run: cs2pr ./phpcs-report.xml
 
       # Check that the sniffs available are feature complete.
       # For now, just check that all sniffs have unit tests.
       # At a later stage the documentation check can be activated.
       - name: Check sniff feature completeness
-        run: composer check-complete
+        run: composer feature-completeness

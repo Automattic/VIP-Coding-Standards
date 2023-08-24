@@ -9,8 +9,15 @@ on:
     paths-ignore:
       - '**.md'
   pull_request:
+
   # Allow manually triggering the workflow.
   workflow_dispatch:
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   #### PHP LINT STAGE ####
@@ -21,19 +28,14 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', 'latest']
-        experimental: [false]
-
-        include:
-          - php: '8.1'
-            experimental: true
+        php: ['5.4', 'latest', '8.3']
 
     name: "Lint: PHP ${{ matrix.php }}"
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -43,7 +45,10 @@ jobs:
           tools: cs2pr
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Lint against parse errors
         run: ./bin/php-lint --checkstyle | cs2pr
@@ -60,52 +65,41 @@ jobs:
       # - phpcs_version: The PHPCS versions to test against.
       #   IMPORTANT: test runs shouldn't fail because of PHPCS being incompatible with a PHP version.
       #   - PHPCS will run without errors on PHP 5.4 - 7.4 on any supported version.
-      #   - PHP 8.0 needs PHPCS 3.5.7+ to run without errors.
+      #   - PHP 8.0 needs PHPCS 3.5.7+ to run without errors, and we require a higher minimum version.
+      #   - PHP 8.1 needs PHPCS 3.6.1+ to run without errors, but works best with 3.7.1+, and we require at least this minimum version.
       # - The `wpcs_version` key is added to allow additional test builds when multiple WPCS versions
       #   would be supported. As, at this time, only the latest stable release of WPCS is supported,
       #   no additional versions are included in the array.
-      # - experimental: Whether the build is "allowed to fail".
       matrix:
-        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
-        phpcs_version: ['3.5.5', 'dev-master']
+        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
+        phpcs_version: ['3.7.1', 'dev-master']
         wpcs_version: ['2.3.*']
-        experimental: [false]
 
         include:
-          # Complete the matrix by adding PHP 8.0, but only test against compatible PHPCS versions.
-          - php: '8.0'
+          - php: '8.3'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
-            experimental: false
-          - php: '8.0'
-            # PHPCS 3.5.7 is the lowest version of PHPCS which supports PHP 8.0.
-            phpcs_version: '3.5.7'
-            wpcs_version: '2.3.*'
-            experimental: false
-
-          # Experimental builds. These are allowed to fail.
-          #- php: '8.1'
-          #  phpcs_version: 'dev-master'
-          #  wpcs_version: '2.3.*'
-          #  experimental: true
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
 
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+      # Note: the "elif" condition is temporary and should be removed once VIPCS updates to WPCS 3.0+.
       - name: Setup ini config
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED'
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
+          elif [[ "${{ matrix.php }}" == "8.1" ]]; then
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL'
+            echo 'PHP_INI=error_reporting=-1' >> $GITHUB_OUTPUT
           fi
 
       - name: Install PHP
@@ -115,24 +109,29 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: set PHPCS and WPCS versions for tests'
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}"
+      - name: 'Composer: set PHPCS version for tests'
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
+
+      - name: 'Composer: set WPCS version for tests'
+        run: composer require wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
       # requirements to get PHPUnit 7.x to install on nightly.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php, '8' ) }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Run the unit tests
         run: ./bin/unit-tests

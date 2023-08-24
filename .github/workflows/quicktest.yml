@@ -10,6 +10,12 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   #### QUICK TEST STAGE ####
   # This is a much quicker test which only runs the unit tests and linting against the low/high
@@ -24,60 +30,67 @@ jobs:
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
           - php: '5.4'
-            phpcs_version: '3.5.5'
+            phpcs_version: '3.7.1'
             wpcs_version: '2.3.*'
 
           - php: 'latest'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.*'
           - php: 'latest'
-            # PHPCS 3.5.7 is the lowest version of PHPCS which supports PHP 8.0.
-            phpcs_version: '3.5.7'
+            phpcs_version: '3.7.1'
             wpcs_version: '2.3.*'
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+      # Note: the "elif" condition is temporary and should be removed once VIPCS updates to WPCS 3.0+.
       - name: Setup ini config
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED'
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL'
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
           fi
 
-      - name: Install PHP
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: set PHPCS and WPCS versions for tests'
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}"
+      - name: 'Composer: set PHPCS version for tests'
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
+
+      - name: 'Composer: set WPCS version for tests'
+        run: composer require wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
       # requirements to get PHPUnit 7.x to install on nightly.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
+          custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: Display PHPCS installed standards
+        run: ./vendor/bin/phpcs -i
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'

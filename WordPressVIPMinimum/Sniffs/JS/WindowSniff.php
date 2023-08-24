@@ -127,5 +127,4 @@ class WindowSniff extends Sniff {
 		$message = 'Data from JS global "%s" may contain user-supplied values and should be sanitized before output to prevent XSS.';
 		$this->phpcsFile->addError( $message, $stackPtr, $nextNextToken, $data );
 	}
-
 }

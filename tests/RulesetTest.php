@@ -98,9 +98,12 @@ class RulesetTest {
 			$this->phpcs_bin = realpath( $phpcs_bin );
 		}
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		printf( 'Testing the ' . $this->ruleset . ' ruleset.' . PHP_EOL );
+
 		$output = $this->collect_phpcs_result();
 
-		if ( ! is_object( $output ) || empty( $output ) ) {
+		if ( empty( $output ) || ! is_object( $output ) ) {
 			printf( 'The PHPCS command checking the ruleset hasn\'t returned any issues. Bailing ...' . PHP_EOL );
 			exit( 1 ); // Die early, if we don't have any output.
 		}
@@ -121,6 +124,8 @@ class RulesetTest {
 
 	/**
 	 * Run all the tests.
+	 *
+	 * @return void
 	 */
 	private function run() {
 		// Check for missing expected values.
@@ -143,11 +148,12 @@ class RulesetTest {
 		}
 
 		$shell = sprintf(
-			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
-			$php, // Current PHP executable if avaiable.
+			'%1$s%2$s --severity=1 --standard=%3$s --report=json --runtime-set minimum_supported_wp_version 0 ./%3$s/ruleset-test.inc',
+			$php, // Current PHP executable if available.
 			$this->phpcs_bin,
 			$this->ruleset
 		);
+
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec -- This is test code, not production.
 		$output = shell_exec( $shell );
 
@@ -158,6 +164,8 @@ class RulesetTest {
 	 * Process the Decoded JSON output from PHP_CodeSniffer.
 	 *
 	 * @param \stdClass $output Decoded JSON output from PHP_CodeSniffer.
+	 *
+	 * @return void
 	 */
 	private function process_output( $output ) {
 		foreach ( $output->files as $file ) {
@@ -169,6 +177,8 @@ class RulesetTest {
 	 * Process single file of within PHP_CodeSniffer results.
 	 *
 	 * @param \stdClass $file File output.
+	 *
+	 * @return void
 	 */
 	private function process_file( $file ) {
 		foreach ( $file->messages as $violation ) {
@@ -180,6 +190,8 @@ class RulesetTest {
 	 * Process single violation within PHP_CodeSniffer results.
 	 *
 	 * @param \stdClass $violation Violation data.
+	 *
+	 * @return void
 	 */
 	private function process_violation( $violation ) {
 		if ( $this->violation_type_is_error( $violation ) ) {
@@ -195,6 +207,7 @@ class RulesetTest {
 	 * Check if violation is an error.
 	 *
 	 * @param \stdClass $violation Violation data.
+	 *
 	 * @return bool True if string matches error type.
 	 */
 	private function violation_type_is_error( $violation ) {
@@ -205,6 +218,8 @@ class RulesetTest {
 	 * Add 1 to the number of errors for the given line.
 	 *
 	 * @param int $line Line number.
+	 *
+	 * @return void
 	 */
 	private function add_error_for_line( $line ) {
 		$this->errors[ $line ] = isset( $this->errors[ $line ] ) ? ++$this->errors[ $line ] : 1;
@@ -214,6 +229,8 @@ class RulesetTest {
 	 * Add 1 to the number of errors for the given line.
 	 *
 	 * @param int $line Line number.
+	 *
+	 * @return void
 	 */
 	private function add_warning_for_line( $line ) {
 		$this->warnings[ $line ] = isset( $this->warnings[ $line ] ) ? ++$this->warnings[ $line ] : 1;
@@ -224,6 +241,8 @@ class RulesetTest {
 	 *
 	 * @param int    $line    Line number.
 	 * @param string $message Message.
+	 *
+	 * @return void
 	 */
 	private function add_message_for_line( $line, $message ) {
 		$this->messages[ $line ] = ( ! isset( $this->messages[ $line ] ) || ! is_array( $this->messages[ $line ] ) ) ? [ $message ] : array_merge( $this->messages[ $line ], [ $message ] );
@@ -231,6 +250,8 @@ class RulesetTest {
 
 	/**
 	 * Check whether all expected numbers of errors and warnings are present in the output.
+	 *
+	 * @return void
 	 */
 	private function check_missing_expected_values() {
 		foreach ( $this->expected as $type => $lines ) {
@@ -256,6 +277,8 @@ class RulesetTest {
 
 	/**
 	 * Check whether there are no unexpected numbers of errors and warnings.
+	 *
+	 * @return void
 	 */
 	private function check_unexpected_values() {
 		foreach ( [ 'errors', 'warnings' ] as $type ) {
@@ -312,6 +335,8 @@ class RulesetTest {
 	 * @param string $type     The type of the issue.
 	 * @param int    $number   Real number of issues.
 	 * @param int    $line     Line number.
+	 *
+	 * @return void
 	 */
 	private function error_warning_message( $expected, $type, $number, $line ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

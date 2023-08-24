@@ -67,10 +67,11 @@ class StringConcatSniff extends Sniff {
 	 *
 	 * @param int   $stackPtr The position of the current token in the stack passed in $tokens.
 	 * @param array $data     Replacements for the error message.
+	 *
+	 * @return void
 	 */
 	private function addFoundError( $stackPtr, array $data ) {
 		$message = 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s.';
 		$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 	}
-
 }

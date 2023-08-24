@@ -76,5 +76,4 @@ class ConstantStringSniff extends Sniff {
 		$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 		$this->phpcsFile->addError( $message, $tstring_token, 'NotCheckingConstantName', $data );
 	}
-
 }

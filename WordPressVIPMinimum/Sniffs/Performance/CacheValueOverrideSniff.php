@@ -11,13 +11,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * This sniff enforces checking the return value of a function before passing it to another one.
- *
- * An example of a not checking return value is:
- *
- * <code>
- * echo esc_url( wpcom_vip_get_term_link( $term ) );
- * </code>
+ * This sniff check whether a cached value is being overridden.
  *
  * @package VIPCS\WordPressVIPMinimum
  */
@@ -119,7 +113,7 @@ class CacheValueOverrideSniff extends Sniff {
 	 *
 	 * @param int $stackPtr The position of the current token in the stack.
 	 *
-	 * @return bool
+	 * @return int|false
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
@@ -142,5 +136,4 @@ class CacheValueOverrideSniff extends Sniff {
 
 		return $previous;
 	}
-
 }

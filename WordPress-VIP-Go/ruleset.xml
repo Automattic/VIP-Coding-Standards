@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress VIP Go" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress-VIP-Go" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>WordPress VIP Go Coding Standards</description>
 
 	<!-- The rules below are the changes from between the original sniff or parent ruleset, and what should be applied for this Standard. -->
@@ -7,11 +7,6 @@
 	<rule ref="WordPressVIPMinimum"/>
 
 	<!-- Things that may be incompatible with the VIP Go infrastructure and needs a dev to review -->
-	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_delete">
-		<type>warning</type>
-		<severity>6</severity>
-		<message>File system operations only work on the `/tmp/` and `wp-content/uploads/` directories. To avoid unexpected results, please use helper functions like `get_temp_dir()`  or `wp_get_upload_dir()` to get the proper directory path when using functions such as %s(). For more details, please see: https://docs.wpvip.com/technical-references/vip-go-files-system/local-file-operations/</message>
-	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents">
 		<type>warning</type>
 		<severity>6</severity>
@@ -242,14 +237,6 @@
 	<!-- Silence is golden, these don't affect us on VIP Go -->
 	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
 		<severity>0</severity>
-	</rule>
-
-	<!-- Do not report on undefined variables before require nor in file scope. -->
-	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
-		<properties>
-			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
-			<property name="allowUndefinedVariablesInFileScope" value="true"/>
-		</properties>
 	</rule>
 
 	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">

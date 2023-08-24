@@ -98,6 +98,13 @@ class ProperEscapingFunctionSniff extends Sniff {
 	private $in_short_echo = false;
 
 	/**
+	 * Keep track of the current file, so we can reset $in_short_echo for each new file.
+	 *
+	 * @var string Absolute file name of the file being processed. Defaults to an empty string.
+	 */
+	private $current_file = '';
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array
@@ -119,6 +126,12 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
+		// Reset short echo context tracking variable for a new file.
+		if ( $this->phpcsFile->getFilename() !== $this->current_file ) {
+			$this->in_short_echo = false;
+			$this->current_file  = $this->phpcsFile->getFilename();
+		}
+
 		/*
 		 * Short open echo tags will act as an echo for the first expression and
 		 * allow for passing multiple comma-separated parameters.

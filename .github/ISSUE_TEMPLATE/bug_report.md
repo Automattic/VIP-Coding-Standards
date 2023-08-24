@@ -40,11 +40,13 @@ e.g. `WordPressVIPMinimum.PHP.NoSilencedErrors.Discouraged`
 
 Use `php -v` and `composer show` to get versions.
 
-| Question                | Answer
-| ------------------------| -------
-| PHP version             | x.y.z 
-| PHP_CodeSniffer version | x.y.z
-| VIPCS version           | x.y.z
+| Question                 | Answer
+| ------------------------ | -------
+| PHP version              | x.y.z
+| PHP_CodeSniffer version  | x.y.z
+| VIPCS version            | x.y.z
+| WordPressCS version      | x.y.z
+| VariableAnalysis version | x.y.z
 
 ## Additional Context (optional)
 

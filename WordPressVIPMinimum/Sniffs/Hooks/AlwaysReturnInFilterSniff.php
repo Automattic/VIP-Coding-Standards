@@ -91,6 +91,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * Process array.
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function processArray( $stackPtr ) {
 
@@ -124,6 +126,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * @param int $stackPtr The position in the stack where the token was found.
 	 * @param int $start    The start of the token.
 	 * @param int $end      The end of the token.
+	 *
+	 * @return void
 	 */
 	private function processString( $stackPtr, $start = 0, $end = null ) {
 
@@ -151,6 +155,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * @param int $stackPtr The position in the stack where the token was found.
 	 * @param int $start    The start of the token.
 	 * @param int $end      The end of the token.
+	 *
+	 * @return void
 	 */
 	private function processFunction( $stackPtr, $start = 0, $end = null ) {
 
@@ -172,6 +178,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 * Process function's body
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return void
 	 */
 	private function processFunctionBody( $stackPtr ) {
 
@@ -218,9 +226,9 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		while ( $returnTokenPtr ) {
 			if ( $this->isInsideIfConditonal( $returnTokenPtr ) ) {
-				$insideIfConditionalReturn++;
+				++$insideIfConditionalReturn;
 			} else {
-				$outsideConditionalReturn++;
+				++$outsideConditionalReturn;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
 				$message = 'Please, make sure that a callback to `%s` filter is returning void intentionally.';

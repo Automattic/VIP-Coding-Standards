@@ -187,7 +187,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'type'      => 'error',
 				'message'   => 'Filesystem writes are forbidden, please do not use %s().',
 				'functions' => [
-					'delete',
 					'file_put_contents',
 					'flock',
 					'fputcsv',

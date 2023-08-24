@@ -25,12 +25,33 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 * @var array
 	 */
 	public $getPathFunctions = [
-		'plugin_dir_path',
 		'dirname',
-		'get_stylesheet_directory',
-		'get_template_directory',
-		'locate_template',
+		'get_404_template',
+		'get_archive_template',
+		'get_attachment_template',
+		'get_author_template',
+		'get_category_template',
+		'get_date_template',
+		'get_embed_template',
+		'get_front_page_template',
+		'get_page_template',
+		'get_paged_template', // Deprecated, but should still be accepted for the purpose of this sniff.
+		'get_home_template',
+		'get_index_template',
 		'get_parent_theme_file_path',
+		'get_privacy_policy_template',
+		'get_query_template',
+		'get_search_template',
+		'get_single_template',
+		'get_singular_template',
+		'get_stylesheet_directory',
+		'get_tag_template',
+		'get_taxonomy_template',
+		'get_template_directory',
+		'get_theme_file_path',
+		'locate_block_template',
+		'locate_template',
+		'plugin_dir_path',
 	];
 
 	/**
@@ -123,7 +144,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 
 		if ( $this->tokens[ $nextToken ]['code'] === T_STRING ) {
 			if ( in_array( $this->tokens[ $nextToken ]['content'], $this->getPathFunctions, true ) === true ) {
-				// The construct is using one of the function for getting correct path which is fine.
+				// The construct is using one of the functions for getting correct path which is fine.
 				return;
 			}
 
@@ -191,7 +212,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Check if a content string contains a keyword in custom paths.
 	 *
-	 * @param string $content  Content string.
+	 * @param string $content Content string.
 	 *
 	 * @return bool True if the string partially matches a keyword in $allowedCustomKeywords, false otherwise.
 	 */

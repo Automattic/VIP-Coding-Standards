@@ -7,4 +7,4 @@
 #   ./bin/php-lint
 #
 
-"$(pwd)/vendor/bin/parallel-lint" . -e php --exclude vendor --exclude .git $@
+"$(pwd)/vendor/bin/parallel-lint" . -e php --show-deprecated --exclude vendor --exclude .git $@

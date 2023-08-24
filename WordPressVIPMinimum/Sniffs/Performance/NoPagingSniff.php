@@ -30,8 +30,9 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function getGroups() {
 		return [
 			'nopaging' => [
-				'type' => 'error',
-				'keys' => [
+				'type'    => 'error',
+				'message' => 'Disabling pagination is prohibited in VIP context, do not set `%s` to `%s` ever.',
+				'keys'    => [
 					'nopaging',
 				],
 			],
@@ -45,17 +46,12 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @param  mixed  $val   Assigned value.
 	 * @param  int    $line  Token line.
 	 * @param  array  $group Group definition.
-	 * @return mixed         FALSE if no match, TRUE if matches, STRING if matches
-	 *                       with custom error message passed to ->process().
+	 *
+	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
 		$key = strtolower( $key );
 
-		if ( $key === 'nopaging' && ( $val === 'true' || $val === 1 ) ) {
-			return 'Disabling pagination is prohibited in VIP context, do not set `%s` to `%s` ever.';
-		}
-
-		return false;
+		return ( $key === 'nopaging' && ( $val === 'true' || $val === 1 ) );
 	}
-
 }

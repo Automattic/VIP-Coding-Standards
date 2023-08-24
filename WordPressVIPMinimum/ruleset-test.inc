@@ -365,7 +365,7 @@ session_status(); // Error.
 session_unregister(); // Error.
 session_unset(); // Error.
 session_write_close(); // Error.
-delete(); // Error.
+
 file_put_contents( $file, $text, FILE_APPEND ); // Error.
 while ( $count > $loop ) {
 	if ( flock( $fp, LOCK_EX ) ) { // Error.

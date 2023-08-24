@@ -25,16 +25,9 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	private $currentClass = '';
 
 	/**
-	 * A list of functions in the current class.
-	 *
-	 * @var string[]
-	 */
-	private $functionList = [];
-
-	/**
 	 * A list of classes and methods to check.
 	 *
-	 * @var string[]
+	 * @var array<string, array<string, array<string, mixed>>>
 	 */
 	public $checkClasses = [
 		'WP_Widget' => [
@@ -176,7 +169,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * List of grouped classes with same methods (as they extend the same parent class)
 	 *
-	 * @var string[]
+	 * @var array<string, string[]>
 	 */
 	public $checkClassesGroups = [
 		'Walker' => [
@@ -211,7 +204,6 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$className = $phpcsFile->getDeclarationName( $currScope );
 
 		if ( $className !== $this->currentClass ) {
-			$this->loadFunctionNamesInScope( $phpcsFile, $currScope );
 			$this->currentClass = $className;
 		}
 
@@ -291,7 +283,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					return;
 				}
 			}
-			$i++;
+			++$i;
 		}
 	}
 
@@ -356,28 +348,6 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		}
 
 		return $paramList;
-	}
-
-	/**
-	 * Extracts all the function names found in the given scope.
-	 *
-	 * @param File $phpcsFile The current file being scanned.
-	 * @param int  $currScope A pointer to the start of the scope.
-	 *
-	 * @return void
-	 */
-	protected function loadFunctionNamesInScope( File $phpcsFile, $currScope ) {
-		$this->functionList = [];
-		$tokens             = $phpcsFile->getTokens();
-
-		for ( $i = ( $tokens[ $currScope ]['scope_opener'] + 1 ); $i < $tokens[ $currScope ]['scope_closer']; $i++ ) {
-			if ( $tokens[ $i ]['code'] !== T_FUNCTION ) {
-				continue;
-			}
-
-			$next                 = $phpcsFile->findNext( T_STRING, $i );
-			$this->functionList[] = trim( $tokens[ $next ]['content'] );
-		}
 	}
 
 	/**

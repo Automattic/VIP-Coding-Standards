@@ -30,8 +30,13 @@ include_once("http://www.google.com/bad_file.php"); // External URL.
 // Allowed keywords
 include 'https://path.com/bad_file.php'; // Error - external URL with keyword from $allowedKeywords.
 require   $path; // Warning - custom variable with keyword from $allowedKeywords.
-include_once   dir_function(); // Error - custom functionm with keyword from $allowedKeywords.
+include_once   dir_function(); // Warning - custom function with keyword from $allowedKeywords.
 require CUSTOM_CONSTANT_DIR . 'file.php'; // OK.
 require_once ( VIPCS_PATH ) . 'file.php'; // OK.
 include_once      
   DIR_CUSTOM , 'file.php'; // OK.
+
+// These are valid (previously false positives).
+include( get_404_template() );
+require get_query_template( 'post' );
+include_once locate_block_template( __DIR__, 'silly_block' );
