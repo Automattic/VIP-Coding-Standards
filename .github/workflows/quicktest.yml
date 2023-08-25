@@ -28,17 +28,17 @@ jobs:
         include:
           - php: '5.4'
             phpcs_version: 'dev-master'
-            wpcs_version: '2.3.*'
+            wpcs_version: '3.0.*'
           - php: '5.4'
-            phpcs_version: '3.7.1'
-            wpcs_version: '2.3.*'
+            phpcs_version: '3.7.2'
+            wpcs_version: '3.0.*'
 
           - php: 'latest'
             phpcs_version: 'dev-master'
-            wpcs_version: '2.3.*'
+            wpcs_version: '3.0.*'
           - php: 'latest'
-            phpcs_version: '3.7.1'
-            wpcs_version: '2.3.*'
+            phpcs_version: '3.7.2'
+            wpcs_version: '3.0.*'
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
@@ -48,7 +48,6 @@ jobs:
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-      # Note: the "elif" condition is temporary and should be removed once VIPCS updates to WPCS 3.0+.
       - name: Setup ini config
         id: set_ini
         run: |

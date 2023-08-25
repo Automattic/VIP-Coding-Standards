@@ -59,7 +59,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'so
 // Make sure nonce verification is done in global scope to silence notices about use of superglobals without later on in the file.
 isset( $_GET['my_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_GET['my_nonce'] ) );
 
-// WordPress.WP.AlternativeFunctions.file_system_read_fopen
+// WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 fopen( 'file.txt', 'r' ); // Warning + Message.
 
 // WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
@@ -153,7 +153,7 @@ url_to_postid( $url ); // Warning + Message.
 wpcom_vip_old_slug_redirect(); // Ok.
 wp_old_slug_redirect(); // Warning.
 
-// WordPress.CodeAnalysis.AssignmentInCondition.Found
+// Generic.CodeAnalysis.AssignmentInCondition.Found
 if ($a = 123) { // Warning.
 }
 
@@ -165,7 +165,7 @@ rawurlencode(); // Ok.
 extract( array( 'a' => 1 ) ); // Error.
 $obj->extract(); // Ok.
 
-// WordPress.PHP.StrictComparisons.LooseComparison
+// Universal.Operators.StrictComparisons
 true == $true; // Warning.
 false === $true; // Ok.
 
@@ -557,7 +557,7 @@ echo "<script>
 </article> <?php
 
 // WordPressVIPMinimum.Variables.RestrictedVariables
-foo( $_SESSION['bar'] ); // Error.
+foo( $_SESSION['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Error.
 
 // WordPressVIPMinimum.Variables.ServerVariables
 // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -572,3 +572,8 @@ $_SERVER["REMOTE_ADDR"]; // Error.
 <<<<<<< HEAD // Error.
 
 >>>>>>> // Error.
+
+<?php
+
+// WordPress.CodeAnalysis.AssignmentInTernaryCondition
+$var = ($a = 123) ? $a : 0; // Warning.

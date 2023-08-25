@@ -52,6 +52,6 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		$key = strtolower( $key );
 
-		return ( $key === 'nopaging' && ( $val === 'true' || $val === 1 ) );
+		return ( $key === 'nopaging' && ( $val === 'true' || $val === '1' ) );
 	}
 }

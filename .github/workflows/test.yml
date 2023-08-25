@@ -72,13 +72,13 @@ jobs:
       #   no additional versions are included in the array.
       matrix:
         php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
-        phpcs_version: ['3.7.1', 'dev-master']
-        wpcs_version: ['2.3.*']
+        phpcs_version: ['3.7.2', 'dev-master']
+        wpcs_version: ['3.0.*']
 
         include:
           - php: '8.3'
             phpcs_version: 'dev-master'
-            wpcs_version: '2.3.*'
+            wpcs_version: '3.0.*'
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
 
@@ -90,13 +90,10 @@ jobs:
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-      # Note: the "elif" condition is temporary and should be removed once VIPCS updates to WPCS 3.0+.
       - name: Setup ini config
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
-          elif [[ "${{ matrix.php }}" == "8.1" ]]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1' >> $GITHUB_OUTPUT

@@ -2,7 +2,7 @@
 
 
 <?php // Error - Squiz.WhiteSpace.SuperfluousWhitespace.
-$hello = ''; $posts_not_in = ''; $listofthings = ''; $cachedlistofthings = ''; $title = ''; $ch = ''; $thing = ''; $descriptorspec = ''; $pipes = ''; $cwd = ''; $env = ''; $page_title = ''; $menu_title = ''; $capability = ''; $function = ''; $icon_url = ''; $position = ''; $wpdb = ''; $file = ''; $fp = ''; $dir = ''; $test = ''; $post = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $query = ''; $page_title = ''; $true = true; $some_nasty_var = ''; $data = ''; $group = ''; $testing = ''; $stdClass = new stdClass(); $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $a = ''; $b = ''; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
+$hello = ''; $posts_not_in = ''; $title = ''; $ch = ''; $thing = ''; $descriptorspec = ''; $pipes = ''; $cwd = ''; $env = ''; $page_title = ''; $menu_title = ''; $capability = ''; $function = ''; $icon_url = ''; $position = ''; $wpdb = ''; $file = ''; $fp = ''; $test = ''; $post = ''; $bar = ''; $array = []; $query_args = []; $url = ''; $page_title = ''; $true = true; $data = ''; $group = ''; $stdClass = new stdClass(); $needle = ''; $some_var = ''; $blogid = 1; $text = ''; $category_id = 123; $foo = ''; $bar = ''; $var = ''; $wp_rewrite = ''; $count = 1; $loop = 1; $obj = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- All set for VariableAnalysis checks.
 // Generic.PHP.Syntax
 foreach() { // Error.
 }
@@ -25,7 +25,7 @@ function bar() {
 // WordPress.Security.ValidatedSanitizedInput
 if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ) ) ) {
 	bar( $_POST['foo2'] ); // Error x 2.
-	$foo2 = isset( $_POST['foo2'] ) ?? foo( sanitize_text_field( $_POST['foo2'] ) ); // Ok - exclude WordPress.Security.ValidatedSanitizedInput.MissingUnslash.
+	$foo2 = isset( $_POST['foo2'] ) ?? foo( sanitize_text_field( $_POST['foo2'] ) ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Ok - exclude WordPress.Security.ValidatedSanitizedInput.MissingUnslash.
 }
 
 // WordPress.Security.PluginMenuSlug
@@ -35,7 +35,7 @@ add_menu_page( $page_title, $menu_title, $capability, __FILE__, $function, $icon
 ?> <script src="http://someurl/somefile.js"></script> <?php // Error.
 
 // WordPress.WP.PostsPerPage
-$args = array(
+$args = array( // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	'posts_per_page' => 999, // Warning.
 );
 _query_posts( 'posts_per_page=999' ); // Warning.
@@ -45,7 +45,7 @@ $query_args['posts_per_page'] = 999; // Warning.
 date_default_timezone_set( 'FooBar' ); // Error.
 
 // WordPress.DB.PreparedSQL
-$b = function () {
+$b = function () { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	global $wpdb;
 	$listofthings = wp_cache_get( 'foo' );
 	if ( ! $listofthings ) {
@@ -57,7 +57,7 @@ $b = function () {
 };
 
 // WordPress.DB.DirectDatabaseQuery
-$baz = $wpdb->get_results( $wpdb->prepare( 'SELECT X FROM Y ' ) ); // Warning x 2.
+$baz = $wpdb->get_results( $wpdb->prepare( 'SELECT X FROM Y ' ) ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning x 2.
 
 // WordPress.DB.SlowDBQuery
 $test = [
@@ -72,11 +72,11 @@ new WP_Query( array(
 // WordPress.WP.GlobalVariablesOverride
 $GLOBALS['wpdb'] = 'test'; // Error.
 
-// WordPress.PHP.StrictComparisons
+// Universal.Operators.StrictComparisons
 if ( true == $true ) { // Warning.
 }
 
-// WordPress.CodeAnalysis.AssignmentInCondition
+// Generic.CodeAnalysis.AssignmentInCondition
 if ( $test = get_post( $post ) ) { // Warning.
 }
 
@@ -139,9 +139,9 @@ serialize(); // Warning.
 unserialize(); // Warning.
 urlencode(); // Warning.
 passthru( 'cat myfile.zip', $err ); // Warning.
-$process = proc_open( 'php', $descriptorspec, $pipes, $cwd, $env ); // Warning.
-$last_line = system( 'ls', $retval ); // Warning.
-$handle = popen( '/bin/ls', 'r' ); // Warning.
+$process = proc_open( 'php', $descriptorspec, $pipes, $cwd, $env ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
+$last_line = system( 'ls', $retval ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
+$handle = popen( '/bin/ls', 'r' ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
 
 // WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting
 error_reporting(); // Error.
@@ -174,7 +174,7 @@ dl(); // Error.
 exec( 'whoami' ); // Error.
 
 // WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec
-$output = shell_exec( 'ls -lart' ); // Error.
+$output = shell_exec( 'ls -lart' ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Error.
 
 // WordPress.PHP.DevelopmentFunctions
 var_dump(); // Warning.
@@ -243,7 +243,7 @@ curl_init(); // Warning + Message.
 curl_close( $ch ); // Warning + Message.
 CURL_getinfo(); // Warning + Message.
 parse_url( 'http://example.com/' ); // Warning.
-$json = json_encode( $thing ); // Warning.
+$json = json_encode( $thing ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
 readfile(); // Warning.
 fclose(); // Warning.
 fopen(); // Warning.
@@ -402,7 +402,7 @@ wp_remote_get( $url ); // Warning.
 setcookie( 'cookie[three]', 'cookiethree' ); // Error.
 get_posts(); // Warning.
 wp_get_recent_posts(); // Warning.
-$wp_random_testing = create_function( '$a, $b', 'return ( $b / $a ); '); // Warning.
+$wp_random_testing = create_function( '$a, $b', 'return ( $b / $a ); '); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
 wpcom_vip_get_term_link(); // Warning.
 wpcom_vip_get_term_by(); // Warning.
 wpcom_vip_get_category_by_slug(); // Warning.
@@ -447,11 +447,11 @@ add_filter( 'robots_txt', function() { // Warning.
 
 
 // WordPressVIPMinimum.Performance.CacheValueOverride
-$bad_wp_users = wp_cache_get( md5( self::CACHE_KEY . '_wp_users'), self::CACHE_GROUP );
-$bad_wp_users = false; // Error.
+$bad_wp_users = wp_cache_get( md5( self::CACHE_KEY . '_wp_users'), self::CACHE_GROUP ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+$bad_wp_users = false; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Error.
 
 // WordPressVIPMinimum.Performance.FetchingRemoteData
-$external_resource = file_get_contents( 'https://example.com' ); // Warning.
+$external_resource = file_get_contents( 'https://example.com' ); // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
 
 // WordPressVIPMinimum.Performance.LowExpiryCacheTime
 wp_cache_set( 'test', $data, $group, 100 ); // Warning.
@@ -459,13 +459,13 @@ wp_cache_add( 123, $data, null, 1.5 * MINUTE_IN_SECONDS ); // Warning.
 wp_cache_replace( 'test', $data, $group,  2*MINUTE_IN_SECONDS  ); // Warning.
 
 // WordPressVIPMinimum.Performance.NoPaging
-$args = array(
+$args = array( // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	'nopaging'       => true, // Error.
 );
 _query_posts( 'nopaging=true' ); // Error.
 
 // WordPressVIPMinimum.Performance.OrderByRand
-$args = array(
+$args = array( // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	"orderby" => "RAND", // Error.
 );
 $query_args['orderby'] = 'rand'; // Error.
@@ -585,9 +585,9 @@ echo '<style type="text/css">.show-admin-bar { visibility: hidden; }</style>'; /
 </style> <?php
 
 // WordPressVIPMinimum.Variables.RestrictedVariables
-$query = "SELECT * FROM $wpdb->users"; // Error.
-$x = foo( sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Warning.
-foo( $_SESSION['bar'] ); // Error.
+$query = "SELECT * FROM $wpdb->users"; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Error.
+$x = foo( sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated,VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Warning.
+foo( $_SESSION['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Error.
 
 // WordPressVIPMinimum.Variables.ServerVariables
 // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -613,6 +613,9 @@ class MyClass {
 
 >>>>>>> // Error.
 <?php
+
+// WordPress.CodeAnalysis.AssignmentInTernaryCondition
+$var = ( $test = get_post( $post ) ) ? $test : ''; // Warning.
 
 // Squiz.WhiteSpace.SuperfluousWhitespace
 // Error. ?>
