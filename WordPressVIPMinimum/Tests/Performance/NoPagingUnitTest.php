@@ -27,8 +27,10 @@ class NoPagingUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			4 => 1,
-			7 => 1,
+			4  => 1,
+			7  => 1,
+			13 => 1,
+			15 => 1,
 		];
 	}
 
