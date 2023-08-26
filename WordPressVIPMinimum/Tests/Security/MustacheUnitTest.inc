@@ -18,3 +18,6 @@ echo '<a href="{{href}}">{{&data}}</div></a>'; // NOK: data.
 		return new Handlebars.SafeString(result); // NOK: SafeString.
 	});
 </script>
+
+// Issue 541#issuecomment-1692323177: don't flag GB syntax.
+<div class="wp-block-group"><!-- wp:heading {"textAlign":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"var:preset|spacing|medium","left":"0"}}}} --><!-- OK. -->
