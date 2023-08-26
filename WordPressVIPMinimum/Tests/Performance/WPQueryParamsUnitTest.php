@@ -27,6 +27,7 @@ class WPQueryParamsUnitTest extends AbstractSniffUnitTest {
 		return [
 			5  => 1,
 			17 => 1,
+			31 => 1,
 		];
 	}
 
@@ -40,6 +41,8 @@ class WPQueryParamsUnitTest extends AbstractSniffUnitTest {
 			4  => 1,
 			11 => 1,
 			21 => 1,
+			29 => 1,
+			30 => 1,
 		];
 	}
 }
