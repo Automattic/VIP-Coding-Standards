@@ -62,25 +62,31 @@ jobs:
     strategy:
       # Keys:
       # - php: The PHP versions to test against.
-      # - phpcs_version: The PHPCS versions to test against.
+      # - dependencies: The PHPCS dependencies versions to test against.
       #   IMPORTANT: test runs shouldn't fail because of PHPCS being incompatible with a PHP version.
       #   - PHPCS will run without errors on PHP 5.4 - 7.4 on any supported version.
       #   - PHP 8.0 needs PHPCS 3.5.7+ to run without errors, and we require a higher minimum version.
       #   - PHP 8.1 needs PHPCS 3.6.1+ to run without errors, but works best with 3.7.1+, and we require at least this minimum version.
-      # - The `wpcs_version` key is added to allow additional test builds when multiple WPCS versions
-      #   would be supported. As, at this time, only the latest stable release of WPCS is supported,
-      #   no additional versions are included in the array.
       matrix:
         php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
-        phpcs_version: ['3.7.2', 'dev-master']
-        wpcs_version: ['3.0.*']
+        dependencies: ['lowest', 'stable']
 
         include:
-          - php: '8.3'
-            phpcs_version: 'dev-master'
-            wpcs_version: '3.0.*'
+          # Test against dev versions of all dependencies with select PHP versions for early detection of issues.
+          - php: '5.4'
+            dependencies: 'dev'
+          - php: '7.0'
+            dependencies: 'dev'
+          - php: '7.4'
+            dependencies: 'dev'
+          - php: '8.2'
+            dependencies: 'dev'
 
-    name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
+          # Test against upcoming PHP version.
+          - php: '8.3'
+            dependencies: 'dev'
+
+    name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
     continue-on-error: ${{ matrix.php == '8.3' }}
 
@@ -88,15 +94,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED' >> $GITHUB_OUTPUT
+          if [[ "${{ matrix.dependencies }}" != "dev" ]]; then
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
-            echo 'PHP_INI=error_reporting=-1' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
           fi
 
       - name: Install PHP
@@ -106,11 +112,15 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: set PHPCS version for tests'
-        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
-
-      - name: 'Composer: set WPCS version for tests'
-        run: composer require wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-update --no-scripts --no-interaction
+      - name: "Composer: set PHPCS dependencies for tests (dev)"
+        if: ${{ matrix.dependencies == 'dev' }}
+        run: >
+          composer require --no-update --no-scripts --no-interaction
+          squizlabs/php_codesniffer:"dev-master"
+          phpcsstandards/phpcsutils:"dev-develop"
+          phpcsstandards/phpcsextra:"dev-develop"
+          sirbrillig/phpcs-variable-analysis:"2.x"
+          wp-coding-standards/wpcs:"dev-develop"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -129,6 +139,26 @@ jobs:
         with:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest)"
+        if: ${{ ! startsWith( matrix.php, '8' ) && matrix.dependencies == 'lowest' }}
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
+          phpcsstandards/phpcsextra
+          sirbrillig/phpcs-variable-analysis
+          wp-coding-standards/wpcs
+
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest) - with ignore platform"
+        if: ${{ startsWith( matrix.php, '8' ) && matrix.dependencies == 'lowest' }}
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction --ignore-platform-req=php+
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
+          phpcsstandards/phpcsextra
+          sirbrillig/phpcs-variable-analysis
+          wp-coding-standards/wpcs
 
       - name: Run the unit tests
         run: ./bin/unit-tests

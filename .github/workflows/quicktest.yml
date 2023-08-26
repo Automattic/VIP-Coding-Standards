@@ -27,48 +27,29 @@ jobs:
       matrix:
         include:
           - php: '5.4'
-            phpcs_version: 'dev-master'
-            wpcs_version: '3.0.*'
+            dependencies: 'stable'
           - php: '5.4'
-            phpcs_version: '3.7.2'
-            wpcs_version: '3.0.*'
+            dependencies: 'lowest'
 
           - php: 'latest'
-            phpcs_version: 'dev-master'
-            wpcs_version: '3.0.*'
+            dependencies: 'stable'
           - php: 'latest'
-            phpcs_version: '3.7.2'
-            wpcs_version: '3.0.*'
+            dependencies: 'lowest'
 
-    name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
+    name: "QTest${{ matrix.dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
-      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-      - name: Setup ini config
-        id: set_ini
-        run: |
-          if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
-          else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
-          fi
-
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
+          # With stable PHPCS dependencies, allow for PHP deprecation notices.
+          # Unit tests shouldn't fail on those for stable releases where those issues won't get fixed anymore.
+          ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
           coverage: none
-
-      - name: 'Composer: set PHPCS version for tests'
-        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
-
-      - name: 'Composer: set WPCS version for tests'
-        run: composer require wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -88,11 +69,31 @@ jobs:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest)"
+        if: ${{ matrix.php == '5.4' && matrix.dependencies == 'lowest' }}
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
+          phpcsstandards/phpcsextra
+          sirbrillig/phpcs-variable-analysis
+          wp-coding-standards/wpcs
+
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest) - with ignore platform"
+        if: ${{ matrix.php == 'latest' && matrix.dependencies == 'lowest' }}
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction --ignore-platform-req=php+
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
+          phpcsstandards/phpcsextra
+          sirbrillig/phpcs-variable-analysis
+          wp-coding-standards/wpcs
+
       - name: Display PHPCS installed standards
         run: ./vendor/bin/phpcs -i
 
       - name: Lint against parse errors
-        if: matrix.phpcs_version == 'dev-master'
+        if: matrix.dependencies == 'stable'
         run: ./bin/php-lint
 
       - name: Run the unit tests
