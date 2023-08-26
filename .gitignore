@@ -5,3 +5,4 @@ phpcs.xml
 .phpcs.xml
 phpunit.xml
 phpcs.cache
+phpstan.neon
