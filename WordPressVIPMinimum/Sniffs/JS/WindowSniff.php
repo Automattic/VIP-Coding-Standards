@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  * WordPressVIPMinimum_Sniffs_JS_WindowSniff.
  *
  * Looks for instances of window properties that should be flagged.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class WindowSniff extends Sniff {
 

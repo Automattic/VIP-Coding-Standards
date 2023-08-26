@@ -12,9 +12,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the OrderByRand sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  *
  * @covers \WordPressVIPMinimum\Sniffs\Performance\OrderByRandSniff
  */

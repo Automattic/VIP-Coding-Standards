@@ -14,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  * WordPressVIPMinimum_Sniffs_JS_StrippingTagsSniff.
  *
  * Looks for incorrect way of stripping tags.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class StrippingTagsSniff extends Sniff {
 

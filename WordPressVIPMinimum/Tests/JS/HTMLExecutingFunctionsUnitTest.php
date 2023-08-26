@@ -12,8 +12,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the HTML executing JS functions sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @covers \WordPressVIPMinimum\Sniffs\JS\HTMLExecutingFunctionsSniff
  */
 class HTMLExecutingFunctionsUnitTest extends AbstractSniffUnitTest {

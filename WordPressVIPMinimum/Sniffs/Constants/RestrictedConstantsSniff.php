@@ -13,8 +13,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Restricts usage of some constants.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class RestrictedConstantsSniff extends Sniff {
 

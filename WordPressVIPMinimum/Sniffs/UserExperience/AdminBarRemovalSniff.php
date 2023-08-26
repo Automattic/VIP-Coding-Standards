@@ -19,9 +19,7 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
  *
  * @link https://docs.wpvip.com/technical-references/code-review/vip-warnings/#h-removing-the-admin-bar
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  */
 class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 

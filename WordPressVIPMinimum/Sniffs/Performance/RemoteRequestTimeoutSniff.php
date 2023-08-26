@@ -11,8 +11,6 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
  * Flag use of a timeout of more than 3 seconds for remote requests.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class RemoteRequestTimeoutSniff extends AbstractArrayAssignmentRestrictionsSniff {
 

@@ -12,8 +12,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the RestrictedFunctions sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @covers \WordPressVIPMinimum\Sniffs\Functions\RestrictedFunctionsSniff
  */
 class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {

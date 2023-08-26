@@ -14,9 +14,7 @@ use WordPressVIPMinimum\Sniffs\AbstractVariableRestrictionsSniff;
 /**
  * Restricts usage of some variables in VIP context.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  */
 class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 

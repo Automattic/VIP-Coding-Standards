@@ -15,8 +15,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  * Ensure that non-PHP files are included via `file_get_contents()` instead of using `include/require[_once]`.
  *
  * This prevents potential PHP code embedded in those files from being automatically executed.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class IncludingNonPHPFileSniff extends Sniff {
 

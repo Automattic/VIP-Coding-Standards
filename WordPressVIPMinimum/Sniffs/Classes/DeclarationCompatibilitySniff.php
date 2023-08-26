@@ -14,8 +14,6 @@ use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 

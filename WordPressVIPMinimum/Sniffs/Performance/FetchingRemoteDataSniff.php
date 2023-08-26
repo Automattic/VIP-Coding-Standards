@@ -13,8 +13,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Restricts usage of file_get_contents().
- *
- *  @package VIPCS\WordPressVIPMinimum
  */
 class FetchingRemoteDataSniff extends Sniff {
 

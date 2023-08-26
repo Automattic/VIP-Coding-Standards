@@ -12,8 +12,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the StaticStrreplace sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @covers \WordPressVIPMinimum\Sniffs\Security\StaticStrreplaceSniff
  */
 class StaticStrreplaceUnitTest extends AbstractSniffUnitTest {
