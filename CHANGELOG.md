@@ -4,6 +4,48 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2023-09-05
+
+Props: @GaryJones, @jrfnl
+
+This release requires [WordPressCS 3.0.0](https://github.com/WordPress/WordPress-Coding-Standards/releases/tag/3.0.0). It is not compatible with WordPressCS 2.x. Users should read the [WordPressCS 3.0 upgrade guide for end-users](https://github.com/WordPress/WordPress-Coding-Standards/wiki/Upgrade-Guide-to-WordPressCS-3.0.0-for-ruleset-maintainers).
+
+Increases requirements for PHPCS from 3.7.1 to 3.7.2.
+
+The tagged releases branch is now `main` instead of `master`.
+
+### Added
+- [#777](https://github.com/Automattic/VIP-Coding-Standards/pull/777): 3.0: start using PHPCSUtils.
+- [#779](https://github.com/Automattic/VIP-Coding-Standards/pull/779): 3.0: support WordPressCS 3.0.
+
+## Changed
+- [#780](https://github.com/Automattic/VIP-Coding-Standards/pull/780): Performance/WPQueryParams: defer to the parent sniff.
+  - Two error codes changed:
+    - `WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn` is now `WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in`.
+    - `WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue` is now `WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters`.
+
+### Removed
+- [#774](https://github.com/Automattic/VIP-Coding-Standards/pull/774): Performance/BatcacheWhitelistedParams: remove the sniff.
+- [#775](https://github.com/Automattic/VIP-Coding-Standards/pull/775): Compatibility/Zoninator: remove the sniff.
+- [#776](https://github.com/Automattic/VIP-Coding-Standards/pull/776): Variables/VariableAnalysis: remove the sniff.
+
+### Fixed
+- [#784](https://github.com/Automattic/VIP-Coding-Standards/pull/784): Performance/WPQueryParams: prevent false positives for `'exclude'` with `get_users()`.
+- [#788](https://github.com/Automattic/VIP-Coding-Standards/pull/788): Security/Mustache: prevent false positives on block editor templates.
+
+### Maintenance
+- [#778](https://github.com/Automattic/VIP-Coding-Standards/pull/778): CS: improve use statements.
+- [#781](https://github.com/Automattic/VIP-Coding-Standards/pull/781): Performance/NoPaging: add extra tests.
+- [#782](https://github.com/Automattic/VIP-Coding-Standards/pull/782): GH Actions: minor tweaks to the composer options used.
+- [#783](https://github.com/Automattic/VIP-Coding-Standards/pull/783): Hooks/AlwaysReturnInFilter: remove redundant condition.
+- [#785](https://github.com/Automattic/VIP-Coding-Standards/pull/785): Docs: remove redundant `@package` tags.
+- [#786](https://github.com/Automattic/VIP-Coding-Standards/pull/786): Add PHPStan to QA checks.
+- [#787](https://github.com/Automattic/VIP-Coding-Standards/pull/787): GH Actions: tweak the way the PHPCS/WPCS versions are set.
+- [#789](https://github.com/Automattic/VIP-Coding-Standards/pull/789): Updates related to branch rename from `master` to `main`.
+- [#790](https://github.com/Automattic/VIP-Coding-Standards/pull/790): PHPUnit: Use 7.5 schema.
+- [#791](https://github.com/Automattic/VIP-Coding-Standards/pull/791): Docs: Update `CONTRIBUTING.md`.
+
+
 ## [2.3.4] - 2023-07-05
 
 Props: kshaner, GaryJones, jrfnl, yolih
@@ -632,7 +674,7 @@ Initial release.
 
 Props: david-binda, pkevan.
 
-
+[3.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.4...3.0.0
 [2.3.4]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.1...2.3.2
