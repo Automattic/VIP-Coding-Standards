@@ -91,7 +91,7 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.2/phpunit.xsd"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
 	backupGlobals="true"
 	bootstrap="./tests/bootstrap.php"
 	beStrictAboutTestsThatDoNotTestAnything="false"
