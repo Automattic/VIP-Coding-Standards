@@ -47,6 +47,7 @@ Use `php -v` and `composer show` to get versions.
 | PHPCSUtils version       | x.y.z
 | VIPCS version            | x.y.z
 | WordPressCS version      | x.y.z
+| PHPCSExtra version       | x.y.z
 | VariableAnalysis version | x.y.z
 
 ## Additional Context (optional)
