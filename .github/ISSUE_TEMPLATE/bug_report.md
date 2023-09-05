@@ -54,7 +54,7 @@ Use `php -v` and `composer show` to get versions.
 
 <!-- Add any other context about the problem here. -->
 
-## Tested Against `master` branch?
+## Tested Against `main` branch?
 
-- [ ] I have verified the issue still exists in the `master` branch of VIPCS.
+- [ ] I have verified the issue still exists in the `main` branch of VIPCS.
 - [ ] I have verified the issue still exists in the `develop` branch of VIPCS.
