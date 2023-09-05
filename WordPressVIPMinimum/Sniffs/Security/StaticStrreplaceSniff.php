@@ -8,13 +8,11 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Restricts usage of str_replace with all 3 params being static.
- *
- *  @package VIPCS\WordPressVIPMinimum
  */
 class StaticStrreplaceSniff extends Sniff {
 

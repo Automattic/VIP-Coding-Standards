@@ -12,8 +12,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Restricts usage of some server variables.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class ServerVariablesSniff extends Sniff {
 

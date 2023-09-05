@@ -7,15 +7,14 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\BackCompat\BCFile;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Ensure that non-PHP files are included via `file_get_contents()` instead of using `include/require[_once]`.
  *
  * This prevents potential PHP code embedded in those files from being automatically executed.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class IncludingNonPHPFileSniff extends Sniff {
 
@@ -59,7 +58,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
-		$end_of_statement = $this->phpcsFile->findEndOfStatement( $stackPtr );
+		$end_of_statement = BCFile::findEndOfStatement( $this->phpcsFile, $stackPtr );
 		$curStackPtr      = ( $end_of_statement + 1 );
 
 		do {

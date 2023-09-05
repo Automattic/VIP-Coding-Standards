@@ -12,8 +12,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the ExitAfterRedirect sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @covers \WordPressVIPMinimum\Sniffs\Security\ExitAfterRedirectSniff
  */
 class ExitAfterRedirectUnitTest extends AbstractSniffUnitTest {

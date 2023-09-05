@@ -9,14 +9,15 @@
 
 namespace WordPressVIPMinimum\Sniffs;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
+use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\MessageHelper;
+use WordPressCS\WordPress\Helpers\ContextHelper;
+use WordPressCS\WordPress\Helpers\RulesetPropertyHelper;
 
 /**
  * Restricts usage of some variables.
  *
  * Originally part of WordPress Coding Standards repo.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
@@ -127,7 +128,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 		$token = $this->tokens[ $stackPtr ];
 
-		$this->excluded_groups = static::merge_custom_array( $this->exclude );
+		$this->excluded_groups = RulesetPropertyHelper::merge_custom_array( $this->exclude );
 		if ( array_diff_key( $this->groups_cache, $this->excluded_groups ) === [] ) {
 			// All groups have been excluded.
 			// Don't remove the listener as the exclude property can be changed inline.
@@ -143,7 +144,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 			}
 		}
 
-		if ( $this->is_in_isset_or_empty( $stackPtr ) === true ) {
+		if ( ContextHelper::is_in_isset_or_empty( $this->phpcsFile, $stackPtr ) === true ) {
 			// Checking whether a variable exists is not the same as using it.
 			return;
 		}
@@ -179,7 +180,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 
 				if ( isset( $token['bracket_closer'] ) ) {
 					$owner  = $this->phpcsFile->findPrevious( \T_VARIABLE, $stackPtr );
-					$inside = $this->phpcsFile->getTokensAsString( $stackPtr, $token['bracket_closer'] - $stackPtr + 1 );
+					$inside = GetTokensAsString::normal( $this->phpcsFile, $stackPtr, $token['bracket_closer'] );
 					$var    = implode( '', [ $this->tokens[ $owner ]['content'], $inside ] );
 				}
 			}
@@ -200,11 +201,13 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 				continue;
 			}
 
-			$this->addMessage(
+			$code = MessageHelper::stringToErrorcode( $groupName . '_' . $match[1] );
+			MessageHelper::addMessage(
+				$this->phpcsFile,
 				$group['message'],
 				$stackPtr,
 				$group['type'] === 'error',
-				$this->string_to_errorcode( $groupName . '_' . $match[1] ),
+				$code,
 				[ $var ]
 			);
 

@@ -16,9 +16,7 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  *
  * @link https://docs.wpvip.com/technical-references/code-review/#no-limit-queries
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  */
 class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
@@ -52,6 +50,6 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		$key = strtolower( $key );
 
-		return ( $key === 'nopaging' && ( $val === 'true' || $val === 1 ) );
+		return ( $key === 'nopaging' && ( $val === 'true' || $val === '1' ) );
 	}
 }

@@ -12,8 +12,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the unescaped output in Mustache templating engine.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
  * @covers \WordPressVIPMinimum\Sniffs\Security\MustacheSniff
  */
 class MustacheUnitTest extends AbstractSniffUnitTest {

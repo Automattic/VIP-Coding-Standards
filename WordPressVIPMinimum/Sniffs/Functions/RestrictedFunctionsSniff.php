@@ -7,13 +7,11 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
-use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
  * Restricts usage of some functions in VIP context.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 

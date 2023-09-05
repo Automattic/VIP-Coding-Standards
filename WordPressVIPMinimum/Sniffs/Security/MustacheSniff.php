@@ -12,8 +12,6 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Looks for instances of unescaped output for Mustache templating engine and Handlebars.js.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class MustacheSniff extends Sniff {
 
@@ -47,7 +45,7 @@ class MustacheSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( strpos( $this->tokens[ $stackPtr ]['content'], '{{{' ) !== false || strpos( $this->tokens[ $stackPtr ]['content'], '}}}' ) !== false ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], '{{{' ) !== false && strpos( $this->tokens[ $stackPtr ]['content'], '}}}' ) !== false ) {
 			// Mustache unescaped output notation.
 			$message = 'Found Mustache unescaped output notation: "{{{}}}".';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'OutputNotation' );

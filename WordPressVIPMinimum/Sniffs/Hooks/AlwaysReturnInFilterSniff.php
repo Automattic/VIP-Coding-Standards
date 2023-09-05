@@ -7,13 +7,13 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Arrays;
+use PHPCSUtils\Utils\FunctionDeclarations;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * This sniff validates that filters always return a value
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class AlwaysReturnInFilterSniff extends Sniff {
 
@@ -96,7 +96,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processArray( $stackPtr ) {
 
-		$open_close = $this->find_array_open_close( $stackPtr );
+		$open_close = Arrays::getOpenClose( $this->phpcsFile, $stackPtr );
 		if ( $open_close === false ) {
 			return;
 		}
@@ -185,7 +185,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
-		$methodProps = $this->phpcsFile->getMethodProperties( $stackPtr );
+		$methodProps = FunctionDeclarations::getProperties( $this->phpcsFile, $stackPtr );
 		if ( $methodProps['is_abstract'] === true ) {
 			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please ensure that child class implementations of this method always return a value.';
 			$data    = [ $filterName ];
@@ -221,13 +221,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			$functionBodyScopeEnd
 		);
 
-		$insideIfConditionalReturn = 0;
-		$outsideConditionalReturn  = 0;
+		$outsideConditionalReturn = 0;
 
 		while ( $returnTokenPtr ) {
-			if ( $this->isInsideIfConditonal( $returnTokenPtr ) ) {
-				++$insideIfConditionalReturn;
-			} else {
+			if ( $this->isInsideIfConditonal( $returnTokenPtr ) === false ) {
 				++$outsideConditionalReturn;
 			}
 			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
@@ -242,11 +239,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			);
 		}
 
-		if ( $insideIfConditionalReturn >= 0 && $outsideConditionalReturn === 0 ) {
+		if ( $outsideConditionalReturn === 0 ) {
 			$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
 			$data    = [ $filterName ];
 			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
-
 		}
 	}
 

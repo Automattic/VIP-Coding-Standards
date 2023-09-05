@@ -7,13 +7,11 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * This sniff check whether a cached value is being overridden.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class CacheValueOverrideSniff extends Sniff {
 

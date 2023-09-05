@@ -17,11 +17,12 @@ Since VIPCS employs many sniffs that are part of PHPCS, and makes use of WordPre
 
 To determine where best to report the bug, use the first part of the sniff name:
 
-Sniffname starts with | Report to
+Sniff name starts with | Report to
 --- | ---
 `Generic` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
 `PSR2` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
 `Squiz` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
+`Universal` | [PHPCSExtra](https://github.com/PHPCSStandards/PHPCSExtra/issues/)
 `VariableAnalysis` | [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis/issues/)
 `WordPress` | [WordPressCS](https://github.com/WordPress/WordPress-Coding-Standards/issues/)
 `WordPressVIPMinimum` | [VIPCS](https://github.com/Automattic/VIP-Coding-Standards/issues/) (this repo)
@@ -44,7 +45,7 @@ After `composer install`, you can do:
 
 ## Branches
 
-Ongoing development will be done in feature branches then pulled against the `develop` branch and follows a typical _git-flow_ approach, where merges to `master` only happen when a new release is made.
+Ongoing development will be done in feature branches then pulled against the `develop` branch and follows a typical _git-flow_ approach, where merges to `main` only happen when a new release is made.
 
 To contribute an improvement to this project, fork the repo and open a pull request to the relevant branch. Alternatively, if you have push access to this repo, create a feature branch prefixed by `fix/` (followed by the issue number) or `add/` and then open a PR from that branch to the default (`develop`) branch.
 
@@ -64,6 +65,7 @@ When you introduce new `public` sniff properties, or your sniff extends a class 
 ### Pre-requisites
 * VIP Coding Standards
 * WordPress-Coding-Standards
+* PHPCSUtils 1.x
 * PHP_CodeSniffer 3.x
 * PHPUnit 4.x, 5.x, 6.x or 7.x
 
@@ -89,7 +91,7 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.2/phpunit.xsd"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
 	backupGlobals="true"
 	bootstrap="./tests/bootstrap.php"
 	beStrictAboutTestsThatDoNotTestAnything="false"
@@ -111,49 +113,52 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 * To run the unit tests:
     
     ```sh
-    phpunit --filter WordPressVIPMinimum $PHPCS_DIR/tests/AllTests.php
+    composer test
     ```
 
 Expected output:
 ```
 PHPUnit 7.5.20 by Sebastian Bergmann and contributors.
 
-..........................................                        42 / 42 (100%)
+........................................                          40 / 40 (100%)
 
-43 sniff test files generated 117 unique error codes; 0 were fixable (0%)
+45 sniff test files generated 175 unique error codes; 0 were fixable (0%)
 
-Time: 246 ms, Memory: 32.00 MB
+Time: 150 ms, Memory: 20.00 MB
+
+OK (40 tests, 0 assertions)
 ```
 
 ### Unit Testing conventions
 
-If you look inside the `WordPressVIPMinimum/Tests` subdirectory, you'll see the structure mimics the `WordPressVIPMinimum/Sniffs` subdirectory structure. For example, the `WordPressVIPMinimum/Sniffs/VIP/WPQueryParams.php` sniff has its unit test class defined in `WordPressVIPMinimum/Tests/VIP/WPQueryParamsUnitTest.php` which checks the `WordPressVIPMinimum/Tests/VIP/WPQueryParamsUnitTest.inc` test case file. See the file naming convention?
+If you look inside the `WordPressVIPMinimum/Tests` subdirectory, you'll see the structure mimics the `WordPressVIPMinimum/Sniffs` subdirectory structure. For example, the `WordPressVIPMinimum/Sniffs/Performance/WPQueryParams.php` sniff has its unit test class defined in `WordPressVIPMinimum/Tests/Performance/WPQueryParamsUnitTest.php` which checks the `WordPressVIPMinimum/Tests/Performance/WPQueryParamsUnitTest.inc` test case file. See the file naming convention?
 
-Lets take a look at what's inside `WPQueryParamsUnitTest.php`:
+Let's take a look at what's inside `WPQueryParamsUnitTest.php`:
 
 ```php
 ...
-namespace WordPressVIPMinimum\Tests\VIP;
+namespace WordPressVIPMinimum\Tests\Performance;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
  * Unit test class for the WP_Query params sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
+ * @covers \WordPressVIPMinimum\Sniffs\Performance\WPQueryParamsSniff
  */
 class WPQueryParamsUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			5  => 1,
 			17 => 1,
-		);
+			31 => 1,
+		];
 	}
 ...
 ```
@@ -162,24 +167,35 @@ Also note the class name convention. The method `getErrorList()` MUST return an 
 If you run:
 
 ```sh
-$ cd /path-to-cloned/phpcs
-$ ./bin/phpcs --standard=WordPressVIPMinimum -s --sniffs=WordPressVIPMinimum.VIP.WPQueryParams /path/to/WordPressVIPMinimum/Tests/VIP/WPQueryParamsUnitTest.inc
-...
-E 1 / 1 (100%)
+$ cd /path/to/vipcs
+$ ./vendor/bin/phpcs --standard=WordPressVIPMinimum -s --sniffs=WordPressVIPMinimum.Performance.WPQueryParams WordPressVIPMinimum/Tests/Performance/WPQueryParamsUnitTest.inc
 
-
-
-FILE: /path/to/vipcs/WordPressVIPMinimum/Tests/VIP/WPQueryParamsUnitTest.inc
---------------------------------------------------------------------------------------------------------------------------------
-FOUND 2 ERRORS AND 2 WARNINGS AFFECTING 4 LINES
---------------------------------------------------------------------------------------------------------------------------------
-  4 | WARNING | Using `post__not_in` should be done with caution. (WordPressVIPMinimum.VIP.WPQueryParams.post__not_in)
-  5 | ERROR   | Setting `suppress_filters` to `true` is probihited.
-    |         | (WordPressVIPMinimum.VIP.WPQueryParams.suppressFiltersTrue)
- 11 | WARNING | Using `post__not_in` should be done with caution. (WordPressVIPMinimum.VIP.WPQueryParams.post__not_in)
- 17 | ERROR   | Setting `suppress_filters` to `true` is probihited.
-    |         | (WordPressVIPMinimum.VIP.WPQueryParams.suppressFiltersTrue)
---------------------------------------------------------------------------------------------------------------------------------
+FILE: /path/to/vipcs/WordPressVIPMinimum/Tests/Performance/WPQueryParamsUnitTest.inc
+------------------------------------------------------------------------------------------------------------------------------------------------------
+FOUND 3 ERRORS AND 5 WARNINGS AFFECTING 8 LINES
+------------------------------------------------------------------------------------------------------------------------------------------------------
+  4 | WARNING | Using exclusionary parameters, like post__not_in, in calls to get_posts() should be done with caution, see
+    |         | https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in)
+  5 | ERROR   | Setting `suppress_filters` to `true` is prohibited.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters)
+ 11 | WARNING | Using exclusionary parameters, like post__not_in, in calls to get_posts() should be done with caution, see
+    |         | https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in)
+ 17 | ERROR   | Setting `suppress_filters` to `true` is prohibited.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters)
+ 21 | WARNING | Using exclusionary parameters, like exclude, in calls to get_posts() should be done with caution, see
+    |         | https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude)
+ 29 | WARNING | Using exclusionary parameters, like exclude, in calls to get_posts() should be done with caution, see
+    |         | https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude)
+ 30 | WARNING | Using exclusionary parameters, like exclude, in calls to get_posts() should be done with caution, see
+    |         | https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude)
+ 31 | ERROR   | Setting `suppress_filters` to `true` is prohibited.
+    |         | (WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters)
+------------------------------------------------------------------------------------------------------------------------------------------------------
 ....
 ```
 You'll see the line number and number of ERRORs we need to return in the `getErrorList()` method.
@@ -190,23 +206,26 @@ The `--sniffs=...` directive limits the output to the sniff you are testing.
 
 The ruleset tests, previously named here as _integration tests_, are our way of ensuring that _rulesets_ do check for the violations we expect them to.
 
-An example where it might not would be when a ruleset references a local sniff or a sniff from upstream (WPCS or PHPCS), but that the violation code, sniff name or category name has changed. Without a ruleset test, this would go unnoticed.
+An example where it might not would be when a ruleset references a local sniff or a sniff from upstream (WordPressCS or PHPCS), but that the violation code, sniff name or category name has changed. Without a ruleset test, this would go unnoticed.
 
-The `composer check` or `composer test-ruleset` commands run the `ruleset-test.php` files (one for each standard), which internally run `phpcs` against the "dirty" test files (`ruleset-test.inc`), and looks out for a known number of errors, warnings, and messages on each line. This is then compared against the expected errors, warnings and messages to see if there are any missing or unexpected violations or difference in messages.
+The `composer check` or `composer test-ruleset` commands run the `ruleset-test.php` files (one for each ruleset), which internally run `phpcs` against the "dirty" test files (`ruleset-test.inc`), and looks out for a known number of errors, warnings, and messages on each line. This is then compared against the expected errors, warnings, and messages to see if there are any missing or unexpected violations or difference in messages.
 
 When adding or changing a sniff, the ruleset test files should be updated to match.
 
 ## Releases
 
-- In a `changelog/x.y.z` branch off of `develop`, update the `CHANGELOG.md` with a list of all of the changes following the keepachangelog.com format. Include PR references and GitHub username props.
-- Create a PR of `develop` <-- `changelog/x.y.z`, but do not merge until ready to release.
-- Create a PR of `master` <-- `develop`, and copy-paste the [`release-template.md`](https://github.com/Automattic/VIP-Coding-Standards/blob/develop/.github/ISSUE_TEMPLATE/release-template.md) contents.
-- When ready to release, merge the change log PR into `develop`, then merge the `develop` into `master` PR.
-- Tag the commit in `master` with the appropriate version number. Ideally, have it signed.
-- Close the current milestone.
+- Create a `release/x.y.z` branch off of `develop`.
+- In a `release/x.y.z-changelog` branch off of `release/x.y.z`, update the `CHANGELOG.md` with a list of all of the changes following the keepachangelog.com format. Include PR references and GitHub username props.
+- Create a PR of `release/x.y.z` <-- `release/x.y.z-changelog`, but do not merge until ready to release.
+- Create any other last-minute PRs as necessary, such as documentation updates, against the release branch.
+- When ready to release, merge the changelog and other branches into `release/x.y.z`.
+- Create a PR of `main` <-- `release/x.y.z`, and copy-paste the [`release-template.md`](https://github.com/Automattic/VIP-Coding-Standards/blob/develop/.github/ISSUE_TEMPLATE/release-template.md) contents.
+- When ready to release, merge `release/x.y.z` into `main`. Undelete the release branch after merging.
+- Tag the commit in `main` with the appropriate version number. Ideally, have it signed.
 - Open a new milestone for the next release.
 - If any open PRs/issues which were milestoned for this release do not make it into the release, update their milestone.
-- Write a Lobby post to inform VIP customers about the release, including the date when the Review Bot will be updated (usually about 1.5 weeks after the VIPCS release).
+- Close the current milestone.
+- Create a PR of `develop` <-- `release/x.y.z` and merge in when ready.
+- Write a Lobby post to inform VIP customers about the release, including the date when the VIP Code Analysis Bot will be updated (usually about 2 weeks after the VIPCS release).
 - Write an internal P2 post.
-- Open a PR to update the [Review Bot dependencies](https://github.com/Automattic/vip-go-ci/blob/master/tools-init.sh).
-
+- Open a PR to update the [VIP Code Analysis bot dependencies](https://github.com/Automattic/vip-go-ci/blob/master/tools-init.sh).

@@ -8,14 +8,13 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * This sniff throws a warning when low cache times are set.
  *
  * {@internal VIP uses the Memcached object cache implementation. {@link https://github.com/Automattic/wp-memcached}}
- *
- * @package VIPCS\WordPressVIPMinimum
  *
  * @since 0.4.0
  */
@@ -149,7 +148,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			}
 
 			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-				$content = $this->strip_quotes( $this->tokens[ $i ]['content'] );
+				$content = TextStrings::stripQuotes( $this->tokens[ $i ]['content'] );
 				if ( is_numeric( $content ) === true ) {
 					$tokensAsString .= $content;
 					continue;

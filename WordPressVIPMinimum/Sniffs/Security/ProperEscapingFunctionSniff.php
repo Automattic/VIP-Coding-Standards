@@ -8,13 +8,13 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\BackCompat\BCFile;
+use PHPCSUtils\Utils\TextStrings;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Checks whether proper escaping function is used.
- *
- *  @package VIPCS\WordPressVIPMinimum
  */
 class ProperEscapingFunctionSniff extends Sniff {
 
@@ -178,7 +178,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 		if ( $this->in_short_echo !== false ) {
 			$ignore[ T_COMMA ] = T_COMMA;
 		} else {
-			$start_of_statement = $this->phpcsFile->findStartOfStatement( $stackPtr, T_COMMA );
+			$start_of_statement = BCFile::findStartOfStatement( $this->phpcsFile, $stackPtr, T_COMMA );
 			if ( $this->tokens[ $start_of_statement ]['code'] === T_ECHO ) {
 				$ignore[ T_COMMA ] = T_COMMA;
 			}
@@ -195,7 +195,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$content = $this->tokens[ $html ]['content'];
 		if ( isset( Tokens::$stringTokens[ $this->tokens[ $html ]['code'] ] ) === true ) {
-			$content = Sniff::strip_quotes( $content );
+			$content = TextStrings::stripQuotes( $content );
 		}
 
 		$escaping_type = $this->escaping_functions[ $function_name ];

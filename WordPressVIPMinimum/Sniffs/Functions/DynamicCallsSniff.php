@@ -8,6 +8,7 @@
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -139,7 +140,7 @@ class DynamicCallsSniff extends Sniff {
 		 * If we reached the end of the loop and the $value_ptr was set, we know for sure
 		 * this was a plain text string variable assignment.
 		 */
-		$current_var_value = $this->strip_quotes( $this->tokens[ $value_ptr ]['content'] );
+		$current_var_value = TextStrings::stripQuotes( $this->tokens[ $value_ptr ]['content'] );
 
 		if ( isset( $this->disallowed_functions[ $current_var_value ] ) === false ) {
 			// Text string is not one of the ones we're looking for.

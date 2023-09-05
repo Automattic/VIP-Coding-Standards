@@ -16,8 +16,9 @@ Go to https://docs.wpvip.com/technical-references/code-review/phpcs-report/ to l
 ## Minimal requirements
 
 * PHP 5.4+
-* [PHPCS 3.7.1+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
-* [WPCS 2.3.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
+* [PHPCS 3.7.2+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
+* [PHPCSUtils 1.0.8+](https://github.com/PHPCSStandards/PHPCSUtils)
+* [WPCS 3.0.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
 * [VariableAnalysis 2.11.17+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
 
 ## Installation
@@ -34,7 +35,7 @@ composer g config allow-plugins.dealerdirect/phpcodesniffer-composer-installer t
 composer g require automattic/vipwpcs
 ```
 
-This will install the latest compatible versions of PHPCS, WPCS and VariableAnalysis and register the external standards with PHP_CodeSniffer.
+This will install the latest compatible versions of PHPCS, PHPCSUtils, PHPCSExtra, WPCS and VariableAnalysis and register the external standards with PHP_CodeSniffer.
 
 Please refer to the [installation instructions for installing PHP_CodeSniffer for WordPress.com VIP](https://docs.wpvip.com/how-tos/code-review/php_codesniffer/) for more details.
 

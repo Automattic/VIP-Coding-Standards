@@ -12,9 +12,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the NoPaging sniff.
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  *
  * @covers \WordPressVIPMinimum\Sniffs\Performance\NoPagingSniff
  */
@@ -27,8 +25,10 @@ class NoPagingUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			4 => 1,
-			7 => 1,
+			4  => 1,
+			7  => 1,
+			13 => 1,
+			15 => 1,
 		];
 	}
 

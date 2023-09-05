@@ -56,10 +56,10 @@ $x = sanitize_key( $_COOKIE['bar'] ); // phpcs:ignore WordPress.Security.Validat
 if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'some_value' ) { // Error.
 }
 
+// Make sure nonce verification is done in global scope to silence notices about use of superglobals without later on in the file.
+isset( $_GET['my_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_GET['my_nonce'] ) );
 
-
-
-// WordPress.WP.AlternativeFunctions.file_system_read_fopen
+// WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 fopen( 'file.txt', 'r' ); // Warning + Message.
 
 // WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
@@ -80,7 +80,7 @@ function foo_bar() {
 }
 
 // WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-do_something( $_POST ); // Error.
+do_something( $_POST['key'] ); // Error + warning.
 if ( isset( $_POST['foo2'] ) ) {
 	bar( wp_unslash( $_POST['foo2'] ) ); // Warning.
 }
@@ -153,7 +153,7 @@ url_to_postid( $url ); // Warning + Message.
 wpcom_vip_old_slug_redirect(); // Ok.
 wp_old_slug_redirect(); // Warning.
 
-// WordPress.CodeAnalysis.AssignmentInCondition.Found
+// Generic.CodeAnalysis.AssignmentInCondition.Found
 if ($a = 123) { // Warning.
 }
 
@@ -165,7 +165,7 @@ rawurlencode(); // Ok.
 extract( array( 'a' => 1 ) ); // Error.
 $obj->extract(); // Ok.
 
-// WordPress.PHP.StrictComparisons.LooseComparison
+// Universal.Operators.StrictComparisons
 true == $true; // Warning.
 false === $true; // Ok.
 
@@ -279,10 +279,10 @@ $args( [
 $query = new WP_Query( ['meta_key' => 'foo' ] ); // Ok.
 $args = 'foo=bar&meta_key=foo'; // Ok.
 
-// WordPressVIPMinimum.Performance.BatcacheWhitelistedParams
-if ( isset( $_GET['migSource'] ) && wp_verify_nonce( sanitize_text_field( $_GET['migSource'] ) ) ) {
-	$test = sanitize_text_field( $_GET['migSource'] ); // Ok.
-}
+
+
+
+
 
 
 
@@ -322,8 +322,8 @@ class MyWidget extends WP_Widget {
 class BadTestClass extends WP_CLI_Command { // Warning.
 }
 
-// WordPressVIPMinimum.Compatibility.ZoninatorSniff
-wpcom_vip_load_plugin( 'zoninator', 'plugins', '0.8' ); // Warning.
+
+
 
 // WordPressVIPMinimum.Constants.ConstantString
 define( WPCOM_VIP ); // Error.
@@ -557,7 +557,7 @@ echo "<script>
 </article> <?php
 
 // WordPressVIPMinimum.Variables.RestrictedVariables
-foo( $_SESSION['bar'] ); // Error.
+foo( $_SESSION['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Error.
 
 // WordPressVIPMinimum.Variables.ServerVariables
 // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -572,3 +572,8 @@ $_SERVER["REMOTE_ADDR"]; // Error.
 <<<<<<< HEAD // Error.
 
 >>>>>>> // Error.
+
+<?php
+
+// WordPress.CodeAnalysis.AssignmentInTernaryCondition
+$var = ($a = 123) ? $a : 0; // Warning.

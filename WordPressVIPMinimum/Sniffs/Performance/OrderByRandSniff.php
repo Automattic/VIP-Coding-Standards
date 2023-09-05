@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
@@ -16,9 +17,7 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  *
  * @link https://docs.wpvip.com/technical-references/code-review/vip-errors/#h-order-by-rand
  *
- * @package VIPCS\WordPressVIPMinimum
- *
- * @since   0.5.0
+ * @since 0.5.0
  */
 class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
@@ -31,7 +30,7 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 		return [
 			'orderby' => [
 				'type'    => 'error',
-				'message' => 'Detected forbidden query_var "%s" of "%s". Use vip_get_random_posts() instead.',
+				'message' => 'Detected forbidden query_var "%s" of %s. Use vip_get_random_posts() instead.',
 				'keys'    => [
 					'orderby',
 				],
@@ -50,6 +49,7 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
+		$val = TextStrings::stripQuotes( $val );
 		return strtolower( $val ) === 'rand';
 	}
 }

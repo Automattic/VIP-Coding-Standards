@@ -8,17 +8,20 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressCS\WordPress\Helpers\PrintingFunctionsTrait;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Flag functions that don't return anything, yet are wrapped in an escaping function call.
  *
  * E.g. esc_html( _e( 'foo' ) );
  *
- *  @package VIPCS\WordPressVIPMinimum
+ * @uses \WordPressCS\WordPress\Helpers\PrintingFunctionsTrait::$customPrintingFunctions
  */
 class EscapingVoidReturnFunctionsSniff extends Sniff {
+
+	use PrintingFunctionsTrait;
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -59,7 +62,7 @@ class EscapingVoidReturnFunctionsSniff extends Sniff {
 			return;
 		}
 
-		if ( isset( $this->printingFunctions[ $this->tokens[ $next_token ]['content'] ] ) ) {
+		if ( $this->is_printing_function( $this->tokens[ $next_token ]['content'] ) ) {
 			$message = 'Attempting to escape `%s()` which is printing its output.';
 			$data    = [ $this->tokens[ $next_token ]['content'] ];
 			$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );

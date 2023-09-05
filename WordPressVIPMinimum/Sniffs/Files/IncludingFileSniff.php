@@ -7,15 +7,13 @@
 
 namespace WordPressVIPMinimum\Sniffs\Files;
 
-use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
  *
  * Checks for custom variables, functions and constants, and external URLs used in file inclusion.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 

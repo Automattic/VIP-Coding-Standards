@@ -7,15 +7,13 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
-use WordPressVIPMinimum\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * WordPressVIPMinimum_Sniffs_JS_InnerHTMLSniff.
  *
  * Looks for instances of .innerHMTL.
- *
- * @package VIPCS\WordPressVIPMinimum
  */
 class InnerHTMLSniff extends Sniff {
 
