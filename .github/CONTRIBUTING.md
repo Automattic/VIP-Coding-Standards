@@ -29,6 +29,34 @@ Sniff name starts with | Report to
 
 ----
 
+## Getting the source files
+
+```sh
+git clone git@github.com:Automattic/VIP-Coding-Standards.git vipcs
+```
+
+...or:
+
+```sh
+gh repo clone Automattic/VIP-Coding-Standards vipcs
+```
+
+Now `cd vipcs` and run:
+
+```sh
+composer install --ignore-platform-req=php+
+```
+
+The platform requirements for higher versions of PHP are ignored so that the correct version of PHPUnit (7.x needed by PHPCS) is installed.
+
+You can now run:
+
+```
+composer check
+```
+
+... and all checks should pass.
+
 ## tl;dr Composer Scripts
 
 This package contains Composer scripts to quickly run the developer checks which are described (with setups) further below.
