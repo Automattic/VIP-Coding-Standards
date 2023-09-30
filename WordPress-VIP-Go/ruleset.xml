@@ -218,7 +218,7 @@
 		<type>warning</type>
 		<severity>3</severity>
 	</rule>
-	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable">
+	<rule phpcs-only="true" ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable">
 		<severity>3</severity>
 	</rule>
 	<rule ref="WordPressVIPMinimum.UserExperience.AdminBarRemoval">
@@ -238,7 +238,7 @@
 	</rule>
 
 	<!-- Silence is golden, these don't affect us on VIP Go -->
-	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
+	<rule phpcs-only="true" ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
 		<severity>0</severity>
 	</rule>
 
