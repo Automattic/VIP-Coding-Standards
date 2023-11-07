@@ -1,6 +1,6 @@
 # VIP Coding Standards
 
-This project contains [PHP_CodeSniffer (PHPCS) sniffs and rulesets](https://github.com/squizlabs/PHP_CodeSniffer) to validate code developed for [WordPress VIP](https://wpvip.com/).
+This project contains [PHP_CodeSniffer (PHPCS) sniffs and rulesets](https://github.com/PHPCSStandards/PHP_CodeSniffer) to validate code developed for [WordPress VIP](https://wpvip.com/).
 
 This project contains two rulesets:
 
@@ -16,7 +16,7 @@ Go to https://docs.wpvip.com/technical-references/code-review/phpcs-report/ to l
 ## Minimal requirements
 
 * PHP 5.4+
-* [PHPCS 3.7.2+](https://github.com/squizlabs/PHP_CodeSniffer/releases)
+* [PHPCS 3.7.2+](https://github.com/PHPCSStandards/PHP_CodeSniffer/releases)
 * [PHPCSUtils 1.0.8+](https://github.com/PHPCSStandards/PHPCSUtils)
 * [WPCS 3.0.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
 * [VariableAnalysis 2.11.17+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
