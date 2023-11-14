@@ -40,7 +40,8 @@ jobs:
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - uses: korelstar/xmllint-problem-matcher@v1
+      - name: Enable showing XML issues inline
+        uses: korelstar/xmllint-problem-matcher@v1
 
       # Validate the composer.json file.
       # @link https://getcomposer.org/doc/03-cli.md#validate
@@ -52,7 +53,7 @@ jobs:
         run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
         with:
@@ -95,7 +96,7 @@ jobs:
 
       # Install dependencies and handle caching in one go.
       # Dependencies need to be installed to make sure the PHPCS and PHPUnit classes are recognized.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
         with:
