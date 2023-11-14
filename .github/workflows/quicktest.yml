@@ -52,7 +52,7 @@ jobs:
           coverage: none
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
         uses: "ramsey/composer-install@v2"
