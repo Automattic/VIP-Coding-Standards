@@ -95,7 +95,7 @@ When you introduce new `public` sniff properties, or your sniff extends a class 
 * WordPress-Coding-Standards
 * PHPCSUtils 1.x
 * PHP_CodeSniffer 3.x
-* PHPUnit 4.x, 5.x, 6.x or 7.x
+* PHPUnit 4.x - 9.x
 
 The VIP Coding Standards use the PHP_CodeSniffer native unit test suite for unit testing the sniffs.
 
@@ -106,7 +106,7 @@ N.B.: If you installed VIPCS using Composer, make sure you used `--prefer-source
 If you already have PHPUnit installed on your system: Congrats, you're all set.
 
 If not, you can navigate to the directory where the `PHP_CodeSniffer` repo is checked out and do `composer install` to install the `dev` dependencies.
-Alternatively, you can [install PHPUnit](https://phpunit.readthedocs.io/en/7.5/installation.html) as a PHAR file.
+Alternatively, you can [install PHPUnit](https://phpunit.readthedocs.io/en/9.6/installation.html) as a PHAR file.
 
 ### Before running the unit tests
 
@@ -146,7 +146,7 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 
 Expected output:
 ```
-PHPUnit 7.5.20 by Sebastian Bergmann and contributors.
+PHPUnit 9.6.15 by Sebastian Bergmann and contributors.
 
 ........................................                          40 / 40 (100%)
 
