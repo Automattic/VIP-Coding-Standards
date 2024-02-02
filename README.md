@@ -38,7 +38,7 @@ composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer tru
 composer require --dev automattic/vipwpcs
 ```
 
-## Composer Global Installation
+### Composer Global Installation
 
 Alternatively, it can be installed standard globally for use across multiple projects:
 
