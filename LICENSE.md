@@ -64,4 +64,4 @@ Included Files
 This project includes:
 
 - [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards), which is Copyright &copy; 2009 John Godley and contributors. Released under the MIT license https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/LICENSE
-- [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer), Copyright &copy; 2012, Squiz Pty Ltd (ABN 77 084 670 600). Released under the following license: https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt
+- [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer), Copyright &copy; 2012, Squiz Pty Ltd (ABN 77 084 670 600). Released under the following license: https://github.com/PHPCSStandards/PHP_CodeSniffer/blob/master/licence.txt

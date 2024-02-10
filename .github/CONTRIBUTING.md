@@ -19,9 +19,9 @@ To determine where best to report the bug, use the first part of the sniff name:
 
 Sniff name starts with | Report to
 --- | ---
-`Generic` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
-`PSR2` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
-`Squiz` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
+`Generic` | [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/)
+`PSR2` | [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/)
+`Squiz` | [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/)
 `Universal` | [PHPCSExtra](https://github.com/PHPCSStandards/PHPCSExtra/issues/)
 `VariableAnalysis` | [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis/issues/)
 `WordPress` | [WordPressCS](https://github.com/WordPress/WordPress-Coding-Standards/issues/)
