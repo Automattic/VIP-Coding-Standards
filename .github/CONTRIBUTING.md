@@ -44,10 +44,8 @@ gh repo clone Automattic/VIP-Coding-Standards vipcs
 Now `cd vipcs` and run:
 
 ```sh
-composer install --ignore-platform-req=php+
+composer install
 ```
-
-The platform requirements for higher versions of PHP are ignored so that the correct version of PHPUnit (7.x needed by PHPCS) is installed.
 
 You can now run:
 
