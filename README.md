@@ -7,11 +7,11 @@ This project contains two rulesets:
  - `WordPressVIPMinimum` - for use with projects on the (older) WordPress.com VIP platform.
  - `WordPress-VIP-Go` - for use with projects on the (newer) VIP Go platform.
 
-These rulesets contain only the rules which are considered to be ["errors"](https://docs.wpvip.com/technical-references/code-review/vip-errors/) and ["warnings"](https://docs.wpvip.com/technical-references/code-review/vip-warnings/) according to the WordPress VIP Go documentation.
+These rulesets contain only the rules which are considered to be [errors](https://docs.wpvip.com/php_codesniffer/errors/) and [warnings](https://docs.wpvip.com/php_codesniffer/warnings/) according to the WordPress VIP documentation.
 
 The rulesets use rules from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) (WPCS) project, as well as the [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis) standard.
 
-Go to https://docs.wpvip.com/technical-references/code-review/phpcs-report/ to learn about why violations are flagged as errors vs warnings and what the levels mean.
+[Learn](https://docs.wpvip.com/vip-code-analysis-bot/phpcs-report/) about why violations are flagged as errors vs warnings and what the levels mean.
 
 ## Minimal requirements
 
