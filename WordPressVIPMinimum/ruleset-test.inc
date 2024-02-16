@@ -329,7 +329,7 @@ url_to_postid( $url ); // Error.
 
 
 
-term_exists(); // Error.
+
 count_user_posts(); // Error.
 wp_old_slug_redirect(); // Error.
 get_adjacent_post(); // Error.
