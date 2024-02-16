@@ -80,13 +80,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'switch_to_blog',
 				],
 			],
-			'get_page_by_title' => [
-				'type'      => 'error',
-				'message'   => '%s() is prohibited, please use wpcom_vip_get_page_by_title() instead.',
-				'functions' => [
-					'get_page_by_title',
-				],
-			],
 			'url_to_postid' => [
 				'type'      => 'error',
 				'message'   => '%s() is prohibited, please use wpcom_vip_url_to_postid() instead.',
