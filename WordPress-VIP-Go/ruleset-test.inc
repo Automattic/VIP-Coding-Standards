@@ -358,7 +358,7 @@ wpcom_vip_irc(); // Error.
 flush_rewrite_rules(); // Error.
 $wp_rewrite->flush_rules(); // Error.
 \add_role(); // Error.
-term_exists(); // Error.
+
 count_user_posts(); // Error.
 get_intermediate_image_sizes(); // Error.
 wp_is_mobile(); // Error.
