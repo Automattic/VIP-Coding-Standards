@@ -322,7 +322,7 @@ $wp_rewrite->flush_rules(); // Error.
 attachment_url_to_postid( $url ); // Error.
 
 switch_to_blog( $blogid ); // Warning.
-get_page_by_title( $page_title ); // Error.
+
 url_to_postid( $url ); // Error.
 \add_role(); // Error.
 

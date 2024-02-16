@@ -55,8 +55,8 @@ $wp_rewrite->flush_rules(); // Error.
 switch_blog(); // Ok - similarly-named function to switch_to_blog().
 switch_to_blog( $blogid ); // Warning.
 
-wpcom_vip_get_page_by_title(); // Ok - VIP recommended version of get_page_by_title().
-get_page_by_title( $page_title ); // Error.
+
+
 
 wpcom_vip_url_to_postid( $url ); // Ok - VIP recommended version of url_to_postid().
 url_to_postid( $url ); // Error.

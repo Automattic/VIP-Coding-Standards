@@ -130,9 +130,9 @@ get_next_post(); // Warning.
 get_previous_post_link(); // Warning.
 get_next_post_link(); // Warning.
 
-// WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_title_get_page_by_title
-wpcom_vip_get_page_by_title(); // Ok.
-get_page_by_title( $page_title ); // Warning + Message.
+
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children
 get_child(); // Ok.
