@@ -3,6 +3,8 @@
  * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
  *
  * @package VIPCS\WordPressVIPMinimum
+ *
+ * @deprecated 3.1.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\JS;
