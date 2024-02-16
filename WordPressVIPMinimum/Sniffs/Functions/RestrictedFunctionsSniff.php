@@ -102,13 +102,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'add_role',
 				],
 			],
-			'term_exists' => [
-				'type'      => 'error',
-				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_term_exists() instead.',
-				'functions' => [
-					'term_exists',
-				],
-			],
 			'count_user_posts' => [
 				'type'      => 'error',
 				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_count_user_posts() instead.',

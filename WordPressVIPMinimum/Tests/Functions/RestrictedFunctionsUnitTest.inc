@@ -84,8 +84,8 @@ add_role( 'test' ); // Error.
 
 
 
-wpcom_vip_term_exists(); // Ok - VIP recommended version of term_exists().
-term_exists(); // Error.
+
+
 
 wpcom_vip_count_user_posts(); // Ok - VIP recommended version of count_user_posts().
 count_user_posts(); // Error.
