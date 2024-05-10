@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1] - 2024-05-14
+
+Props: @GaryJones, @jrnfl, @terriann, @rebeccahum
+
+Increases requirements for PHPCS from 3.7.2 to 3.9.2 for improved PHP 8.2 and PHP 8.3 support. Please ensure you run `composer update automattic/vipwpcs --with-dependencies` to benefit from this.
+
+### Removed
+- Functions/RestrictedFunctions:
+    * [#812](https://github.com/Automattic/VIP-Coding-Standards/pull/812): Remove restricting `term_exists()`.
+    * [#814](https://github.com/Automattic/VIP-Coding-Standards/pull/814): Remove restricting `get_page_by_title()`.
+    * [#817](https://github.com/Automattic/VIP-Coding-Standards/pull/817): Remove restricting `get_page_by_path()`.
+
+### Changed
+- [#799](https://github.com/Automattic/VIP-Coding-Standards/pull/799): Classes/DeclarationCompatibility: Sync signature definitions with WP Core.
+
+### Maintenance
+- [#797](https://github.com/Automattic/VIP-Coding-Standards/pull/797): GH: Add initial dependabot config file.
+- GH Actions:
+    * [#798](https://github.com/Automattic/VIP-Coding-Standards/pull/798): Bump actions/checkout to 4 from 3.
+    * [#802](https://github.com/Automattic/VIP-Coding-Standards/pull/802): Minor tweaks of updating an incorrect URL and adding names to steps.
+    * [#803](https://github.com/Automattic/VIP-Coding-Standards/pull/802): Builds against PHP 8.3 can no longer fail, but 8.4 can.
+    * [#818](https://github.com/Automattic/VIP-Coding-Standards/pull/818): Add workaround for intermittent `apt-get update` issue.
+- Composer:
+    * [#805](https://github.com/Automattic/VIP-Coding-Standards/pull/805): Raise minimum version for better PHP 8.2 support.
+    * [#805](https://github.com/Automattic/VIP-Coding-Standards/pull/805): Up the minimum PHPCSExtra version to 1.2.1.
+    * [#821](https://github.com/Automattic/VIP-Coding-Standards/pull/821): Up the minimum PHPCSUtils version to 1.0.11.
+    * [#821](https://github.com/Automattic/VIP-Coding-Standards/pull/821): Up the minimum PHPCS version to 3.9.2.
+    * [#821](https://github.com/Automattic/VIP-Coding-Standards/pull/821): Up the minimum WPCS version to 3.1.0.
+    * [#821](https://github.com/Automattic/VIP-Coding-Standards/pull/821): Up the minimum PHPCSVariableAnalysis version to 2.11.18.
+- Docs:
+    * [#805](https://github.com/Automattic/VIP-Coding-Standards/pull/805): Update references to PHPCS under PHPCSStandards, as squizlabs version is abandoned.
+    * [#808](https://github.com/Automattic/VIP-Coding-Standards/pull/808): Update Composer installation instructions.
+    * [#811](https://github.com/Automattic/VIP-Coding-Standards/pull/811): Update old URLs.
+- [#809](https://github.com/Automattic/VIP-Coding-Standards/pull/809): Unit tests: Allow for PHPUnit 8 and 9.
+
 ## [3.0.0] - 2023-09-05
 
 Props: @GaryJones, @jrfnl
@@ -18,7 +53,7 @@ The tagged releases branch is now `main` instead of `master`.
 - [#777](https://github.com/Automattic/VIP-Coding-Standards/pull/777): 3.0: start using PHPCSUtils.
 - [#779](https://github.com/Automattic/VIP-Coding-Standards/pull/779): 3.0: support WordPressCS 3.0.
 
-## Changed
+### Changed
 - [#780](https://github.com/Automattic/VIP-Coding-Standards/pull/780): Performance/WPQueryParams: defer to the parent sniff.
   - Two error codes changed:
     - `WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn` is now `WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in`.
@@ -674,6 +709,7 @@ Initial release.
 
 Props: david-binda, pkevan.
 
+[3.0.1]: https://github.com/Automattic/VIP-Coding-Standards/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.4...3.0.0
 [2.3.4]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/Automattic/VIP-Coding-Standards/compare/2.3.2...2.3.3

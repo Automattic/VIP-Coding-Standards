@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress-VIP-Go" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress-VIP-Go" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>WordPress VIP Go Coding Standards</description>
 
 	<!-- The rules below are the changes from between the original sniff or parent ruleset, and what should be applied for this Standard. -->
@@ -151,10 +151,6 @@
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_adjacent_post_get_next_post_link">
 		<type>warning</type>
-	</rule>
-	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_title_get_page_by_title">
-		<type>warning</type>
-		<message>%s() is uncached, please use wpcom_vip_get_page_by_title() instead.</message>
 	</rule>
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children">
 		<type>warning</type>

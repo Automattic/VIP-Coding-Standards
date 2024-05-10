@@ -40,7 +40,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				'widget_options'  => [
 					'default' => 'array()',
 				],
-				'constol_options' => [
+				'control_options' => [
 					'default' => 'array()',
 				],
 			],
@@ -103,7 +103,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				'output'            => [
 					'pass_by_reference' => true,
 				],
-				'object',
+				'data_object',
 				'depth'             => [
 					'default' => '0',
 				],
@@ -118,7 +118,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				'output' => [
 					'pass_by_reference' => true,
 				],
-				'object',
+				'data_object',
 				'depth'  => [
 					'default' => '0',
 				],
@@ -158,7 +158,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				'elements',
 			],
 			'unset_children'              => [
-				'el',
+				'element',
 				'children_elements' => [
 					'pass_by_reference' => true,
 				],
@@ -215,7 +215,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		// Meed to define the originalParentClassName since we might override the parentClassName due to signature notations grouping.
+		// Need to define the originalParentClassName since we might override the parentClassName due to signature notations grouping.
 		$originalParentClassName = $parentClassName;
 
 		if ( array_key_exists( $parentClassName, $this->checkClasses ) === false ) {

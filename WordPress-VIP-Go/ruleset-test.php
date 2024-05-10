@@ -47,7 +47,6 @@ $expected = [
 		358 => 1,
 		359 => 1,
 		360 => 1,
-		361 => 1,
 		362 => 1,
 		363 => 1,
 		364 => 1,
@@ -155,7 +154,6 @@ $expected = [
 		129 => 1,
 		130 => 1,
 		131 => 1,
-		135 => 1,
 		139 => 1,
 		142 => 1,
 		146 => 1,
@@ -304,9 +302,6 @@ $expected = [
 		],
 		123 => [
 			'attachment_url_to_postid() is uncached, please use wpcom_vip_attachment_url_to_postid() instead.',
-		],
-		135 => [
-			'get_page_by_title() is uncached, please use wpcom_vip_get_page_by_title() instead.',
 		],
 		139 => [
 			'get_children() is uncached and performs a no limit query. Please use get_posts or WP_Query instead. Please see: https://docs.wpvip.com/technical-references/caching/uncached-functions/',

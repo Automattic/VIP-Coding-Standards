@@ -28,14 +28,14 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', 'latest', '8.3']
+        php: ['5.4', 'latest', '8.4']
 
     name: "Lint: PHP ${{ matrix.php }}"
-    continue-on-error: ${{ matrix.php == '8.3' }}
+    continue-on-error: ${{ matrix.php == '8.4' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -45,7 +45,7 @@ jobs:
           tools: cs2pr
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -67,8 +67,9 @@ jobs:
       #   - PHPCS will run without errors on PHP 5.4 - 7.4 on any supported version.
       #   - PHP 8.0 needs PHPCS 3.5.7+ to run without errors, and we require a higher minimum version.
       #   - PHP 8.1 needs PHPCS 3.6.1+ to run without errors, but works best with 3.7.1+, and we require at least this minimum version.
+      #   - PHP 8.2 and 8.3 need PHPCS 3.8.0+ to run without errors (though the errors don't affect the tests).
       matrix:
-        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
+        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
         dependencies: ['lowest', 'stable']
 
         include:
@@ -79,20 +80,20 @@ jobs:
             dependencies: 'dev'
           - php: '7.4'
             dependencies: 'dev'
-          - php: '8.2'
+          - php: '8.3'
             dependencies: 'dev'
 
           # Test against upcoming PHP version.
-          - php: '8.3'
+          - php: '8.4'
             dependencies: 'dev'
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
-    continue-on-error: ${{ matrix.php == '8.3' }}
+    continue-on-error: ${{ matrix.php == '8.4' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
@@ -123,37 +124,17 @@ jobs:
           wp-coding-standards/wpcs:"dev-develop"
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
-      - name: Install Composer dependencies - normal
-        if: ${{ startsWith( matrix.php, '8' ) == false }}
-        uses: "ramsey/composer-install@v2"
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v3"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      # PHPUnit 7.x does not allow for installation on PHP 8, so ignore platform
-      # requirements to get PHPUnit 7.x to install on nightly.
-      - name: Install Composer dependencies - with ignore platform
-        if: ${{ startsWith( matrix.php, '8' ) }}
-        uses: "ramsey/composer-install@v2"
-        with:
-          composer-options: --ignore-platform-req=php+
-          custom-cache-suffix: $(date -u "+%Y-%m")
-
       - name: "Composer: downgrade PHPCS dependencies for tests (lowest)"
-        if: ${{ ! startsWith( matrix.php, '8' ) && matrix.dependencies == 'lowest' }}
+        if: ${{ matrix.dependencies == 'lowest' }}
         run: >
           composer update --prefer-lowest --no-scripts --no-interaction
-          squizlabs/php_codesniffer
-          phpcsstandards/phpcsutils
-          phpcsstandards/phpcsextra
-          sirbrillig/phpcs-variable-analysis
-          wp-coding-standards/wpcs
-
-      - name: "Composer: downgrade PHPCS dependencies for tests (lowest) - with ignore platform"
-        if: ${{ startsWith( matrix.php, '8' ) && matrix.dependencies == 'lowest' }}
-        run: >
-          composer update --prefer-lowest --no-scripts --no-interaction --ignore-platform-req=php+
           squizlabs/php_codesniffer
           phpcsstandards/phpcsutils
           phpcsstandards/phpcsextra

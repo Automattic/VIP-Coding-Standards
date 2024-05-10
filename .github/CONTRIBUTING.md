@@ -19,15 +19,41 @@ To determine where best to report the bug, use the first part of the sniff name:
 
 Sniff name starts with | Report to
 --- | ---
-`Generic` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
-`PSR2` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
-`Squiz` | [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/issues/)
+`Generic` | [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/)
+`PSR2` | [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/)
+`Squiz` | [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/)
 `Universal` | [PHPCSExtra](https://github.com/PHPCSStandards/PHPCSExtra/issues/)
 `VariableAnalysis` | [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis/issues/)
 `WordPress` | [WordPressCS](https://github.com/WordPress/WordPress-Coding-Standards/issues/)
 `WordPressVIPMinimum` | [VIPCS](https://github.com/Automattic/VIP-Coding-Standards/issues/) (this repo)
 
 ----
+
+## Getting the source files
+
+```sh
+git clone git@github.com:Automattic/VIP-Coding-Standards.git vipcs
+```
+
+...or:
+
+```sh
+gh repo clone Automattic/VIP-Coding-Standards vipcs
+```
+
+Now `cd vipcs` and run:
+
+```sh
+composer install
+```
+
+You can now run:
+
+```
+composer check
+```
+
+... and all checks should pass.
 
 ## tl;dr Composer Scripts
 
@@ -67,7 +93,7 @@ When you introduce new `public` sniff properties, or your sniff extends a class 
 * WordPress-Coding-Standards
 * PHPCSUtils 1.x
 * PHP_CodeSniffer 3.x
-* PHPUnit 4.x, 5.x, 6.x or 7.x
+* PHPUnit 4.x - 9.x
 
 The VIP Coding Standards use the PHP_CodeSniffer native unit test suite for unit testing the sniffs.
 
@@ -78,7 +104,7 @@ N.B.: If you installed VIPCS using Composer, make sure you used `--prefer-source
 If you already have PHPUnit installed on your system: Congrats, you're all set.
 
 If not, you can navigate to the directory where the `PHP_CodeSniffer` repo is checked out and do `composer install` to install the `dev` dependencies.
-Alternatively, you can [install PHPUnit](https://phpunit.readthedocs.io/en/7.5/installation.html) as a PHAR file.
+Alternatively, you can [install PHPUnit](https://phpunit.readthedocs.io/en/9.6/installation.html) as a PHAR file.
 
 ### Before running the unit tests
 
@@ -118,7 +144,7 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 
 Expected output:
 ```
-PHPUnit 7.5.20 by Sebastian Bergmann and contributors.
+PHPUnit 9.6.15 by Sebastian Bergmann and contributors.
 
 ........................................                          40 / 40 (100%)
 

@@ -322,14 +322,14 @@ $wp_rewrite->flush_rules(); // Error.
 attachment_url_to_postid( $url ); // Error.
 
 switch_to_blog( $blogid ); // Warning.
-get_page_by_title( $page_title ); // Error.
+
 url_to_postid( $url ); // Error.
 \add_role(); // Error.
 
 
 
 
-term_exists(); // Error.
+
 count_user_posts(); // Error.
 wp_old_slug_redirect(); // Error.
 get_adjacent_post(); // Error.

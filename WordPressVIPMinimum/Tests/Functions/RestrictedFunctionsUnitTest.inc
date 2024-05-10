@@ -55,8 +55,8 @@ $wp_rewrite->flush_rules(); // Error.
 switch_blog(); // Ok - similarly-named function to switch_to_blog().
 switch_to_blog( $blogid ); // Warning.
 
-wpcom_vip_get_page_by_title(); // Ok - VIP recommended version of get_page_by_title().
-get_page_by_title( $page_title ); // Error.
+
+
 
 wpcom_vip_url_to_postid( $url ); // Ok - VIP recommended version of url_to_postid().
 url_to_postid( $url ); // Error.
@@ -84,8 +84,8 @@ add_role( 'test' ); // Error.
 
 
 
-wpcom_vip_term_exists(); // Ok - VIP recommended version of term_exists().
-term_exists(); // Error.
+
+
 
 wpcom_vip_count_user_posts(); // Ok - VIP recommended version of count_user_posts().
 count_user_posts(); // Error.
@@ -222,8 +222,8 @@ $wp_random_testing = create_function3( '$a, $b', 'return ( $b / $a ); '); // Ok.
 
 
 
-wpcom_vip_get_page_by_path(); // Ok - VIP recommended version of get_page_by_path().
-get_page_by_path( $page_path ); // Warning.
+
+
 
 $popular = stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] ); // Error.
 $popular = custom_stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] ); // Ok.

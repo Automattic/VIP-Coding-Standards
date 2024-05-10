@@ -47,6 +47,7 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 			128 => 1,
 			134 => 1,
 			137 => 1,
+			140 => 1,
 		];
 	}
 

@@ -80,13 +80,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'switch_to_blog',
 				],
 			],
-			'get_page_by_title' => [
-				'type'      => 'error',
-				'message'   => '%s() is prohibited, please use wpcom_vip_get_page_by_title() instead.',
-				'functions' => [
-					'get_page_by_title',
-				],
-			],
 			'url_to_postid' => [
 				'type'      => 'error',
 				'message'   => '%s() is prohibited, please use wpcom_vip_url_to_postid() instead.',
@@ -100,13 +93,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'message'   => 'Use wpcom_vip_add_role() instead of %s().',
 				'functions' => [
 					'add_role',
-				],
-			],
-			'term_exists' => [
-				'type'      => 'error',
-				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_term_exists() instead.',
-				'functions' => [
-					'term_exists',
 				],
 			],
 			'count_user_posts' => [
@@ -281,13 +267,6 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				'message'   => '%s() is highly discouraged, as it can execute arbritary code (additionally, it\'s deprecated as of PHP 7.2): https://docs.wpvip.com/technical-references/code-review/vip-warnings/#h-eval-and-create_function. )',
 				'functions' => [
 					'create_function',
-				],
-			],
-			'get_page_by_path' => [
-				'type'      => 'warning',
-				'message'   => '%s() is highly discouraged due to not being cached; please use wpcom_vip_get_page_by_path() instead.',
-				'functions' => [
-					'get_page_by_path',
 				],
 			],
 		];
