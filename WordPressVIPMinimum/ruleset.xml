@@ -178,9 +178,8 @@
 		<message>`%1$s()` performs a no-LIMIT query by default, make sure to set a reasonable `posts_per_page`. `%1$s()` will do a -1 query by default, a maximum of 100 should be used.</message>
 	</rule>
 
-	<!-- Include VariableAnalysis checks -->
-	<rule ref="VariableAnalysis"/>
-	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
+	<!-- Include VariableAnalysis checks - not loading this for phpcbf significantly (20%) speeds up phpcbf and there are no auto-fixers for this rule -->
+	<rule phpcs-only="true" ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
 		<properties>
 			<!-- Do not report on unused variables before require nor usused or undefined variables in file scope. -->
 			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
