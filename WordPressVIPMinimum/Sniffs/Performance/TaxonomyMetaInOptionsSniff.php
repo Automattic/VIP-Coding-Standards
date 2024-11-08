@@ -19,7 +19,7 @@ class TaxonomyMetaInOptionsSniff extends Sniff {
 	/**
 	 * List of options_ functions
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $option_functions = [
 		'get_option',
@@ -31,7 +31,7 @@ class TaxonomyMetaInOptionsSniff extends Sniff {
 	/**
 	 * List of possible variable names holding term ID.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $taxonomy_term_patterns = [
 		'category_id',

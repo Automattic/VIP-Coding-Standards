@@ -24,7 +24,7 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 	 * Value indicates whether the function's arg is the content to be inserted, or the target where the inserted
 	 * content is to be inserted before/after/replaced. For the latter, the content is in the preceding method's arg.
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	public $HTMLExecutingFunctions = [
 		'after'        => 'content', // jQuery.

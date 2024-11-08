@@ -315,7 +315,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 *
 	 * @param array $methodSignature Signature of a method.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	private function generateParamList( $methodSignature ) {
 		$paramList = [];

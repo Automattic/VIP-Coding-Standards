@@ -38,7 +38,7 @@ class WindowSniff extends Sniff {
 	/**
 	 * List of window properties that need to be flagged.
 	 *
-	 * @var array
+	 * @var array<string, bool|array<string, bool>>
 	 */
 	private $windowProperties = [
 		'location' => [

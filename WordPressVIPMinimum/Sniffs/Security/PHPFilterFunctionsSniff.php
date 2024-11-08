@@ -38,7 +38,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * List of restricted filter names.
 	 *
-	 * @var array
+	 * @var array<string, bool>
 	 */
 	private $restricted_filters = [
 		'FILTER_DEFAULT'    => true,

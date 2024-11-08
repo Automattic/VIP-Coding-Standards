@@ -23,7 +23,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 *
 	 * Files with these extensions are allowed to be `include`d.
 	 *
-	 * @var array Key is the extension, value is irrelevant.
+	 * @var array<string, bool> Key is the extension, value is irrelevant.
 	 */
 	private $php_extensions = [
 		'php'  => true,
@@ -34,7 +34,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 	/**
 	 * File extensions used for SVG and CSS files.
 	 *
-	 * @var array Key is the extension, value is irrelevant.
+	 * @var array<string, bool> Key is the extension, value is irrelevant.
 	 */
 	private $svg_css_extensions = [
 		'css' => true,

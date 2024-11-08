@@ -36,7 +36,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * List of restricted filters by groups.
 	 *
-	 * @var array
+	 * @var array<string, array<string, string|array<string>>>
 	 */
 	private $restricted_hook_groups = [
 		'upload_mimes' => [

@@ -18,7 +18,7 @@ class ServerVariablesSniff extends Sniff {
 	/**
 	 * List of restricted constant names.
 	 *
-	 * @var array
+	 * @var array<string, array<string, bool>>
 	 */
 	public $restrictedVariables = [
 		'authVariables'           => [
