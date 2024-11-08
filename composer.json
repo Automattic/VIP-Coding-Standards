@@ -33,7 +33,8 @@
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
-		}
+		},
+		"lock": false
 	},
 	"scripts": {
 		"test-ruleset": "bin/ruleset-tests",
