@@ -48,7 +48,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string, bool> Key is the function name, value irrelevant.
 	 */
 	protected $target_functions = [
 		'show_admin_bar' => true,

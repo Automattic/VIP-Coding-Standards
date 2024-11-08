@@ -26,10 +26,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array The only requirement for this array is that the top level
-	 *            array keys are the names of the functions you're looking for.
-	 *            Other than that, the array can have arbitrary content
-	 *            depending on your needs.
+	 * @var array<string, bool> Key is the function name, value irrelevant.
 	 */
 	protected $target_functions = [
 		'filter_var'         => true,
