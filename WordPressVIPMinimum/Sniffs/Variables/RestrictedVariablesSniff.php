@@ -31,7 +31,7 @@ class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 	 *  )
 	 * )
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [

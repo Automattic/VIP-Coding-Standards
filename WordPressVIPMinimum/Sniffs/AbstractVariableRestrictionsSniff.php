@@ -91,7 +91,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	 *  )
 	 * )
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	abstract public function getGroups();
 
