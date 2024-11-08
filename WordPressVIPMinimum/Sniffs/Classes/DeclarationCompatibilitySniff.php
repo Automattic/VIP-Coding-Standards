@@ -27,7 +27,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * A list of classes and methods to check.
 	 *
-	 * @var array<string, array<string, array<string, mixed>>>
+	 * @var array<string, array<string, array<int|string, string|array<string, bool|string>>>>
 	 */
 	public $checkClasses = [
 		'WP_Widget' => [
@@ -315,7 +315,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 *
 	 * @param array $methodSignature Signature of a method.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	private function generateParamList( $methodSignature ) {
 		$paramList = [];

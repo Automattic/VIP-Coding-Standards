@@ -30,10 +30,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array The only requirement for this array is that the top level
-	 *            array keys are the names of the functions you're looking for.
-	 *            Other than that, the array can have arbitrary content
-	 *            depending on your needs.
+	 * @var array<string, bool> Key is the function name, value irrelevant.
 	 */
 	protected $target_functions = [
 		'wp_cache_set'     => true,
@@ -44,7 +41,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * List of WP time constants, see https://codex.wordpress.org/Easier_Expression_of_Time_Constants.
 	 *
-	 * @var array
+	 * @var array<string, int>
 	 */
 	protected $wp_time_constants = [
 		'MINUTE_IN_SECONDS' => 60,

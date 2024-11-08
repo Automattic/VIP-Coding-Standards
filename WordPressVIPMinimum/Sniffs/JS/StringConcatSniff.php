@@ -27,7 +27,7 @@ class StringConcatSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [
@@ -63,8 +63,8 @@ class StringConcatSniff extends Sniff {
 	/**
 	 * Consolidated violation.
 	 *
-	 * @param int   $stackPtr The position of the current token in the stack passed in $tokens.
-	 * @param array $data     Replacements for the error message.
+	 * @param int           $stackPtr The position of the current token in the stack passed in $tokens.
+	 * @param array<string> $data     Replacements for the error message.
 	 *
 	 * @return void
 	 */

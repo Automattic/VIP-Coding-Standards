@@ -18,7 +18,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Groups of functions to restrict.
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>|array<string, bool>>>
 	 */
 	public function getGroups() {
 

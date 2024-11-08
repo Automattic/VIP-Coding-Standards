@@ -19,7 +19,7 @@ class RestrictedConstantsSniff extends Sniff {
 	/**
 	 * List of restricted constant names.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $restrictedConstantNames = [
 		'A8C_PROXIED_REQUEST',
@@ -28,7 +28,7 @@ class RestrictedConstantsSniff extends Sniff {
 	/**
 	 * List of restricted constant declarations.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $restrictedConstantDeclaration = [
 		'JETPACK_DEV_DEBUG',
@@ -38,7 +38,7 @@ class RestrictedConstantsSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [

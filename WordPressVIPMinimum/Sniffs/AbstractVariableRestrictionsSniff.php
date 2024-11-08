@@ -58,7 +58,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		// Retrieve the groups only once and don't set up a listener if there are no groups.
@@ -91,7 +91,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	 *  )
 	 * )
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	abstract public function getGroups();
 

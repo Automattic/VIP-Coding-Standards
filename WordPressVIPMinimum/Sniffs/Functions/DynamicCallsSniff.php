@@ -29,7 +29,7 @@ class DynamicCallsSniff extends Sniff {
 	/**
 	 * Functions that should not be called dynamically.
 	 *
-	 * @var array
+	 * @var array<string, bool>
 	 */
 	private $disallowed_functions = [
 		'assert'           => true,
@@ -48,7 +48,7 @@ class DynamicCallsSniff extends Sniff {
 	 *
 	 * Populated at run-time.
 	 *
-	 * @var array The key is the name of the variable, the value, its assigned value.
+	 * @var array<string, string> The key is the name of the variable, the value, its assigned value.
 	 */
 	private $variables_arr = [];
 
@@ -62,7 +62,7 @@ class DynamicCallsSniff extends Sniff {
 	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
-	 * @return array(int)
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [ T_VARIABLE => T_VARIABLE ];

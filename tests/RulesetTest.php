@@ -28,7 +28,7 @@ class RulesetTest {
 	 *
 	 * This is the giant array in the ruleset-test.php files.
 	 *
-	 * @var array
+	 * @var array<string, array<int, int|array<string>>>
 	 */
 	public $expected = [];
 
@@ -82,8 +82,8 @@ class RulesetTest {
 	/**
 	 * Init the object by processing the test file.
 	 *
-	 * @param string $ruleset  Name of the ruleset e.g. WordPressVIPMinimum or WordPress-VIP-Go.
-	 * @param array  $expected The array of expected errors, warnings and messages.
+	 * @param string                                       $ruleset  Name of the ruleset e.g. WordPressVIPMinimum or WordPress-VIP-Go.
+	 * @param array<string, array<int, int|array<string>>> $expected The array of expected errors, warnings and messages.
 	 */
 	public function __construct( $ruleset, $expected = [] ) {
 		$this->ruleset  = $ruleset;

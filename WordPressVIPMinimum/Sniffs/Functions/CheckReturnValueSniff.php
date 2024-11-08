@@ -24,7 +24,7 @@ class CheckReturnValueSniff extends Sniff {
 	/**
 	 * Pairs we are about to check.
 	 *
-	 * @var array
+	 * @var array<string, array<string>>
 	 */
 	public $catch = [
 		'esc_url'          => [
@@ -48,7 +48,7 @@ class CheckReturnValueSniff extends Sniff {
 	/**
 	 * Tokens we are about to examine, which are not functions.
 	 *
-	 * @var array
+	 * @var array<string, int|string>
 	 */
 	public $notFunctions = [
 		'foreach' => T_FOREACH,
@@ -57,7 +57,7 @@ class CheckReturnValueSniff extends Sniff {
 	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
-	 * @return array(int)
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [ T_STRING ];
@@ -293,7 +293,7 @@ class CheckReturnValueSniff extends Sniff {
 	 * Function used as as callback for the array_reduce call.
 	 *
 	 * @param string|null $carry The final string.
-	 * @param mixed       $item  Processed item.
+	 * @param array       $item  Processed item.
 	 *
 	 * @return string
 	 */

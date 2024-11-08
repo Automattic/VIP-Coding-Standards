@@ -26,7 +26,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $supportedTokenizers = [
 		'PHP',
@@ -48,7 +48,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string, bool> Key is the function name, value irrelevant.
 	 */
 	protected $target_functions = [
 		'show_admin_bar' => true,
@@ -58,7 +58,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * CSS properties this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string, array<string, string|float>>
 	 */
 	protected $target_css_properties = [
 		'visibility' => [
@@ -78,7 +78,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * CSS selectors this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	protected $target_css_selectors = [
 		'.show-admin-bar',
@@ -90,7 +90,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * Set from the register() method.
 	 *
-	 * @var array
+	 * @var array<int|string>
 	 */
 	private $string_tokens = [];
 
@@ -118,7 +118,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		// Set up all string targets.

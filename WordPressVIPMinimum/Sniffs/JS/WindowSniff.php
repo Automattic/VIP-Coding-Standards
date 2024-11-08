@@ -27,7 +27,7 @@ class WindowSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [
@@ -38,7 +38,7 @@ class WindowSniff extends Sniff {
 	/**
 	 * List of window properties that need to be flagged.
 	 *
-	 * @var array
+	 * @var array<string, bool|array<string, bool>>
 	 */
 	private $windowProperties = [
 		'location' => [

@@ -18,7 +18,7 @@ class RegexpCompareSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	/**
 	 * Groups of variables to restrict.
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [

@@ -18,7 +18,7 @@ class ServerVariablesSniff extends Sniff {
 	/**
 	 * List of restricted constant names.
 	 *
-	 * @var array
+	 * @var array<string, array<string, bool>>
 	 */
 	public $restrictedVariables = [
 		'authVariables'           => [
@@ -35,7 +35,7 @@ class ServerVariablesSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [
