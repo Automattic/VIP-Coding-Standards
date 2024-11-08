@@ -21,7 +21,7 @@ class PreGetPostsSniff extends Sniff {
 	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
-	 * @return array(int)
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [ T_STRING ];

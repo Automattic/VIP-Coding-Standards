@@ -107,7 +107,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		$this->echo_or_concat_tokens += Tokens::$emptyTokens;
