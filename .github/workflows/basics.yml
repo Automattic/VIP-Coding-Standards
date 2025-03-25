@@ -67,6 +67,30 @@ jobs:
           diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml")
           diff -B --tabsize=4 ./WordPress-VIP-Go/ruleset.xml <(xmllint --format "./WordPress-VIP-Go/ruleset.xml")
 
+      # Validate dev tool related XML files.
+      - name: Validate Project PHPCS ruleset against schema
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: ".phpcs.xml.dist"
+          xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
+
+      # Notes:
+      # - PHPUnit 9.5 (which will be installed in this job) doesn't ship XSD files further back than 8.5.
+      # - PHPUnit 9.3 introduced some new configuration options and deprecated the old versions of those.
+      #   For cross-version compatibility with older PHPUnit versions, those new config options cannot be used yet,
+      #   which is why the PHPUnit 9 validation is done against the PHPUnit 9.2 schema.
+      - name: "Validate PHPUnit config for use with PHPUnit 8"
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "phpunit.xml.dist"
+          xsd-file: "vendor/phpunit/phpunit/schema/8.5.xsd"
+
+      - name: "Validate PHPUnit config for use with PHPUnit 9"
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "phpunit.xml.dist"
+          xsd-file: "vendor/phpunit/phpunit/schema/9.2.xsd"
+
       # Check the code-style consistency of the PHP files.
       - name: Check PHP code style
         id: phpcs
