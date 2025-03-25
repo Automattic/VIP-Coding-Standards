@@ -22,6 +22,9 @@ jobs:
     name: 'Basic CS and QA checks'
     runs-on: ubuntu-latest
 
+    env:
+      XMLLINT_INDENT: '	' # This is a tab character.
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,21 +35,6 @@ jobs:
           php-version: 'latest'
           coverage: none
           tools: cs2pr
-
-      # Updating the lists can fail intermittently, typically after Microsoft has released a new package.
-      # This should not be blocking for this job, so ignore any errors from this step.
-      # Ref: https://github.com/dotnet/core/issues/4167
-      - name: Update the available packages list
-        continue-on-error: true
-        run: sudo apt-get update
-
-      - name: Install xmllint
-        run: sudo apt-get install --no-install-recommends -y libxml2-utils
-
-      # Show XML violations inline in the file diff.
-      # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - name: Enable showing XML issues inline
-        uses: korelstar/xmllint-problem-matcher@v1
 
       # Validate the composer.json file.
       # @link https://getcomposer.org/doc/03-cli.md#validate
@@ -65,8 +53,19 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: 'Validate XML against schema and check code style'
-        run: ./bin/xml-lint
+      # Validate the XML file.
+      - name: Validate rulesets against schema
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "./*/ruleset.xml"
+          xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
+
+      # Check the code-style consistency of the XML file.
+      # Note: this needs xmllint, but that will be installed via the phpcsstandards/xmllint-validate action runner in the previous step.
+      - name: Check XML code style
+        run: |
+          diff -B --tabsize=4 ./WordPressVIPMinimum/ruleset.xml <(xmllint --format "./WordPressVIPMinimum/ruleset.xml")
+          diff -B --tabsize=4 ./WordPress-VIP-Go/ruleset.xml <(xmllint --format "./WordPress-VIP-Go/ruleset.xml")
 
       # Check the code-style consistency of the PHP files.
       - name: Check PHP code style
