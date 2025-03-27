@@ -39,8 +39,7 @@
 	"scripts": {
 		"test-ruleset": "bin/ruleset-tests",
 		"lint": [
-			"bin/php-lint",
-			"bin/xml-lint"
+			"bin/php-lint"
 		],
 		"cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
 		"test": "bin/unit-tests",
@@ -57,7 +56,7 @@
 		]
 	},
 	"scripts-descriptions": {
-		"lint": "VIPCS: Lint PHP and XML files in against parse errors.",
+		"lint": "VIPCS: Lint PHP files against parse errors.",
 		"cs": "VIPCS: Check the code style and code quality of the codebase via PHPCS.",
 		"test": "VIPCS: Run the unit tests for the VIPCS sniffs.",
 		"test-coverage": "VIPCS: Run the unit tests for the VIPCS sniffs with coverage enabled.",

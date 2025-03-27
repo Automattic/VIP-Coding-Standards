@@ -61,7 +61,7 @@ This package contains Composer scripts to quickly run the developer checks which
 
 After `composer install`, you can do:
 
-- `composer lint`: Lint PHP and XML files in against parse errors.
+- `composer lint`: Lint PHP files against parse errors.
 - `composer cs`: Check the code style and code quality of the codebase via PHPCS.
 - `composer test`: Run the unit tests for the VIPCS sniffs.
 - `composer test-coverage`: Run the unit tests for the VIPCS sniffs with coverage enabled.
