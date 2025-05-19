@@ -147,15 +147,24 @@ class RulesetTest {
 			$php = \PHP_BINARY . ' ';
 		}
 
-		$shell = sprintf(
-			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
+		$report_file = dirname( __DIR__ ) . '/ruleset-tests-report.json';
+		$shell       = sprintf(
+			'%1$s%2$s --severity=1 --standard=%3$s --report-json=%4$s ./%3$s/ruleset-test.inc',
 			$php, // Current PHP executable if available.
 			$this->phpcs_bin,
-			$this->ruleset
+			$this->ruleset,
+			$report_file
 		);
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec -- This is test code, not production.
-		$output = shell_exec( $shell );
+		shell_exec( $shell );
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- This code is not run in the context of WP.
+		$output = file_get_contents( $report_file );
+
+		// Delete the report as we no longer need it.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.unlink_unlink
+		@unlink( $report_file );
 
 		return json_decode( $output );
 	}
