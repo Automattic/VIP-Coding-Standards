@@ -21,6 +21,7 @@
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 		<exclude name="WordPress.PHP.YodaConditions"/>
+		<exclude name="Generic.Functions.CallTimePassByReference"/>
 	</rule>
 
 	<rule ref="WordPress-Docs"/>
