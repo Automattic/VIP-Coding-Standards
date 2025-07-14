@@ -4,7 +4,9 @@
 
 	<!-- The rules below are the changes from between the original sniff or parent ruleset, and what should be applied for this Standard. -->
 	<!-- Include the base VIP Minimum ruleset -->
-	<rule ref="WordPressVIPMinimum"/>
+	<rule ref="WordPressVIPMinimum">
+		<exclude name="WordPressVIPMinimum.JS"/>
+	</rule>
 
 	<!-- Things that may be incompatible with the VIP Go infrastructure and needs a dev to review -->
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents">

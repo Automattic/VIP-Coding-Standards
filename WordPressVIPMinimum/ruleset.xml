@@ -9,7 +9,16 @@
 		 descriptive error message during the loading of the ruleset instead of
 		 a fatal "class not found" error once the sniffs start running.
 	-->
-	<rule ref="PHPCSUtils"/>
+	<rule ref="PHPCSUtils">
+		<!--
+		Exclude all JS specific sniffs. These are deprecated and should no longer be used.
+
+		Note: While this exclusion has nothing to do with PHPCSUtils, exclusions must be placed within a "rule"
+		and as all sniffs from WordPressVIPMinimum are automatically included, we don't have a WordPressVIPMinimum
+		rule in which to place the exclusion, so this will have to do for now.
+		-->
+		<exclude name="WordPressVIPMinimum.JS"/>
+	</rule>
 
 	<rule ref="Generic.PHP.Syntax"/>
 	<rule ref="Generic.PHP.NoSilencedErrors">
