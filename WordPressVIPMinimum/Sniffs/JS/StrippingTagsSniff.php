@@ -7,6 +7,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
+use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Util\Tokens;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
@@ -15,7 +16,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  *
  * Looks for incorrect way of stripping tags.
  */
-class StrippingTagsSniff extends Sniff {
+class StrippingTagsSniff extends Sniff implements DeprecatedSniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -69,5 +70,32 @@ class StrippingTagsSniff extends Sniff {
 			$message = 'Vulnerable tag stripping approach detected.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'VulnerableTagStripping' );
 		}
+	}
+
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'VIP-Coding-Standard v3.1.0';
+	}
+
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'VIP-Coding-Standard v4.0.0';
+	}
+
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning JavaScript files will be removed from PHP_CodeSniffer, so this sniff is no longer viable.';
 	}
 }
