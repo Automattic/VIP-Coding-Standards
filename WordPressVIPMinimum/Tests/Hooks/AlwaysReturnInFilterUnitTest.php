@@ -7,7 +7,6 @@
 
 namespace WordPressVIPMinimum\Tests\Hooks;
 
-use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
@@ -31,7 +30,7 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 			105 => 1,
 			129 => 1,
 			163 => 1,
-			188 => version_compare( Config::VERSION, '3.5.7', '>=' ) ? 1 : 0,
+			188 => 1,
 		];
 	}
 
