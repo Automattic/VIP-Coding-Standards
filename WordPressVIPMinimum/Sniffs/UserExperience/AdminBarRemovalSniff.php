@@ -160,7 +160,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	public function process_token( $stackPtr ) {
 
 		$file_name      = FilePath::getName( $this->phpcsFile );
-		$file_extension = substr( strrchr( $file_name, '.' ), 1 );
+		$file_extension = pathinfo( $file_name, \PATHINFO_EXTENSION );
 
 		if ( $file_extension === 'css' ) {
 			if ( $this->tokens[ $stackPtr ]['code'] === \T_STYLE ) {
