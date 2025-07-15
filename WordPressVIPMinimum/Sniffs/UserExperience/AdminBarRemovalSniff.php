@@ -11,6 +11,7 @@
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FilePath;
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\PassedParameters;
 use PHPCSUtils\Utils\TextStrings;
@@ -158,7 +159,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		$file_name      = $this->phpcsFile->getFilename();
+		$file_name      = FilePath::getName( $this->phpcsFile );
 		$file_extension = substr( strrchr( $file_name, '.' ), 1 );
 
 		if ( $file_extension === 'css' ) {
