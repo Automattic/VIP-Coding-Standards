@@ -44,7 +44,8 @@ class PreGetPostsSniff extends Sniff {
 			// We are interested in add_action calls only.
 			return;
 		}
-
+// Should use WPCS FunctionParam abstract
+// Or at the very least PassedParameters class
 		$actionNamePtr = $this->phpcsFile->findNext(
 			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ),
 			$stackPtr + 1,
@@ -59,6 +60,7 @@ class PreGetPostsSniff extends Sniff {
 			return;
 		}
 
+// Use TextStrings::stripQuotes()
 		if ( substr( $this->tokens[ $actionNamePtr ]['content'], 1, -1 ) !== 'pre_get_posts' ) {
 			// This is not setting a callback for pre_get_posts action.
 			return;
@@ -85,6 +87,7 @@ class PreGetPostsSniff extends Sniff {
 		) {
 			$this->processArray( $callbackPtr );
 		} elseif ( in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) === true ) {
+// This can now be a first class callable
 			$this->processString( $callbackPtr );
 		}
 	}
@@ -122,6 +125,7 @@ class PreGetPostsSniff extends Sniff {
 	 */
 	private function processString( $stackPtr ) {
 
+// Use TextStrings::stripQuotes()
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
@@ -149,6 +153,7 @@ class PreGetPostsSniff extends Sniff {
 	 */
 	private function processFunction( $stackPtr ) {
 
+// Should use FunctionDeclarations::getParameters()
 		$wpQueryObjectNamePtr = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
 			$stackPtr + 1,
@@ -166,7 +171,8 @@ class PreGetPostsSniff extends Sniff {
 		$wpQueryObjectVariableName = $this->tokens[ $wpQueryObjectNamePtr ]['content'];
 
 		$functionDefinitionPtr = $this->phpcsFile->findPrevious( [ T_FUNCTION ], $wpQueryObjectNamePtr - 1 );
-
+// Doesn't check the function name, presumes the function is declared directly above. This will be wrong in so many cases.
+// Test on line 112 is typical example of where things go wrong.
 		if ( ! $functionDefinitionPtr ) {
 			// Something is wrong.
 			return;
@@ -184,6 +190,7 @@ class PreGetPostsSniff extends Sniff {
 	 */
 	private function processClosure( $stackPtr ) {
 
+// Should use FunctionDeclarations::getParameters()
 		$wpQueryObjectNamePtr = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
 			$stackPtr + 1,
@@ -195,6 +202,7 @@ class PreGetPostsSniff extends Sniff {
 
 		if ( ! $wpQueryObjectNamePtr ) {
 			// Something is wrong.
+// Should this possibly check if the global $wp_query variable is being imported via a closure `use` ?
 			return;
 		}
 
@@ -255,6 +263,7 @@ class PreGetPostsSniff extends Sniff {
 		$this->phpcsFile->addWarning( $message, $stackPtr, 'PreGetPosts' );
 	}
 
+// Below functions should probably all use Conditions and Parentheses classes.
 	/**
 	 * Is parent conditional checking is_main_query?
 	 *
