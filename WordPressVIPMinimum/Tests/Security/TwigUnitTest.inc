@@ -25,7 +25,7 @@ echo '<script>
 
 echo "<script>
 {% autoescape false %}
-    Everything will be $outputted as is in this block
+    Everything will be $outputted as is in this {${$object->getBlock( SOME_FLAG | raw )}}
 {% endautoescape %}
 
 {% autoescape %}
@@ -49,7 +49,7 @@ EOD;
 echo <<<EOD
 <script>
 {% autoescape false %}
-    Everything will be $outputted as is in this block
+    Everything will be $outputted as is in this {$obj->blocks[SOME_FLAG | raw]->name}
 {% endautoescape %}
 EOD;
 echo <<<"EOD"
