@@ -49,3 +49,6 @@ $m = '%>=}} {{=<%'; // Incorrect order, not a delimiter change.
 
 // Correctly recognize mid-line delimiter change.
 $m = '{{default_tags}} {{=<% %>=}} <% erb_style_tags %> <%={{ }}=%> {{ default_tags_again }}'; // NOK: delimiter change.
+
+// Prevent false positives on SafeString being a partial name.
+echo 'MySafeString';

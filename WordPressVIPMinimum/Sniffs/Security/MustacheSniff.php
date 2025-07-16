@@ -71,7 +71,7 @@ class MustacheSniff extends Sniff {
 			}
 		}
 
-		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'SafeString' ) !== false ) {
+		if ( strpos( $this->tokens[ $stackPtr ]['content'], '.SafeString' ) !== false ) {
 			// Handlebars.js Handlebars.SafeString does not get escaped.
 			$message = 'Found Handlebars.SafeString call which does not get escaped.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'SafeString' );
