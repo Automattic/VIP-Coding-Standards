@@ -56,12 +56,19 @@ class MustacheSniff extends Sniff {
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'VariableNotation' );
 		}
 
-		if ( strpos( $this->tokens[ $stackPtr ]['content'], '{{=' ) !== false ) {
+		$start_delimiter_change = strpos( $this->tokens[ $stackPtr ]['content'], '{{=' );
+		if ( $start_delimiter_change !== false ) {
 			// Mustache delimiter change.
-			$new_delimiter = trim( str_replace( [ '{{=', '=}}' ], '', substr( $this->tokens[ $stackPtr ]['content'], 0, strpos( $this->tokens[ $stackPtr ]['content'], '=}}' ) + 3 ) ) );
-			$message       = 'Found Mustache delimiter change notation. New delimiter is: %s.';
-			$data          = [ $new_delimiter ];
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'DelimiterChange', $data );
+			$end_delimiter_change = strpos( $this->tokens[ $stackPtr ]['content'], '=}}' );
+			if ( $end_delimiter_change !== false && $start_delimiter_change < $end_delimiter_change ) {
+				$start_new_delimiter  = $start_delimiter_change + 3;
+				$new_delimiter_length = $end_delimiter_change - ( $start_delimiter_change + 3 );
+				$new_delimiter        = substr( $this->tokens[ $stackPtr ]['content'], $start_new_delimiter, $new_delimiter_length );
+
+				$message = 'Found Mustache delimiter change notation. New delimiter is: %s.';
+				$data    = [ $new_delimiter ];
+				$this->phpcsFile->addWarning( $message, $stackPtr, 'DelimiterChange', $data );
+			}
 		}
 
 		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'SafeString' ) !== false ) {

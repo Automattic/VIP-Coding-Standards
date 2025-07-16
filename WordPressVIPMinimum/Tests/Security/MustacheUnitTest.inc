@@ -42,3 +42,10 @@ echo <<<'NOW'
 {{=<% %>=}} <!-- NOK: delimiter change -->
 </script>
 NOW;
+
+// Don't throw false positives on incorrect/incomplete mustache delimiter change.
+$m = '{{=<%'; // Missing end of delimiter change.
+$m = '%>=}} {{=<%'; // Incorrect order, not a delimiter change.
+
+// Correctly recognize mid-line delimiter change.
+$m = '{{default_tags}} {{=<% %>=}} <% erb_style_tags %> <%={{ }}=%> {{ default_tags_again }}'; // NOK: delimiter change.
