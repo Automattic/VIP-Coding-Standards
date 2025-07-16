@@ -85,7 +85,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	];
 
 	/**
-	 * String tokens within PHP files we want to deal with.
+	 * Text string tokens within PHP files we want to deal with.
 	 *
 	 * Set from the register() method.
 	 *
@@ -120,7 +120,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		// Set up all string targets.
+		// Set up all text string targets.
 		$this->string_tokens = Tokens::$textStringTokens;
 
 		$targets = $this->string_tokens;

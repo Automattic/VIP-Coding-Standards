@@ -122,8 +122,6 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	 * @param int $stackPtr The position of the current token in the stack.
 	 * @return int|void Integer stack pointer to skip forward or void to continue
 	 *                  normal file processing.
-	 *
-	 * @throws \PHP_CodeSniffer\Exceptions\RuntimeException Exception.
 	 */
 	public function process_token( $stackPtr ) {
 

@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Tests\Hooks;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the Hooks/AlwaysReturn sniff.
+ * Unit test class for the AlwaysReturnInFilter sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Hooks\AlwaysReturnInFilterSniff
  */

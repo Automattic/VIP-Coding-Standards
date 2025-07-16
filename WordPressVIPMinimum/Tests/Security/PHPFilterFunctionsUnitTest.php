@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Tests\Security;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the WP_Query params sniff.
+ * Unit test class for the PHPFilterFunctions sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Security\PHPFilterFunctionsSniff
  */
