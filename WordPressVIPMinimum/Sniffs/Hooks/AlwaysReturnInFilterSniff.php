@@ -19,6 +19,8 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  */
 class AlwaysReturnInFilterSniff extends Sniff {
 
+// THIS SNIFF DOES NOT BELONG IN VIPCS, but should be in WPCS (but can't be moved due to the GPLv2 license being incompatible with MIT).
+
 	/**
 	 * Filter name pointer.
 	 *
@@ -49,7 +51,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		if ( $functionName !== 'add_filter' ) {
 			return;
 		}
-
+// Should use WPCS FunctionParam abstract
+// Or at the very least PassedParameters class
 		$this->filterNamePtr = $this->phpcsFile->findNext(
 			array_merge( Tokens::$emptyTokens, [ T_OPEN_PARENTHESIS ] ),
 			$stackPtr + 1,
@@ -85,6 +88,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		) {
 			$this->processArray( $callbackPtr );
 		} elseif ( in_array( $this->tokens[ $callbackPtr ]['code'], Tokens::$stringTokens, true ) === true ) {
+// This can now be a first class callable
 			$this->processString( $callbackPtr );
 		}
 	}
@@ -133,6 +137,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processString( $stackPtr, $start = 0, $end = null ) {
 
+// Use TextStrings::stripQuotes()
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
@@ -187,6 +192,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
+// This block does not need to be executed for T_CLOSURE as those can't be abstract.
 		$methodProps = FunctionDeclarations::getProperties( $this->phpcsFile, $stackPtr );
 		if ( $methodProps['is_abstract'] === true ) {
 			$message = 'The callback for the `%s` filter hook-in points to an abstract method. Please ensure that child class implementations of this method always return a value.';
@@ -199,7 +205,8 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			// Live coding, parse or tokenizer error.
 			return;
 		}
-
+// Should use FunctionDeclarations::getParameters()
+// Needs tests with typed parameters
 		$argPtr = $this->phpcsFile->findNext(
 			array_merge( Tokens::$emptyTokens, [ T_STRING, T_OPEN_PARENTHESIS ] ),
 			$stackPtr + 1,
@@ -247,7 +254,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
 		}
 	}
-
+// Should probably use Conditions
 	/**
 	 * Is the current token inside a conditional?
 	 *
