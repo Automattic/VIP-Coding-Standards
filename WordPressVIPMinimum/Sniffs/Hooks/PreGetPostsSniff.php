@@ -388,7 +388,7 @@ class PreGetPostsSniff extends Sniff {
 			true
 		);
 
-		if ( ! $next || $this->tokens[ $next ]['type'] !== 'T_OBJECT_OPERATOR' ) {
+		if ( ! $next || $this->tokens[ $next ]['code'] !== T_OBJECT_OPERATOR ) {
 			return false;
 		}
 
