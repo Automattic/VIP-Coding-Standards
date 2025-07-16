@@ -23,11 +23,11 @@ echo '<a href="{{href}}">{{&data}}</div></a>'; // NOK: data.
 <div class="wp-block-group"><!-- wp:heading {"textAlign":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"var:preset|spacing|medium","left":"0"}}}} --><!-- OK. -->
 
 <?php
-echo "<a href='$href'>{{{data}}}</div></a>"; // NOK: data.
+echo "<a href='${foo->{$baz}}'>{{{data}}}</div></a>"; // NOK: data.
 
 echo <<<HERE
 <script type="text/html" id="tmpl-example">
-<a href="$href">{{{data}}}</div></a><!-- NOK: data. -->
+<a href="${(href)}">{{{data}}}</div></a><!-- NOK: data. -->
 <a href="{{href}}">{{&data}}</div></a><!-- NOK: data. -->
 HERE;
 echo <<<"HERE"
