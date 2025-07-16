@@ -23,6 +23,8 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  */
 class CheckReturnValueSniff extends Sniff {
 
+// Should be refactored to use the WPCS AbstractFunctionRestrictionsSniff
+
 	/**
 	 * Pairs we are about to check.
 	 *
@@ -269,7 +271,7 @@ class CheckReturnValueSniff extends Sniff {
 		$search[] = T_CONSTANT_ENCAPSED_STRING;
 
 		$nextFunctionCallWithVariable = $this->phpcsFile->findPrevious( $search, $nextVariableOccurrence - 1, null, true );
-
+// This is doing something weird with foreach - needs checking
 		foreach ( $callees as $callee ) {
 			$notFunctionsCallee = array_key_exists( $callee, $this->notFunctions ) ? (array) $this->notFunctions[ $callee ] : [];
 			// Check whether the found token is one of the function calls (or foreach call) we are interested in.
