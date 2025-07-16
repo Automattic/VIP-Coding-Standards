@@ -76,7 +76,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			return;
 		}
 
-		if ( $this->tokens[ $callbackPtr ]['code'] === 'PHPCS_T_CLOSURE' ) {
+		if ( $this->tokens[ $callbackPtr ]['code'] === T_CLOSURE ) {
 			$this->processFunctionBody( $callbackPtr );
 		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_ARRAY
 			|| $this->tokens[ $callbackPtr ]['code'] === T_OPEN_SHORT_ARRAY
@@ -262,7 +262,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		}
 
 		// Similar case may be a conditional closure.
-		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === 'PHPCS_T_CLOSURE' ) {
+		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === T_CLOSURE ) {
 			return false;
 		}
 
