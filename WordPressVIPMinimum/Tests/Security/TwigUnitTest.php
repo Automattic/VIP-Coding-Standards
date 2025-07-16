@@ -34,6 +34,14 @@ class TwigUnitTest extends AbstractSniffUnitTest {
 		return [
 			5  => 1,
 			10 => 1,
+			17 => 1,
+			22 => 1,
+			27 => 1,
+			32 => 1,
+			39 => 1,
+			44 => 1,
+			51 => 1,
+			57 => 1,
 		];
 	}
 }

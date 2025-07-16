@@ -8,6 +8,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
+use PHP_CodeSniffer\Util\Tokens;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -28,11 +29,7 @@ class TwigSniff extends Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			T_CONSTANT_ENCAPSED_STRING,
-			T_INLINE_HTML,
-			T_HEREDOC,
-		];
+		return Tokens::$textStringTokens;
 	}
 
 	/**
