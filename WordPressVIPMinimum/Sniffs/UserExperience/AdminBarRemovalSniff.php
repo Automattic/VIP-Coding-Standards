@@ -18,8 +18,6 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
  * Discourages removal of the admin bar.
  *
  * @link https://docs.wpvip.com/technical-references/code-review/vip-warnings/#h-removing-the-admin-bar
- *
- * @since 0.5.0
  */
 class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 

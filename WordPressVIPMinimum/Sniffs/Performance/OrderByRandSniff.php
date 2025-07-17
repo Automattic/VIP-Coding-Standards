@@ -16,8 +16,6 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  * Flag using orderby => rand.
  *
  * @link https://docs.wpvip.com/technical-references/code-review/vip-errors/#h-order-by-rand
- *
- * @since 0.5.0
  */
 class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
