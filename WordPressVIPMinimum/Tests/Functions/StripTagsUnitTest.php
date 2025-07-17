@@ -38,6 +38,7 @@ class StripTagsUnitTest extends AbstractSniffUnitTest {
 			32 => 1,
 			33 => 1,
 			36 => 1,
+			38 => 1,
 		];
 	}
 }

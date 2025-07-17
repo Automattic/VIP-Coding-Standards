@@ -34,3 +34,5 @@ Strip_Tags( $string ); // Warning.
 
 // The function should always be flagged, even during live coding (missing required parameter).
 strip_tags();
+
+strip_tags(...$params); // PHP 5.6 argument unpacking.
