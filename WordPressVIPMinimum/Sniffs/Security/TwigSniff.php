@@ -8,6 +8,8 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
+use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -28,11 +30,7 @@ class TwigSniff extends Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			T_CONSTANT_ENCAPSED_STRING,
-			T_INLINE_HTML,
-			T_HEREDOC,
-		];
+		return Tokens::$textStringTokens;
 	}
 
 	/**
@@ -43,14 +41,21 @@ class TwigSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
+		// Strip any potentially interpolated expressions.
+		$only_text = $this->tokens[ $stackPtr ]['content'];
+		if ( $this->tokens[ $stackPtr ]['code'] === T_DOUBLE_QUOTED_STRING
+			|| $this->tokens[ $stackPtr ]['code'] === T_HEREDOC
+		) {
+			$only_text = TextStrings::stripEmbeds( $only_text );
+		}
 
-		if ( preg_match( '/autoescape\s+false/', $this->tokens[ $stackPtr ]['content'] ) === 1 ) {
+		if ( preg_match( '/autoescape\s+false/', $only_text ) === 1 ) {
 			// Twig autoescape disabled.
 			$message = 'Found Twig autoescape disabling notation.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'AutoescapeFalse' );
 		}
 
-		if ( preg_match( '/\|\s*raw/', $this->tokens[ $stackPtr ]['content'] ) === 1 ) {
+		if ( preg_match( '/\|\s*raw/', $only_text ) === 1 ) {
 			// Twig default unescape filter.
 			$message = 'Found Twig default unescape filter: "|raw".';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'RawFound' );
