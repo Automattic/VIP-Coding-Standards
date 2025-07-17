@@ -63,5 +63,8 @@ Included Files
 
 This project includes:
 
-- [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards), which is Copyright &copy; 2009 John Godley and contributors. Released under the MIT license https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/LICENSE
-- [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer), Copyright &copy; 2012, Squiz Pty Ltd (ABN 77 084 670 600). Released under the following license: https://github.com/PHPCSStandards/PHP_CodeSniffer/blob/master/licence.txt
+- [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer), Copyright &copy; 2012, Squiz Pty Ltd (ABN 77 084 670 600); Copyright (c) 2023, PHPCSStandards and contributors. Released under the [BSD 3-Clause "New" or "Revised" License](https://github.com/PHPCSStandards/PHP_CodeSniffer/blob/HEAD/licence.txt)
+- [PHPCSUtils](https://github.com/PHPCSStandards/PHPCSUtils), Copyright &copy; 2019, PHPCSUtils Contributors. Released under the [LGPL v3.0 License](https://github.com/PHPCSStandards/PHPCSUtils/blob/develop/LICENSE)
+- [PHPCSExtra](https://github.com/PHPCSStandards/PHPCSExtra), Copyright &copy; 2019, PHPCSExtra Contributors. Released under the [LGPL v3.0 License](https://github.com/PHPCSStandards/PHPCSExtra/blob/develop/LICENSE)
+- [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards), which is Copyright &copy; 2009 John Godley and contributors. Released under the [MIT license](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/LICENSE).
+- [VariableAnalysis](https://github.com/sirbrillig/phpcs-variable-analysis). Released under the [BSD license](https://github.com/sirbrillig/phpcs-variable-analysis/blob/2.x/LICENSE).
