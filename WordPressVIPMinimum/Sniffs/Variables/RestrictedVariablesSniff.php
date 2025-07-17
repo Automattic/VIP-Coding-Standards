@@ -13,8 +13,6 @@ use WordPressVIPMinimum\Sniffs\AbstractVariableRestrictionsSniff;
 
 /**
  * Restricts usage of some variables in VIP context.
- *
- * @since 0.5.0
  */
 class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 

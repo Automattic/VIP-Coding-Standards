@@ -12,8 +12,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the AdminBarRemoval sniff.
  *
- * @since 0.5.0
- *
  * @covers \WordPressVIPMinimum\Sniffs\UserExperience\AdminBarRemovalSniff
  */
 class AdminBarRemovalUnitTest extends AbstractSniffUnitTest {

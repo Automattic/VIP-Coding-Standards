@@ -15,8 +15,6 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  * Flag returning high or infinite posts_per_page.
  *
  * @link https://docs.wpvip.com/technical-references/code-review/#no-limit-queries
- *
- * @since 0.5.0
  */
 class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
