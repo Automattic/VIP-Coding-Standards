@@ -76,7 +76,7 @@ class PreGetPostsSniff extends Sniff {
 			return;
 		}
 
-		if ( $this->tokens[ $callbackPtr ]['code'] === 'PHPCS_T_CLOSURE' ) {
+		if ( $this->tokens[ $callbackPtr ]['code'] === T_CLOSURE ) {
 			$this->processClosure( $callbackPtr );
 		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_ARRAY
 			|| $this->tokens[ $callbackPtr ]['code'] === T_OPEN_SHORT_ARRAY
@@ -388,7 +388,7 @@ class PreGetPostsSniff extends Sniff {
 			true
 		);
 
-		if ( ! $next || $this->tokens[ $next ]['type'] !== 'T_OBJECT_OPERATOR' ) {
+		if ( ! $next || $this->tokens[ $next ]['code'] !== T_OBJECT_OPERATOR ) {
 			return false;
 		}
 
