@@ -36,3 +36,11 @@ Strip_Tags( $string ); // Warning.
 strip_tags();
 
 strip_tags(...$params); // PHP 5.6 argument unpacking.
+
+// Safeguard correct handling of function calls using PHP 8.0+ named parameters.
+strip_tags(allowed_tags: $allowed, string: $html ); // Warning.
+strip_tags(string: $html); // Warning.
+strip_tags(allowed_tags: $allowed); // Warning. Invalid function call, but that's not the concern of this sniff.
+
+\strip_tags(string: $html, allowed_tag: $allowed); // Warning (mind: deliberate typo in param name).
+strip_tags(html: $html); // Warning (mind: deliberately using incorrect param name).

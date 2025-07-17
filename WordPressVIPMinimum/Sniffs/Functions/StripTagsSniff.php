@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -46,11 +47,16 @@ class StripTagsSniff extends AbstractFunctionParameterSniff {
 	 * @return void
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( count( $parameters ) === 1 ) {
+		$string_param       = PassedParameters::getParameterFromStack( $parameters, 1, 'string' );
+		$allowed_tags_param = PassedParameters::getParameterFromStack( $parameters, 2, 'allowed_tags' );
+
+		if ( $string_param !== false && $allowed_tags_param === false ) {
 			$this->add_warning( $stackPtr, 'StripTagsOneParameter' );
-		} elseif ( isset( $parameters[2] ) ) {
+		} elseif ( $allowed_tags_param !== false ) {
 			$message = '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_kses()` instead to allow only the HTML you need.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'StripTagsTwoParameters' );
+		} else {
+			$this->add_warning( $stackPtr );
 		}
 	}
 
