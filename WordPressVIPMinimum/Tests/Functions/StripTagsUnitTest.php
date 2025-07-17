@@ -32,11 +32,11 @@ class StripTagsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			9  => 1,
-			10 => 1,
-			11 => 1,
-			12 => 1,
-			13 => 1,
+			29 => 1,
+			30 => 1,
+			31 => 1,
+			32 => 1,
+			33 => 1,
 		];
 	}
 }
