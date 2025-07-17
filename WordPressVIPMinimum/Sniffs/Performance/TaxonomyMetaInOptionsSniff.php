@@ -4,6 +4,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
