@@ -31,3 +31,6 @@ STRIP_TAGS( 'Test', $html ); // Warning.
 \strip_tags( 'Test' . ', ' . 'HTML', ); // Warning.
 strip_tags( 'Test, String', $html, ); // Warning.
 Strip_Tags( $string ); // Warning.
+
+// The function should always be flagged, even during live coding (missing required parameter).
+strip_tags();
