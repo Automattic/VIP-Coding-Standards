@@ -44,6 +44,7 @@ class StripTagsUnitTest extends AbstractSniffUnitTest {
 			43 => 1,
 			45 => 1,
 			46 => 1,
+			48 => 1,
 		];
 	}
 }

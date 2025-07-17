@@ -75,6 +75,20 @@ class StripTagsSniff extends AbstractFunctionParameterSniff {
 	}
 
 	/**
+	 * Process the function if it is used as a first class callable.
+	 *
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
+	 *
+	 * @return void
+	 */
+	public function process_first_class_callable( $stackPtr, $group_name, $matched_content ) {
+		$this->add_warning( $stackPtr );
+	}
+
+	/**
 	 * Add a warning if the function is used at all.
 	 *
 	 * @param int    $stackPtr   The position of the current token in the stack.

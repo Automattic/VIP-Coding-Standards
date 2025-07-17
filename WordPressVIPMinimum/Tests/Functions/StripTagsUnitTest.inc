@@ -44,3 +44,5 @@ strip_tags(allowed_tags: $allowed); // Warning. Invalid function call, but that'
 
 \strip_tags(string: $html, allowed_tag: $allowed); // Warning (mind: deliberate typo in param name).
 strip_tags(html: $html); // Warning (mind: deliberately using incorrect param name).
+
+add_action('my_action', strip_tags(...)); // PHP 8.1 first class callable.
