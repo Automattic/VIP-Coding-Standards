@@ -28,7 +28,7 @@ filter_var( $url, FILTER_SANITIZE_URL );
 \filter_var( 'test', FILTER_SANITIZE_STRING );
 FILTER_INPUT( INPUT_GET, 'foo', FILTER_SANITIZE_STRING, );
 filter_input( INPUT_GET,  "foo"   , FILTER_SANITIZE_STRING );
-filter_input_array( $array, FILTER_SANITIZE_STRING );
+filter_input_array( $array, filter_default ); // Constants are case-sensitive, so this is not the FILTER_DEFAULT constant.
 
 // Ignore as undetermined.
 filter_var(  "test", get_filter() );

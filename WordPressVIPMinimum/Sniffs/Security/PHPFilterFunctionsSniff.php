@@ -69,7 +69,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 
 			if ( isset( $parameters[3], $this->restricted_filters[ $parameters[3]['raw'] ] ) ) {
 				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
-				$data    = [ strtoupper( $parameters[3]['raw'] ) ];
+				$data    = [ $parameters[3]['raw'] ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		} else {
@@ -81,7 +81,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 
 			if ( isset( $parameters[2], $this->restricted_filters[ $parameters[2]['raw'] ] ) ) {
 				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see http://php.net/manual/en/filter.filters.sanitize.php.';
-				$data    = [ strtoupper( $parameters[2]['raw'] ) ];
+				$data    = [ $parameters[2]['raw'] ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		}
