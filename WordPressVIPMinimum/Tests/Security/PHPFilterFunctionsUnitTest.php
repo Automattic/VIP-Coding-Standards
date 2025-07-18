@@ -49,6 +49,7 @@ class PHPFilterFunctionsUnitTest extends AbstractSniffUnitTest {
 			71 => 1,
 			73 => 1,
 			75 => 1,
+			81 => 1,
 		];
 	}
 }

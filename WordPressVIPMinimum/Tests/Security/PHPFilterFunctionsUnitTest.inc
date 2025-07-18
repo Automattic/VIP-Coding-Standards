@@ -73,3 +73,9 @@ filter_var(value: $value, filters: FILTER_SANITIZE_URL); // Typo in parameter na
 filter_var_array(options: FILTER_UNSAFE_RAW, array: $array); // This filter ID does nothing.
 
 filter_input_array($type, add_empty: false, options: FILTER_DEFAULT,); // This filter ID does nothing.
+
+// Ignore function calls using PHP 5.6 argument unpacking as we don't know what parameters were passed.
+filter_input(INPUT_GET, ...$params);
+trim(filter_input(INPUT_GET, ...$params));
+// ... but only ignore unpacking if done at the correct nesting level.
+filter_input(INPUT_GET, $obj->getVarname(...$params)); // Missing $filter parameter.

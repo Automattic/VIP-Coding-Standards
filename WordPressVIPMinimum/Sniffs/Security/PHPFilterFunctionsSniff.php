@@ -79,6 +79,28 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 
 		$target_param = PassedParameters::getParameterFromStack( $parameters, $param_position, $param_name );
 		if ( $target_param === false ) {
+			/*
+			 * Check for PHP 5.6+ argument unpacking.
+			 *
+			 * No need for extensive defensive coding, we already know this is syntactically a valid function call,
+			 * otherwise this method would not have been reached.
+			 */
+			$tokens       = $this->phpcsFile->getTokens();
+			$open_parens  = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+			$has_ellipses = $this->phpcsFile->findNext( T_ELLIPSIS, ( $open_parens + 1 ), $tokens[ $open_parens ]['parenthesis_closer'] );
+
+			if ( $has_ellipses !== false ) {
+				$target_nesting_level = 1;
+				if ( isset( $tokens[ $open_parens ]['nested_parenthesis'] ) ) {
+					$target_nesting_level = ( count( $tokens[ $open_parens ]['nested_parenthesis'] ) + 1 );
+				}
+
+				if ( $target_nesting_level === count( $tokens[ $has_ellipses ]['nested_parenthesis'] ) ) {
+					// Bow out as undetermined.
+					return;
+				}
+			}
+
 			$message = 'Missing $%s parameter for "%s()".';
 			$data    = [ $param_name, $matched_content ];
 
