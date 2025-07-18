@@ -10,9 +10,10 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
-use PHPCSUtils\Exceptions\UnexpectedTokenType;
 use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Arrays;
 use PHPCSUtils\Utils\PassedParameters;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -61,40 +62,83 @@ class StaticStrreplaceSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$static_text_tokens                               = Tokens::$emptyTokens;
-		$static_text_tokens[ T_CONSTANT_ENCAPSED_STRING ] = T_CONSTANT_ENCAPSED_STRING;
-
 		foreach ( [ $search_param, $replace_param, $subject_param ] as $param ) {
-			$has_non_static_text = $this->phpcsFile->findNext( $static_text_tokens, $param['start'], ( $param['end'] + 1 ), true );
-			if ( $has_non_static_text === false ) {
-				// The parameter contained only tokens which could be considered static text.
-				continue;
+			if ( $this->is_parameter_static_text( $param ) === false ) {
+				// Non-static text token found. Not what we're looking for.
+				return;
 			}
-
-			if ( isset( Collections::arrayOpenTokensBC()[ $this->tokens[ $has_non_static_text ]['code'] ] ) ) {
-				try {
-					$array_items = PassedParameters::getParameters( $this->phpcsFile, $has_non_static_text );
-				} catch ( UnexpectedTokenType $e ) {
-					// Short list, parse error or live coding, bow out.
-					return;
-				}
-
-				foreach ( $array_items as $array_item ) {
-					$has_non_static_text = $this->phpcsFile->findNext( $static_text_tokens, $array_item['start'], $array_item['end'], true );
-					if ( $has_non_static_text !== false ) {
-						return;
-					}
-				}
-
-				// The array only contained items with tokens which could be considered static text.
-				continue;
-			}
-
-			// Non-static text token found. Not what we're looking for.
-			return;
 		}
 
 		$message = 'This code pattern is often used to run a very dangerous shell programs on your server. The code in these files needs to be reviewed, and possibly cleaned.';
 		$this->phpcsFile->addError( $message, $stackPtr, 'StaticStrreplace' );
+	}
+
+	/**
+	 * Check whether the current parameter, or array item, only contains tokens which should be regarded
+	 * as a valid part of a static text string.
+	 *
+	 * @param array<string, int|string> $param_info Array with information about a single parameter or array item.
+	 *                                              Must be an array as returned via the PassedParameters class.
+	 *
+	 * @return bool
+	 */
+	private function is_parameter_static_text( $param_info ) {
+		// List of tokens which can be skipped over without further examination.
+		$static_tokens  = [
+			T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
+			T_PLUS                     => T_PLUS,
+			T_STRING_CONCAT            => T_STRING_CONCAT,
+		];
+		$static_tokens += Tokens::$emptyTokens;
+
+		for ( $i = $param_info['start']; $i <= $param_info['end']; $i++ ) {
+			$next_to_examine = $this->phpcsFile->findNext( $static_tokens, $i, ( $param_info['end'] + 1 ), true );
+			if ( $next_to_examine === false ) {
+				// The parameter contained only tokens which could be considered static text.
+				return true;
+			}
+
+			if ( isset( Collections::arrayOpenTokensBC()[ $this->tokens[ $next_to_examine ]['code'] ] ) ) {
+				$arrayOpenClose = Arrays::getOpenClose( $this->phpcsFile, $next_to_examine );
+				if ( $arrayOpenClose === false ) {
+					// Short list, parse error or live coding, bow out.
+					return false;
+				}
+
+				$array_items = PassedParameters::getParameters( $this->phpcsFile, $next_to_examine );
+				foreach ( $array_items as $array_item ) {
+					if ( $this->is_parameter_static_text( $array_item ) === false ) {
+						return false;
+					}
+				}
+
+				// The array only contained items with tokens which could be considered static text.
+				$i = $arrayOpenClose['closer'];
+				continue;
+			}
+
+			if ( $this->tokens[ $next_to_examine ]['code'] === T_START_HEREDOC ) {
+				$heredoc_text  = TextStrings::getCompleteTextString( $this->phpcsFile, $next_to_examine );
+				$stripped_text = TextStrings::stripEmbeds( $heredoc_text );
+				if ( $heredoc_text !== $stripped_text ) {
+					// Heredoc with interpolated expression(s). Not a static text.
+					return false;
+				}
+			}
+
+			if ( ( $this->tokens[ $next_to_examine ]['code'] === T_START_HEREDOC
+				|| $this->tokens[ $next_to_examine ]['code'] === T_START_NOWDOC )
+				&& isset( $this->tokens[ $next_to_examine ]['scope_closer'] )
+			) {
+				// No interpolation. Skip to end of a heredoc/nowdoc.
+				$i = $this->tokens[ $next_to_examine ]['scope_closer'];
+				continue;
+			}
+
+			// Any other token means this parameter should be regarded as non-static text. Not what we're looking for.
+			return false;
+		}
+
+		return true;
 	}
 }

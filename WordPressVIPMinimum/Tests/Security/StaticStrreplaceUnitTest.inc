@@ -69,3 +69,33 @@ str_replace( subject: $subject, count: $count, replace: 'baz', search: 'foo', );
 
 str_replace( count: $count, subject: [ 'foobar', 'foobar' ], search: 'foo', replace: 'baz', ); // Bad with different parameter order.
 str_replace( [ 'foo', 'bar' ], 'baz', count: $count, subject: 'foobar' ); // Bad, with mixed named and unnamed params.
+
+// Make sure some variations of how plain strings can be passed are handled.
+str_replace( 'fo' . 'o', 'bar', 'foobar' ); // Bad.
+str_replace( array( 'foo', 'bar' ) + array( 'baz', 'fop' ), array( 'bar', 'foo' ), 'foobar' ); // Bad.
+
+// Safeguard correct handling of PHP 5.3+ nowdocs.
+str_replace(
+	'foo',
+	'bar',
+	<<<'EOD'
+foobar
+EOD
+); // Bad.
+
+// Safeguard correct handling of heredocs without interpolation.
+str_replace( array(<<<EOD
+foo
+EOD
+	),
+	'bar',
+	<<<"EOD"
+foobar
+EOD
+); // Bad.
+
+// Ensure heredocs with interpolation are ignored.
+str_replace( 'foo', 'bar', <<<EOD
+Some text and $foobar
+EOD
+); // OK.
