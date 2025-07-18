@@ -61,3 +61,11 @@ str_replace( 'foo', 'bar', 'foobar', $count ); // Bad.
 
 // Don't confuse PHP 7.1+ short list with short array.
 str_replace( [ $a, $b ] = $search, [ 'bar', 'foo' ], 'foobar', ); // OK.
+
+// Safeguard support for PHP 8.0+ named parameters.
+str_replace( search: [ 'foo', 'bar' ], replace: 'baz', count: $count ); // OK, well not really, missing required $subject param, but not our concern.
+str_replace( search: 'foo', replace: 'baz', subjects: [ 'foobar', 'foobar' ] ); // OK, well not really, typo in $subject param name, not our concern.
+str_replace( subject: $subject, count: $count, replace: 'baz', search: 'foo', ); // OK, different parameter order.
+
+str_replace( count: $count, subject: [ 'foobar', 'foobar' ], search: 'foo', replace: 'baz', ); // Bad with different parameter order.
+str_replace( [ 'foo', 'bar' ], 'baz', count: $count, subject: 'foobar' ); // Bad, with mixed named and unnamed params.
