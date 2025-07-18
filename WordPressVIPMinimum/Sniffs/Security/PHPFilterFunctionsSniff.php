@@ -67,9 +67,9 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingThirdParameter', $data );
 			}
 
-			if ( isset( $parameters[3], $this->restricted_filters[ $parameters[3]['raw'] ] ) ) {
+			if ( isset( $parameters[3], $this->restricted_filters[ $parameters[3]['clean'] ] ) ) {
 				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
-				$data    = [ $parameters[3]['raw'] ];
+				$data    = [ $parameters[3]['clean'] ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		} else {
@@ -79,9 +79,9 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingSecondParameter', $data );
 			}
 
-			if ( isset( $parameters[2], $this->restricted_filters[ $parameters[2]['raw'] ] ) ) {
+			if ( isset( $parameters[2], $this->restricted_filters[ $parameters[2]['clean'] ] ) ) {
 				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see http://php.net/manual/en/filter.filters.sanitize.php.';
-				$data    = [ $parameters[2]['raw'] ];
+				$data    = [ $parameters[2]['clean'] ];
 				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 			}
 		}

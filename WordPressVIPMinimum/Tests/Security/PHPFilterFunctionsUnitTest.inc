@@ -43,7 +43,7 @@ $incorrect_but_ok = filter_input();
  */
 filter_input( INPUT_GET, 'foo' ); // Missing third parameter.
 \filter_input( INPUT_GET, 'foo', FILTER_DEFAULT ); // This filter ID does nothing.
-filter_input( INPUT_GET, "foo", FILTER_UNSAFE_RAW  ,); // This filter ID does nothing.
+filter_input( INPUT_GET, "foo", FILTER_UNSAFE_RAW /* comment */ ,); // This filter ID does nothing.
 
 filter_var( $url ); // Missing second parameter.
 Filter_Var( $url, FILTER_DEFAULT ); // This filter ID does nothing.
