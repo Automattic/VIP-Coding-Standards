@@ -10,7 +10,7 @@ $this->str_replace('foo', 'bar', 'foobar');
 $this?->str_replace('foo', 'bar', 'foobar');
 MyClass::str_replace('foo', 'bar', 'foobar');
 echo STR_REPLACE;
-namespace\str_replace('foo', 'bar', 'foobar');
+namespace\str_replace('foo', 'bar', 'foobar', $count);
 
 // Looks like a function call, but is a PHP 8.0+ class instantiation via an attribute.
 #[Str_Replace('foo', 'bar', 'foobar')]
@@ -34,7 +34,7 @@ str_replace( $foo->getSearch(), 'bar', 'foobar' );
 \str_replace( 'foo', $bar, 'foobar' );
 str_replace( 'foo', 'bar', $foobar, );
 STR_REPLACE( $foo, $bar, 'foobar' );
-str_replace( 'foo', get_replacements(), $foobar );
+str_replace( 'foo', get_replacements(), $foobar, $count );
 
 str_replace( array( 'foo', "$bar" ), $bar, 'foobar' );
 
@@ -54,3 +54,4 @@ Str_replace(
 	'foobar'
 ); // Bad.
 str_replace( array( 'foo', 'bar' ), array( 'bar', 'foo' ), array( 'foobar', 'foobar' ) ); // Bad.
+str_replace( 'foo', 'bar', 'foobar', $count ); // Bad.
