@@ -110,7 +110,7 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 
 			// Error codes should probably be made more descriptive, but that would be a BC-break.
 			$error_code = 'MissingSecondParameter';
-			if ( $matched_content === 'filter_input' ) {
+			if ( $param_position === 3 ) {
 				$error_code = 'MissingThirdParameter';
 			}
 
