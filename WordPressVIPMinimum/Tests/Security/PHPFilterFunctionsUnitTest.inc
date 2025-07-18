@@ -79,3 +79,22 @@ filter_input(INPUT_GET, ...$params);
 trim(filter_input(INPUT_GET, ...$params));
 // ... but only ignore unpacking if done at the correct nesting level.
 filter_input(INPUT_GET, $obj->getVarname(...$params)); // Missing $filter parameter.
+
+// False negatives: $options arrays are currently not (yet) supported by this sniff.
+// See: https://www.php.net/manual/en/function.filter-var-array.php and https://www.php.net/manual/en/function.filter-input-array.php
+filter_var_array(
+	$array,
+	array('keyA' => FILTER_DEFAULT), // This filter ID does nothing.
+);
+filter_input_array(
+	$array,
+	[
+		'keyA' => [
+			'filter' => FILTER_UNSAFE_RAW, // This filter ID does nothing.
+			'flags'  => FILTER_FORCE_ARRAY,
+		],
+		'keyB' => [
+			'filter' => FILTER_SANITIZE_ENCODED,
+		],
+	]
+);

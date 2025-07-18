@@ -16,6 +16,10 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 /**
  * This sniff ensures that proper sanitization is occurring when PHP's filter_* functions are used.
  *
+ * {@internal The $options parameter for filter_var_array() and filter_input_array() can take either an
+ * integer (filter constant) or an array with options, which could include an option setting the filter constant.
+ * At this time, this sniff does not handle an array with options being passed.}
+ *
  * @since 0.4.0
  */
 class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
