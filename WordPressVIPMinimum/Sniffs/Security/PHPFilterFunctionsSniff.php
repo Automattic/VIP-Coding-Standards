@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -92,9 +93,11 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( isset( $this->restricted_filters[ $target_param['clean'] ] ) ) {
+			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $target_param['start'], ( $target_param['end'] + 1 ), true );
+
 			$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
 			$data    = [ $target_param['clean'] ];
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
+			$this->phpcsFile->addWarning( $message, $first_non_empty, 'RestrictedFilter', $data );
 		}
 	}
 }
