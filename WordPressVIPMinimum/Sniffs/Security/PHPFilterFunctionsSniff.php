@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -26,15 +27,27 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	protected $group_name = 'php_filter_functions';
 
 	/**
-	 * Functions this sniff is looking for.
+	 * Functions this sniff is looking for and information on which parameter to check for in those function calls.
 	 *
-	 * @var array<string, bool> Key is the function name, value irrelevant.
+	 * @var array<string, array{param_position: int, param_name: string}> Key is the function name.
 	 */
 	protected $target_functions = [
-		'filter_var'         => true,
-		'filter_input'       => true,
-		'filter_var_array'   => true,
-		'filter_input_array' => true,
+		'filter_var'         => [
+			'param_position' => 2,
+			'param_name'     => 'filter',
+		],
+		'filter_input'       => [
+			'param_position' => 3,
+			'param_name'     => 'filter',
+		],
+		'filter_var_array'   => [
+			'param_position' => 2,
+			'param_name'     => 'options',
+		],
+		'filter_input_array' => [
+			'param_position' => 2,
+			'param_name'     => 'options',
+		],
 	];
 
 	/**
@@ -60,30 +73,28 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( $matched_content === 'filter_input' ) {
-			if ( count( $parameters ) === 2 ) {
-				$message = 'Missing third parameter for "%s".';
-				$data    = [ $matched_content ];
-				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingThirdParameter', $data );
+		$param_position = $this->target_functions[ $matched_content ]['param_position'];
+		$param_name     = $this->target_functions[ $matched_content ]['param_name'];
+
+		$target_param = PassedParameters::getParameterFromStack( $parameters, $param_position, $param_name );
+		if ( $target_param === false ) {
+			$message = 'Missing $%s parameter for "%s()".';
+			$data    = [ $param_name, $matched_content ];
+
+			// Error codes should probably be made more descriptive, but that would be a BC-break.
+			$error_code = 'MissingSecondParameter';
+			if ( $matched_content === 'filter_input' ) {
+				$error_code = 'MissingThirdParameter';
 			}
 
-			if ( isset( $parameters[3], $this->restricted_filters[ $parameters[3]['clean'] ] ) ) {
-				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
-				$data    = [ $parameters[3]['clean'] ];
-				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
-			}
-		} else {
-			if ( count( $parameters ) === 1 ) {
-				$message = 'Missing second parameter for "%s".';
-				$data    = [ $matched_content ];
-				$this->phpcsFile->addWarning( $message, $stackPtr, 'MissingSecondParameter', $data );
-			}
+			$this->phpcsFile->addWarning( $message, $stackPtr, $error_code, $data );
+			return;
+		}
 
-			if ( isset( $parameters[2], $this->restricted_filters[ $parameters[2]['clean'] ] ) ) {
-				$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see http://php.net/manual/en/filter.filters.sanitize.php.';
-				$data    = [ $parameters[2]['clean'] ];
-				$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
-			}
+		if ( isset( $this->restricted_filters[ $target_param['clean'] ] ) ) {
+			$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
+			$data    = [ $target_param['clean'] ];
+			$this->phpcsFile->addWarning( $message, $stackPtr, 'RestrictedFilter', $data );
 		}
 	}
 }

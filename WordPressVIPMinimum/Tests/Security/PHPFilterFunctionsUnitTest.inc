@@ -41,18 +41,35 @@ $incorrect_but_ok = filter_input();
 /*
  * These should all be flagged with a warning.
  */
-filter_input( INPUT_GET, 'foo' ); // Missing third parameter.
+filter_input( INPUT_GET, 'foo' ); // Missing $filter parameter.
 \filter_input( INPUT_GET, 'foo', FILTER_DEFAULT ); // This filter ID does nothing.
 filter_input( INPUT_GET, "foo", FILTER_UNSAFE_RAW /* comment */ ,); // This filter ID does nothing.
 
-filter_var( $url ); // Missing second parameter.
+filter_var( $url ); // Missing $filter parameter.
 Filter_Var( $url, FILTER_DEFAULT ); // This filter ID does nothing.
 filter_var( 'https://google.com', FILTER_UNSAFE_RAW ); // This filter ID does nothing.
 
-filter_var_array( $array, ); // Missing second parameter.
+filter_var_array( $array, ); // Missing $options parameter.
 filter_var_array( $array, FILTER_DEFAULT ); // This filter ID does nothing.
 filter_var_array( $array, FILTER_UNSAFE_RAW ); // This filter ID does nothing.
 
-filter_input_array( $array ); // Missing second parameter.
+filter_input_array( $array ); // Missing $options parameter.
 \FILTER_INPUT_ARRAY( $array, FILTER_DEFAULT ); // This filter ID does nothing.
 filter_input_array( $array, FILTER_UNSAFE_RAW, ); // This filter ID does nothing.
+
+// Safeguard handling of function calls using PHP 8.0+ named parameters.
+filter_input(var_name: $var_name, filter: FILTER_SANITIZE_STRING, type: FILTER_DEFAULT); // OK, invalid input value for $type, but that's not our concern.
+filter_input(var_name: $var_name, filter: $filter, type: $type); // Ignore, undetermined.
+filter_input(
+    var_name: $var_name,
+    filter: FILTER_DEFAULT, // This filter ID does nothing.
+    type: $type,
+);
+
+filter_var(filter: FILTER_SANITIZE_URL); // OK, well not really, missing required parameter, but that's not our concern.
+filter_var($value, options: FILTER_NULL_ON_FAILURE); // Missing $filter parameter.
+filter_var(value: $value, filters: FILTER_SANITIZE_URL); // Typo in parameter name, report as missing $filter parameter.
+
+filter_var_array(options: FILTER_UNSAFE_RAW, array: $array); // This filter ID does nothing.
+
+filter_input_array($type, add_empty: false, options: FILTER_DEFAULT,); // This filter ID does nothing.
