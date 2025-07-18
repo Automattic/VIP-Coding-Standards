@@ -55,3 +55,9 @@ Str_replace(
 ); // Bad.
 str_replace( array( 'foo', 'bar' ), array( 'bar', 'foo' ), array( 'foobar', 'foobar' ) ); // Bad.
 str_replace( 'foo', 'bar', 'foobar', $count ); // Bad.
+
+// Handle PHP 5.4+ short array syntax correctly.
+\str_replace( [ 'foo', 'bar' ], [ 'bar', 'foo' ], [ 'foobar', 'foobar' ], ); // Bad.
+
+// Don't confuse PHP 7.1+ short list with short array.
+str_replace( [ $a, $b ] = $search, [ 'bar', 'foo' ], 'foobar', ); // OK.

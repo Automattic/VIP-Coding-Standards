@@ -27,6 +27,7 @@ class StaticStrreplaceUnitTest extends AbstractSniffUnitTest {
 			51 => 1,
 			56 => 1,
 			57 => 1,
+			60 => 1,
 		];
 	}
 

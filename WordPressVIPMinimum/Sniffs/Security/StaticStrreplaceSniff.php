@@ -10,6 +10,8 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Arrays;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -55,15 +57,20 @@ class StaticStrreplaceSniff extends AbstractFunctionParameterSniff {
 		$next_start_ptr = $openBracket + 1;
 		for ( $i = 0; $i < 3; $i++ ) {
 			$param_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $next_start_ptr, null, true );
+			if ( $param_ptr === false ) {
+				// Live coding or parse error. Ignore.
+				return;
+			}
 
-			if ( $this->tokens[ $param_ptr ]['code'] === T_ARRAY ) {
-				$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_ptr + 1, null, true );
-				if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
+			if ( isset( Collections::arrayOpenTokensBC()[ $this->tokens[ $param_ptr ]['code'] ] ) ) {
+				$arrayOpenClose = Arrays::getOpenClose( $this->phpcsFile, $param_ptr );
+				if ( $arrayOpenClose === false ) {
+					// Short list, parse error or live coding, bow out.
 					return;
 				}
 
-				// Find the closing bracket.
-				$closeBracket = $this->tokens[ $openBracket ]['parenthesis_closer'];
+				$openBracket  = $arrayOpenClose['opener'];
+				$closeBracket = $arrayOpenClose['closer'];
 
 				$array_item_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $openBracket + 1, $closeBracket, true );
 				while ( $array_item_ptr !== false ) {
