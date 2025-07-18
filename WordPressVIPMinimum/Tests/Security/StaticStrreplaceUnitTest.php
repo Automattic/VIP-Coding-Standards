@@ -23,8 +23,9 @@ class StaticStrreplaceUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			3 => 1,
-			7 => 1,
+			50 => 1,
+			51 => 1,
+			56 => 1,
 		];
 	}
 
