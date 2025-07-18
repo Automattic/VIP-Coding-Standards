@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\Security;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Arrays;
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -54,6 +55,9 @@ class StaticStrreplaceSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
+		$static_text_tokens                               = Tokens::$emptyTokens;
+		$static_text_tokens[ T_CONSTANT_ENCAPSED_STRING ] = T_CONSTANT_ENCAPSED_STRING;
+
 		$next_start_ptr = $openBracket + 1;
 		for ( $i = 0; $i < 3; $i++ ) {
 			$param_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $next_start_ptr, null, true );
@@ -69,21 +73,16 @@ class StaticStrreplaceSniff extends AbstractFunctionParameterSniff {
 					return;
 				}
 
-				$openBracket  = $arrayOpenClose['opener'];
-				$closeBracket = $arrayOpenClose['closer'];
-
-				$array_item_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $openBracket + 1, $closeBracket, true );
-				while ( $array_item_ptr !== false ) {
-
-					if ( $this->tokens[ $array_item_ptr ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
+				$array_items = PassedParameters::getParameters( $this->phpcsFile, $param_ptr );
+				foreach ( $array_items as $array_item ) {
+					$has_non_static_text = $this->phpcsFile->findNext( $static_text_tokens, $array_item['start'], $array_item['end'], true );
+					if ( $has_non_static_text !== false ) {
 						return;
 					}
-					$array_item_ptr = $this->phpcsFile->findNext( array_merge( Tokens::$emptyTokens, [ T_COMMA ] ), $array_item_ptr + 1, $closeBracket, true );
 				}
 
-				$next_start_ptr = $closeBracket + 1;
+				$next_start_ptr = $arrayOpenClose['closer'] + 1;
 				continue;
-
 			}
 
 			if ( $this->tokens[ $param_ptr ]['code'] !== T_CONSTANT_ENCAPSED_STRING ) {
