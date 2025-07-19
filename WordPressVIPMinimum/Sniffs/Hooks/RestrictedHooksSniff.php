@@ -118,7 +118,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 				}
 			}
 		} else {
-			$hook_name = $parameter['raw'];
+			$hook_name = $parameter['clean'];
 		}
 
 		// Remove quotes (double and single), and use lowercase.
