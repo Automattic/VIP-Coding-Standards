@@ -17,7 +17,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
 class ServerVariablesSniff extends Sniff {
 
 	/**
-	 * List of restricted constant names.
+	 * List of restricted indices.
 	 *
 	 * @var array<string, array<string, bool>>
 	 */
@@ -58,15 +58,15 @@ class ServerVariablesSniff extends Sniff {
 			return;
 		}
 
-		$variableNamePtr = $this->phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], $stackPtr + 1, null, false, null, true );
-		$variableName    = str_replace( [ "'", '"' ], '', $this->tokens[ $variableNamePtr ]['content'] );
+		$indexPtr  = $this->phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], $stackPtr + 1, null, false, null, true );
+		$indexName = str_replace( [ "'", '"' ], '', $this->tokens[ $indexPtr ]['content'] );
 
-		if ( isset( $this->restrictedVariables['authVariables'][ $variableName ] ) ) {
+		if ( isset( $this->restrictedVariables['authVariables'][ $indexName ] ) ) {
 			$message = 'Basic authentication should not be handled via PHP code.';
 			$this->phpcsFile->addError( $message, $stackPtr, 'BasicAuthentication' );
-		} elseif ( isset( $this->restrictedVariables['userControlledVariables'][ $variableName ] ) ) {
+		} elseif ( isset( $this->restrictedVariables['userControlledVariables'][ $indexName ] ) ) {
 			$message = 'Header "%s" is user-controlled and should be properly validated before use.';
-			$data    = [ $variableName ];
+			$data    = [ $indexName ];
 			$this->phpcsFile->addError( $message, $stackPtr, 'UserControlledHeaders', $data );
 		}
 	}

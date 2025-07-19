@@ -13,7 +13,7 @@ $_server['PHP_AUTH_USER']; // Variable names are case-sensitive.
  */
 var_dump($_SERVER); // No key access.
 $_SERVER[] = 10;
-$_SERVER['SOME_OTHER_VARIABLE'];
+$_SERVER['SOME_OTHER_INDEX'];
 $_SERVER['php_auth_user']; // Array indices are case-sensitive.
 
 // PHP 7.4+ spread in array.
