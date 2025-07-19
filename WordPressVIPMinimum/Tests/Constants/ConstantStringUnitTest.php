@@ -29,6 +29,7 @@ class ConstantStringUnitTest extends AbstractSniffUnitTest {
 			50 => 1,
 			54 => 1,
 			55 => 1,
+			61 => 1,
 		];
 	}
 
