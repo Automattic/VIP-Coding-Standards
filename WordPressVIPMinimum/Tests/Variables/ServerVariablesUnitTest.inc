@@ -61,3 +61,15 @@ echo $_SERVER[$other_key] . $NOT_SERVER['PHP_AUTH_PW'];
 
 // Safeguard the sniff doesn't get confused over partially dynamic keys.
 echo $_SERVER[$other_key . 'PHP_AUTH_PW'];
+
+// Access of the array indices via the $GLOBALS superglobal should also be recognized.
+$GLOBALS['NOT_SERVER']['PHP_AUTH_USER']; // OK.
+$GLOBALS[$a]['PHP_AUTH_USER']; // OK.
+$GLOBALS['_SERVER']['SOME_OTHER_KEY']; // OK.
+$GLOBALS['_SERVER'][$a]; // OK.
+
+$GLOBALS['_SERVER']['PHP_AUTH_USER'];
+$GLOBALS['_SERVER']['PHP_AUTH_PW'];
+$GLOBALS["_SERVER"]['HTTP_X_IP_TRAIL'];
+$GLOBALS['_SERVER']['HTTP_X_FORWARDED_FOR'];
+$GLOBALS['_SERVER']["REMOTE_ADDR"];

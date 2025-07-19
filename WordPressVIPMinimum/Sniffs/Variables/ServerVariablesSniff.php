@@ -55,9 +55,30 @@ class ServerVariablesSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		if ( $this->tokens[ $stackPtr ]['content'] !== '$_SERVER' ) {
-			// Not the variable we are looking for.
+		if ( $this->tokens[ $stackPtr ]['content'] !== '$_SERVER'
+			&& $this->tokens[ $stackPtr ]['content'] !== '$GLOBALS'
+		) {
+			// Not a variable we are looking for.
 			return;
+		}
+
+		$searchStart = $stackPtr;
+		if ( $this->tokens[ $stackPtr ]['content'] === '$GLOBALS' ) {
+			$globalsIndexPtr = $this->get_array_access_key( $stackPtr );
+			if ( $globalsIndexPtr === false ) {
+				// Couldn't find an array index token usable for the purposes of this sniff. Bow out.
+				return;
+			}
+
+			$globalsIndexName = TextStrings::stripQuotes( $this->tokens[ $globalsIndexPtr ]['content'] );
+			if ( $globalsIndexName !== '_SERVER' ) {
+				// Not access to `$GLOBALS['_SERVER']`.
+				return;
+			}
+
+			// Set the start point for the next array access key search to the close bracket of this array index.
+			// No need for defensive coding as we already know there will be a valid close bracket next.
+			$searchStart = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $globalsIndexPtr + 1 ), null, true );
 		}
 
 		$prevNonEmpty = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
@@ -66,7 +87,7 @@ class ServerVariablesSniff extends Sniff {
 			return;
 		}
 
-		$indexPtr = $this->get_array_access_key( $stackPtr );
+		$indexPtr = $this->get_array_access_key( $searchStart );
 		if ( $indexPtr === false ) {
 			// Couldn't find an array index token usable for the purposes of this sniff. Bow out as undetermined.
 			return;

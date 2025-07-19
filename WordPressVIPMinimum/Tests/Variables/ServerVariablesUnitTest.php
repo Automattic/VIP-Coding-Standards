@@ -28,6 +28,11 @@ class ServerVariablesUnitTest extends AbstractSniffUnitTest {
 			33 => 1,
 			36 => 1,
 			37 => 1,
+			71 => 1,
+			72 => 1,
+			73 => 1,
+			74 => 1,
+			75 => 1,
 		];
 	}
 
