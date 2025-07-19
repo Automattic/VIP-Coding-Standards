@@ -35,3 +35,11 @@ $_SERVER  [
 ];
 $_SERVER /*comment*/ [ /*comment*/ 'HTTP_X_FORWARDED_FOR'  /*comment*/ ];
 $_SERVER["REMOTE_ADDR"]; // Let's test one with double quotes too.
+
+
+/*
+ * Prevent various false positives.
+ */
+// These look like "forbidden" indices, but aren't.
+$_SERVER['PHP_"AUTH"_PW'];
+$_SERVER["PHP_'AUTH'_PW"];

@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Variables;
 
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -59,7 +60,7 @@ class ServerVariablesSniff extends Sniff {
 		}
 
 		$indexPtr  = $this->phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], $stackPtr + 1, null, false, null, true );
-		$indexName = str_replace( [ "'", '"' ], '', $this->tokens[ $indexPtr ]['content'] );
+		$indexName = TextStrings::stripQuotes( $this->tokens[ $indexPtr ]['content'] );
 
 		if ( isset( $this->restrictedVariables['authVariables'][ $indexName ] ) ) {
 			$message = 'Basic authentication should not be handled via PHP code.';
