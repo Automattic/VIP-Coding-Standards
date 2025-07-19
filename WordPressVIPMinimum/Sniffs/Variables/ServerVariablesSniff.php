@@ -66,7 +66,12 @@ class ServerVariablesSniff extends Sniff {
 			return;
 		}
 
-		$indexPtr  = $this->phpcsFile->findNext( [ T_CONSTANT_ENCAPSED_STRING ], $stackPtr + 1, null, false, null, true );
+		$indexPtr = $this->get_array_access_key( $stackPtr );
+		if ( $indexPtr === false ) {
+			// Couldn't find an array index token usable for the purposes of this sniff. Bow out as undetermined.
+			return;
+		}
+
 		$indexName = TextStrings::stripQuotes( $this->tokens[ $indexPtr ]['content'] );
 
 		if ( isset( $this->restrictedVariables['authVariables'][ $indexName ] ) ) {
@@ -77,5 +82,46 @@ class ServerVariablesSniff extends Sniff {
 			$data    = [ $indexName ];
 			$this->phpcsFile->addError( $message, $stackPtr, 'UserControlledHeaders', $data );
 		}
+	}
+
+	/**
+	 * Get the array access key.
+	 *
+	 * Find the array access key and check if it is:
+	 * - comprised of a single functional token.
+	 * - that token is a T_CONSTANT_ENCAPSED_STRING.
+	 *
+	 * @param int $stackPtr The position of either a variable or the close bracket of a previous array access.
+	 *
+	 * @return int|false Stack pointer to the index token; or FALSE for
+	 *                   live coding, non-indexed array assignment, or non plain text array keys.
+	 */
+	private function get_array_access_key( $stackPtr ) {
+		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		if ( $openBracket === false
+			|| $this->tokens[ $openBracket ]['code'] !== T_OPEN_SQUARE_BRACKET
+			|| isset( $this->tokens[ $openBracket ]['bracket_closer'] ) === false
+		) {
+			// If it isn't an open bracket, this isn't array access. And without closer, it is a parse error/live coding.
+			return false;
+		}
+
+		$closeBracket = $this->tokens[ $openBracket ]['bracket_closer'];
+
+		$indexPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $openBracket + 1 ), $closeBracket, true );
+		if ( $indexPtr === false
+			|| $this->tokens[ $indexPtr ]['code'] !== T_CONSTANT_ENCAPSED_STRING
+		) {
+			// No array access (like for array assignment without key) or key is not plain text.
+			return false;
+		}
+
+		$hasOtherTokens = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $indexPtr + 1 ), $closeBracket, true );
+		if ( $hasOtherTokens !== false ) {
+			// The array index is comprised of multiple tokens. Bow out as undetermined.
+			return false;
+		}
+
+		return $indexPtr;
 	}
 }

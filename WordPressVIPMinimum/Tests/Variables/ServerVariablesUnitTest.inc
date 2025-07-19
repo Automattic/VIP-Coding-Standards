@@ -55,3 +55,9 @@ class PeopleDoSillyThings extends AllowedByPHP {
 		var_export(OtherClass::$_SERVER['HTTP_X_IP_TRAIL']);
 	}
 }
+
+// Safeguard the sniff looks at the access key for the $_SERVER variable only and doesn't walk too far.
+echo $_SERVER[$other_key] . $NOT_SERVER['PHP_AUTH_PW'];
+
+// Safeguard the sniff doesn't get confused over partially dynamic keys.
+echo $_SERVER[$other_key . 'PHP_AUTH_PW'];
