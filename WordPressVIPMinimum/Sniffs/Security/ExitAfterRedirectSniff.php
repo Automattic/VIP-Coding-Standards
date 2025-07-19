@@ -17,6 +17,10 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  */
 class ExitAfterRedirectSniff extends Sniff {
 
+// THIS SNIFF DOES NOT BELONG IN VIPCS, but should be in WPCS (but can't be moved due to the GPLv2 license being incompatible with MIT).
+
+// Should be refactored to use the WPCS AbstractFunctionRestrictionsSniff
+// Needs careful review of how the token walking and the inside/outside scope determination is done.
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
