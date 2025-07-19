@@ -23,6 +23,10 @@ use WordPressCS\WordPress\Helpers\PrintingFunctionsTrait;
  */
 class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 
+// Should be refactored to use the WPCS AbstractFunctionRestrictionsSniff
+// Will also need to check much better that what's inside the function call is another function call and not a constant or something else.
+// Needs to take fully qualified function calls into account. Also for the "inside" function.
+
 	use PrintingFunctionsTrait;
 
 	/**
