@@ -28,7 +28,7 @@ class CheckReturnValueSniff extends Sniff {
 	 *
 	 * @var array<string, array<string>>
 	 */
-	public $catch = [
+	private $catch = [
 		'esc_url'          => [
 			'get_term_link',
 		],
@@ -52,7 +52,7 @@ class CheckReturnValueSniff extends Sniff {
 	 *
 	 * @var array<string, int|string>
 	 */
-	public $notFunctions = [
+	private $notFunctions = [
 		'foreach' => T_FOREACH,
 	];
 

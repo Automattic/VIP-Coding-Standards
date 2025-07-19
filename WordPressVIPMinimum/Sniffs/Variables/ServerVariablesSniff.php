@@ -23,7 +23,7 @@ class ServerVariablesSniff extends Sniff {
 	 *
 	 * @var array<string, array<string, bool>>
 	 */
-	public $restrictedVariables = [
+	private $restrictedVariables = [
 		'authVariables'           => [
 			'PHP_AUTH_USER' => true,
 			'PHP_AUTH_PW'   => true,

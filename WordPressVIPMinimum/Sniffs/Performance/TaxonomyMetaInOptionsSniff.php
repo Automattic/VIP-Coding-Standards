@@ -37,7 +37,7 @@ class TaxonomyMetaInOptionsSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @var array<string>
 	 */
-	public $taxonomy_term_patterns = [
+	private $taxonomy_term_patterns = [
 		'category_id',
 		'cat_id',
 		'cat',
