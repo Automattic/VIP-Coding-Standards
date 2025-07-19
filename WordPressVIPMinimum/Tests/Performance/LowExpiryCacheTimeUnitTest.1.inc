@@ -73,7 +73,7 @@ wp_cache_add(
 // Test variable/constant with or without calculation being passed.
 WP_Cache_Set( $key, $data, '', $time ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', PREFIX_FIVE_MINUTES ); // Manual inspection warning.
-wp_cache_set( $key, $data, '', 20 * $time ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', 20 * $time /*comment*/ ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', $base + $extra, ); // Manual inspection warning.
 \wp_cache_set( $key, $data, '', 300 + $extra ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', PREFIX_CUSTOM_TIME * 5); // Manual inspection warning.
@@ -110,7 +110,7 @@ wp_cache_set( 'test', $data, $group, \MONTH_IN_SECONDS ); // OK.
 
 // Test passing something which may look like one of the time constants, but isn't.
 wp_cache_set( 'test', $data, $group, month_in_seconds ); // Bad - constants are case-sensitive.
-wp_cache_set( 'test', $data, $group, HOUR_IN_SECONDS::methodName() ); // Bad - not a constant.
+wp_cache_set( 'test', $data, $group, /*comment*/ HOUR_IN_SECONDS::methodName() ); // Bad - not a constant.
 wp_cache_set( 'test', $data, $group, $obj->MONTH_IN_SECONDS ); // Bad - not a constant.
 wp_cache_set( 'test', $data, $group, $obj::MONTH_IN_SECONDS ); // Bad - not the WP constant.
 WP_Cache_Set( 'test', $data, $group, PluginNamespace\SubLevel\DAY_IN_SECONDS, ); // Bad - not the WP constant.

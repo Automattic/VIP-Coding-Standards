@@ -80,7 +80,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 
 		$message    = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
 		$error_code = 'CacheTimeUndetermined';
-		$data       = [ $matched_content, $parameters[4]['raw'] ];
+		$data       = [ $matched_content, $parameters[4]['clean'] ];
 
 		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
