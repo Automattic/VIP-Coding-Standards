@@ -43,3 +43,15 @@ $_SERVER["REMOTE_ADDR"]; // Let's test one with double quotes too.
 // These look like "forbidden" indices, but aren't.
 $_SERVER['PHP_"AUTH"_PW'];
 $_SERVER["PHP_'AUTH'_PW"];
+
+// Sniff should not get confused over static OO property access.
+class PeopleDoSillyThings extends AllowedByPHP {
+	public static $_SERVER = [];
+
+	public function show() {
+		var_export(self::$_SERVER['PHP_AUTH_USER']);
+		var_export(parent  ::  $_SERVER['PHP_AUTH_PW']);
+		var_export(static::$_SERVER['HTTP_X_FORWARDED_FOR']);
+		var_export(OtherClass::$_SERVER['HTTP_X_IP_TRAIL']);
+	}
+}

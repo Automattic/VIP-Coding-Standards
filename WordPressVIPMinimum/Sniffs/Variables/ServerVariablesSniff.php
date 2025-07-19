@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Variables;
 
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
@@ -56,6 +57,12 @@ class ServerVariablesSniff extends Sniff {
 
 		if ( $this->tokens[ $stackPtr ]['content'] !== '$_SERVER' ) {
 			// Not the variable we are looking for.
+			return;
+		}
+
+		$prevNonEmpty = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+		if ( $this->tokens[ $prevNonEmpty ]['code'] === T_DOUBLE_COLON ) {
+			// Access to OO property mirroring the name of the superglobal. Not our concern.
 			return;
 		}
 
