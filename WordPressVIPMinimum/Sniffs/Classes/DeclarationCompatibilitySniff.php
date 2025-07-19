@@ -19,6 +19,25 @@ use PHPCSUtils\Utils\ObjectDeclarations;
  */
 class DeclarationCompatibilitySniff implements Sniff {
 
+/*
+FUTURE SCOPE (if the sniff does not get removed):
+
+1. Add check for correct method visibility
+2. Add check that methods do not return by reference
+3. Add check for matching parameter names (context: PHP 8.0 named parameter use, exception: methods with variadic as named params is not an option)
+4. Add check for no param types (or type mixed - compatible see https://3v4l.org/BWol3#veol )
+5. Add check for either no return type or return type which is co-variant
+6. Add checks that deprecated methods + methods which are marked to NOT overload, are not declared
+    - WP_Widget::WP_Widget() (deprecated PHP 4 constructor)
+    - WP_Widget::display_callback() (Do NOT override)
+    - WP_Widget::update_callback() (Do NOT override)
+
+For VIPCS 4.0:
+- Remove deprecated sniff class properties
+
+*/
+
+
 	/**
 	 * A list of classes and methods to check.
 	 *
