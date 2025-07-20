@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\MessageHelper;
 use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
@@ -91,6 +92,10 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		}
 
 		$normalized_hook_name = $this->normalize_hook_name_from_parameter( $hook_name_param );
+		if ( $normalized_hook_name === '' ) {
+			// Dynamic hook name. Cannot reliably determine if it's one of the targets. Bow out.
+			return;
+		}
 
 		foreach ( $this->restricted_hook_groups as $group => $group_args ) {
 			foreach ( $group_args['hooks'] as $hook ) {
@@ -107,31 +112,27 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @param array $parameter Array with information about a parameter.
 	 *
-	 * @return string Normalized hook name.
+	 * @return string Normalized hook name or an empty string if the hook name could not be determined.
 	 */
 	private function normalize_hook_name_from_parameter( $parameter ) {
-		// If concatenation is found, build hook name.
-		$concat_ptr = $this->phpcsFile->findNext(
-			T_STRING_CONCAT,
-			$parameter['start'],
-			$parameter['end'],
-			false,
-			null,
-			true
-		);
+		$allowed_tokens  = Tokens::$emptyTokens;
+		$allowed_tokens += [
+			T_STRING_CONCAT            => T_STRING_CONCAT,
+			T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
+		];
 
-		if ( $concat_ptr ) {
-			$hook_name = '';
-			for ( $i = $parameter['start']; $i <= $parameter['end']; $i++ ) {
-				if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-					$hook_name .= str_replace( [ "'", '"' ], '', $this->tokens[ $i ]['content'] );
-				}
-			}
-		} else {
-			$hook_name = $parameter['clean'];
+		$has_disallowed_token = $this->phpcsFile->findNext( $allowed_tokens, $parameter['start'], ( $parameter['end'] + 1 ), true );
+		if ( $has_disallowed_token !== false ) {
+			return '';
 		}
 
-		// Remove quotes (double and single).
-		return str_replace( [ "'", '"' ], '', $hook_name );
+		$hook_name = '';
+		for ( $i = $parameter['start']; $i <= $parameter['end']; $i++ ) {
+			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
+				$hook_name .= str_replace( [ "'", '"' ], '', $this->tokens[ $i ]['content'] );
+			}
+		}
+
+		return $hook_name;
 	}
 }

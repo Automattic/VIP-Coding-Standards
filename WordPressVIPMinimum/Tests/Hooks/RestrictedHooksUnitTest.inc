@@ -74,3 +74,7 @@ add_filter( 'upLoad_mimeS' , $callback); // OK, not our target.
 
 // Bug fix - spacing vs concatenation.
 add_filter('do_' . 'robots' . 'txt', 'bad_example_function'); // Warning.
+
+// Ignore partially dynamic hook names.
+add_filter( 'robots_' . $something . 'txt' , $callback); // OK, ignored as undetermined.
+add_filter( 'http_request_timeout' . $something, $callback); // OK, ignored as undetermined.
