@@ -44,3 +44,34 @@ $external_resource = file_get_contents( 'HTTP://example.com', );
 file_get_contents( $url, true, $context, $offset, $length );
 \File_GET_Contents( $obj->get_fileName() );
 file_get_contents( MyClass::FILE_NAME, );
+
+file_get_contents(...$params); // PHP 5.6 argument unpacking. Warning FileGetContentsUnknown.
+
+// Safeguard correct handling of function calls using PHP 8.0+ named parameters.
+file_get_contents(context: $context, ); // OK, well, not really, missing required $filename param, but that's not the concern of this sniff.
+file_get_contents(file: 'https://example.com',); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+file_get_contents(
+	context: stream_context_create(
+		options: [
+			$proxy => 'tcp://proxy.example.com:5100',
+		],
+	),
+	filename: 'my-file.svg',
+); // OK.
+
+file_get_contents(
+	context: stream_context_create(
+		options: [
+			$cafile => __DIR__ . '/cacert.pem',
+		],
+	),
+	filename: 'https://example.com'
+); // Warning FileGetContentsRemoteFile.
+file_get_contents(
+	context: stream_context_create(
+		options: [
+			$cafile => __DIR__ . '/cacert.pem',
+		],
+	),
+	filename: $fileName,
+); // Warning FileGetContentsUnknown.
