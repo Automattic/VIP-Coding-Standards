@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\Hooks;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\MessageHelper;
 use PHPCSUtils\Utils\PassedParameters;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -129,7 +130,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		$hook_name = '';
 		for ( $i = $parameter['start']; $i <= $parameter['end']; $i++ ) {
 			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-				$hook_name .= str_replace( [ "'", '"' ], '', $this->tokens[ $i ]['content'] );
+				$hook_name .= TextStrings::stripQuotes( $this->tokens[ $i ]['content'] );
 			}
 		}
 

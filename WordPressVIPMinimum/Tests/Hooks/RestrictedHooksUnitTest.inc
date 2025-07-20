@@ -78,3 +78,7 @@ add_filter('do_' . 'robots' . 'txt', 'bad_example_function'); // Warning.
 // Ignore partially dynamic hook names.
 add_filter( 'robots_' . $something . 'txt' , $callback); // OK, ignored as undetermined.
 add_filter( 'http_request_timeout' . $something, $callback); // OK, ignored as undetermined.
+
+// Ensure quote stripping is done correctly.
+add_filter( 'upload"_mimes', 'bad_example_function' ); // OK, not a filter we're looking for.
+add_filter( "upload_'mimes", 'bad_example_function' ); // OK, not a filter we're looking for.
