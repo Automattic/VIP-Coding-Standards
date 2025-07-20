@@ -61,3 +61,10 @@ add_filter('http_request_args', 'bad_example_function' ); // Simple string + inc
 add_action( /*comment*/ 'do_robotstxt', 'my_do_robotstxt'); // Simple string.
 add_filter( 'robots_txt', function() { // Anonymous callback.
 } );
+
+// Safeguard correct handling of function calls using PHP 8.0+ named parameters.
+add_action(callback: 'invalid', priority: 10); // OK, well, not really, missing required $hook_name param, but that's not the concern of this sniff.
+add_action(callback: 'do_robotstxt', hook_name: 'not_our_target'); // OK.
+add_action(hookName: 'not_our_target', callback: 'do_robotstxt',); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+
+add_filter(priority: 10, hook_name: 'robots_txt', callback: some_function(...) ); // Warning.

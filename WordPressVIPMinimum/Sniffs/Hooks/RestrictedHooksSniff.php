@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -82,9 +83,17 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
+		$hook_name_param = PassedParameters::getParameterFromStack( $parameters, 1, 'hook_name' );
+		if ( $hook_name_param === false ) {
+			// Missing required parameter. Nothing to examine. Bow out.
+			return;
+		}
+
+		$normalized_hook_name = $this->normalize_hook_name_from_parameter( $hook_name_param );
+
 		foreach ( $this->restricted_hook_groups as $group => $group_args ) {
 			foreach ( $group_args['hooks'] as $hook ) {
-				if ( $this->normalize_hook_name_from_parameter( $parameters[1] ) === $hook ) {
+				if ( $normalized_hook_name === $hook ) {
 					$addMethod = 'add' . $group_args['type'];
 					$this->phpcsFile->{$addMethod}( $group_args['msg'], $stackPtr, $hook );
 				}
