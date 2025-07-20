@@ -86,3 +86,16 @@ $result = file_get_contents(( is_ssl() ? 'http' : 'https' ) . '://example.com');
 
 // Bug: don't presume if the parameter contains a text string token, that will be the only token.
 \file_get_contents( $url . '/filename.css' ); // Warning FileGetContentsUnknown.
+
+/*
+- Recognize use of set_url_scheme() as remote URL
+- Recognize use of filter_ssl() as remote URL
+- false positive \file_get_contents( __FILE__ );
+- false positive \file_get_contents( dirname(...) );
+		'ABSPATH',
+		'WP_CONTENT_DIR',
+		'WP_PLUGIN_DIR',
+
+=> This sniff should probably take a lot of the "known local file" checks as used in the IncludingFileSniff into account.
+
+*/
