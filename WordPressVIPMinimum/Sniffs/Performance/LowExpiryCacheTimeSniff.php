@@ -10,6 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Numbers;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -104,8 +105,10 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			if ( $this->tokens[ $i ]['code'] === T_LNUMBER
 				|| $this->tokens[ $i ]['code'] === T_DNUMBER
 			) {
-				// Integer or float.
-				$tokensAsString .= $this->tokens[ $i ]['content'];
+				// Make sure that PHP 7.4 numeric literals and PHP 8.1 explicit octals don't cause problems.
+				$number_info     = Numbers::getCompleteNumber( $this->phpcsFile, $i );
+				$tokensAsString .= $number_info['decimal'];
+				$i               = $number_info['last_token'];
 				continue;
 			}
 

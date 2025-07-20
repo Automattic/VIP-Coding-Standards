@@ -137,3 +137,16 @@ add_action('my_action', wp_cache_set(...)); // PHP 8.1 first class callable. OK,
 // Looks like a function call, but is a PHP 8.0+ class instantiation via an attribute.
 #[WP_Cache_Replace('text', 'data', 'group', 50)]
 function foo() {}
+
+// Alternative numeric base.
+wp_cache_set( $key, $data, '', 0620 ); // Octal number. OK (=400).
+wp_cache_set( $key, $data, '', 0x190 ); // Hexidecimal number. OK (=400).
+wp_cache_set( $key, $data, '', 0b110010000 ); // PHP 5.4 binary number. OK (=400).
+wp_cache_set( $key, $data, '', 1_000 ); // PHP 7.4 numeric literal with underscore. OK.
+wp_cache_set( $key, $data, '', 0o620 ); // PHP 8.1 octal literal. OK (=400).
+
+wp_cache_set( $key, $data, '', 0226 ); // Octal number. Bad (=150).
+wp_cache_set( $key, $data, '', 0x96 ); // Hexidecimal number. Bad (=150).
+wp_cache_set( $key, $data, '', 0b10010110 ); // PHP 5.4 binary number. Bad (=150).
+wp_cache_set( $key, $data, '', 1_50 ); // PHP 7.4 numeric literal with underscore. Bad.
+wp_cache_set( $key, $data, '', 0o226 ); // PHP 8.1 octal literal. Bad (=150).
