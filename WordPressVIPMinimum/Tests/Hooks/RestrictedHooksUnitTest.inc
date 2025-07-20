@@ -48,10 +48,10 @@ add_action('upload_mimes' , [$obj, 'method']); // Incorrect spacing.
 add_filter(  'robots_txt','bad_example_function'); // Incorrect spacing.
 \add_filter( "http_request_timeout" , fn($param) => $param * 10); // Double quotes.
 
-ADD_FILTER( 'upload_' . 'mimes' ,'bad_example_function'); // Single concatenation.
-add_filter( 'upl' . 'oad_' . 'mimes' ,'bad_example_function'); // Multiple concatenation.
+ADD_FILTER( 'upload_' . 'mimes','bad_example_function'); // Single concatenation.
+add_filter( 'upl' . 'oad_' . 'mimes','bad_example_function'); // Multiple concatenation.
 add_filter( "upload_" . 'mimes' , bad_example_function(...)); // Single concatenation with double and single quotes.
-add_filter( 'upl' . "oad_" . "mimes" ,'bad_example_function'); // Multiple concatenation with double and single quotes.
+add_filter( 'upl' . "oad_" . "mimes",'bad_example_function'); // Multiple concatenation with double and single quotes.
 \add_action( 'http_request_args', function() { // Anonymous callback.
 	// Do stuff.
 });
@@ -71,3 +71,6 @@ add_filter(priority: 10, hook_name: 'robots_txt', callback: some_function(...) )
 
 // Hook names are case-sensitive.
 add_filter( 'upLoad_mimeS' , $callback); // OK, not our target.
+
+// Bug fix - spacing vs concatenation.
+add_filter('do_' . 'robots' . 'txt', 'bad_example_function'); // Warning.
