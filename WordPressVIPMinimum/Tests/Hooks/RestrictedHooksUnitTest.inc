@@ -1,19 +1,58 @@
 <?php
 
-add_filter( 'upload_mime', 'good_example_function' ); // Ok.
-add_filter( 'upload_mimesX', 'good_example_function' ); // Ok.
+/*
+ * Not the sniff target.
+ */
+use add_filter;
 
-// Warnings.
-add_filter( 'upload_mimes', 'bad_example_function' ); // Simple string.
-add_filter('upload_mimes' ,'bad_example_function'); // Incorrect spacing.
-add_filter(  'upload_mimes','bad_example_function'); // Incorrect spacing.
-add_filter( "upload_mimes" ,'bad_example_function'); // Double quotes.
-add_filter( 'upLoad_mimeS' ,'bad_example_function'); // Uppercase characters.
-add_filter( 'upload_' . 'mimes' ,'bad_example_function'); // Single concatenation.
+my\ns\add_filter($a, $b);
+$this->add_action($a, $b);
+$this?->add_filter($a, $b);
+MyClass::add_action($a, $b);
+echo ADD_FILTER;
+namespace\add_action($a, $b);
+
+
+/*
+ * These should all be okay.
+ */
+add_filter( 'not_target_hook', 'good_example_function' );
+\add_filter( 'upload_mimesX'  , 'good_example_function' );
+
+add_action(...$params); // PHP 5.6 argument unpacking.
+
+// Looks like a function call, but is a PHP 8.0+ class instantiation via an attribute.
+#[ADD_FILTER('text')]
+function foo() {}
+
+// PHP 8.1 first class callable.
+// As we have no knowledge about what parameters will be passed, we shouldn't flag this.
+array_walk($filters, add_filter(...));
+
+// Ignore as undetermined.
+Add_Filter( $hook_name, 'undetermined' );
+\add_action( $obj->get_filterName(), 'undetermined' );
+add_filter( MyClass::FILTER_NAME, 'undetermined', );
+\add_filter( "upload_$mimes", 'undetermined' );
+
+// Incomplete function call, should be ignored by the sniff.
+$incorrect_but_ok = add_filter();
+$incorrect_but_ok = add_action();
+
+
+/*
+ * These should all be flagged with a warning.
+ */
+add_filter( 'do_robotstxt', 'bad_example_function' ); // Simple string.
+add_action('upload_mimes' , [$obj, 'method']); // Incorrect spacing.
+add_filter(  'robots_txt','bad_example_function'); // Incorrect spacing.
+\add_filter( "http_request_timeout" , fn($param) => $param * 10); // Double quotes.
+add_filter( 'upLoad_mimeS' , $callback); // Uppercase characters.
+ADD_FILTER( 'upload_' . 'mimes' ,'bad_example_function'); // Single concatenation.
 add_filter( 'upl' . 'oad_' . 'mimes' ,'bad_example_function'); // Multiple concatenation.
-add_filter( "upload_" . 'mimes' ,'bad_example_function'); // Single concatenation with double and single quotes.
+add_filter( "upload_" . 'mimes' , bad_example_function(...)); // Single concatenation with double and single quotes.
 add_filter( 'upl' . "oad_" . "mimes" ,'bad_example_function'); // Multiple concatenation with double and single quotes.
-add_filter( 'upload_mimes', function() { // Anonymous callback.
+\add_action( 'http_request_args', function() { // Anonymous callback.
 	// Do stuff.
 });
 add_action( 'upload_mimes', 'bad_example_function' ); // Check `add_action()`, which is an alias for `add_filter()`.
