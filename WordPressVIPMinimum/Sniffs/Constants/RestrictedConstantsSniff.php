@@ -126,7 +126,7 @@ class RestrictedConstantsSniff extends Sniff {
 			return;
 		}
 
-		if ( in_array( $this->tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) === true ) {
+		if ( $this->tokens[ $previous ]['code'] === T_STRING ) {
 			$data = [ $constantName ];
 			if ( $this->tokens[ $previous ]['content'] === 'define' ) {
 				$message = 'The definition of `%s` constant is prohibited. Please use a different name.';
