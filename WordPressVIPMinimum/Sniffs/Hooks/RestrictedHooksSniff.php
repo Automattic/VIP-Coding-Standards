@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
+use PHPCSUtils\Utils\MessageHelper;
 use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -44,7 +45,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	private $restricted_hook_groups = [
 		'upload_mimes' => [
 			// TODO: This error message needs a link to the VIP Documentation, see https://github.com/Automattic/VIP-Coding-Standards/issues/235.
-			'type'  => 'Warning',
+			'type'  => 'warning',
 			'msg'   => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
 			'hooks' => [
 				'upload_mimes',
@@ -52,7 +53,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		],
 		'http_request' => [
 			// https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.
-			'type'  => 'Warning',
+			'type'  => 'warning',
 			'msg'   => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
 			'hooks' => [
 				'http_request_timeout',
@@ -61,7 +62,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		],
 		'robotstxt' => [
 			// https://docs.wpvip.com/how-tos/modify-the-robots-txt-file/.
-			'type'  => 'Warning',
+			'type'  => 'warning',
 			'msg'   => 'Don\'t forget to flush the robots.txt cache by going to Settings > Reading and toggling the privacy settings.',
 			'hooks' => [
 				'do_robotstxt',
@@ -94,8 +95,8 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		foreach ( $this->restricted_hook_groups as $group => $group_args ) {
 			foreach ( $group_args['hooks'] as $hook ) {
 				if ( $normalized_hook_name === $hook ) {
-					$addMethod = 'add' . $group_args['type'];
-					$this->phpcsFile->{$addMethod}( $group_args['msg'], $stackPtr, $hook );
+					$isError = ( $group_args['type'] === 'error' );
+					MessageHelper::addMessage( $this->phpcsFile, $group_args['msg'], $stackPtr, $isError, $hook );
 				}
 			}
 		}
