@@ -23,3 +23,18 @@ if ( constant( 'WP_CRON_CONTROL_SECRET' ) ) { // Okay. Can touch.
 }
 
 define( '"A8C_PROXIED_REQUEST"', false ); // Okay, well not really as the name is not a valid PHP constant name, but that's not our concern.
+
+
+
+
+/*
+Needs tests with fully qualified function calls and fully qualified usage of global constant
+Needs tests with redefinition via `const` keyword in global namespace
+  -> also means tests are needed against false positives if the code is namespaced, i.e.
+namespace Foo;
+const JETPACK_DEV_DEBUG = true; // OK, not the global constant.
+
+Needs test with class constant declaration of the same (to prevent false positives)
+
+
+*/

@@ -75,7 +75,8 @@ class RestrictedConstantsSniff extends Sniff {
 			T_STRING,
 		];
 	}
-
+// As this is checking for (re-)definition of constants, it should probably also check the `T_CONST` token with
+// Scopes::isOOConstant($phpcsFile, $stackPtr) === false to get const declarations using the const keyword in the global namespace.
 	/**
 	 * Process this test when one of its tokens is encountered
 	 *
