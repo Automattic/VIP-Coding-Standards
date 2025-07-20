@@ -47,7 +47,7 @@ add_filter( 'do_robotstxt', 'bad_example_function' ); // Simple string.
 add_action('upload_mimes' , [$obj, 'method']); // Incorrect spacing.
 add_filter(  'robots_txt','bad_example_function'); // Incorrect spacing.
 \add_filter( "http_request_timeout" , fn($param) => $param * 10); // Double quotes.
-add_filter( 'upLoad_mimeS' , $callback); // Uppercase characters.
+
 ADD_FILTER( 'upload_' . 'mimes' ,'bad_example_function'); // Single concatenation.
 add_filter( 'upl' . 'oad_' . 'mimes' ,'bad_example_function'); // Multiple concatenation.
 add_filter( "upload_" . 'mimes' , bad_example_function(...)); // Single concatenation with double and single quotes.
@@ -68,3 +68,6 @@ add_action(callback: 'do_robotstxt', hook_name: 'not_our_target'); // OK.
 add_action(hookName: 'not_our_target', callback: 'do_robotstxt',); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
 
 add_filter(priority: 10, hook_name: 'robots_txt', callback: some_function(...) ); // Warning.
+
+// Hook names are case-sensitive.
+add_filter( 'upLoad_mimeS' , $callback); // OK, not our target.

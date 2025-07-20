@@ -131,7 +131,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 			$hook_name = $parameter['clean'];
 		}
 
-		// Remove quotes (double and single), and use lowercase.
-		return strtolower( str_replace( [ "'", '"' ], '', $hook_name ) );
+		// Remove quotes (double and single).
+		return str_replace( [ "'", '"' ], '', $hook_name );
 	}
 }

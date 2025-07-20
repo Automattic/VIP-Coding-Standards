@@ -37,7 +37,6 @@ class RestrictedHooksUnitTest extends AbstractSniffUnitTest {
 			47 => 1,
 			48 => 1,
 			49 => 1,
-			50 => 1,
 			51 => 1,
 			52 => 1,
 			53 => 1,
