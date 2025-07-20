@@ -64,7 +64,7 @@ class ConstantStringSniff extends AbstractFunctionParameterSniff {
 
 		$tstring_token = $this->phpcsFile->findNext( T_STRING, $param['start'], $param['end'] + 1 );
 
-		$message = 'Constant name, as a string, should be used along with `%s()`.';
+		$message = 'The `%s()` function expects to be passed the constant name as a text string.';
 		$data    = [ $this->tokens[ $stackPtr ]['content'] ];
 		$this->phpcsFile->addError( $message, $tstring_token, 'NotCheckingConstantName', $data );
 	}
