@@ -75,3 +75,5 @@ file_get_contents(
 	),
 	filename: $fileName,
 ); // Warning FileGetContentsUnknown.
+
+array_walk($files, file_get_contents(...)); // PHP 8.1 first class callable. Warning FileGetContentsUnknown.
