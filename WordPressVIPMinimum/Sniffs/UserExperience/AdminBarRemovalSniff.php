@@ -201,19 +201,21 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		switch ( $matched_content ) {
 			case 'show_admin_bar':
 				$error = true;
-				if ( $this->remove_only === true && $parameters[1]['raw'] === 'true' ) {
+				if ( $this->remove_only === true && $parameters[1]['clean'] === 'true' ) {
 					$error = false;
 				}
 				break;
 
 			case 'add_filter':
-				$filter_name = TextStrings::stripQuotes( $parameters[1]['raw'] );
+				$filter_name = TextStrings::stripQuotes( $parameters[1]['clean'] );
 				if ( $filter_name !== 'show_admin_bar' ) {
 					break;
 				}
 
 				$error = true;
-				if ( $this->remove_only === true && isset( $parameters[2]['raw'] ) && TextStrings::stripQuotes( $parameters[2]['raw'] ) === '__return_true' ) {
+				if ( $this->remove_only === true && isset( $parameters[2]['clean'] )
+					&& TextStrings::stripQuotes( $parameters[2]['clean'] ) === '__return_true'
+				) {
 					$error = false;
 				}
 				break;

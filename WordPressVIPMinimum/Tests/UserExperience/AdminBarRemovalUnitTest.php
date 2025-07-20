@@ -57,6 +57,7 @@ class AdminBarRemovalUnitTest extends AbstractSniffUnitTest {
 					141 => 1,
 					144 => 1,
 					145 => 1,
+					149 => 1,
 				];
 
 			case 'AdminBarRemovalUnitTest.css':

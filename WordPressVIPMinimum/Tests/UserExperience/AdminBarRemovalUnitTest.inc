@@ -143,3 +143,16 @@ add_filter('show_admin_bar', ...$params); // Bad. PHP 5.6 argument unpacking.
 \show_Admin_bar( true, ); // OK.
 \show_admin_bar( false ); // Bad.
 \SHOW_ADMIN_BAR( false, ); // Bad.
+
+// Comments in parameters should be ignored.
+show_admin_bar( true /* turn it on */ ); // OK.
+add_filter(
+	// Admin bar gives access to admin for users with the right permissions.
+	'show_admin_bar',
+	'__return_false'
+); // Bad.
+add_filter(
+	'show_admin_bar',
+	// Turn it on.
+	'__return_true'
+); // OK.
