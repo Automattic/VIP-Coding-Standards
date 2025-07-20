@@ -150,3 +150,12 @@ wp_cache_set( $key, $data, '', 0x96 ); // Hexidecimal number. Bad (=150).
 wp_cache_set( $key, $data, '', 0b10010110 ); // PHP 5.4 binary number. Bad (=150).
 wp_cache_set( $key, $data, '', 1_50 ); // PHP 7.4 numeric literal with underscore. Bad.
 wp_cache_set( $key, $data, '', 0o226 ); // PHP 8.1 octal literal. Bad (=150).
+
+// Safeguard handling of function calls using PHP 8.0+ named parameters.
+wp_cache_add(data: $data, group: $group); // OK, well, not really, missing required $key param, but that's not the concern of this sniff.
+wp_cache_replace(data: $data, expire: 400, group: $group); // OK.
+wp_cache_add($key, group: $group, data: $data, expires: 100,); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+wp_cache_replace($key, expire: 400, group: $group, data: 100,); // OK.
+
+wp_cache_replace($key, $data, expire: 100 ); // Bad.
+wp_cache_replace(expire: 100, data: $data, key: $group); // Bad.
