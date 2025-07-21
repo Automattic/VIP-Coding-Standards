@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Classes;
 
+use PHPCSUtils\Utils\MessageHelper;
 use WordPressCS\WordPress\AbstractClassRestrictionsSniff;
 
 /**
@@ -61,7 +62,8 @@ class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {
 	 */
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
 		foreach ( $this->getGroups() as $group => $group_args ) {
-			$this->phpcsFile->{ 'add' . $group_args['type'] }( $group_args['message'], $stackPtr, $group );
+			$isError = ( $group_args['type'] === 'error' );
+			MessageHelper::addMessage( $this->phpcsFile, $group_args['message'], $stackPtr, $isError, $group );
 		}
 	}
 }
