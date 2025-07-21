@@ -67,9 +67,16 @@ class FetchingRemoteDataSniff extends AbstractFunctionParameterSniff {
 			$this->add_contents_unknown_warning( $stackPtr, $data );
 		}
 
-		$fileName = $this->tokens[ $has_text_string ]['content'];
+		$isRemoteFile = false;
+		while ( $has_text_string !== false ) {
+			if ( strpos( $this->tokens[ $has_text_string ]['content'], '://' ) !== false ) {
+				$isRemoteFile = true;
+				break;
+			}
 
-		$isRemoteFile = ( strpos( $fileName, '://' ) !== false );
+			$has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, ( $has_text_string + 1 ), $search_end );
+		}
+
 		if ( $isRemoteFile === true ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsRemoteFile', $data );

@@ -80,3 +80,6 @@ array_walk($files, file_get_contents(...)); // PHP 8.1 first class callable. War
 
 // Bug: don't throw a warning when __DIR__ is used as this indicates use with a local file.
 \file_get_contents( __DIR__ . $filename ); // OK.
+
+// Bug: check all text string tokens in the parameter.
+$result = file_get_contents(( is_ssl() ? 'http' : 'https' ) . '://example.com'); // Warning FileGetContentsRemoteFile.

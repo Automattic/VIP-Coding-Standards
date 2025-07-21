@@ -43,6 +43,7 @@ class FetchingRemoteDataUnitTest extends AbstractSniffUnitTest {
 			62 => 1,
 			70 => 1,
 			79 => 1,
+			85 => 1,
 		];
 	}
 }
