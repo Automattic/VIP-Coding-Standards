@@ -9,6 +9,10 @@
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
+use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\MessageHelper;
+use PHPCSUtils\Utils\PassedParameters;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -43,7 +47,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	private $restricted_hook_groups = [
 		'upload_mimes' => [
 			// TODO: This error message needs a link to the VIP Documentation, see https://github.com/Automattic/VIP-Coding-Standards/issues/235.
-			'type'  => 'Warning',
+			'type'  => 'warning',
 			'msg'   => 'Please ensure that the mimes being filtered do not include insecure types (i.e. SVG, SWF, etc.). Manual inspection required.',
 			'hooks' => [
 				'upload_mimes',
@@ -51,7 +55,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		],
 		'http_request' => [
 			// https://docs.wpvip.com/technical-references/code-quality-and-best-practices/retrieving-remote-data/.
-			'type'  => 'Warning',
+			'type'  => 'warning',
 			'msg'   => 'Please ensure that the timeout being filtered is not greater than 3s since remote requests require the user to wait for completion before the rest of the page will load. Manual inspection required.',
 			'hooks' => [
 				'http_request_timeout',
@@ -60,7 +64,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 		],
 		'robotstxt' => [
 			// https://docs.wpvip.com/how-tos/modify-the-robots-txt-file/.
-			'type'  => 'Warning',
+			'type'  => 'warning',
 			'msg'   => 'Don\'t forget to flush the robots.txt cache by going to Settings > Reading and toggling the privacy settings.',
 			'hooks' => [
 				'do_robotstxt',
@@ -82,11 +86,23 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
+		$hook_name_param = PassedParameters::getParameterFromStack( $parameters, 1, 'hook_name' );
+		if ( $hook_name_param === false ) {
+			// Missing required parameter. Nothing to examine. Bow out.
+			return;
+		}
+
+		$normalized_hook_name = $this->normalize_hook_name_from_parameter( $hook_name_param );
+		if ( $normalized_hook_name === '' ) {
+			// Dynamic hook name. Cannot reliably determine if it's one of the targets. Bow out.
+			return;
+		}
+
 		foreach ( $this->restricted_hook_groups as $group => $group_args ) {
 			foreach ( $group_args['hooks'] as $hook ) {
-				if ( $this->normalize_hook_name_from_parameter( $parameters[1] ) === $hook ) {
-					$addMethod = 'add' . $group_args['type'];
-					$this->phpcsFile->{$addMethod}( $group_args['msg'], $stackPtr, $hook );
+				if ( $normalized_hook_name === $hook ) {
+					$isError = ( $group_args['type'] === 'error' );
+					MessageHelper::addMessage( $this->phpcsFile, $group_args['msg'], $stackPtr, $isError, $hook );
 				}
 			}
 		}
@@ -97,31 +113,27 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @param array $parameter Array with information about a parameter.
 	 *
-	 * @return string Normalized hook name.
+	 * @return string Normalized hook name or an empty string if the hook name could not be determined.
 	 */
 	private function normalize_hook_name_from_parameter( $parameter ) {
-		// If concatenation is found, build hook name.
-		$concat_ptr = $this->phpcsFile->findNext(
-			T_STRING_CONCAT,
-			$parameter['start'],
-			$parameter['end'],
-			false,
-			null,
-			true
-		);
+		$allowed_tokens  = Tokens::$emptyTokens;
+		$allowed_tokens += [
+			T_STRING_CONCAT            => T_STRING_CONCAT,
+			T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
+		];
 
-		if ( $concat_ptr ) {
-			$hook_name = '';
-			for ( $i = $parameter['start'] + 1; $i < $parameter['end']; $i++ ) {
-				if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
-					$hook_name .= str_replace( [ "'", '"' ], '', $this->tokens[ $i ]['content'] );
-				}
-			}
-		} else {
-			$hook_name = $parameter['raw'];
+		$has_disallowed_token = $this->phpcsFile->findNext( $allowed_tokens, $parameter['start'], ( $parameter['end'] + 1 ), true );
+		if ( $has_disallowed_token !== false ) {
+			return '';
 		}
 
-		// Remove quotes (double and single), and use lowercase.
-		return strtolower( str_replace( [ "'", '"' ], '', $hook_name ) );
+		$hook_name = '';
+		for ( $i = $parameter['start']; $i <= $parameter['end']; $i++ ) {
+			if ( $this->tokens[ $i ]['code'] === T_CONSTANT_ENCAPSED_STRING ) {
+				$hook_name .= TextStrings::stripQuotes( $this->tokens[ $i ]['content'] );
+			}
+		}
+
+		return $hook_name;
 	}
 }
