@@ -77,3 +77,6 @@ file_get_contents(
 ); // Warning FileGetContentsUnknown.
 
 array_walk($files, file_get_contents(...)); // PHP 8.1 first class callable. Warning FileGetContentsUnknown.
+
+// Bug: don't throw a warning when __DIR__ is used as this indicates use with a local file.
+\file_get_contents( __DIR__ . $filename ); // OK.

@@ -52,9 +52,17 @@ class FetchingRemoteDataSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$data = [ $matched_content ];
+		$data        = [ $matched_content ];
+		$param_start = $filename_param['start'];
+		$search_end  = ( $filename_param['end'] + 1 );
 
-		$has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, $filename_param['start'], ( $filename_param['end'] + 1 ) );
+		$has_magic_dir = $this->phpcsFile->findNext( T_DIR, $param_start, $search_end );
+		if ( $has_magic_dir !== false ) {
+			// In all likelyhood a local file (disregarding creative code).
+			return;
+		}
+
+		$has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, $param_start, $search_end );
 		if ( $has_text_string === false ) {
 			$this->add_contents_unknown_warning( $stackPtr, $data );
 		}
