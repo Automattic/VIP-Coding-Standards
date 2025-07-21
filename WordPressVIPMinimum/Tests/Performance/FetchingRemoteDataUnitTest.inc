@@ -83,3 +83,6 @@ array_walk($files, file_get_contents(...)); // PHP 8.1 first class callable. War
 
 // Bug: check all text string tokens in the parameter.
 $result = file_get_contents(( is_ssl() ? 'http' : 'https' ) . '://example.com'); // Warning FileGetContentsRemoteFile.
+
+// Bug: don't presume if the parameter contains a text string token, that will be the only token.
+\file_get_contents( $url . '/filename.css' ); // Warning FileGetContentsUnknown.

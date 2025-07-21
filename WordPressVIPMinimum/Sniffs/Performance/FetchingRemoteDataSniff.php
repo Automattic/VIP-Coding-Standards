@@ -62,24 +62,35 @@ class FetchingRemoteDataSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, $param_start, $search_end );
-		if ( $has_text_string === false ) {
-			$this->add_contents_unknown_warning( $stackPtr, $data );
-		}
-
 		$isRemoteFile = false;
-		while ( $has_text_string !== false ) {
+		$search_start = $param_start;
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Valid usage.
+		while ( ( $has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, $search_start, $search_end ) ) !== false ) {
 			if ( strpos( $this->tokens[ $has_text_string ]['content'], '://' ) !== false ) {
 				$isRemoteFile = true;
 				break;
 			}
 
-			$has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, ( $has_text_string + 1 ), $search_end );
+			$search_start = ( $has_text_string + 1 );
 		}
 
 		if ( $isRemoteFile === true ) {
 			$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsRemoteFile', $data );
+			return;
+		}
+
+		/*
+		 * Okay, so we haven't been able to determine for certain this is a remote file.
+		 * Check for tokens which would make the parameter contents dynamic.
+		 */
+		$ignore  = Tokens::$emptyTokens;
+		$ignore += Tokens::$stringTokens;
+		$ignore += [ T_STRING_CONCAT => T_STRING_CONCAT ];
+
+		$has_non_text_string = $this->phpcsFile->findNext( $ignore, $param_start, $search_end, true );
+		if ( $has_non_text_string !== false ) {
+			$this->add_contents_unknown_warning( $stackPtr, $data );
 		}
 	}
 
