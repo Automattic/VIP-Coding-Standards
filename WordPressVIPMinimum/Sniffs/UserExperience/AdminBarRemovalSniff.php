@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\PassedParameters;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -200,21 +201,32 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		$error = false;
 		switch ( $matched_content ) {
 			case 'show_admin_bar':
+				$show_param = PassedParameters::getParameterFromStack( $parameters, 1, 'show' );
+				if ( $show_param === false ) {
+					break;
+				}
+
 				$error = true;
-				if ( $this->remove_only === true && $parameters[1]['clean'] === 'true' ) {
+				if ( $this->remove_only === true && $show_param['clean'] === 'true' ) {
 					$error = false;
 				}
 				break;
 
 			case 'add_filter':
-				$filter_name = TextStrings::stripQuotes( $parameters[1]['clean'] );
+				$hook_name_param = PassedParameters::getParameterFromStack( $parameters, 1, 'hook_name' );
+				if ( $hook_name_param === false ) {
+					break;
+				}
+
+				$filter_name = TextStrings::stripQuotes( $hook_name_param['clean'] );
 				if ( $filter_name !== 'show_admin_bar' ) {
 					break;
 				}
 
-				$error = true;
-				if ( $this->remove_only === true && isset( $parameters[2]['clean'] )
-					&& TextStrings::stripQuotes( $parameters[2]['clean'] ) === '__return_true'
+				$callback_param = PassedParameters::getParameterFromStack( $parameters, 2, 'callback' );
+				$error          = true;
+				if ( $this->remove_only === true && $callback_param !== false
+					&& TextStrings::stripQuotes( $callback_param['clean'] ) === '__return_true'
 				) {
 					$error = false;
 				}

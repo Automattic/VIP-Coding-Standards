@@ -156,3 +156,14 @@ add_filter(
 	// Turn it on.
 	'__return_true'
 ); // OK.
+
+// Safeguard handling of function calls using PHP 8.0+ named parameters.
+show_admin_bar( shown: false ); // OK, well not really, typo in param name, but that's not the concern of the sniff.
+\show_admin_bar( show: true ); // OK.
+show_admin_bar( show: $toggle ); // Bad.
+
+add_filter(callback: '__return_false', priority: 10); // OK, well, not really, missing required $hook_name param, but that's not the concern of this sniff.
+\add_filter(callback: '__return_false', hook_name: 'not_our_target'); // OK.
+add_filter(hookName: 'show_admin_bar', callback: '__return_false',); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+add_filter( callback: '__return_true', hook_name: 'show_admin_bar', ); // Ok.
+\add_filter( callback: '__return_false', hook_name: 'show_admin_bar', ); // Bad.
