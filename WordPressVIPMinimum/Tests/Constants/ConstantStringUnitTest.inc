@@ -31,3 +31,38 @@ if ( ! defined($generator->get()) { // OK.
 
 $defined = defined(); // OK, ignore.
 $defined = defined( /*comment*/ ); // OK, ignore.
+
+// Safeguard that calls to namespaced functions or methods are not confused with the global functions.
+if ( ! Not\defined( WPCOM_VIP ) ) { // Okay.
+	$obj->define( WPCOM_VIP, true ); // Okay.
+}
+
+if ( ! \Fully\Qualified\defined( WPCOM_VIP ) ) { // Okay.
+	namespace\define( WPCOM_VIP, true ); // Okay.
+}
+
+// Safeguard that fully qualified function calls are handled correctly.
+if ( ! \defined( 'WPCOM_VIP' ) ) { // Okay.
+	\define( 'WPCOM_VIP', true, ); // Okay.
+}
+
+if ( ! \defined( WPCOM_VIP, ) ) { // Error.
+	\define( WPCOM_VIP, true ); // Error.
+}
+
+// Safeguard correct handling of case-insensitivity of function names.
+if ( ! DEFINED( WPCOM_VIP ) ) { // Error.
+	Define( WPCOM_VIP, true ); // Error.
+}
+
+// Safeguard correct handling of function calls using PHP 8.0+ named parameters.
+\defined( constant_nam: WPCOM_VIP ); // Okay, well not really, typo in param name, but that's not the concern of the sniff.
+define(value: true, constant_name: 'WPCOM_VIP', ); // Okay.
+define(case_insensitive: true, constant_name: WPCOM_VIP ); // Error.
+
+// Looks like a function call, but is a PHP 8.0+ class instantiation via an attribute.
+#[Define('name', 'value')]
+function foo() {}
+
+define(...$params); // PHP 5.6 argument unpacking will be ignored.
+add_action('my_action', define(...)); // PHP 8.1 first class callable will be ignored.
