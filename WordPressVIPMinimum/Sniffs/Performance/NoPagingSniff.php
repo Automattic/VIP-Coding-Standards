@@ -47,6 +47,12 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 * @return bool FALSE if no match, TRUE if matches.
 	 */
 	public function callback( $key, $val, $line, $group ) {
+/*
+TODO:
+- check strtolower($key)
+   => array keys are case sensitive, this seems wrong
+   => could be that WP handles this in a case-insensitive manner internally, but that needs checking
+*/
 		$key = strtolower( $key );
 
 		return ( $key === 'nopaging' && ( $val === 'true' || $val === '1' ) );
