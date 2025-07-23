@@ -32,7 +32,19 @@ class FetchingRemoteDataUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			7 => 1,
+			35 => 1,
+			36 => 1,
+			37 => 1,
+			41 => 1,
+			44 => 1,
+			45 => 1,
+			46 => 1,
+			48 => 1,
+			62 => 1,
+			70 => 1,
+			79 => 1,
+			85 => 1,
+			88 => 1,
 		];
 	}
 }
