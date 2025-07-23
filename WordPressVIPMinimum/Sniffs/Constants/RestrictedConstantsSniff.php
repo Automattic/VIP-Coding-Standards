@@ -10,6 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -87,7 +88,7 @@ class RestrictedConstantsSniff extends Sniff {
 		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
 			$constantName = $this->tokens[ $stackPtr ]['content'];
 		} else {
-			$constantName = trim( $this->tokens[ $stackPtr ]['content'], "\"'" );
+			$constantName = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 		}
 
 		if ( isset( $this->restrictedConstants[ $constantName ] ) === false
