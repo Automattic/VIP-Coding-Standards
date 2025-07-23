@@ -66,14 +66,14 @@ For VIPCS 4.0:
 			'widget'                => [
 				'args'     => [],
 				'instance' => [],
-			],
+			], // return void
 			'update'                => [
 				'new_instance' => [],
 				'old_instance' => [],
-			],
+			], // return array|false
 			'form'                  => [
 				'instance' => [],
-			],
+			], // return string|void (oxymoron)
 			'WP_Widget'             => [
 				'id_base'         => [],
 				'name'            => [],
@@ -83,47 +83,47 @@ For VIPCS 4.0:
 				'control_options' => [
 					'default' => 'array()',
 				],
-			],
+			], // return void
 			'get_field_name'        => [
 				'field_name' => [],
-			],
+			], // return string
 			'get_field_id'          => [
 				'field_name' => [],
-			],
-			'_register'             => [],
+			], // return string
+			'_register'             => [], // return void
 			'_set'                  => [
 				'number' => [],
-			],
-			'_get_display_callback' => [],
-			'_get_update_callback'  => [],
-			'_get_form_callback'    => [],
-			'is_preview'            => [],
+			], // return void
+			'_get_display_callback' => [], // return callable
+			'_get_update_callback'  => [], // return callable
+			'_get_form_callback'    => [], // return callable
+			'is_preview'            => [], // return bool
 			'display_callback'      => [
 				'args'        => [],
 				'widget_args' => [
 					'default' => '1',
 				],
-			],
+			], // return int|array
 			'update_callback'       => [
 				'deprecated' => [
 					'default' => '1',
 				],
-			],
+			], // return void => method is explicitly marked as "DO NOT OVERRIDE"
 			'form_callback'         => [
 				'widget_args' => [
 					'default' => '1',
 				],
-			],
+			], // return string|null => method is explicitly marked as "DO NOT OVERRIDE"
 			'_register_one'         => [
 				'number' => [
 					'default' => '-1',
 				],
-			],
+			], // return void
 			'save_settings'         => [
 				'settings' => [],
-			],
-			'get_settings'          => [],
-		],
+			], // return void
+			'get_settings'          => [], // return array
+		], // visibility: public for everything
 
 		'Walker'    => [
 			'start_lvl'                   => [
@@ -136,7 +136,7 @@ For VIPCS 4.0:
 				'args'   => [
 					'default' => 'array()',
 				],
-			],
+			], // return void
 			'end_lvl'                     => [
 				'output' => [
 					'pass_by_reference' => true,
@@ -147,7 +147,7 @@ For VIPCS 4.0:
 				'args'   => [
 					'default' => 'array()',
 				],
-			],
+			], // return void
 			'start_el'                    => [
 				'output'            => [
 					'pass_by_reference' => true,
@@ -162,7 +162,7 @@ For VIPCS 4.0:
 				'current_object_id' => [
 					'default' => '0',
 				],
-			],
+			], // return void
 			'end_el'                      => [
 				'output'      => [
 					'pass_by_reference' => true,
@@ -174,7 +174,7 @@ For VIPCS 4.0:
 				'args'        => [
 					'default' => 'array()',
 				],
-			],
+			], // return void
 			'display_element'             => [
 				'element'           => [],
 				'children_elements' => [
@@ -186,14 +186,14 @@ For VIPCS 4.0:
 				'output'            => [
 					'pass_by_reference' => true,
 				],
-			],
+			], // return void
 			'walk'                        => [
 				'elements'  => [],
 				'max_depth' => [],
 				'args'      => [
 					'variable_length' => true,
 				],
-			],
+			], // return string
 			'paged_walk'                  => [
 				'elements'  => [],
 				'max_depth' => [],
@@ -202,17 +202,17 @@ For VIPCS 4.0:
 				'args'      => [
 					'variable_length' => true,
 				],
-			],
+			], // return string
 			'get_number_of_root_elements' => [
 				'elements' => [],
-			],
+			], // return int
 			'unset_children'              => [
 				'element'           => [],
 				'children_elements' => [
 					'pass_by_reference' => true,
 				],
-			],
-		],
+			], // return void
+		], // visibility: public for everything
 	];
 
 	/**

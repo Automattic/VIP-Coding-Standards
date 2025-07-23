@@ -187,3 +187,202 @@ class WidgetBadNestedClassAlsoExtends extends WP_Widget {
 		};
 	}
 }
+
+
+class WidgetOkayNoVisibilityMeansPublic extends WP_Widget {
+	function widget( $args, $instance ) {}
+	function update( $new_instance, $old_instance ) {}
+	function form( $instance ) {}
+	function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array() ) {}
+	function get_field_name( $field_name ) {}
+	function get_field_id( $field_name ) {}
+	function _register() {}
+	function _set( $number ) {}
+	function _get_display_callback() {}
+	function _get_update_callback() {}
+	function _get_form_callback() {}
+	function is_preview() {}
+	function display_callback( $args, $widget_args = 1 ) {}
+	function update_callback( $deprecated = 1 ) {}
+	function form_callback( $widget_args = 1 ) {}
+	function _register_one( $number = -1 ) {}
+	function save_settings( $settings ) {}
+	function get_settings() {}
+}
+
+class WidgetWrongVisibility extends WP_Widget {
+	// Not a method we're interested in. Should be ignored.
+	private function custom_method($whatever, $you, $want = null) {}
+
+	protected function widget( $args, $instance ) {}
+	private function update( $new_instance, $old_instance ) {}
+	protected function form( $instance ) {}
+	private function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array() ) {}
+	protected function get_field_name( $field_name ) {}
+	private function get_field_id( $field_name ) {}
+	protected function _register() {}
+	private function _set( $number ) {}
+	protected function _get_display_callback() {}
+	private function _get_update_callback() {}
+	protected function _get_form_callback() {}
+	private function is_preview() {}
+	protected function display_callback( $args, $widget_args = 1 ) {}
+	private function update_callback( $deprecated = 1 ) {}
+	protected function form_callback( $widget_args = 1 ) {}
+	private function _register_one( $number = -1 ) {}
+	protected function save_settings( $settings ) {}
+	private function get_settings() {}
+}
+
+class WidgetIncorrectReturnByRef extends WP_Widget {
+	// Not a method we're interested in. Should be ignored.
+	public function &custom_method($whatever, $you, $want = null) {}
+
+	// Methods which are being checked.
+	public function &widget( $args, $instance ) {}
+	public function &update( $new_instance, $old_instance ) {}
+	public function &form( $instance ) {}
+	public function &WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array() ) {}
+	public function &get_field_name( $field_name ) {}
+	public function &get_field_id( $field_name ) {}
+	public function &_register() {}
+	public function &_set( $number ) {}
+	public function &_get_display_callback() {}
+	public function &_get_update_callback() {}
+	public function &_get_form_callback() {}
+	public function &is_preview() {}
+	public function &display_callback( $args, $widget_args = 1 ) {}
+	public function &update_callback( $deprecated = 1 ) {}
+	public function &form_callback( $widget_args = 1 ) {}
+	public function &_register_one( $number = -1 ) {}
+	public function &save_settings( $settings ) {}
+	public function &get_settings() {}
+}
+
+// Parameter name mismatches cause issues with PHP 8.0 named parameters.
+class WidgetBadParameterNameMismatch extends WP_Widget {
+	public function widget( $arg, $intance ) {}
+	public function update( $new, $old ) {}
+	public function form( $inst ) {}
+	public function WP_Widget( $base, $widget_name, $options = array(), $controls = array() ) {}
+	public function get_field_name( $field ) {}
+	public function get_field_id( $field ) {}
+	public function _set( $num ) {}
+	public function display_callback( $arg, $widgetArgs = 1 ) {}
+	public function update_callback( $unused = 1 ) {}
+	public function form_callback( $args = 1 ) {}
+	public function _register_one( $nr = -1 ) {}
+	public function save_settings( $setting ) {}
+}
+
+class WidgetOkayParameterTypesAreContraVariantAndMixedIsCompatibleWithNoType extends WP_Widget {
+	public function widget( mixed $args, mixed $instance ) {}
+	public function update( mixed $new_instance, mixed $old_instance ) {}
+	public function form( mixed $instance ) {}
+	public function WP_Widget( mixed $id_base, mixed $name, mixed $widget_options = array(), mixed $control_options = array() ) {}
+	public function get_field_name( mixed $field_name ) {}
+	public function get_field_id( mixed $field_name ) {}
+	public function _set( mixed $number ) {}
+	public function display_callback( mixed $args, mixed $widget_args = 1 ) {}
+	public function update_callback( mixed $deprecated = 1 ) {}
+	public function form_callback( mixed $widget_args = 1 ) {}
+	public function _register_one( mixed $number = -1 ) {}
+	public function save_settings( mixed $settings ) {}
+}
+
+class WidgetBadParameterTypesAreContraVariant extends WP_Widget {
+	public function widget( array $args, array $instance ) {}
+	public function update( array $new_instance, array $old_instance ) {}
+	public function form( array $instance ) {}
+	public function WP_Widget( string $id_base, string $name, array $widget_options = array(), array $control_options = array() ) {}
+	public function get_field_name( string $field_name ) {}
+	public function get_field_id( string $field_name ) {}
+	public function _set( int $number ) {}
+	public function display_callback( array $args, int|array $widget_args = 1 ) {}
+	public function update_callback( int $deprecated = 1 ) {}
+	public function form_callback( int|array $widget_args = 1 ) {}
+	public function _register_one( int $number = -1 ) {}
+	public function save_settings( array $settings ) {}
+}
+
+class WidgetOkayReturnTypesAreCovariantAndTypeMatchesExpectation extends WP_Widget {
+	public function widget( $args, $instance ): void {}
+	public function update( $new_instance, $old_instance ) : array|false {}
+	public function form( $instance ) : string {}
+	public function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array() ): void {}
+	public function get_field_name( $field_name ) : string {}
+	public function get_field_id( $field_name ) : string {}
+	public function _register() : void {}
+	public function _set( $number ): void {}
+	public function _get_display_callback(): callable {}
+	public function _get_update_callback() : callable {}
+	public function _get_form_callback() : callable {}
+	public function is_preview(): bool {}
+	public function display_callback( $args, $widget_args = 1 ): int|array {}
+	public function update_callback( $deprecated = 1 ): void {}
+	public function form_callback( $widget_args = 1 ): string|null {}
+	public function _register_one( $number = -1 ) : void {}
+	public function save_settings( $settings ): void {}
+	public function get_settings(): array {}
+}
+
+class WidgetOkayReturnTypesAreCovariantAndTypeMatchesExpectationToo extends WP_Widget {
+	public function form( $instance ) : void {}
+	public function display_callback( $args, $widget_args = 1 ): int {}
+	public function form_callback( $widget_args = 1 ): ?string {}
+}
+
+class WidgetOkayReturnTypesAreCovariantAndTypeMatchesExpectationThree extends WP_Widget {
+	public function display_callback( $args, $widget_args = 1 ): array {}
+	public function form_callback( $widget_args = 1 ): string {}
+}
+
+class WidgetOkayReturnTypesAreCovariantAndTypeMatchesExpectationFour extends WP_Widget {
+	public function form_callback( $widget_args = 1 ): null {}
+}
+
+class WidgetOkayReturnTypesAreCovariantAndMixedWillAlwaysWork extends WP_Widget {
+	public function widget( $args, $instance ): mixed {}
+	public function update( $new_instance, $old_instance ) : mixed {}
+	public function form( $instance ) : mixed {}
+	public function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array() ): mixed {}
+	public function get_field_name( $field_name ) : mixed {}
+	public function get_field_id( $field_name ) : mixed {}
+	public function _register() : mixed {}
+	public function _set( $number ): mixed {}
+	public function _get_display_callback(): mixed {}
+	public function _get_update_callback() : mixed {}
+	public function _get_form_callback() : mixed {}
+	public function is_preview(): mixed {}
+	public function display_callback( $args, $widget_args = 1 ): mixed {}
+	public function update_callback( $deprecated = 1 ) : mixed {}
+	public function form_callback( $widget_args = 1 ) : mixed {}
+	public function _register_one( $number = -1 ) : mixed {}
+	public function save_settings( $settings ) : mixed {}
+	public function get_settings() : mixed {}
+}
+
+class WidgetBadReturnTypeDoesNotMatchExpectation extends WP_Widget {
+	// Not a method we're interested in. Should be ignored.
+	public function custom_method($whatever, $you, $want = null): never {}
+
+	// Methods which are being checked.
+	public function widget( $args, $instance ) : string {}
+	public function update( $new_instance, $old_instance ): void {}
+	public function form( $instance ): int {}
+	public function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array() ): null {}
+	public function get_field_name( $field_name ): false {}
+	public function get_field_id( $field_name ): string|true {}
+	public function _register() : bool {}
+	public function _set( $number ) : int {}
+	public function _get_display_callback() : ?callable {}
+	public function _get_update_callback(): object {}
+	public function _get_form_callback(): array {}
+	public function is_preview(): float {}
+	public function display_callback( $args, $widget_args = 1 ): int|array|null {}
+	public function update_callback( $deprecated = 1 ) : ?float {}
+	public function form_callback( $widget_args = 1 ) : ?int {}
+	public function _register_one( $number = -1 ) : never {}
+	public function save_settings( $settings ) : ?bool {}
+	public function get_settings() : iterable {}
+}
