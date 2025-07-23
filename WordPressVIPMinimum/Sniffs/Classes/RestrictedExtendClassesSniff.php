@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Classes;
 
+use PHPCSUtils\Utils\MessageHelper;
 use WordPressCS\WordPress\AbstractClassRestrictionsSniff;
 
 /**
@@ -36,6 +37,20 @@ class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {
 	}
 
 	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		$targets = parent::register();
+		if ( empty( $targets ) ) {
+			return $targets;
+		}
+
+		return [ T_EXTENDS ];
+	}
+
+	/**
 	 * Process a matched token.
 	 *
 	 * @param int    $stackPtr        The position of the current token in the stack.
@@ -46,15 +61,9 @@ class RestrictedExtendClassesSniff extends AbstractClassRestrictionsSniff {
 	 * @return void
 	 */
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
-		$tokens = $this->phpcsFile->getTokens();
-
-		if ( $tokens[ $stackPtr ]['code'] !== T_EXTENDS ) {
-			// If not extending, bail.
-			return;
-		}
-
 		foreach ( $this->getGroups() as $group => $group_args ) {
-			$this->phpcsFile->{ 'add' . $group_args['type'] }( $group_args['message'], $stackPtr, $group );
+			$isError = ( $group_args['type'] === 'error' );
+			MessageHelper::addMessage( $this->phpcsFile, $group_args['message'], $stackPtr, $isError, $group );
 		}
 	}
 }
