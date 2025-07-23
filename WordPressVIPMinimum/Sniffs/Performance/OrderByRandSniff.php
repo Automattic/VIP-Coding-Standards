@@ -49,6 +49,11 @@ class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	 */
 	public function callback( $key, $val, $line, $group ) {
 		$val = TextStrings::stripQuotes( $val );
+/*
+TODO:
+- check strtolower($val)
+   => could be that WP handles this in a case-insensitive manner internally, but that needs checking
+*/
 		return strtolower( $val ) === 'rand';
 	}
 }
