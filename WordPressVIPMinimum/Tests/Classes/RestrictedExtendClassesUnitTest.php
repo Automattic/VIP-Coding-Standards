@@ -36,6 +36,7 @@ class RestrictedExtendClassesUnitTest extends AbstractSniffUnitTest {
 			10 => 1,
 			11 => 1,
 			12 => 1,
+			22 => 1,
 		];
 	}
 }
