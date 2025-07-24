@@ -20,7 +20,7 @@ class WalkerOkay extends Walker {
 
 // These methods all change required parameters from the parent class into optional ones by adding a default value.
 // This will not cause a signature mismatch in PHP since PHP 5.3.
-final class WalkerOkayDefaultValueWhereParentHasNone extends Walker_Page {
+final class WalkerOkayDefaultValueWhereParentHasNone extends \Walker_Page {
 	public function start_lvl( &$output = '', $depth = 0, $args = array() ) {}
 	public function end_lvl( &$output = '', $depth = 0, $args = array() ) {}
 	public function start_el( &$output = '', $data_object = new stdClass, $depth = 0, $args = array(), $current_object_id = 0 ) {}
@@ -62,7 +62,7 @@ readonly class WalkerBadTooFewParamsNotAllParams extends walker_categorydropdown
 	public function unset_children( $element ) {} // Bad, missing $children_elements param.
 }
 
-class WalkerBadExtraRequiredParams extends Walker_PageDropdown {
+class WalkerBadExtraRequiredParams extends \Walker_PageDropdown {
 	public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output, $extra_param ) {}
 	public function get_number_of_root_elements( $elements, $extra_param, ) {}
 	public function unset_children( $element, &$children_elements, $extra_paramA, $extra_paramB ) {}

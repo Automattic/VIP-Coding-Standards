@@ -41,7 +41,7 @@ readonly class WidgetOkayDefaultValueWhereParentHasNone extends WP_Widget {
 	public function save_settings( $settings = array() ) {}
 }
 
-class WidgetOkayDifferentDefaultValue extends WP_Widget {
+class WidgetOkayDifferentDefaultValue extends \WP_Widget {
 	public function WP_Widget( $id_base, $name, $widget_options = null, $control_options = null ) {}
 	public function display_callback( $args, $widget_args = [] ) {}
 	public function update_callback( $deprecated = true, ) {}
@@ -100,7 +100,7 @@ class WidgetBadOptionalParamChangedToRequiredMissingDefaultValue extends wp_widg
 	public function _register_one( $number ) {}
 }
 
-class WidgetBadChildHasParamReferenceParentDoesNot extends WP_Widget {
+class WidgetBadChildHasParamReferenceParentDoesNot extends \WP_Widget {
 	public function widget( $args, &$instance ) {}
 	public function update( &$new_instance, $old_instance ) {}
 	public function form( &$instance ) {}

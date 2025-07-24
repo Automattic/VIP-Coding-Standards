@@ -267,7 +267,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		$parentClassNameLC = strtolower( $parentClassName );
+		$parentClassNameLC = ltrim( strtolower( $parentClassName ), '\\' ); // Trim off potential FQN indicator.
 		if ( isset( $this->extendedClassToSignatures[ $parentClassNameLC ] ) === false ) {
 			// This class does not extend a class we are interested in.
 			return;
