@@ -22,16 +22,42 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * A list of classes and methods to check.
 	 *
+	 * @deprecated 3.1.0 This should never have been a public property.
+	 *
 	 * @var array<string, array<string, array<int|string, string|array<string, bool|string>>>>
 	 */
-	public $checkClasses = [
+	public $checkClasses = [];
+
+	/**
+	 * List of grouped classes with same methods (as they extend the same parent class)
+	 *
+	 * @deprecated 3.1.0 This should never have been a public property.
+	 *
+	 * @var array<string, string[]>
+	 */
+	public $checkClassesGroups = [];
+
+	/**
+	 * A list of classes and information on the methods to check for those classes.
+	 *
+	 * @var array<string, array<string, array<string, array<string, bool|string>>>>
+	 */
+	private $methodSignatures = [
 		'WP_Widget' => [
-			'widget'                => [ 'args', 'instance' ],
-			'update'                => [ 'new_instance', 'old_instance' ],
-			'form'                  => [ 'instance' ],
+			'widget'                => [
+				'args'     => [],
+				'instance' => [],
+			],
+			'update'                => [
+				'new_instance' => [],
+				'old_instance' => [],
+			],
+			'form'                  => [
+				'instance' => [],
+			],
 			'WP_Widget'             => [
-				'id_base',
-				'name',
+				'id_base'         => [],
+				'name'            => [],
 				'widget_options'  => [
 					'default' => 'array()',
 				],
@@ -39,16 +65,22 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					'default' => 'array()',
 				],
 			],
-			'get_field_name'        => [ 'field_name' ],
-			'get_field_id'          => [ 'field_name' ],
+			'get_field_name'        => [
+				'field_name' => [],
+			],
+			'get_field_id'          => [
+				'field_name' => [],
+			],
 			'_register'             => [],
-			'_set'                  => [ 'number' ],
+			'_set'                  => [
+				'number' => [],
+			],
 			'_get_display_callback' => [],
 			'_get_update_callback'  => [],
 			'_get_form_callback'    => [],
 			'is_preview'            => [],
 			'display_callback'      => [
-				'args',
+				'args'        => [],
 				'widget_args' => [
 					'default' => '1',
 				],
@@ -68,9 +100,12 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					'default' => '-1',
 				],
 			],
-			'save_settings'         => [ 'settings' ],
+			'save_settings'         => [
+				'settings' => [],
+			],
 			'get_settings'          => [],
 		],
+
 		'Walker'    => [
 			'start_lvl'                   => [
 				'output' => [
@@ -98,7 +133,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				'output'            => [
 					'pass_by_reference' => true,
 				],
-				'data_object',
+				'data_object'       => [],
 				'depth'             => [
 					'default' => '0',
 				],
@@ -110,65 +145,56 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 				],
 			],
 			'end_el'                      => [
-				'output' => [
+				'output'      => [
 					'pass_by_reference' => true,
 				],
-				'data_object',
-				'depth'  => [
+				'data_object' => [],
+				'depth'       => [
 					'default' => '0',
 				],
-				'args'   => [
+				'args'        => [
 					'default' => 'array()',
 				],
 			],
 			'display_element'             => [
-				'element',
+				'element'           => [],
 				'children_elements' => [
 					'pass_by_reference' => true,
 				],
-				'max_depth',
-				'depth',
-				'args',
+				'max_depth'         => [],
+				'depth'             => [],
+				'args'              => [],
 				'output'            => [
 					'pass_by_reference' => true,
 				],
 			],
 			'walk'                        => [
-				'elements',
-				'max_depth',
-				'args' => [
+				'elements'  => [],
+				'max_depth' => [],
+				'args'      => [
 					'variable_length' => true,
 				],
 			],
 			'paged_walk'                  => [
-				'elements',
-				'max_depth',
-				'page_num',
-				'per_page',
-				'args' => [
+				'elements'  => [],
+				'max_depth' => [],
+				'page_num'  => [],
+				'per_page'  => [],
+				'args'      => [
 					'variable_length' => true,
 				],
 			],
 			'get_number_of_root_elements' => [
-				'elements',
+				'elements' => [],
 			],
 			'unset_children'              => [
-				'element',
+				'element'           => [],
 				'children_elements' => [
 					'pass_by_reference' => true,
 				],
 			],
 		],
 	];
-
-	/**
-	 * List of grouped classes with same methods (as they extend the same parent class)
-	 *
-	 * @deprecated 3.1.0 This should never have been a public property and is now unused.
-	 *
-	 * @var array<string, string[]>
-	 */
-	public $checkClassesGroups = [];
 
 	/**
 	 * Classes this sniff checks for being extended.
@@ -222,17 +248,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		}
 
 		$parentClassName = $this->extendedClassToSignatures[ $parentClassName ];
-
-		if ( array_key_exists( $methodName, $this->checkClasses[ $parentClassName ] ) === false &&
-			in_array( $methodName, $this->checkClasses[ $parentClassName ], true ) === false
-		) {
-			// This method is not a one we are interested in.
+		if ( isset( $this->methodSignatures[ $parentClassName ][ $methodName ] ) === false ) {
+			// This method is not one we are interested in.
 			return;
 		}
 
 		$signatureParams = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
 
-		$parentSignature = $this->checkClasses[ $parentClassName ][ $methodName ];
+		$parentSignature = $this->methodSignatures[ $parentClassName ][ $methodName ];
 
 		if ( count( $signatureParams ) > count( $parentSignature ) ) {
 			$extra_params                  = array_slice( $signatureParams, count( $parentSignature ) - count( $signatureParams ) );
@@ -254,22 +277,20 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		$i = 0;
 		foreach ( $parentSignature as $key => $param ) {
-			if ( is_array( $param ) === true ) {
-				if (
-					(
-						array_key_exists( 'default', $param ) === true &&
-						array_key_exists( 'default', $signatureParams[ $i ] ) === false
-					) || (
-						array_key_exists( 'pass_by_reference', $param ) === true &&
-						$param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
-					) || (
-						array_key_exists( 'variable_length', $param ) === true &&
-						$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
-					)
-				) {
-					$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
-					return;
-				}
+			if (
+				(
+					array_key_exists( 'default', $param ) === true &&
+					array_key_exists( 'default', $signatureParams[ $i ] ) === false
+				) || (
+					array_key_exists( 'pass_by_reference', $param ) === true &&
+					$param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
+				) || (
+					array_key_exists( 'variable_length', $param ) === true &&
+					$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
+				)
+			) {
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
+				return;
 			}
 			++$i;
 		}
@@ -313,8 +334,8 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$paramList = [];
 		foreach ( $methodSignature as $param => $options ) {
 			$paramName = '$';
-			if ( is_array( $options ) === false ) {
-				$paramList[] = '$' . $options;
+			if ( empty( $options ) === true ) {
+				$paramList[] = '$' . $param;
 				continue;
 			}
 
