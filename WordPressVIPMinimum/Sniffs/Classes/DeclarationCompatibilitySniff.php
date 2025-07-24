@@ -253,12 +253,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		$childParams = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
+		$childParams     = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
+		$childParamCount = count( $childParams );
 
-		$parentParams = $this->methodSignatures[ $parentClassName ][ $methodName ];
+		$parentParams     = $this->methodSignatures[ $parentClassName ][ $methodName ];
+		$parentParamCount = count( $parentParams );
 
-		if ( count( $childParams ) > count( $parentParams ) ) {
-			$extra_params                  = array_slice( $childParams, count( $parentParams ) - count( $childParams ) );
+		if ( $childParamCount > $parentParamCount ) {
+			$extra_params                  = array_slice( $childParams, $parentParamCount - $childParamCount );
 			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
 				if ( array_key_exists( 'default', $extra_param ) === false || $extra_param['default'] !== 'true' ) {
@@ -270,7 +272,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			}
 		}
 
-		if ( count( $childParams ) !== count( $parentParams ) ) {
+		if ( $childParamCount !== $parentParamCount ) {
 			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
 			return;
 		}
