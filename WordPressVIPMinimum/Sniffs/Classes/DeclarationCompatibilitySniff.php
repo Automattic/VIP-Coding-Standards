@@ -261,9 +261,6 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 */
 	protected function processTokenWithinScope( File $phpcsFile, $stackPtr, $currScope ) {
 
-		$methodName   = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
-		$methodNameLC = strtolower( $methodName );
-
 		$parentClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $currScope );
 		if ( $parentClassName === false ) {
 			// This class does not extend any other class.
@@ -280,6 +277,8 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$originalParentClassNamePC = $this->classToProperCase[ $parentClassNameLC ];
 
 		$parentClassName = $this->extendedClassToSignatures[ $parentClassNameLC ];
+		$methodName      = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
+		$methodNameLC    = strtolower( $methodName );
 		if ( isset( $this->methodSignatures[ $parentClassName ][ $methodNameLC ] ) === false ) {
 			// This method is not one we are interested in.
 			return;
