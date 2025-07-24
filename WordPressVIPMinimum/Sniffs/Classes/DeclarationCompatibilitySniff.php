@@ -70,7 +70,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					'default' => '1',
 				],
 			],
-			'register_one'          => [
+			'_register_one'         => [
 				'number' => [
 					'default' => '-1',
 				],

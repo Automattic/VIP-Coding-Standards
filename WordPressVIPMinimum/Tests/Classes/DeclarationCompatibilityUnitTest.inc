@@ -46,7 +46,7 @@ class MyWidget extends WP_Widget {
 	function form_callback() {
 	} // Bad, missing $widget_args param.
 
-	function register_one() {
+	function _register_one() {
 	} // Bad, missing $number param.
 
 	function save_settings() {
@@ -103,7 +103,7 @@ class MyWidget2 extends WP_Widget {
 	function form_callback( $widget_args = 2 ) {
 	} // Ok, despite having different default value.
 
-	function register_one( $number ) {
+	function _register_one( $number ) {
 	} // Bad, the param should have a default value. Should be $number.
 
 	function save_settings( $setting ) {
@@ -142,4 +142,8 @@ class MyWalker extends Walker {
 
 	function end_el( &$output, $data_object, $depth = 0, $args = array() ) {
 	} // Ok.
+}
+
+class MyWidget3 extends WP_Widget {
+	function register_one( $number ) {} // Okay. Not one of the methods we're looking for.
 }
