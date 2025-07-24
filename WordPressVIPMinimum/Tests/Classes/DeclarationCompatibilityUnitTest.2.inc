@@ -39,19 +39,19 @@ class WalkerOkayDifferentDefaultValue extends Walker_Category_Checklist {
 	public function end_el( &$output, $data_object, $depth = 10, $args = '' ) {}
 };
 
-class WalkerBadTooFewParamsNoParam extends Walker_Category {
-	public function start_lvl() {}
-	public function end_lvl() {}
-	public function start_el() {}
-	public function end_el() {}
-	public function display_element() {}
-	public function walk() {}
-	public function paged_walk() {}
-	public function get_number_of_root_elements() {}
-	public function unset_children() {}
+class WalkerBadTooFewParamsNoParamAndMethodNamesAreCaseInsensitive extends Walker_Category {
+	public function start_LVL() {}
+	public function End_Lvl() {}
+	public function START_EL() {}
+	public function end_EL() {}
+	public function Display_Element() {}
+	public function WalK() {}
+	public function paged_WALK() {}
+	public function get_Number_Of_Root_Elements() {}
+	public function unset_Children() {}
 }
 
-readonly class WalkerBadTooFewParamsNotAllParams extends Walker_CategoryDropdown {
+readonly class WalkerBadTooFewParamsNotAllParams extends walker_categorydropdown {
 	public function start_lvl( &$output, $depth = 0 ) {} // Bad, missing $args param.
 	public function end_lvl( &$output ) {} // Bad, missing $depth and $args params.
 	public function start_el( &$output, $data_object, $depth = 0, ) {} // Bad, missing $args and $current_object_id params.
@@ -128,7 +128,7 @@ class WalkerOkayChildCanMakeLastParamVariadic extends Walker_Page {
 	public function unset_children( $element, &...$children_elements ) {}
 }
 
-class WalkerBadVariadicParamNotLast extends Walker_Nav_Menu {
+class WalkerBadVariadicParamNotLast extends WALKER_NAV_MENU {
 	public function start_lvl( &$output, ...$depth, $args = array() ) {}
 	public function end_lvl( &...$output, $depth = 0, $args = array() ) {}
 	public function start_el( &$output, ...$data_object, $depth = 0, $args = array(), $current_object_id = 0 ) {}

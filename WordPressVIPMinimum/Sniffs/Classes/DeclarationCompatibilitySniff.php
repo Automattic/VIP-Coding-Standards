@@ -215,9 +215,38 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	];
 
 	/**
+	 * Translate from case-insensitive names to proper case method names.
+	 *
+	 * @var array<string, array<string, string>> Primary key is the class name in proper case.
+	 *                                           Value is an array with method names in lowercase as keys
+	 *                                           and these same method names in proper case as values.
+	 */
+	private $methodToProperCase = [];
+
+	/**
+	 * Translate from case-insensitive names to proper case class names.
+	 *
+	 * @var array<string, string> Key is the lowercase name of a class, value the proper case.
+	 */
+	private $classToProperCase = [];
+
+	/**
 	 * Constructs the test with the tokens it wishes to listen for.
 	 */
 	public function __construct() {
+		// Lowercase all names to allow for correct comparisons, as PHP treats class/function names case-insensitively.
+		// But also store translation tables to be able to get the proper case.
+		foreach ( $this->methodSignatures as $key => $value ) {
+			$methodNames                      = array_keys( $value );
+			$this->methodToProperCase[ $key ] = array_change_key_case( array_combine( $methodNames, $methodNames ), CASE_LOWER );
+
+			$this->methodSignatures[ $key ] = array_change_key_case( $value, CASE_LOWER );
+		}
+
+		$classNames                      = array_keys( $this->extendedClassToSignatures );
+		$this->classToProperCase         = array_change_key_case( array_combine( $classNames, $classNames ), CASE_LOWER );
+		$this->extendedClassToSignatures = array_change_key_case( $this->extendedClassToSignatures, CASE_LOWER );
+
 		parent::__construct( [ T_CLASS ], [ T_FUNCTION ], false );
 	}
 
@@ -232,7 +261,8 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 */
 	protected function processTokenWithinScope( File $phpcsFile, $stackPtr, $currScope ) {
 
-		$methodName = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
+		$methodName   = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
+		$methodNameLC = strtolower( $methodName );
 
 		$parentClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $currScope );
 		if ( $parentClassName === false ) {
@@ -240,23 +270,27 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		// Store the originalParentClassName since we might override the parentClassName due to signature notations grouping.
-		$originalParentClassName = $parentClassName;
-		if ( isset( $this->extendedClassToSignatures[ $parentClassName ] ) === false ) {
+		$parentClassNameLC = strtolower( $parentClassName );
+		if ( isset( $this->extendedClassToSignatures[ $parentClassNameLC ] ) === false ) {
 			// This class does not extend a class we are interested in.
 			return;
 		}
 
-		$parentClassName = $this->extendedClassToSignatures[ $parentClassName ];
-		if ( isset( $this->methodSignatures[ $parentClassName ][ $methodName ] ) === false ) {
+		// Store the originalParentClassName since we might override the parentClassName due to signature notations grouping.
+		$originalParentClassNamePC = $this->classToProperCase[ $parentClassNameLC ];
+
+		$parentClassName = $this->extendedClassToSignatures[ $parentClassNameLC ];
+		if ( isset( $this->methodSignatures[ $parentClassName ][ $methodNameLC ] ) === false ) {
 			// This method is not one we are interested in.
 			return;
 		}
 
+		$methodNamePC = $this->methodToProperCase[ $parentClassName ][ $methodNameLC ];
+
 		$childParams     = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
 		$childParamCount = count( $childParams );
 
-		$parentParams     = $this->methodSignatures[ $parentClassName ][ $methodName ];
+		$parentParams     = $this->methodSignatures[ $parentClassName ][ $methodNameLC ];
 		$parentParamCount = count( $parentParams );
 
 		/*
@@ -274,7 +308,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			if ( ( isset( $parentLastParam['variable_length'] ) === true && $parentLastParam['variable_length'] === true )
 				&& $childLastParam['variable_length'] !== true
 			) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
 				return;
 			}
 		}
@@ -283,7 +317,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			// Check that no other parameters in the child signature are declared as variadic.
 			for ( $i = 0; $i < ( $childParamCount - 1 ); $i++ ) {
 				if ( $childParams[ $i ]['variable_length'] === true ) {
-					$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+					$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
 					return;
 				}
 			}
@@ -302,11 +336,11 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			}
 
 			if ( $all_extra_params_have_default === false ) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
 				return;
 			}
 		} elseif ( $childParamCount !== $parentParamCount ) {
-			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
 			return;
 		}
 
@@ -327,7 +361,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					&& $childParams[ $i ]['pass_by_reference'] === true
 				)
 			) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
 				return;
 			}
 			++$i;

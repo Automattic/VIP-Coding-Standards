@@ -64,35 +64,35 @@ class WidgetBadTooFewParamsNoParam extends WP_Widget {
 	public function save_settings() {} // Bad, missing $settings param.
 }
 
-final class WidgetBadTooFewParamsNotAllParams extends WP_Widget {
+final class WidgetBadTooFewParamsNotAllParams extends WP_WIDGET {
 	public function widget( $args ) {} // Bad, missing $instance param.
 	public function update( $new_instance ) {} // Bad, missing $old_instance param.
 	public function WP_Widget( $id_base, $name, ) {} // Bad, missing $widget_options and $control_options params.
 	public function display_callback( $args ) {} // Bad, missing $widget_args param.
 }
 
-class WidgetBadExtraRequiredParams extends WP_Widget {
-	public function widget( $args, $instance, $extra_param ) {}
-	public function update( $new_instance, $old_instance, $extra_param ) {}
-	public function form( $instance, $extra_param ) {}
-	public function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array(), $extra_param) {}
-	public function get_field_name( $field_name, $extra_param ) {}
-	public function get_field_id( $field_name, $extra_param ) {}
-	public function _register( $extra_param ) {}
-	public function _set( $number, $extra_param ) {}
-	public function _get_display_callback($extra_paramA, $extra_paramB) {}
-	public function _get_update_callback( $extra_paramA, $extra_paramB ) {}
-	public function _get_form_callback($extra_param) {}
-	public function is_preview($extra_param) {}
-	public function display_callback( $args, $widget_args = 1, $extra_param ) {}
-	public function update_callback( $deprecated = 1, $extra_param, ) {}
-	public function form_callback( $widget_args = 1, $extra_param ) {}
-	public function _register_one( $number = -1, $extra_param ) {}
-	public function save_settings( $settings, $extra_param) {}
-	public function get_settings( $extra_paramA, $extra_paramB, $extra_paramC ) {}
+class WidgetBadExtraRequiredParamsAndMethodNamesAreCaseInsensitive extends WP_Widget {
+	public function Widget( $args, $instance, $extra_param ) {}
+	public function Update( $new_instance, $old_instance, $extra_param ) {}
+	public function Form( $intance, $extra_param ) {}
+	public function wp_widget( $id_base, $name, $widget_options = array(), $control_options = array(), $extra_param) {}
+	public function Get_Field_Name( $field_name, $extra_param ) {}
+	public function Get_Field_ID( $field_name, $extra_param ) {}
+	public function _Register( $extra_param ) {}
+	public function _Set( $number, $extra_param ) {}
+	public function _Get_Display_Callback($extra_paramA, $extra_paramB) {}
+	public function _Get_Update_Callback( $extra_paramA, $extra_paramB ) {}
+	public function _Get_Form_Callback($extra_param) {}
+	public function is_Preview($extra_param) {}
+	public function display_Callback( $args, $widget_args = 1, $extra_param ) {}
+	public function update_Callback( $deprecated = 1, $extra_param, ) {}
+	public function form_Callback( $widget_args = 1, $extra_param ) {}
+	public function _register_ONE( $number = -1, $extra_param ) {}
+	public function SAVE_SETTINGS( $settings, $extra_param) {}
+	public function get_Settings( $extra_paramA, $extra_paramB, $extra_paramC ) {}
 };
 
-class WidgetBadOptionalParamChangedToRequiredMissingDefaultValue extends WP_Widget {
+class WidgetBadOptionalParamChangedToRequiredMissingDefaultValue extends wp_widget {
 	public function WP_Widget( $id_base, $name, $widget_options, $control_options = array() ) {} // Bad, missing default value for $widget_options.
 	public function display_callback( $args, $widget_args ) {} // Bad, missing default value for $widget_args.
 	public function update_callback( $deprecated ) {}
@@ -152,7 +152,7 @@ class WidgetOkayChildCanMakeLastParamVariadic extends WP_Widget {
 	public function save_settings( ...$settings ) {}
 }
 
-class WidgetBadVariadicParamNotLast extends WP_Widget {
+class WidgetBadVariadicParamNotLast extends Wp_widget {
 	public function widget( ...$args, $instance ) {}
 	public function update( ...$new_instance, $old_instance ) {}
 	public function WP_Widget( $id_base, $name, ...$widget_options = array(), $control_options = array() ) {}
