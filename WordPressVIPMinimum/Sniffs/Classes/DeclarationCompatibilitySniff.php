@@ -253,12 +253,12 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		$signatureParams = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
+		$childParams = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
 
-		$parentSignature = $this->methodSignatures[ $parentClassName ][ $methodName ];
+		$parentParams = $this->methodSignatures[ $parentClassName ][ $methodName ];
 
-		if ( count( $signatureParams ) > count( $parentSignature ) ) {
-			$extra_params                  = array_slice( $signatureParams, count( $parentSignature ) - count( $signatureParams ) );
+		if ( count( $childParams ) > count( $parentParams ) ) {
+			$extra_params                  = array_slice( $childParams, count( $parentParams ) - count( $childParams ) );
 			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
 				if ( array_key_exists( 'default', $extra_param ) === false || $extra_param['default'] !== 'true' ) {
@@ -270,26 +270,26 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			}
 		}
 
-		if ( count( $signatureParams ) !== count( $parentSignature ) ) {
-			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
+		if ( count( $childParams ) !== count( $parentParams ) ) {
+			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
 			return;
 		}
 
 		$i = 0;
-		foreach ( $parentSignature as $key => $param ) {
+		foreach ( $parentParams as $key => $param ) {
 			if (
 				(
 					array_key_exists( 'default', $param ) === true &&
-					array_key_exists( 'default', $signatureParams[ $i ] ) === false
+					array_key_exists( 'default', $childParams[ $i ] ) === false
 				) || (
 					array_key_exists( 'pass_by_reference', $param ) === true &&
-					$param['pass_by_reference'] !== $signatureParams[ $i ]['pass_by_reference']
+					$param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
 				) || (
 					array_key_exists( 'variable_length', $param ) === true &&
-					$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
+					$param['variable_length'] !== $childParams[ $i ]['variable_length']
 				)
 			) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
 				return;
 			}
 			++$i;
