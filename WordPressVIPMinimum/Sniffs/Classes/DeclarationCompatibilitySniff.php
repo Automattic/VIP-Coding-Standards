@@ -319,12 +319,12 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					&& $childParams[ $i ]['variable_length'] === false
 				) || (
 					// Parameter in parent class has reference, child does not.
-					array_key_exists( 'pass_by_reference', $param ) === true &&
-					$param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
+					array_key_exists( 'pass_by_reference', $param ) === true
+					&& $param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
 				) || (
 					// Parameter in parent class does *not* have reference, child does.
-					array_key_exists( 'pass_by_reference', $param ) === false &&
-					$childParams[ $i ]['pass_by_reference'] === true
+					array_key_exists( 'pass_by_reference', $param ) === false
+					&& $childParams[ $i ]['pass_by_reference'] === true
 				)
 			) {
 				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
