@@ -189,7 +189,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 * Constructs the test with the tokens it wishes to listen for.
 	 */
 	public function __construct() {
-		parent::__construct( [ T_CLASS ], [ T_FUNCTION ], true );
+		parent::__construct( [ T_CLASS ], [ T_FUNCTION ], false );
 	}
 
 	/**
