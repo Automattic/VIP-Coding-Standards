@@ -104,3 +104,16 @@ class WalkerBadChildHasParamReferenceParentDoesNot extends Walker_Category {
 	public function get_number_of_root_elements( &$elements, ) {}
 	public function unset_children( &$element, &$children_elements ) {}
 }
+
+// It's perfectly valid for child classes to declare extra optional parameters.
+class WalkerOkayExtraOptionalParams extends Walker_CategoryDropdown {
+	public function start_lvl( &$output, $depth = 0, $args = array(), $extra_param = true ) {}
+	public function end_lvl( &$output, $depth = 0, $args = array(), ...$extra_param ) {}
+	public function start_el( &$output, $data_object, $depth = 0, $args = array(), $current_object_id = 0, $extra_param = array() ) {}
+	public function end_el( &$output, $data_object, $depth = 0, $args = array(), $extra_param = [], ) {}
+	public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output, $extra_param = 'default' ) {}
+	public function walk( $elements, $max_depth, $extra_param = null, ...$args ) {}
+	public function paged_walk( $elements, $max_depth, $page_num, $per_page, $extra_param = null, ...$args ) {}
+	public function get_number_of_root_elements( $elements, $extra_param = 10, ) {}
+	public function unset_children( $element, &$children_elements, $extra_param = '', ) {}
+}

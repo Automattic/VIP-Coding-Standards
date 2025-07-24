@@ -263,8 +263,11 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			$extra_params                  = array_slice( $childParams, $parentParamCount - $childParamCount );
 			$all_extra_params_have_default = true;
 			foreach ( $extra_params as $extra_param ) {
-				if ( array_key_exists( 'default', $extra_param ) === false || $extra_param['default'] !== 'true' ) {
+				if ( isset( $extra_param['default'] ) === false
+					&& $extra_param['variable_length'] === false
+				) {
 					$all_extra_params_have_default = false;
+					break;
 				}
 			}
 			if ( $all_extra_params_have_default === true ) {

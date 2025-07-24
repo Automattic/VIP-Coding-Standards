@@ -114,3 +114,25 @@ class WidgetBadChildHasParamReferenceParentDoesNot extends WP_Widget {
 	public function _register_one( &$number = -1 ) {}
 	public function save_settings( &$settings ) {}
 }
+
+// It's perfectly valid for child classes to declare extra optional parameters.
+class WidgetOkayExtraOptionalParams extends WP_Widget {
+	public function widget( $args, $instance, $extra_param = array() ) {}
+	public function update( $new_instance, $old_instance, ...$extra_param ) {}
+	public function form( $instance, $extra_param = true ) {}
+	public function WP_Widget( $id_base, $name, $widget_options = array(), $control_options = array(), $extra_param = array() ) {}
+	public function get_field_name( $field_name, $extra_param = 'default') {}
+	public function get_field_id( $field_name, $extra_param = 'id') {}
+	public function _register( $extra_param = false ) {}
+	public function _set( $number, $extra_param = 5 ) {}
+	public function _get_display_callback($paramA = 'A', $paramB = 'B' ) {}
+	public function _get_update_callback( $my_param = true, $my_param2 = 10) {}
+	public function _get_form_callback(...$extra_param) {}
+	public function is_preview( $is_preview = true ) {}
+	public function display_callback( $args, $widget_args = 1, $extra_param = [] ) {}
+	public function update_callback( $deprecated = 1, ...$extra_param ) {}
+	public function form_callback( $widget_args = 1, ...$extra_param ) {}
+	public function _register_one( $number = -1, $extra_param = []) {}
+	public function save_settings( $settings, $extra_param = 10.5) {}
+	public function get_settings( $settings = 'foo', $setting = self::BAR, ...$my_param ) {}
+}
