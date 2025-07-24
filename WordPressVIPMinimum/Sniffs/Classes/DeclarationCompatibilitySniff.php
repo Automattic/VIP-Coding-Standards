@@ -164,18 +164,28 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * List of grouped classes with same methods (as they extend the same parent class)
 	 *
+	 * @deprecated 3.1.0 This should never have been a public property and is now unused.
+	 *
 	 * @var array<string, string[]>
 	 */
-	public $checkClassesGroups = [
-		'Walker' => [
-			'Walker_Category_Checklist',
-			'Walker_Category',
-			'Walker_CategoryDropdown',
-			'Walker_PageDropdown',
-			'Walker_Nav_Menu',
-			'Walker_Page',
-			'Walker_Comment',
-		],
+	public $checkClassesGroups = [];
+
+	/**
+	 * Classes this sniff checks for being extended.
+	 *
+	 * @var array<string, string> Key is the name of a potentially extended class,
+	 *                            value the canonical name for the method signatures definition.
+	 */
+	private $extendedClassToSignatures = [
+		'WP_Widget'                 => 'WP_Widget',
+		'Walker'                    => 'Walker',
+		'Walker_Category_Checklist' => 'Walker',
+		'Walker_Category'           => 'Walker',
+		'Walker_CategoryDropdown'   => 'Walker',
+		'Walker_PageDropdown'       => 'Walker',
+		'Walker_Nav_Menu'           => 'Walker',
+		'Walker_Page'               => 'Walker',
+		'Walker_Comment'            => 'Walker',
 	];
 
 	/**
@@ -204,25 +214,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 			return;
 		}
 
-		// Need to define the originalParentClassName since we might override the parentClassName due to signature notations grouping.
+		// Store the originalParentClassName since we might override the parentClassName due to signature notations grouping.
 		$originalParentClassName = $parentClassName;
-
-		if ( array_key_exists( $parentClassName, $this->checkClasses ) === false ) {
+		if ( isset( $this->extendedClassToSignatures[ $parentClassName ] ) === false ) {
 			// This class does not extend a class we are interested in.
-			foreach ( $this->checkClassesGroups as $parent => $children ) {
-				// But it might be one of the grouped classes.
-				foreach ( $children as $child ) {
-					if ( $child === $parentClassName ) {
-						$parentClassName = $parent;
-						break 2;
-					}
-				}
-			}
-			if ( array_key_exists( $parentClassName, $this->checkClasses ) === false ) {
-				// This class really does not extend a class we are interested in.
-				return;
-			}
+			return;
 		}
+
+		$parentClassName = $this->extendedClassToSignatures[ $parentClassName ];
 
 		if ( array_key_exists( $methodName, $this->checkClasses[ $parentClassName ] ) === false &&
 			in_array( $methodName, $this->checkClasses[ $parentClassName ], true ) === false
