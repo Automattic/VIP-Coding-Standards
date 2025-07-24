@@ -284,8 +284,13 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					array_key_exists( 'default', $param ) === true &&
 					array_key_exists( 'default', $childParams[ $i ] ) === false
 				) || (
+					// Parameter in parent class has reference, child does not.
 					array_key_exists( 'pass_by_reference', $param ) === true &&
 					$param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
+				) || (
+					// Parameter in parent class does *not* have reference, child does.
+					array_key_exists( 'pass_by_reference', $param ) === false &&
+					$childParams[ $i ]['pass_by_reference'] === true
 				) || (
 					array_key_exists( 'variable_length', $param ) === true &&
 					$param['variable_length'] !== $childParams[ $i ]['variable_length']

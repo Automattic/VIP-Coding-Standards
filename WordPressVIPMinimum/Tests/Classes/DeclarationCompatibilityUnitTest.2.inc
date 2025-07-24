@@ -4,7 +4,7 @@
 
 class WalkerOkay extends Walker {
 	// Not a method we're interested in. Should be ignored.
-	public function custom_method($whatever, $you, $want = null) {}
+	public function custom_method($whatever, &$you, $want = null) {}
 
 	// Methods which are being checked.
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {}
@@ -91,4 +91,16 @@ class WalkerBadMissingReferencesToo extends Walker_Comment {
 class WalkerBadVariadicArgumentNotDeclaredAsVariadic extends Walker {
 	public function walk( $elements, $max_depth, $args ) {}
 	public function paged_walk( $elements, $max_depth, $page_num, $per_page, $args ) {}
+}
+
+class WalkerBadChildHasParamReferenceParentDoesNot extends Walker_Category {
+	public function start_lvl( &$output, &$depth = 0, $args = array() ) {}
+	public function end_lvl( &$output, $depth = 0, &$args = array() ) {}
+	public function start_el( &$output, $data_object, $depth = 0, $args = array(), &$current_object_id = 0 ) {}
+	public function end_el( &$output, $data_object, &$depth = 0, $args = array(), ) {}
+	public function display_element( &$element, &$children_elements, $max_depth, $depth, $args, &$output ) {}
+	public function walk( $elements, &$max_depth, ...$args ) {}
+	public function paged_walk( $elements, $max_depth, &$page_num, $per_page, ...$args ) {}
+	public function get_number_of_root_elements( &$elements, ) {}
+	public function unset_children( &$element, &$children_elements ) {}
 }

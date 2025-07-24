@@ -4,7 +4,7 @@
 
 class WidgetOkay extends WP_Widget {
 	// Not a method we're interested in. Should be ignored.
-	public function register_one($whatever, $you, $want = null) {}
+	public function register_one($whatever, &$you, $want = null) {}
 
 	// Methods which are being checked.
 	public function widget( $args, $instance ) {}
@@ -98,4 +98,19 @@ class WidgetBadOptionalParamChangedToRequiredMissingDefaultValue extends WP_Widg
 	public function update_callback( $deprecated ) {}
 	public function form_callback( $widget_args ) {}
 	public function _register_one( $number ) {}
+}
+
+class WidgetBadChildHasParamReferenceParentDoesNot extends WP_Widget {
+	public function widget( $args, &$instance ) {}
+	public function update( &$new_instance, $old_instance ) {}
+	public function form( &$instance ) {}
+	public function WP_Widget( $id_base, &$name, $widget_options = array(), &$control_options = array() ) {}
+	public function get_field_name( &$field_name ) {}
+	public function get_field_id( &$field_name ) {}
+	public function _set( &$number ) {}
+	public function display_callback( &$args, $widget_args = 1 ) {}
+	public function update_callback( &$deprecated = 1 ) {}
+	public function form_callback( &$widget_args = 1 ) {}
+	public function _register_one( &$number = -1 ) {}
+	public function save_settings( &$settings ) {}
 }
