@@ -259,6 +259,36 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$parentParams     = $this->methodSignatures[ $parentClassName ][ $methodName ];
 		$parentParamCount = count( $parentParams );
 
+		/*
+		 * If there are parameters, verify if the last parameter of both the parent and the child are variadic.
+		 * Only the last parameter can be variadic and if the parent has this, the child must also,
+		 * independently of potential extra optional parameters having been inserted before that last parameter.
+		 *
+		 * Also note that a child can make the last parameter variadic, even if the parent parameter was not.
+		 * This will no longer trigger a warning since PHP 8.0.
+		 */
+		if ( $childParamCount > 0 && $parentParamCount > 0 ) {
+			$childLastParam  = $childParams[ $childParamCount - 1 ];
+			$parentLastParam = $parentParams[ array_keys( $parentParams )[ $parentParamCount - 1 ] ];
+
+			if ( ( isset( $parentLastParam['variable_length'] ) === true && $parentLastParam['variable_length'] === true )
+				&& $childLastParam['variable_length'] !== true
+			) {
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+				return;
+			}
+		}
+
+		if ( $childParamCount > 0 ) {
+			// Check that no other parameters in the child signature are declared as variadic.
+			for ( $i = 0; $i < ( $childParamCount - 1 ); $i++ ) {
+				if ( $childParams[ $i ]['variable_length'] === true ) {
+					$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+					return;
+				}
+			}
+		}
+
 		if ( $childParamCount > $parentParamCount ) {
 			$extra_params                  = array_slice( $childParams, $parentParamCount - $childParamCount );
 			$all_extra_params_have_default = true;
@@ -284,8 +314,9 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		foreach ( $parentParams as $key => $param ) {
 			if (
 				(
-					array_key_exists( 'default', $param ) === true &&
-					array_key_exists( 'default', $childParams[ $i ] ) === false
+					array_key_exists( 'default', $param ) === true
+					&& array_key_exists( 'default', $childParams[ $i ] ) === false
+					&& $childParams[ $i ]['variable_length'] === false
 				) || (
 					// Parameter in parent class has reference, child does not.
 					array_key_exists( 'pass_by_reference', $param ) === true &&
@@ -294,9 +325,6 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					// Parameter in parent class does *not* have reference, child does.
 					array_key_exists( 'pass_by_reference', $param ) === false &&
 					$childParams[ $i ]['pass_by_reference'] === true
-				) || (
-					array_key_exists( 'variable_length', $param ) === true &&
-					$param['variable_length'] !== $childParams[ $i ]['variable_length']
 				)
 			) {
 				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );

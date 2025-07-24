@@ -117,3 +117,23 @@ class WalkerOkayExtraOptionalParams extends Walker_CategoryDropdown {
 	public function get_number_of_root_elements( $elements, $extra_param = 10, ) {}
 	public function unset_children( $element, &$children_elements, $extra_param = '', ) {}
 }
+
+class WalkerOkayChildCanMakeLastParamVariadic extends Walker_Page {
+	public function start_lvl( &$output, $depth = 0, ...$args ) {}
+	public function end_lvl( &$output, $depth = 0, ...$args ) {}
+	public function start_el( &$output, $data_object, $depth = 0, $args = array(), ...$current_object_id ) {}
+	public function end_el( &$output, $data_object, $depth = 0, ...$args, ) {}
+	public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &...$output ) {}
+	public function get_number_of_root_elements( ...$elements, ) {}
+	public function unset_children( $element, &...$children_elements ) {}
+}
+
+class WalkerBadVariadicParamNotLast extends Walker_Nav_Menu {
+	public function start_lvl( &$output, ...$depth, $args = array() ) {}
+	public function end_lvl( &...$output, $depth = 0, $args = array() ) {}
+	public function start_el( &$output, ...$data_object, $depth = 0, $args = array(), $current_object_id = 0 ) {}
+	public function end_el( &$output, $data_object, ...$depth, $args = array(), ) {}
+	public function display_element( $element, &$children_elements, ...$max_depth, $depth, $args, &$output ) {}
+	public function get_number_of_root_elements( ...$elements, $extra_param = 10, ) {}
+	public function unset_children( ...$element, &$children_elements ) {}
+}

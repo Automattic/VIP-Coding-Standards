@@ -136,3 +136,32 @@ class WidgetOkayExtraOptionalParams extends WP_Widget {
 	public function save_settings( $settings, $extra_param = 10.5) {}
 	public function get_settings( $settings = 'foo', $setting = self::BAR, ...$my_param ) {}
 }
+
+class WidgetOkayChildCanMakeLastParamVariadic extends WP_Widget {
+	public function widget( $args, ...$instance ) {}
+	public function update( $new_instance, ...$old_instance ) {}
+	public function form( ...$instance ) {}
+	public function WP_Widget( $id_base, $name, $widget_options = array(), ...$control_options ) {}
+	public function get_field_name( ...$field_name ) {}
+	public function get_field_id( ...$field_name ) {}
+	public function _set( ...$number ) {}
+	public function display_callback( $args, ...$widget_args ) {}
+	public function update_callback( ...$deprecated ) {}
+	public function form_callback( ...$widget_args ) {}
+	public function _register_one( ...$number ) {}
+	public function save_settings( ...$settings ) {}
+}
+
+class WidgetBadVariadicParamNotLast extends WP_Widget {
+	public function widget( ...$args, $instance ) {}
+	public function update( ...$new_instance, $old_instance ) {}
+	public function WP_Widget( $id_base, $name, ...$widget_options = array(), $control_options = array() ) {}
+	public function get_field_name( ...$field_name, $extra_param = null ) {}
+	public function get_field_id( ...$field_name, $extra_param = null ) {}
+	public function _set( ...$number, $extra_param = null ) {}
+	public function display_callback( ...$args, $widget_args = 1 ) {}
+	public function update_callback( ...$deprecated, $extra_param = null ) {}
+	public function form_callback( ...$widget_args, $extra_param = null ) {}
+	public function _register_one( ...$number, $extra_param = null ) {}
+	public function save_settings( ...$settings, $extra_param = null ) {}
+}
