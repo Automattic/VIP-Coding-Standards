@@ -20,13 +20,6 @@ use PHPCSUtils\Utils\ObjectDeclarations;
 class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 	/**
-	 * The name of the class we are currently checking.
-	 *
-	 * @var string
-	 */
-	private $currentClass = '';
-
-	/**
 	 * A list of classes and methods to check.
 	 *
 	 * @var array<string, array<string, array<int|string, string|array<string, bool|string>>>>
@@ -203,12 +196,6 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 */
 	protected function processTokenWithinScope( File $phpcsFile, $stackPtr, $currScope ) {
 
-		$className = ObjectDeclarations::getName( $phpcsFile, $currScope );
-
-		if ( $className !== $this->currentClass ) {
-			$this->currentClass = $className;
-		}
-
 		$methodName = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
 
 		$parentClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $currScope );
@@ -262,7 +249,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		}
 
 		if ( count( $signatureParams ) !== count( $parentSignature ) ) {
-			$this->addError( $phpcsFile, $stackPtr, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
+			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
 			return;
 		}
 
@@ -281,7 +268,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 						$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
 					)
 				) {
-					$this->addError( $phpcsFile, $stackPtr, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
+					$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
 					return;
 				}
 			}
@@ -294,6 +281,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 *
 	 * @param File   $phpcsFile              The PHP_CodeSniffer file where the token was found.
 	 * @param int    $stackPtr               The position of the current token in the stack.
+	 * @param int    $currScope              A pointer to the start of the scope.
 	 * @param string $parentClassName        The name of the extended (parent) class.
 	 * @param string $methodName             The name of the method currently being examined.
 	 * @param array  $currentMethodSignature The list of params and their options of the method which is being examined.
@@ -301,11 +289,14 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 *
 	 * @return void
 	 */
-	private function addError( File $phpcsFile, $stackPtr, $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature ) {
+	private function addError( File $phpcsFile, $stackPtr, $currScope, $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature ) {
+		$currentClassName = ObjectDeclarations::getName( $phpcsFile, $currScope );
 
-		$currentSignature = sprintf( '%s::%s(%s)', $this->currentClass, $methodName, implode( ', ', $this->generateParamList( $currentMethodSignature ) ) );
+		$currentSignature = implode( ', ', $this->generateParamList( $currentMethodSignature ) );
+		$currentSignature = sprintf( '%s::%s(%s)', $currentClassName, $methodName, $currentSignature );
 
-		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, implode( ', ', $this->generateParamList( $parentMethodSignature ) ) );
+		$parentSignature = implode( ', ', $this->generateParamList( $parentMethodSignature ) );
+		$parentSignature = sprintf( '%s::%s(%s)', $parentClassName, $methodName, $parentSignature );
 
 		$message = 'Declaration of `%s` should be compatible with `%s`.';
 		$data    = [ $currentSignature, $parentSignature ];
