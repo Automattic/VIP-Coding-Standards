@@ -262,7 +262,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		}
 
 		if ( count( $signatureParams ) !== count( $parentSignature ) ) {
-			$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
+			$this->addError( $phpcsFile, $stackPtr, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
 			return;
 		}
 
@@ -281,7 +281,7 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 						$param['variable_length'] !== $signatureParams[ $i ]['variable_length']
 					)
 				) {
-					$this->addError( $originalParentClassName, $methodName, $signatureParams, $parentSignature, $phpcsFile, $stackPtr );
+					$this->addError( $phpcsFile, $stackPtr, $originalParentClassName, $methodName, $signatureParams, $parentSignature );
 					return;
 				}
 			}
@@ -292,16 +292,16 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	/**
 	 * Generates an error with nice current and parent class method notations
 	 *
+	 * @param File   $phpcsFile              The PHP_CodeSniffer file where the token was found.
+	 * @param int    $stackPtr               The position of the current token in the stack.
 	 * @param string $parentClassName        The name of the extended (parent) class.
 	 * @param string $methodName             The name of the method currently being examined.
 	 * @param array  $currentMethodSignature The list of params and their options of the method which is being examined.
 	 * @param array  $parentMethodSignature  The list of params and their options of the parent class method.
-	 * @param File   $phpcsFile              The PHP_CodeSniffer file where the token was found.
-	 * @param int    $stackPtr               The position of the current token in the stack.
 	 *
 	 * @return void
 	 */
-	private function addError( $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature, $phpcsFile, $stackPtr ) {
+	private function addError( File $phpcsFile, $stackPtr, $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature ) {
 
 		$currentSignature = sprintf( '%s::%s(%s)', $this->currentClass, $methodName, implode( ', ', $this->generateParamList( $currentMethodSignature ) ) );
 
