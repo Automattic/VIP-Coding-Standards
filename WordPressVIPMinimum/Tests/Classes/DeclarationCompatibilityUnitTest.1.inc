@@ -165,3 +165,9 @@ class WidgetBadVariadicParamNotLast extends WP_Widget {
 	public function _register_one( ...$number, $extra_param = null ) {}
 	public function save_settings( ...$settings, $extra_param = null ) {}
 }
+
+// The fact that all extra parameters are optional, should not hide other errors.
+class WidgetBadExtraOptionalParamsANDOtherError extends WP_Widget {
+	public function update_callback( $deprecated, $extra_param = [] ) {} // Missing default value for $deprecated.
+	public function form_callback( &$widget_args, ...$extra_param ) {} // Invalid reference for $widget_args.
+}

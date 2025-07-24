@@ -89,6 +89,8 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 					164 => 1,
 					165 => 1,
 					166 => 1,
+					171 => 1,
+					172 => 1,
 				];
 
 			case 'DeclarationCompatibilityUnitTest.2.inc':
@@ -142,6 +144,8 @@ class DeclarationCompatibilityUnitTest extends AbstractSniffUnitTest {
 					136 => 1,
 					137 => 1,
 					138 => 1,
+					143 => 1,
+					144 => 1,
 				];
 
 			default:

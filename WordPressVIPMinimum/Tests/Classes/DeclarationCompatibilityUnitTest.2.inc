@@ -137,3 +137,9 @@ class WalkerBadVariadicParamNotLast extends Walker_Nav_Menu {
 	public function get_number_of_root_elements( ...$elements, $extra_param = 10, ) {}
 	public function unset_children( ...$element, &$children_elements ) {}
 }
+
+// The fact that all extra parameters are optional, should not hide other errors.
+class WalkerBadExtraOptionalParamsANDOtherError extends Walker_Category_Checklist {
+	public function start_lvl( $output, $depth = 0, $args = array(), $extra_param = true ) {} // Missing reference for $output.
+	public function end_lvl( &$output, $depth, $args = array(), ...$extra_param ) {} // Missing default value for $depth.
+}

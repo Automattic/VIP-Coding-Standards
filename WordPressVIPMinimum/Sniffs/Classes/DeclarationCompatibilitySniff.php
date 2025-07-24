@@ -300,12 +300,12 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 					break;
 				}
 			}
-			if ( $all_extra_params_have_default === true ) {
-				return; // We're good.
-			}
-		}
 
-		if ( $childParamCount !== $parentParamCount ) {
+			if ( $all_extra_params_have_default === false ) {
+				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
+				return;
+			}
+		} elseif ( $childParamCount !== $parentParamCount ) {
 			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassName, $methodName, $childParams, $parentParams );
 			return;
 		}
