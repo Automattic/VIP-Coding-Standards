@@ -18,3 +18,20 @@ class ExtendsFullyQualifiedClass extends \Different\NS\WP_Widget {
 class ExtendsPartiallyQualifiedClass extends Also\Different\NS\Walker_Page {
 	function save_settings() {}
 }
+
+class NoMethods extends WP_Widget {}
+
+class WidgetOkayNestedFunctionIsNotMethod extends WP_Widget {
+	public function hasNested() {
+		// Functions can be declared nested within other functions. That doesn't make them methods.
+		function is_preview($extra_param) {}
+	}
+}
+
+class WidgetOkayNestedClassDoesNotExtend extends WP_Widget {
+	function hasNestedClass() {
+		return new class {
+			public function display_callback() {}
+		};
+	}
+}

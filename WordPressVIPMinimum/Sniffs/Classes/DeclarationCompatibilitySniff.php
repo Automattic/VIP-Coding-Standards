@@ -10,14 +10,14 @@
 namespace WordPressVIPMinimum\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Class WordPressVIPMinimum_Sniffs_Classes_DeclarationCompatibilitySniff
  */
-class DeclarationCompatibilitySniff extends AbstractScopeSniff {
+class DeclarationCompatibilitySniff implements Sniff {
 
 	/**
 	 * A list of classes and methods to check.
@@ -231,9 +231,11 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	private $classToProperCase = [];
 
 	/**
-	 * Constructs the test with the tokens it wishes to listen for.
+	 * Returns the token types that this sniff is interested in.
+	 *
+	 * @return array<int|string>
 	 */
-	public function __construct() {
+	public function register() {
 		// Lowercase all names to allow for correct comparisons, as PHP treats class/function names case-insensitively.
 		// But also store translation tables to be able to get the proper case.
 		foreach ( $this->methodSignatures as $key => $value ) {
@@ -247,21 +249,20 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 		$this->classToProperCase         = array_change_key_case( array_combine( $classNames, $classNames ), CASE_LOWER );
 		$this->extendedClassToSignatures = array_change_key_case( $this->extendedClassToSignatures, CASE_LOWER );
 
-		parent::__construct( [ T_CLASS ], [ T_FUNCTION ], false );
+		return [ T_CLASS ];
 	}
 
 	/**
-	 * Processes this test when one of its tokens is encountered.
+	 * Processes the tokens that this sniff is interested in.
 	 *
-	 * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
-	 * @param int  $currScope A pointer to the start of the scope.
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	protected function processTokenWithinScope( File $phpcsFile, $stackPtr, $currScope ) {
-
-		$parentClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $currScope );
+	public function process( File $phpcsFile, $stackPtr ) {
+		$parentClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
 		if ( $parentClassName === false ) {
 			// This class does not extend any other class.
 			return;
@@ -275,95 +276,101 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		// Store the originalParentClassName since we might override the parentClassName due to signature notations grouping.
 		$originalParentClassNamePC = $this->classToProperCase[ $parentClassNameLC ];
+		$parentClassName           = $this->extendedClassToSignatures[ $parentClassNameLC ];
 
-		$parentClassName = $this->extendedClassToSignatures[ $parentClassNameLC ];
-		$methodName      = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
-		$methodNameLC    = strtolower( $methodName );
-		if ( isset( $this->methodSignatures[ $parentClassName ][ $methodNameLC ] ) === false ) {
-			// This method is not one we are interested in.
+		$methods = ObjectDeclarations::getDeclaredMethods( $phpcsFile, $stackPtr );
+		if ( empty( $methods ) ) {
 			return;
 		}
 
-		$methodNamePC = $this->methodToProperCase[ $parentClassName ][ $methodNameLC ];
-
-		$childParams     = FunctionDeclarations::getParameters( $phpcsFile, $stackPtr );
-		$childParamCount = count( $childParams );
-
-		$parentParams     = $this->methodSignatures[ $parentClassName ][ $methodNameLC ];
-		$parentParamCount = count( $parentParams );
-
-		/*
-		 * If there are parameters, verify if the last parameter of both the parent and the child are variadic.
-		 * Only the last parameter can be variadic and if the parent has this, the child must also,
-		 * independently of potential extra optional parameters having been inserted before that last parameter.
-		 *
-		 * Also note that a child can make the last parameter variadic, even if the parent parameter was not.
-		 * This will no longer trigger a warning since PHP 8.0.
-		 */
-		if ( $childParamCount > 0 && $parentParamCount > 0 ) {
-			$childLastParam  = $childParams[ $childParamCount - 1 ];
-			$parentLastParam = $parentParams[ array_keys( $parentParams )[ $parentParamCount - 1 ] ];
-
-			if ( ( isset( $parentLastParam['variable_length'] ) === true && $parentLastParam['variable_length'] === true )
-				&& $childLastParam['variable_length'] !== true
-			) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
-				return;
+		foreach ( $methods as $methodName => $functionPtr ) {
+			$methodNameLC = strtolower( $methodName );
+			if ( isset( $this->methodSignatures[ $parentClassName ][ $methodNameLC ] ) === false ) {
+				// This method is not one we are interested in.
+				continue;
 			}
-		}
 
-		if ( $childParamCount > 0 ) {
-			// Check that no other parameters in the child signature are declared as variadic.
-			for ( $i = 0; $i < ( $childParamCount - 1 ); $i++ ) {
-				if ( $childParams[ $i ]['variable_length'] === true ) {
-					$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
-					return;
-				}
-			}
-		}
+			$methodNamePC = $this->methodToProperCase[ $parentClassName ][ $methodNameLC ];
 
-		if ( $childParamCount > $parentParamCount ) {
-			$extra_params                  = array_slice( $childParams, $parentParamCount - $childParamCount );
-			$all_extra_params_have_default = true;
-			foreach ( $extra_params as $extra_param ) {
-				if ( isset( $extra_param['default'] ) === false
-					&& $extra_param['variable_length'] === false
+			$childParams     = FunctionDeclarations::getParameters( $phpcsFile, $functionPtr );
+			$childParamCount = count( $childParams );
+
+			$parentParams     = $this->methodSignatures[ $parentClassName ][ $methodNameLC ];
+			$parentParamCount = count( $parentParams );
+
+			/*
+			 * If there are parameters, verify if the last parameter of both the parent and the child are variadic.
+			 * Only the last parameter can be variadic and if the parent has this, the child must also,
+			 * independently of potential extra optional parameters having been inserted before that last parameter.
+			 *
+			 * Also note that a child can make the last parameter variadic, even if the parent parameter was not.
+			 * This will no longer trigger a warning since PHP 8.0.
+			 */
+			if ( $childParamCount > 0 && $parentParamCount > 0 ) {
+				$childLastParam  = $childParams[ $childParamCount - 1 ];
+				$parentLastParam = $parentParams[ array_keys( $parentParams )[ $parentParamCount - 1 ] ];
+
+				if ( ( isset( $parentLastParam['variable_length'] ) === true && $parentLastParam['variable_length'] === true )
+					&& $childLastParam['variable_length'] !== true
 				) {
-					$all_extra_params_have_default = false;
-					break;
+					$this->addError( $phpcsFile, $functionPtr, $stackPtr, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
+					continue;
 				}
 			}
 
-			if ( $all_extra_params_have_default === false ) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
-				return;
+			if ( $childParamCount > 0 ) {
+				// Check that no other parameters in the child signature are declared as variadic.
+				for ( $i = 0; $i < ( $childParamCount - 1 ); $i++ ) {
+					if ( $childParams[ $i ]['variable_length'] === true ) {
+						$this->addError( $phpcsFile, $functionPtr, $stackPtr, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
+						continue 2;
+					}
+				}
 			}
-		} elseif ( $childParamCount !== $parentParamCount ) {
-			$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
-			return;
-		}
 
-		$i = 0;
-		foreach ( $parentParams as $key => $param ) {
-			if (
-				(
-					array_key_exists( 'default', $param ) === true
-					&& array_key_exists( 'default', $childParams[ $i ] ) === false
-					&& $childParams[ $i ]['variable_length'] === false
-				) || (
-					// Parameter in parent class has reference, child does not.
-					array_key_exists( 'pass_by_reference', $param ) === true
-					&& $param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
-				) || (
-					// Parameter in parent class does *not* have reference, child does.
-					array_key_exists( 'pass_by_reference', $param ) === false
-					&& $childParams[ $i ]['pass_by_reference'] === true
-				)
-			) {
-				$this->addError( $phpcsFile, $stackPtr, $currScope, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
-				return;
+			if ( $childParamCount > $parentParamCount ) {
+				$extra_params                  = array_slice( $childParams, $parentParamCount - $childParamCount );
+				$all_extra_params_have_default = true;
+				foreach ( $extra_params as $extra_param ) {
+					if ( isset( $extra_param['default'] ) === false
+						&& $extra_param['variable_length'] === false
+					) {
+						$all_extra_params_have_default = false;
+						break;
+					}
+				}
+
+				if ( $all_extra_params_have_default === false ) {
+					$this->addError( $phpcsFile, $functionPtr, $stackPtr, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
+					continue;
+				}
+			} elseif ( $childParamCount !== $parentParamCount ) {
+				$this->addError( $phpcsFile, $functionPtr, $stackPtr, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
+				continue;
 			}
-			++$i;
+
+			$i = 0;
+			foreach ( $parentParams as $key => $param ) {
+				if (
+					(
+						array_key_exists( 'default', $param ) === true
+						&& array_key_exists( 'default', $childParams[ $i ] ) === false
+						&& $childParams[ $i ]['variable_length'] === false
+					) || (
+						// Parameter in parent class has reference, child does not.
+						array_key_exists( 'pass_by_reference', $param ) === true
+						&& $param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
+					) || (
+						// Parameter in parent class does *not* have reference, child does.
+						array_key_exists( 'pass_by_reference', $param ) === false
+						&& $childParams[ $i ]['pass_by_reference'] === true
+					)
+				) {
+					$this->addError( $phpcsFile, $functionPtr, $stackPtr, $originalParentClassNamePC, $methodNamePC, $childParams, $parentParams );
+					continue 2;
+				}
+				++$i;
+			}
 		}
 	}
 
@@ -371,8 +378,8 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 	 * Generates an error with nice current and parent class method notations
 	 *
 	 * @param File   $phpcsFile              The PHP_CodeSniffer file where the token was found.
-	 * @param int    $stackPtr               The position of the current token in the stack.
-	 * @param int    $currScope              A pointer to the start of the scope.
+	 * @param int    $stackPtr               The position of the current T_FUNCTION token in the stack.
+	 * @param int    $currScope              A pointer to the start of the OO scope.
 	 * @param string $parentClassName        The name of the extended (parent) class.
 	 * @param string $methodName             The name of the method currently being examined.
 	 * @param array  $currentMethodSignature The list of params and their options of the method which is being examined.
@@ -433,12 +440,4 @@ class DeclarationCompatibilitySniff extends AbstractScopeSniff {
 
 		return $paramList;
 	}
-
-	/**
-	 * Do nothing outside the scope. Has to be implemented accordingly to parent abstract class.
-	 *
-	 * @param File $phpcsFile PHPCS File.
-	 * @param int  $stackPtr  Stack position.
-	 */
-	public function processTokenOutsideScope( File $phpcsFile, $stackPtr ) {}
 }
