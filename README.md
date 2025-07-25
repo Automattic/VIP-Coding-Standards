@@ -16,11 +16,11 @@ The rulesets use rules from the [WordPress Coding Standards](https://github.com/
 ## Minimal requirements
 
 * PHP 5.4+
-* [PHPCS 3.8.0+](https://github.com/PHPCSStandards/PHP_CodeSniffer/releases)
-* [PHPCSUtils 1.0.9+](https://github.com/PHPCSStandards/PHPCSUtils)
-* [PHPCSExtra 1.2.1+](https://github.com/PHPCSStandards/PHPCSExtra)
-* [WPCS 3.0.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
-* [VariableAnalysis 2.11.17+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
+* [PHPCS 3.13.2+](https://github.com/PHPCSStandards/PHP_CodeSniffer/releases)
+* [PHPCSUtils 1.1.0+](https://github.com/PHPCSStandards/PHPCSUtils)
+* [PHPCSExtra 1.4.0+](https://github.com/PHPCSStandards/PHPCSExtra)
+* [WPCS 3.1.0+](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases)
+* [VariableAnalysis 2.12.0+](https://github.com/sirbrillig/phpcs-variable-analysis/releases)
 
 ## Installation
 
