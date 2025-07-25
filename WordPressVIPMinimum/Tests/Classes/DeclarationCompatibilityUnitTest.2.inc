@@ -32,7 +32,7 @@ final class WalkerOkayDefaultValueWhereParentHasNone extends \Walker_Page {
 	public function unset_children( $element = new stdClass, &$children_elements = array(), ) {}
 }
 
-class WalkerOkayDifferentDefaultValue extends Walker_Category_Checklist {
+$WalkerOkayDifferentDefaultValue = new class() extends Walker_Category_Checklist {
 	public function start_lvl( &$output, $depth = 2, $args = null ) {}
 	public function end_lvl( &$output, $depth = 1, $args = new stdClass ) {}
 	public function start_el( &$output, $data_object, $depth = 5, $args = null, $current_object_id = 10 ) {}
@@ -62,7 +62,7 @@ readonly class WalkerBadTooFewParamsNotAllParams extends walker_categorydropdown
 	public function unset_children( $element ) {} // Bad, missing $children_elements param.
 }
 
-class WalkerBadExtraRequiredParams extends \Walker_PageDropdown {
+$WalkerBadExtraRequiredParams = new #[MyAttribute] readonly class extends \Walker_PageDropdown {
 	public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output, $extra_param ) {}
 	public function get_number_of_root_elements( $elements, $extra_param, ) {}
 	public function unset_children( $element, &$children_elements, $extra_paramA, $extra_paramB ) {}

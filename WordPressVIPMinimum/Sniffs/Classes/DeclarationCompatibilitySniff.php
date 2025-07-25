@@ -249,7 +249,10 @@ class DeclarationCompatibilitySniff implements Sniff {
 		$this->classToProperCase         = array_change_key_case( array_combine( $classNames, $classNames ), CASE_LOWER );
 		$this->extendedClassToSignatures = array_change_key_case( $this->extendedClassToSignatures, CASE_LOWER );
 
-		return [ T_CLASS ];
+		return [
+			T_CLASS,
+			T_ANON_CLASS,
+		];
 	}
 
 	/**
@@ -388,7 +391,11 @@ class DeclarationCompatibilitySniff implements Sniff {
 	 * @return void
 	 */
 	private function addError( File $phpcsFile, $stackPtr, $currScope, $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature ) {
-		$currentClassName = ObjectDeclarations::getName( $phpcsFile, $currScope );
+		$tokens           = $phpcsFile->getTokens();
+		$currentClassName = '[AnonymousClass]';
+		if ( $tokens[ $currScope ]['code'] !== T_ANON_CLASS ) {
+			$currentClassName = ObjectDeclarations::getName( $phpcsFile, $currScope );
+		}
 
 		$currentSignature = implode( ', ', $this->generateParamList( $currentMethodSignature ) );
 		$currentSignature = sprintf( '%s::%s(%s)', $currentClassName, $methodName, $currentSignature );

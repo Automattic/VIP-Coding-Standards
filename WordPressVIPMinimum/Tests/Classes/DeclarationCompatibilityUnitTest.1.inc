@@ -41,7 +41,7 @@ readonly class WidgetOkayDefaultValueWhereParentHasNone extends WP_Widget {
 	public function save_settings( $settings = array() ) {}
 }
 
-class WidgetOkayDifferentDefaultValue extends \WP_Widget {
+$WidgetOkayDifferentDefaultValue = new #[MyAttribute] readonly class extends \WP_Widget {
 	public function WP_Widget( $id_base, $name, $widget_options = null, $control_options = null ) {}
 	public function display_callback( $args, $widget_args = [] ) {}
 	public function update_callback( $deprecated = true, ) {}
@@ -71,7 +71,7 @@ final class WidgetBadTooFewParamsNotAllParams extends WP_WIDGET {
 	public function display_callback( $args ) {} // Bad, missing $widget_args param.
 }
 
-class WidgetBadExtraRequiredParamsAndMethodNamesAreCaseInsensitive extends WP_Widget {
+$WidgetBadExtraRequiredParamsAndMethodNamesAreCaseInsensitive = new class() extends WP_Widget {
 	public function Widget( $args, $instance, $extra_param ) {}
 	public function Update( $new_instance, $old_instance, $extra_param ) {}
 	public function Form( $intance, $extra_param ) {}
@@ -170,4 +170,20 @@ class WidgetBadVariadicParamNotLast extends Wp_widget {
 class WidgetBadExtraOptionalParamsANDOtherError extends WP_Widget {
 	public function update_callback( $deprecated, $extra_param = [] ) {} // Missing default value for $deprecated.
 	public function form_callback( &$widget_args, ...$extra_param ) {} // Invalid reference for $widget_args.
+}
+
+class WidgetBadNestedClassExtends {
+	function nested() {
+		return new class extends WP_Widget {
+			public function display_callback() {}
+		};
+	}
+}
+
+class WidgetBadNestedClassAlsoExtends extends WP_Widget {
+	function nested() {
+		return new class extends WP_Widget {
+			public function display_callback() {}
+		};
+	}
 }
