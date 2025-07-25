@@ -20,24 +20,6 @@ use PHPCSUtils\Utils\ObjectDeclarations;
 class DeclarationCompatibilitySniff implements Sniff {
 
 	/**
-	 * A list of classes and methods to check.
-	 *
-	 * @deprecated 3.1.0 This should never have been a public property.
-	 *
-	 * @var array<string, array<string, array<int|string, string|array<string, bool|string>>>>
-	 */
-	public $checkClasses = [];
-
-	/**
-	 * List of grouped classes with same methods (as they extend the same parent class).
-	 *
-	 * @deprecated 3.1.0 This should never have been a public property.
-	 *
-	 * @var array<string, string[]>
-	 */
-	public $checkClassesGroups = [];
-
-	/**
 	 * A list of classes and information on the methods to check for those classes.
 	 *
 	 * @var array<string, array<string, array<string, array<string, bool|string>>>>
