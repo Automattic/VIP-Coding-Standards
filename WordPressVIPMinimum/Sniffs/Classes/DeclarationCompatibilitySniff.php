@@ -29,7 +29,7 @@ class DeclarationCompatibilitySniff implements Sniff {
 	public $checkClasses = [];
 
 	/**
-	 * List of grouped classes with same methods (as they extend the same parent class)
+	 * List of grouped classes with same methods (as they extend the same parent class).
 	 *
 	 * @deprecated 3.1.0 This should never have been a public property.
 	 *
@@ -379,15 +379,16 @@ class DeclarationCompatibilitySniff implements Sniff {
 	}
 
 	/**
-	 * Generates an error with nice current and parent class method notations
+	 * Generates an error with nice current and parent class method notations.
 	 *
-	 * @param File   $phpcsFile              The PHP_CodeSniffer file where the token was found.
-	 * @param int    $stackPtr               The position of the current T_FUNCTION token in the stack.
-	 * @param int    $currScope              A pointer to the start of the OO scope.
-	 * @param string $parentClassName        The name of the extended (parent) class.
-	 * @param string $methodName             The name of the method currently being examined.
-	 * @param array  $currentMethodSignature The list of params and their options of the method which is being examined.
-	 * @param array  $parentMethodSignature  The list of params and their options of the parent class method.
+	 * @param File                                      $phpcsFile              The PHP_CodeSniffer file where the token was found.
+	 * @param int                                       $stackPtr               The position of the current T_FUNCTION token in the stack.
+	 * @param int                                       $currScope              A pointer to the start of the OO scope.
+	 * @param string                                    $parentClassName        The name of the extended (parent) class.
+	 * @param string                                    $methodName             The name of the method currently being examined.
+	 * @param array<int, array<string, mixed>>          $currentMethodSignature The list of params and their options of the method
+	 *                                                                          which is being examined.
+	 * @param array<string, array<string, bool|string>> $parentMethodSignature  The list of params and their options of the parent class method.
 	 *
 	 * @return void
 	 */
