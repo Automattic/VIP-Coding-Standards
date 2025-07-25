@@ -353,19 +353,20 @@ class DeclarationCompatibilitySniff implements Sniff {
 			}
 
 			$i = 0;
-			foreach ( $parentParams as $key => $param ) {
+			foreach ( $parentParams as $param ) {
 				if (
 					(
-						array_key_exists( 'default', $param ) === true
-						&& array_key_exists( 'default', $childParams[ $i ] ) === false
+						isset( $param['default'] ) === true
+						&& isset( $childParams[ $i ]['default'] ) === false
 						&& $childParams[ $i ]['variable_length'] === false
 					) || (
 						// Parameter in parent class has reference, child does not.
-						array_key_exists( 'pass_by_reference', $param ) === true
+						isset( $param['pass_by_reference'] ) === true
 						&& $param['pass_by_reference'] !== $childParams[ $i ]['pass_by_reference']
 					) || (
 						// Parameter in parent class does *not* have reference, child does.
-						array_key_exists( 'pass_by_reference', $param ) === false
+						( isset( $param['pass_by_reference'] ) === false
+						|| $param['pass_by_reference'] === false )
 						&& $childParams[ $i ]['pass_by_reference'] === true
 					)
 				) {
@@ -424,21 +425,21 @@ class DeclarationCompatibilitySniff implements Sniff {
 				continue;
 			}
 
-			if ( array_key_exists( 'name', $options ) === true ) {
+			if ( isset( $options['name'] ) === true ) {
 				$paramName = $options['name'];
 			} else {
 				$paramName .= $param;
 			}
 
-			if ( array_key_exists( 'variable_length', $options ) === true && $options['variable_length'] === true ) {
+			if ( isset( $options['variable_length'] ) === true && $options['variable_length'] === true ) {
 				$paramName = '...' . $paramName;
 			}
 
-			if ( array_key_exists( 'pass_by_reference', $options ) === true && $options['pass_by_reference'] === true ) {
+			if ( isset( $options['pass_by_reference'] ) === true && $options['pass_by_reference'] === true ) {
 				$paramName = '&' . $paramName;
 			}
 
-			if ( array_key_exists( 'default', $options ) === true && empty( $options['default'] ) === false ) {
+			if ( isset( $options['default'] ) === true && empty( $options['default'] ) === false ) {
 				$paramName .= ' = ' . trim( $options['default'] );
 			}
 
