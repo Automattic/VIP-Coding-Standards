@@ -10,8 +10,8 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 use WordPressCS\WordPress\Helpers\PrintingFunctionsTrait;
-use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
  * Flag functions that don't return anything, yet are wrapped in an escaping function call.
@@ -20,37 +20,40 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  *
  * @uses \WordPressCS\WordPress\Helpers\PrintingFunctionsTrait::$customPrintingFunctions
  */
-class EscapingVoidReturnFunctionsSniff extends Sniff {
+class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 
 	use PrintingFunctionsTrait;
 
 	/**
-	 * Returns an array of tokens this test wants to listen for.
+	 * The group name for this group of functions.
 	 *
-	 * @return array<int|string>
+	 * @var string
 	 */
-	public function register() {
-		return [
-			T_STRING,
-		];
-	}
+	protected $group_name = 'escaping_void';
 
 	/**
-	 * Process this test when one of its tokens is encountered
+	 * Functions this sniff is looking for.
 	 *
-	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
+	 * @var array<string, true> Keys are target functions, value irrelevant.
+	 */
+	protected $target_functions = [
+		'esc_*'    => true,
+		'wp_kses*' => true,
+	];
+
+	/**
+	 * Process the parameters of a matched function.
+	 *
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
+	 * @param array  $parameters      Array with information about the parameters.
 	 *
 	 * @return void
 	 */
-	public function process_token( $stackPtr ) {
-
-		if ( strpos( $this->tokens[ $stackPtr ]['content'], 'esc_' ) !== 0 && strpos( $this->tokens[ $stackPtr ]['content'], 'wp_kses' ) !== 0 ) {
-			// Not what we are looking for.
-			return;
-		}
-
+	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
-
 		if ( $this->tokens[ $next_token ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call.
 			return;

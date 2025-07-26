@@ -23,7 +23,23 @@ class EscapingVoidReturnFunctionsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			3 => 1,
+			50 => 1,
+			51 => 1,
+			52 => 1,
+			53 => 1,
+			54 => 1,
+			55 => 1,
+			56 => 1,
+			57 => 1,
+			58 => 1,
+			59 => 1,
+			60 => 1,
+			61 => 1,
+			62 => 1,
+			63 => 1,
+			64 => 1,
+			65 => 1,
+			68 => 1,
 		];
 	}
 
