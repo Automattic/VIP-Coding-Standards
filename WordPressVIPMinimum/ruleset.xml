@@ -28,7 +28,7 @@
 	</rule>
 
 	<rule ref="WordPressVIPMinimum.Security.Twig">
-		<include-pattern>*.twig</include-pattern>
+		<include-pattern>*\.twig</include-pattern>
 	</rule>
 
 	<rule ref="WordPress.Security.EscapeOutput"/>
@@ -67,10 +67,10 @@
 	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
-		<include-pattern>*.php</include-pattern>
-		<include-pattern>*.inc</include-pattern>
-		<exclude-pattern>*.js</exclude-pattern>
-		<exclude-pattern>*.css</exclude-pattern>
+		<include-pattern>*\.php</include-pattern>
+		<include-pattern>*\.inc</include-pattern>
+		<exclude-pattern>*\.js</exclude-pattern>
+		<exclude-pattern>*\.css</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.PHP.CommentedOutCode"/>
 
