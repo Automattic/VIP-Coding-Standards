@@ -64,9 +64,14 @@ class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 		$ignore[ T_NS_SEPARATOR ] = T_NS_SEPARATOR;
 
 		$next_token = $this->phpcsFile->findNext( $ignore, $next_token + 1, null, true );
-
 		if ( $this->tokens[ $next_token ]['code'] !== T_STRING ) {
 			// Not what we are looking for.
+			return;
+		}
+
+		$next_after = $this->phpcsFile->findNext(Tokens::$emptyTokens, $next_token + 1, null, true );
+		if ( $this->tokens[ $next_after ]['code'] !== T_OPEN_PARENTHESIS ) {
+			// Not a function call inside the escaping function.
 			return;
 		}
 

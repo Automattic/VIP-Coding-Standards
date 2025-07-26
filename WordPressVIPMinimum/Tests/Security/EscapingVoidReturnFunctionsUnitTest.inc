@@ -75,3 +75,7 @@ esc_attr( to_screen( $var1 ) );
 
 tag_escape( $tag ); // OK.
 tag_escape( _e() ); // Bad.
+
+// Bug: these are not function calls inside.
+esc_attr__( User_Error::CONSTANT_NAME, ); // OK.
+esc_js( _doing_it_wrong::class ); // OK, PHP 5.5 ::class resolution.
