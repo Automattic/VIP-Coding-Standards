@@ -37,8 +37,9 @@ class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 	 * @var array<string, true> Keys are target functions, value irrelevant.
 	 */
 	protected $target_functions = [
-		'esc_*'    => true,
-		'wp_kses*' => true,
+		'esc_*'      => true,
+		'tag_escape' => true,
+		'wp_kses*'   => true,
 	];
 
 	/**

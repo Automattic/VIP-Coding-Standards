@@ -72,3 +72,6 @@ wp_kses( _ex() );
 esc_attr( to_screen( $var1 ) );
 \wp_kses_post( my_print() );
 // phpcs:set WordPressVIPMinimum.Security.EscapingVoidReturnFunctions customPrintingFunctions[]
+
+tag_escape( $tag ); // OK.
+tag_escape( _e() ); // Bad.
