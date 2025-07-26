@@ -66,3 +66,9 @@ wp_kses_post(
 	_deprecated_function( $fn )
 );
 wp_kses( _ex() );
+
+// Adding custom printing functions is supported.
+// phpcs:set WordPressVIPMinimum.Security.EscapingVoidReturnFunctions customPrintingFunctions[] to_screen,my_print
+esc_attr( to_screen( $var1 ) );
+\wp_kses_post( my_print() );
+// phpcs:set WordPressVIPMinimum.Security.EscapingVoidReturnFunctions customPrintingFunctions[]
