@@ -43,6 +43,9 @@ class EscapingVoidReturnFunctionsUnitTest extends AbstractSniffUnitTest {
 			72 => 1,
 			73 => 1,
 			77 => 1,
+			90 => 1,
+			91 => 1,
+			92 => 1,
 		];
 	}
 

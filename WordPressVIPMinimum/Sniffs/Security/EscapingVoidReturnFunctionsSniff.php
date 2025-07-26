@@ -10,6 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 use WordPressCS\WordPress\Helpers\PrintingFunctionsTrait;
 
@@ -34,12 +35,82 @@ class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array<string, true> Keys are target functions, value irrelevant.
+	 * @var array<string, array{param_position: int, param_name: string}> Keys are the target functions,
+	 *                                                                    value, the name and position of the target parameter.
 	 */
 	protected $target_functions = [
-		'esc_*'      => true,
-		'tag_escape' => true,
-		'wp_kses*'   => true,
+		'esc_attr' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_attr__' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_attr_e' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_attr_x' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_html' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_html__' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_html_e' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_html_x' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_js' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_textarea' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'esc_url' => [
+			'param_position' => 1,
+			'param_name'     => 'url',
+		],
+		'esc_url_raw' => [
+			'param_position' => 1,
+			'param_name'     => 'url',
+		],
+		'esc_xml' => [
+			'param_position' => 1,
+			'param_name'     => 'text',
+		],
+		'tag_escape' => [
+			'param_position' => 1,
+			'param_name'     => 'tag_name',
+		],
+		'wp_kses' => [
+			'param_position' => 1,
+			'param_name'     => 'content',
+		],
+		'wp_kses_data' => [
+			'param_position' => 1,
+			'param_name'     => 'data',
+		],
+		'wp_kses_one_attr' => [
+			'param_position' => 1,
+			'param_name'     => 'attr',
+		],
+		'wp_kses_post' => [
+			'param_position' => 1,
+			'param_name'     => 'data',
+		],
 	];
 
 	/**
@@ -54,23 +125,26 @@ class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 	 * @return void
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
-		if ( $this->tokens[ $next_token ]['code'] !== T_OPEN_PARENTHESIS ) {
-			// Not a function call.
+		$param_position = $this->target_functions[ $matched_content ]['param_position'];
+		$param_name     = $this->target_functions[ $matched_content ]['param_name'];
+
+		$target_param = PassedParameters::getParameterFromStack( $parameters, $param_position, $param_name );
+		if ( $target_param === false ) {
+			// Missing (required) target parameter. Probably live coding, nothing to examine (yet). Bow out.
 			return;
 		}
 
 		$ignore                   = Tokens::$emptyTokens;
 		$ignore[ T_NS_SEPARATOR ] = T_NS_SEPARATOR;
 
-		$next_token = $this->phpcsFile->findNext( $ignore, $next_token + 1, null, true );
-		if ( $this->tokens[ $next_token ]['code'] !== T_STRING ) {
+		$next_token = $this->phpcsFile->findNext( $ignore, $target_param['start'], ( $target_param['end'] + 1 ), true );
+		if ( $next_token === false || $this->tokens[ $next_token ]['code'] !== T_STRING ) {
 			// Not what we are looking for.
 			return;
 		}
 
-		$next_after = $this->phpcsFile->findNext(Tokens::$emptyTokens, $next_token + 1, null, true );
-		if ( $this->tokens[ $next_after ]['code'] !== T_OPEN_PARENTHESIS ) {
+		$next_after = $this->phpcsFile->findNext( Tokens::$emptyTokens, $next_token + 1, ( $target_param['end'] + 1 ), true );
+		if ( $next_after === false || $this->tokens[ $next_after ]['code'] !== T_OPEN_PARENTHESIS ) {
 			// Not a function call inside the escaping function.
 			return;
 		}

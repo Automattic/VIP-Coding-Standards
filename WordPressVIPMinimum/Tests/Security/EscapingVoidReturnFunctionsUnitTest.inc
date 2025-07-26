@@ -79,3 +79,22 @@ tag_escape( _e() ); // Bad.
 // Bug: these are not function calls inside.
 esc_attr__( User_Error::CONSTANT_NAME, ); // OK.
 esc_js( _doing_it_wrong::class ); // OK, PHP 5.5 ::class resolution.
+
+// Safeguard handling of function calls using PHP 8.0+ named parameters.
+esc_attr_x( context: get_context(), domain: _e(),); // OK, well, not really, missing required $text param, but that's not the concern of this sniff.
+esc_url_raw(protocols: $protocols, url: $url); // OK.
+wp_kses_one_attr(element: $element, att: trigger_error( $foo ) ); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+wp_kses( content: \not_deprecated_function( $fn ) ); // OK.
+wp_kses( content: /*comment*/ ); // OK, well, not really, invalid function call, but that's not the concern of the sniff.
+
+esc_html_x(context: $c, text: _doing_it_wrong() ); // Bad.
+wp_kses(allowed_html: $allowed_html, content: printf() ); // Bad.
+esc_url(protocols: $protocols, url: vprintf()); // Bad.
+
+// These are no longer flagged as they are not "escaping" functions for the purpose of this sniff.
+esc_sql( trigger_error( $foo ) ); // OK.
+wp_kses_allowed_html( _deprecated_function() ); // OK.
+
+// These are no longer flagged as these are not the WP native escaping functions, so we don't know what parameter to check.
+esc_something( trigger_error( $foo ) ); // OK.
+wp_kses_page( _deprecated_function() ); // OK.
