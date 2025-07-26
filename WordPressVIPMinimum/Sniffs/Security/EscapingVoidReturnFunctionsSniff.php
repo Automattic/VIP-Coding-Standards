@@ -59,7 +59,10 @@ class EscapingVoidReturnFunctionsSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		$next_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $next_token + 1, null, true );
+		$ignore                   = Tokens::$emptyTokens;
+		$ignore[ T_NS_SEPARATOR ] = T_NS_SEPARATOR;
+
+		$next_token = $this->phpcsFile->findNext( $ignore, $next_token + 1, null, true );
 
 		if ( $this->tokens[ $next_token ]['code'] !== T_STRING ) {
 			// Not what we are looking for.

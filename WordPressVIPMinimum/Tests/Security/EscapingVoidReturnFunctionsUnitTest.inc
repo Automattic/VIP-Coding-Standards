@@ -48,22 +48,22 @@ wp_kses_one_attr   (
  * These should all be flagged.
  */
 esc_html( _e( $something ) );
-esc_attr__( _deprecated_argument( $a ) );
+esc_attr__( \_deprecated_argument( $a ) );
 ESC_ATTR_E( _Deprecated_Constructor($a), );
 \esc_attr_x( _deprecated_file(), );
 esc_attr( _deprecated_function() );
 esc_HTML__( _deprecated_hook() );
 esc_html_e( _Doing_It_Wrong( $a ) );
-esc_html_X( _e( $foo ), );
+esc_html_X( \_e( $foo ), );
 \esc_html( /*comment*/ _ex( $foo ) );
 esc_js( printf( $foo ) );
 Esc_textarea( trigger_error( $foo ) );
-\esc_URL_raw( user_Error( $foo, '' ), );
+\esc_URL_raw( \user_Error( $foo, '' ), );
 esc_url( vprintf( $foo, ) /*comment*/ );
 WP_Kses_Data( WP_DIE( $foo ), );
 wp_kses_one_attr /*comment*/ ( wp_dropdown_pages( $pages ) );
 wp_kses_post(
-	_deprecated_function( $fn )
+	\_deprecated_function( $fn )
 );
 wp_kses( _ex() );
 
