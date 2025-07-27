@@ -55,13 +55,6 @@ class DynamicCallsSniff extends Sniff {
 	private $variables_arr = [];
 
 	/**
-	 * The position in the stack where the token was found.
-	 *
-	 * @var int
-	 */
-	private $stackPtr;
-
-	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
 	 * @return array<int|string>
@@ -78,24 +71,24 @@ class DynamicCallsSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
-		$this->stackPtr = $stackPtr;
-
 		// First collect all variables encountered and their values.
-		$this->collect_variables();
+		$this->collect_variables( $stackPtr );
 
 		// Then find all dynamic calls, and report them.
-		$this->find_dynamic_calls();
+		$this->find_dynamic_calls( $stackPtr );
 	}
 
 	/**
 	 * Finds any variable-definitions in the file being processed and stores them
 	 * internally in a private array.
 	 *
+	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
 	 * @return void
 	 */
-	private function collect_variables() {
+	private function collect_variables( $stackPtr ) {
 
-		$current_var_name = $this->tokens[ $this->stackPtr ]['content'];
+		$current_var_name = $this->tokens[ $stackPtr ]['content'];
 
 		/*
 		 * Find assignments ( $foo = "bar"; ) by finding all non-whitespaces,
@@ -103,7 +96,7 @@ class DynamicCallsSniff extends Sniff {
 		 */
 		$t_item_key = $this->phpcsFile->findNext(
 			Tokens::$emptyTokens,
-			$this->stackPtr + 1,
+			$stackPtr + 1,
 			null,
 			true,
 			null,
@@ -160,9 +153,11 @@ class DynamicCallsSniff extends Sniff {
 	 *
 	 * Report on this when found, using the name of the function in the message.
 	 *
+	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
 	 * @return void
 	 */
-	private function find_dynamic_calls() {
+	private function find_dynamic_calls( $stackPtr ) {
 		// No variables detected; no basis for doing anything.
 		if ( empty( $this->variables_arr ) ) {
 			return;
@@ -172,20 +167,20 @@ class DynamicCallsSniff extends Sniff {
 		 * If variable is not found in our registry of variables, do nothing, as we cannot be
 		 * sure that the function being called is one of the disallowed ones.
 		 */
-		if ( ! isset( $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ) ) {
+		if ( ! isset( $this->variables_arr[ $this->tokens[ $stackPtr ]['content'] ] ) ) {
 			return;
 		}
 
 		/*
 		 * Check if we have an '(' next.
 		 */
-		$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $this->stackPtr + 1 ), null, true );
+		$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 		if ( $next === false || $this->tokens[ $next ]['code'] !== T_OPEN_PARENTHESIS ) {
 			return;
 		}
 
 		$message = 'Dynamic calling is not recommended in the case of %s().';
-		$data    = [ $this->variables_arr[ $this->tokens[ $this->stackPtr ]['content'] ] ];
-		$this->phpcsFile->addError( $message, $this->stackPtr, 'DynamicCalls', $data );
+		$data    = [ $this->variables_arr[ $this->tokens[ $stackPtr ]['content'] ] ];
+		$this->phpcsFile->addError( $message, $stackPtr, 'DynamicCalls', $data );
 	}
 }
