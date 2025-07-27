@@ -33,6 +33,3 @@ $ensure_no_notices_are_thrown_on_parse_error = /*comment*/ ;
 
 $test_double_quoted_string = "assert";
 $test_double_quoted_string(); // Bad.
-
-// Intentional parse error. This has to be the last test in the file.
-$my_notokay_func
