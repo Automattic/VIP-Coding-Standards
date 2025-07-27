@@ -94,15 +94,7 @@ class DynamicCallsSniff extends Sniff {
 		 * Find assignments ( $foo = "bar"; ) by finding all non-whitespaces,
 		 * and checking if the first one is T_EQUAL.
 		 */
-		$t_item_key = $this->phpcsFile->findNext(
-			Tokens::$emptyTokens,
-			$stackPtr + 1,
-			null,
-			true,
-			null,
-			true
-		);
-
+		$t_item_key = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 		if ( $t_item_key === false || $this->tokens[ $t_item_key ]['code'] !== T_EQUAL ) {
 			return;
 		}
