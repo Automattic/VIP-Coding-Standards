@@ -31,6 +31,9 @@ class DynamicCallsUnitTest extends AbstractSniffUnitTest {
 					9  => 1,
 					15 => 1,
 					35 => 1,
+					40 => 1,
+					45 => 1,
+					47 => 1,
 				];
 
 			default:

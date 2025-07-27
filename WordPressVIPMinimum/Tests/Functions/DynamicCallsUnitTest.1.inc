@@ -33,3 +33,16 @@ $ensure_no_notices_are_thrown_on_parse_error = /*comment*/ ;
 
 $test_double_quoted_string = "assert";
 $test_double_quoted_string(); // Bad.
+
+function hasStaticVars() {
+	static $staticvar_foo = 'irrelevant', $staticvar_bar = 'func_num_args', $staticvar_baz = 'nothing';
+	$staticvar_foo(); // OK.
+	$staticvar_bar(); // Bad.
+	$staticvar_baz(); // OK.
+}
+
+function functionParams( $param_foo = 'func_get_arg', $param_bar = 'nothing', $param_baz = 'func_num_args') {
+	$param_foo(); // Bad.
+	$param_bar(); // OK.
+	$param_baz(); // Bad.
+}

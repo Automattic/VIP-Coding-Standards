@@ -46,6 +46,22 @@ class DynamicCallsSniff extends Sniff {
 	];
 
 	/**
+	 * Potential end tokens for which the end pointer has to be set back by one.
+	 *
+	 * {@internal The PHPCS `findEndOfStatement()` method is not completely consistent
+	 * in how it returns the statement end. This is just a simple way to bypass
+	 * the inconsistency for our purposes.}
+	 *
+	 * @var array<int|string, true>
+	 */
+	private $inclusiveStopPoints = [
+		T_COLON        => true,
+		T_COMMA        => true,
+		T_DOUBLE_ARROW => true,
+		T_SEMICOLON    => true,
+	];
+
+	/**
 	 * Array of variable assignments encountered, along with their values.
 	 *
 	 * Populated at run-time.
@@ -102,10 +118,13 @@ class DynamicCallsSniff extends Sniff {
 		/*
 		 * Find assignments which only assign a plain text string.
 		 */
-		$end_of_statement = $this->phpcsFile->findNext( [ T_SEMICOLON, T_CLOSE_TAG ], ( $t_item_key + 1 ) );
-		$value_ptr        = null;
+		$end_of_statement = $this->phpcsFile->findEndOfStatement( ( $t_item_key + 1 ) );
+		if ( isset( $this->inclusiveStopPoints[ $this->tokens[ $end_of_statement ]['code'] ] ) === true ) {
+			--$end_of_statement;
+		}
 
-		for ( $i = $t_item_key + 1; $i < $end_of_statement; $i++ ) {
+		$value_ptr = null;
+		for ( $i = $t_item_key + 1; $i <= $end_of_statement; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				continue;
 			}
