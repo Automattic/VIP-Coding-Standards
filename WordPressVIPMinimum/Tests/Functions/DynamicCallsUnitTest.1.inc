@@ -3,7 +3,7 @@
 function my_test() {
 	echo esc_html( "foo" );
 }
-
+$irrelevant = 10;
 
 $my_notokay_func = 'extract';
 $my_notokay_func(); // Bad.
