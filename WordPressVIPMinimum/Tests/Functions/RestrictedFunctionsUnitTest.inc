@@ -230,3 +230,19 @@ $popular = custom_stats_get_csv( 'postviews', [ 'days'  => 2,   'limit' => 20 ] 
 
 $foo = new Link; // OK, class, not function.
 $foo = new Mail(); // OK, class, not function.
+
+class ReturnByRef {
+	function &chmod($a) {} // OK, method declaration, not function call.
+}
+
+// Class instantiations in PHP 8.0+ attributes are not function calls.
+class AttributesShouldBeIgnored {
+	#[WP_Is_Mobile()] // OK.
+	public function foo() {}
+}
+
+$wp_rewrite->flush_rules; // OK, property access, not function call.
+$wp_rewrite /*comment*/ -> /*comment*/ flush_rules(); // Error.
+$wp_rewrite?->flush_rules(); // Error.
+
+array_walk($roles, add_role(...)); // Error. PHP 8.1 first class callable.

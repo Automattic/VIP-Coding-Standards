@@ -303,47 +303,27 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	 * @return bool
 	 */
 	public function is_targetted_token( $stackPtr ) {
-		// Exclude function definitions, class methods, and namespaced calls.
-		if ( $this->tokens[ $stackPtr ]['code'] === \T_STRING && isset( $this->tokens[ $stackPtr - 1 ] ) ) {
-			// Check if this is really a function.
-			$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
-			if ( $next !== false && $this->tokens[ $next ]['code'] !== T_OPEN_PARENTHESIS ) {
-				return false;
-			}
-
-			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
-			if ( $prev !== false ) {
-
-				// Start difference to parent class method.
-				// Check to see if function is a method on a specific object variable.
-				if ( ! empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'] ) ) {
-					$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 2, null, true );
-
-					return $this->tokens[ $prev ]['code'] === \T_OBJECT_OPERATOR && isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] );
-				} // End difference to parent class method.
-
-				// Skip sniffing if calling a same-named method, or on function definitions.
-				$skipped = [
-					\T_FUNCTION        => \T_FUNCTION,
-					\T_CLASS           => \T_CLASS,
-					\T_AS              => \T_AS, // Use declaration alias.
-					\T_DOUBLE_COLON    => \T_DOUBLE_COLON,
-					\T_OBJECT_OPERATOR => \T_OBJECT_OPERATOR,
-					\T_NEW             => \T_NEW,
-				];
-				if ( isset( $skipped[ $this->tokens[ $prev ]['code'] ] ) ) {
-					return false;
-				}
-				// Skip namespaced functions, ie: `\foo\bar()` not `\bar()`.
-				if ( $this->tokens[ $prev ]['code'] === \T_NS_SEPARATOR ) {
-					$pprev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $prev - 1, null, true );
-					if ( $pprev !== false && $this->tokens[ $pprev ]['code'] === \T_STRING ) {
-						return false;
-					}
-				}
-			}
-			return true;
+		if ( empty( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'] ) ) {
+			return parent::is_targetted_token( $stackPtr );
 		}
-		return false;
+
+		// Start difference to parent class method.
+		// Check to see if the token is a method call on a specific object variable.
+		$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
+		if ( $next === false || $this->tokens[ $next ]['code'] !== T_OPEN_PARENTHESIS ) {
+			return false;
+		}
+
+		$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $stackPtr - 1, null, true );
+		if ( $this->tokens[ $prev ]['code'] !== T_OBJECT_OPERATOR
+			&& $this->tokens[ $prev ]['code'] !== T_NULLSAFE_OBJECT_OPERATOR
+		) {
+			return false;
+		}
+
+		$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $prev - 1, null, true );
+
+		return $this->tokens[ $prevPrev ]['code'] === T_VARIABLE
+			&& isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] );
 	}
 }
