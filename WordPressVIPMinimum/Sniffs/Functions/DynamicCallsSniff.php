@@ -9,6 +9,7 @@
 
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
+use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
@@ -26,7 +27,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  *
  * @link http://php.net/manual/en/migration71.incompatible.php
  */
-class DynamicCallsSniff extends Sniff {
+class DynamicCallsSniff extends Sniff implements DeprecatedSniff {
 
 	/**
 	 * Functions that should not be called dynamically.
@@ -193,5 +194,32 @@ class DynamicCallsSniff extends Sniff {
 		$message = 'Dynamic calling is not recommended in the case of %s().';
 		$data    = [ $this->variables_arr[ $this->tokens[ $stackPtr ]['content'] ] ];
 		$this->phpcsFile->addError( $message, $stackPtr, 'DynamicCalls', $data );
+	}
+
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'VIP-Coding-Standard v3.1.0';
+	}
+
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'VIP-Coding-Standard v4.0.0';
+	}
+
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return '';
 	}
 }

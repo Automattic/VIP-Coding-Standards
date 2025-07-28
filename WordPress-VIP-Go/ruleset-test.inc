@@ -341,9 +341,9 @@ $my_theme_options = get_option( 'my_theme', false );
 if ( array_key_exists( 'key', $my_theme_options ) ) { } // Error.
 echo '<a href="' . esc_url( get_term_link( $var ) ) . '">My term link</a>'; // Error.
 
-// WordPressVIPMinimum.Functions.DynamicCalls
-$my_notokay_func = 'extract';
-$my_notokay_func(); // Error.
+
+
+
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions
 

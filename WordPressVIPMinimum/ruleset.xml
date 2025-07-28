@@ -18,6 +18,11 @@
 		rule in which to place the exclusion, so this will have to do for now.
 		-->
 		<exclude name="WordPressVIPMinimum.JS"/>
+
+		<!--
+		Exclude other deprecated sniffs.
+		-->
+		<exclude name="WordPressVIPMinimum.Functions.DynamicCalls"/>
 	</rule>
 
 	<rule ref="Generic.PHP.Syntax"/>

@@ -6,6 +6,7 @@
 	<!-- Include the base VIP Minimum ruleset -->
 	<rule ref="WordPressVIPMinimum">
 		<exclude name="WordPressVIPMinimum.JS"/>
+		<exclude name="WordPressVIPMinimum.Functions.DynamicCalls"/>
 	</rule>
 
 	<!-- Things that may be incompatible with the VIP Go infrastructure and needs a dev to review -->
