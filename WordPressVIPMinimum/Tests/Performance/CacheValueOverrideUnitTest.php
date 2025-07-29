@@ -28,7 +28,8 @@ class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 		switch ( $testFile ) {
 			case 'CacheValueOverrideUnitTest.1.inc':
 				return [
-					5 => 1,
+					68 => 1,
+					78 => 1,
 				];
 
 			default:

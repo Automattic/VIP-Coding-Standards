@@ -10,46 +10,38 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
-use WordPressVIPMinimum\Sniffs\Sniff;
+use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
  * This sniff check whether a cached value is being overridden.
  */
-class CacheValueOverrideSniff extends Sniff {
+class CacheValueOverrideSniff extends AbstractFunctionRestrictionsSniff {
 
 	/**
-	 * Returns the token types that this sniff is interested in.
+	 * Groups of functions to restrict.
 	 *
-	 * @return array<int|string>
+	 * @return array<string, array<string, array<string>>>
 	 */
-	public function register() {
-		return [ T_STRING ];
+	public function getGroups() {
+		return [
+			'wp_cache_get' => [
+				'functions' => [ 'wp_cache_get' ],
+			],
+		];
 	}
 
-
 	/**
-	 * Processes the tokens that this sniff is interested in.
+	 * Process a matched token.
 	 *
-	 * @param int $stackPtr The position in the stack where the token was found.
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
 	 *
 	 * @return void
 	 */
-	public function process_token( $stackPtr ) {
-
-		$functionName = $this->tokens[ $stackPtr ]['content'];
-
-		if ( $functionName !== 'wp_cache_get' ) {
-			// Not a function we are looking for.
-			return;
-		}
-
-		if ( $this->isFunctionCall( $stackPtr ) === false ) {
-			// Not a function call.
-			return;
-		}
-
+	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
 		$variablePos = $this->isVariableAssignment( $stackPtr );
-
 		if ( $variablePos === false ) {
 			// Not a variable assignment.
 			return;
@@ -80,32 +72,6 @@ class CacheValueOverrideSniff extends Sniff {
 			$data    = [ $variableName ];
 			$this->phpcsFile->addError( $message, $nextVariableOccurrence, 'CacheValueOverride', $data );
 		}
-	}
-
-	/**
-	 * Check whether the examined code is a function call.
-	 *
-	 * @param int $stackPtr The position of the current token in the stack.
-	 *
-	 * @return bool
-	 */
-	private function isFunctionCall( $stackPtr ) {
-
-		// Find the next non-empty token.
-		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
-
-		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
-			// Not a function call.
-			return false;
-		}
-
-		// Find the previous non-empty token.
-		$search   = Tokens::$emptyTokens;
-		$search[] = T_BITWISE_AND;
-		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
-
-		// It's a function definition, not a function call, so return false.
-		return ! ( $this->tokens[ $previous ]['code'] === T_FUNCTION );
 	}
 
 	/**
