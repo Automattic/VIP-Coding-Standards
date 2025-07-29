@@ -53,6 +53,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	protected $target_functions = [
 		'show_admin_bar' => true,
 		'add_filter'     => true,
+		'add_action'     => true, // Alias of add_filter().
 	];
 
 	/**
@@ -212,6 +213,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				}
 				break;
 
+			case 'add_action':
 			case 'add_filter':
 				$hook_name_param = PassedParameters::getParameterFromStack( $parameters, 1, 'hook_name' );
 				if ( $hook_name_param === false ) {

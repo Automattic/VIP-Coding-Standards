@@ -167,3 +167,6 @@ add_filter(callback: '__return_false', priority: 10); // OK, well, not really, m
 add_filter(hookName: 'show_admin_bar', callback: '__return_false',); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
 add_filter( callback: '__return_true', hook_name: 'show_admin_bar', ); // Ok.
 \add_filter( callback: '__return_false', hook_name: 'show_admin_bar', ); // Bad.
+
+// Bug: add_action() is an alias of add_filter.
+add_action( 'show_admin_bar', $callable, ); // Bad.
