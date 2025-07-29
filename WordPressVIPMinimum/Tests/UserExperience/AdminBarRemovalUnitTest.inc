@@ -107,3 +107,39 @@ EOT;
 </style>
 <?php
 /* phpcs:set WordPressVIPMinimum.UserExperience.AdminBarRemoval remove_only true */
+
+/*
+ * Safeguard against false positives for method calls and namespaced function calls
+ * and various other syntaxes.
+ */
+my\ns\show_admin_bar( false ); // OK.
+$this->show_admin_bar( false ); // OK.
+$this?->show_admin_bar( false ); // OK.
+MyClass::add_filter( 'show_admin_bar', '__return_false' ); // OK.
+echo ADD_FILTER; // OK.
+namespace\add_filter( 'show_admin_bar', '__return_false' ); // OK.
+
+#[Show_Admin_Bar(false)] // OK. PHP 8.0+ class instantiation via an attribute. Can't contain a nested function call anyway.
+function foo() {}
+
+array_walk($filters, \add_filter(...),); // OK. PHP 8.1 first class callable.
+
+// Incomplete function calls, should be ignored by the sniff.
+$incorrect_but_ok = show_admin_bar(); // OK.
+$incorrect_but_ok = add_filter(); // OK.
+
+// Safeguard that the sniff only flags the "show_admin_bar" filter.
+add_filter( 'not_show_admin_bar', '__return_false', ); // OK.
+
+// Document that dynamic values will be flagged.
+show_admin_bar( $unknown ); // Bad.
+add_filter( 'show_admin_bar', $callable, ); // Bad.
+add_filter('show_admin_bar', ...$params); // Bad. PHP 5.6 argument unpacking.
+
+// Document that fully qualified function calls and functions in unconventional case will correctly be recognized.
+\add_filter( "show_admin_bar", '__return_true' ); // OK.
+\Add_Filter( 'show_admin_bar', "__return_false", ); // Bad.
+
+\show_Admin_bar( true, ); // OK.
+\show_admin_bar( false ); // Bad.
+\SHOW_ADMIN_BAR( false, ); // Bad.
