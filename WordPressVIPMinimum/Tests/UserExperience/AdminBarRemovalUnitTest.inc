@@ -170,3 +170,10 @@ add_filter( callback: '__return_true', hook_name: 'show_admin_bar', ); // Ok.
 
 // Bug: add_action() is an alias of add_filter.
 add_action( 'show_admin_bar', $callable, ); // Bad.
+
+// Safeguard handling of filter callback being passed as PHP 8.1+ first class callable.
+add_filter( 'show_admin_bar', __return_true(...) ); // OK.
+add_filter( 'show_admin_bar', \__return_true( ... ) ); // OK.
+add_action( 'show_admin_bar', __return_false  (   ...   )  , ); // Bad.
+add_filter( 'show_admin_bar', \__return_false(...) ); // Bad.
+add_filter( 'show_admin_bar', "__return_true(...)" ); // Bad. Invalid callback.
