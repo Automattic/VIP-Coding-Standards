@@ -228,7 +228,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 				$callback_param = PassedParameters::getParameterFromStack( $parameters, 2, 'callback' );
 				$error          = true;
 				if ( $this->remove_only === true && $callback_param !== false ) {
-					$clean_param = TextStrings::stripQuotes( $callback_param['clean'] );
+					$clean_param = strtolower( TextStrings::stripQuotes( $callback_param['clean'] ) );
 
 					$expected           = Tokens::$emptyTokens + Tokens::$stringTokens;
 					$has_non_textstring = $this->phpcsFile->findNext( $expected, $callback_param['start'], ( $callback_param['end'] + 1 ), true );

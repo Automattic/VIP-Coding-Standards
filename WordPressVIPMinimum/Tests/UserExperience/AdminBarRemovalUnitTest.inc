@@ -177,3 +177,7 @@ add_filter( 'show_admin_bar', \__return_true( ... ) ); // OK.
 add_action( 'show_admin_bar', __return_false  (   ...   )  , ); // Bad.
 add_filter( 'show_admin_bar', \__return_false(...) ); // Bad.
 add_filter( 'show_admin_bar', "__return_true(...)" ); // Bad. Invalid callback.
+
+// Bug fix: function names are case-insensitive.
+\add_filter( "show_admin_bar", '__Return_TRUE' ); // OK.
+add_filter( 'show_admin_bar', __Return_True(...) ); // OK.
