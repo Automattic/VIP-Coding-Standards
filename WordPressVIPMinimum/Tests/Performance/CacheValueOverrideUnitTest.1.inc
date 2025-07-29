@@ -77,3 +77,8 @@ function functionCallsAreNotCaseSensitiveBad() {
 	do_something_else();
 	$cache_retrieved = false; // Bad.
 }
+
+function fqnFunctionCallBad() {
+	$shouldBeCaught = \wp_cache_get();
+	$shouldBeCaught = false; // Bad.
+}

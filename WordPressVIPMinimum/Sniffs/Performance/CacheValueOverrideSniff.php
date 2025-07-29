@@ -83,9 +83,10 @@ class CacheValueOverrideSniff extends AbstractFunctionRestrictionsSniff {
 	 */
 	private function isVariableAssignment( $stackPtr ) {
 
-		// Find the previous non-empty token.
+		// Find the previous non-empty token, but allow for FQN function calls.
 		$search   = Tokens::$emptyTokens;
 		$search[] = T_BITWISE_AND;
+		$search[] = T_NS_SEPARATOR;
 		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
 		if ( $this->tokens[ $previous ]['code'] !== T_EQUAL ) {
