@@ -10,6 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
@@ -78,13 +79,16 @@ class TaxonomyMetaInOptionsSniff extends AbstractFunctionParameterSniff {
 	 * @return void
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
-
-		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
+		$target_param = PassedParameters::getParameterFromStack( $parameters, 1, 'option' );
+		if ( $target_param === false ) {
+			// Missing (required) target parameter. Probably live coding, nothing to examine (yet). Bow out.
 			return;
 		}
 
-		$param_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $openBracket + 1, null, true );
+		$param_start = $target_param['start'];
+		$param_end   = ( $target_param['end'] + 1 ); // Add one to include the last token in the parameter in findNext searches.
+
+		$param_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_start, $param_end, true );
 
 		if ( $this->tokens[ $param_ptr ]['code'] === T_DOUBLE_QUOTED_STRING ) {
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {

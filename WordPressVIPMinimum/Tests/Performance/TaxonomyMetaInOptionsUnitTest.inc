@@ -53,3 +53,11 @@ get_option( /*comment*/ "taxonomy_rating_$tag_id" ); // NOK.
 UpDate_OPTION( 'taxonomy_rating_' . $category_id /*comment*/ , ); // NOK.
 \Get_Option( "taxonomy_rating_{$cat_id}" ); // NOK.
 add_option( 'taxonomy_rating_' . $obj->term_id ); // NOK.
+
+
+// Safeguard handling of function calls using PHP 8.0+ named parameters.
+get_option(default_value: false); // OK, well, not really, missing required $option param, but that's not the concern of this sniff.
+add_option(value: "$tag_id", option: 'option_name'); // OK.
+update_option(autoload: true, optin: "$tag_id", value: 10,); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+
+add_option(value: $value, option: "$tag_id" ); // Bad.
