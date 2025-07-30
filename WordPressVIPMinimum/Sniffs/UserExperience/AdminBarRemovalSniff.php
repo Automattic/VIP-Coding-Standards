@@ -11,7 +11,9 @@
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FilePath;
 use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\PassedParameters;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -52,6 +54,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	protected $target_functions = [
 		'show_admin_bar' => true,
 		'add_filter'     => true,
+		'add_action'     => true, // Alias of add_filter().
 	];
 
 	/**
@@ -156,8 +159,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		$file_name      = $this->phpcsFile->getFilename();
-		$file_extension = substr( strrchr( $file_name, '.' ), 1 );
+		$file_name      = FilePath::getName( $this->phpcsFile );
+		$file_extension = pathinfo( $file_name, \PATHINFO_EXTENSION );
 
 		if ( $file_extension === 'css' ) {
 			if ( $this->tokens[ $stackPtr ]['code'] === \T_STYLE ) {
@@ -200,21 +203,42 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		$error = false;
 		switch ( $matched_content ) {
 			case 'show_admin_bar':
-				$error = true;
-				if ( $this->remove_only === true && $parameters[1]['raw'] === 'true' ) {
-					$error = false;
-				}
-				break;
-
-			case 'add_filter':
-				$filter_name = TextStrings::stripQuotes( $parameters[1]['raw'] );
-				if ( $filter_name !== 'show_admin_bar' ) {
+				$show_param = PassedParameters::getParameterFromStack( $parameters, 1, 'show' );
+				if ( $show_param === false ) {
 					break;
 				}
 
 				$error = true;
-				if ( $this->remove_only === true && isset( $parameters[2]['raw'] ) && TextStrings::stripQuotes( $parameters[2]['raw'] ) === '__return_true' ) {
+				if ( $this->remove_only === true && $show_param['clean'] === 'true' ) {
 					$error = false;
+				}
+				break;
+
+			case 'add_action':
+			case 'add_filter':
+				$hook_name_param = PassedParameters::getParameterFromStack( $parameters, 1, 'hook_name' );
+				if ( $hook_name_param === false ) {
+					break;
+				}
+
+				$filter_name = TextStrings::stripQuotes( $hook_name_param['clean'] );
+				if ( $filter_name !== 'show_admin_bar' ) {
+					break;
+				}
+
+				$callback_param = PassedParameters::getParameterFromStack( $parameters, 2, 'callback' );
+				$error          = true;
+				if ( $this->remove_only === true && $callback_param !== false ) {
+					$clean_param = strtolower( TextStrings::stripQuotes( $callback_param['clean'] ) );
+
+					$expected           = Tokens::$emptyTokens + Tokens::$stringTokens;
+					$has_non_textstring = $this->phpcsFile->findNext( $expected, $callback_param['start'], ( $callback_param['end'] + 1 ), true );
+					if ( ( $has_non_textstring === false && $clean_param === '__return_true' )
+						|| ( $has_non_textstring !== false
+						&& preg_match( '`^\\\\?__return_true\s*\(\s*\.\.\.\s*\)$`', $clean_param ) === 1 )
+					) {
+						$error = false;
+					}
 				}
 				break;
 		}

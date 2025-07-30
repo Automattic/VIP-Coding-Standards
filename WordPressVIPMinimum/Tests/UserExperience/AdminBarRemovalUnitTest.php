@@ -51,6 +51,19 @@ class AdminBarRemovalUnitTest extends AbstractSniffUnitTest {
 					103 => 1,
 					104 => 1,
 					105 => 1,
+					135 => 1,
+					136 => 1,
+					137 => 1,
+					141 => 1,
+					144 => 1,
+					145 => 1,
+					149 => 1,
+					163 => 1,
+					169 => 1,
+					172 => 1,
+					177 => 1,
+					178 => 1,
+					179 => 1,
 				];
 
 			case 'AdminBarRemovalUnitTest.css':
@@ -85,15 +98,6 @@ class AdminBarRemovalUnitTest extends AbstractSniffUnitTest {
 	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
 	public function getWarningList( $testFile = '' ) {
-		switch ( $testFile ) {
-			case 'AdminBarRemovalUnitTest.css':
-				return [];
-
-			case 'AdminBarRemovalUnitTest.inc':
-				return [];
-
-			default:
-				return [];
-		}
+		return [];
 	}
 }
