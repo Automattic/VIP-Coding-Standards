@@ -10,6 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\Constants;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -37,11 +38,38 @@ class RestrictedConstantsSniff extends Sniff {
 	];
 
 	/**
+	 * List of (global) constant names, which should not be referenced in userland code, nor (re-)declared.
+	 *
+	 * {@internal The `public` versions of these properties can't be removed until the next major,
+	 * though a decision is still needed whether they should be removed at all.
+	 * Also see: Automattic/VIP-Coding-Standards#234 for more context and discussion about this.}
+	 *
+	 * @var array<string, int> Key is the constant name, value is irrelevant.
+	 */
+	private $restrictedConstants = [];
+
+	/**
+	 * List of (global) constants, which should not be (re-)declared, but may be referenced.
+	 *
+	 * {@internal The `public` versions of these properties can't be removed until the next major,
+	 * though a decision is still needed whether they should be removed at all.
+	 * Also see: Automattic/VIP-Coding-Standards#234 for more context and discussion about this.}
+	 *
+	 * @var array<string, int> Key is the constant name, value is irrelevant.
+	 */
+	private $restrictedRedeclaration = [];
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array<int|string>
 	 */
 	public function register() {
+		// For now, set the `private` properties based on the values of the `public` properties.
+		// This should be revisited when Automattic/VIP-Coding-Standards#234 gets actioned.
+		$this->restrictedConstants     = array_flip( $this->restrictedConstantNames );
+		$this->restrictedRedeclaration = array_flip( $this->restrictedConstantDeclaration );
+
 		return [
 			T_CONSTANT_ENCAPSED_STRING,
 			T_STRING,
@@ -60,15 +88,17 @@ class RestrictedConstantsSniff extends Sniff {
 		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
 			$constantName = $this->tokens[ $stackPtr ]['content'];
 		} else {
-			$constantName = trim( $this->tokens[ $stackPtr ]['content'], "\"'" );
+			$constantName = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 		}
 
-		if ( in_array( $constantName, $this->restrictedConstantNames, true ) === false && in_array( $constantName, $this->restrictedConstantDeclaration, true ) === false ) {
+		if ( isset( $this->restrictedConstants[ $constantName ] ) === false
+			&& isset( $this->restrictedRedeclaration[ $constantName ] ) === false
+		) {
 			// Not the constant we are looking for.
 			return;
 		}
 
-		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING && in_array( $constantName, $this->restrictedConstantNames, true ) === true ) {
+		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING && isset( $this->restrictedConstants[ $constantName ] ) === true ) {
 			$message = 'Code is touching the `%s` constant. Make sure it\'s used appropriately.';
 			$data    = [ $constantName ];
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'UsingRestrictedConstant', $data );
@@ -97,12 +127,12 @@ class RestrictedConstantsSniff extends Sniff {
 			return;
 		}
 
-		if ( in_array( $this->tokens[ $previous ]['code'], Tokens::$functionNameTokens, true ) === true ) {
+		if ( $this->tokens[ $previous ]['code'] === T_STRING ) {
 			$data = [ $constantName ];
 			if ( $this->tokens[ $previous ]['content'] === 'define' ) {
 				$message = 'The definition of `%s` constant is prohibited. Please use a different name.';
 				$this->phpcsFile->addError( $message, $previous, 'DefiningRestrictedConstant', $data );
-			} elseif ( in_array( $constantName, $this->restrictedConstantNames, true ) === true ) {
+			} elseif ( isset( $this->restrictedConstants[ $constantName ] ) === true ) {
 				$message = 'Code is touching the `%s` constant. Make sure it\'s used appropriately.';
 				$this->phpcsFile->addWarning( $message, $previous, 'UsingRestrictedConstant', $data );
 			}
