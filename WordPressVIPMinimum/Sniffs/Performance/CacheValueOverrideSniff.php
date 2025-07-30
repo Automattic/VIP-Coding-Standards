@@ -101,14 +101,16 @@ class CacheValueOverrideSniff extends AbstractFunctionRestrictionsSniff {
 
 		$rightAfterNextVariableOccurence = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextVariableOccurrence + 1, $searchEnd, true, null, true );
 
-		if ( $this->tokens[ $rightAfterNextVariableOccurence ]['code'] !== T_EQUAL ) {
+		if ( $rightAfterNextVariableOccurence === false
+			|| $this->tokens[ $rightAfterNextVariableOccurence ]['code'] !== T_EQUAL
+		) {
 			// Not a value override.
 			return;
 		}
 
 		$valueAfterEqualSign = $this->phpcsFile->findNext( Tokens::$emptyTokens, $rightAfterNextVariableOccurence + 1, $searchEnd, true, null, true );
 
-		if ( $this->tokens[ $valueAfterEqualSign ]['code'] === T_FALSE ) {
+		if ( $valueAfterEqualSign !== false && $this->tokens[ $valueAfterEqualSign ]['code'] === T_FALSE ) {
 			$message = 'Obtained cached value in `%s` is being overridden. Disabling caching?';
 			$data    = [ $variableName ];
 			$this->phpcsFile->addError( $message, $nextVariableOccurrence, 'CacheValueOverride', $data );
