@@ -10,6 +10,8 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Conditions;
 use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
@@ -71,16 +73,40 @@ class CacheValueOverrideSniff extends AbstractFunctionRestrictionsSniff {
 		$variableToken = $this->tokens[ $variablePos ];
 		$variableName  = $variableToken['content'];
 
-		$nextVariableOccurrence = $this->phpcsFile->findNext( T_VARIABLE, $closeBracket + 1, null, false, $variableName );
+		// Figure out the scope we need to search in.
+		$searchEnd   = $this->phpcsFile->numTokens;
+		$functionPtr = Conditions::getLastCondition( $this->phpcsFile, $stackPtr, [ T_FUNCTION, T_CLOSURE ] );
+		if ( $functionPtr !== false && isset( $this->tokens[ $functionPtr ]['scope_closer'] ) ) {
+			$searchEnd = $this->tokens[ $functionPtr ]['scope_closer'];
+		}
 
-		$rightAfterNextVariableOccurence = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextVariableOccurrence + 1, null, true, null, true );
+		$nextVariableOccurrence = false;
+		for ( $i = $closeBracket + 1; $i < $searchEnd; $i++ ) {
+			if ( $this->tokens[ $i ]['code'] === T_VARIABLE && $this->tokens[ $i ]['content'] === $variableName ) {
+				$nextVariableOccurrence = $i;
+				break;
+			}
+
+			// Skip over any and all closed scopes.
+			if ( isset( Collections::closedScopes()[ $this->tokens[ $i ]['code'] ] ) ) {
+				if ( isset( $this->tokens[ $i ]['scope_closer'] ) ) {
+					$i = $this->tokens[ $i ]['scope_closer'];
+				}
+			}
+		}
+
+		if ( $nextVariableOccurrence === false ) {
+			return;
+		}
+
+		$rightAfterNextVariableOccurence = $this->phpcsFile->findNext( Tokens::$emptyTokens, $nextVariableOccurrence + 1, $searchEnd, true, null, true );
 
 		if ( $this->tokens[ $rightAfterNextVariableOccurence ]['code'] !== T_EQUAL ) {
 			// Not a value override.
 			return;
 		}
 
-		$valueAfterEqualSign = $this->phpcsFile->findNext( Tokens::$emptyTokens, $rightAfterNextVariableOccurence + 1, null, true, null, true );
+		$valueAfterEqualSign = $this->phpcsFile->findNext( Tokens::$emptyTokens, $rightAfterNextVariableOccurence + 1, $searchEnd, true, null, true );
 
 		if ( $this->tokens[ $valueAfterEqualSign ]['code'] === T_FALSE ) {
 			$message = 'Obtained cached value in `%s` is being overridden. Disabling caching?';

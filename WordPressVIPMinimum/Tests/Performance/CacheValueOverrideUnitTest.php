@@ -31,6 +31,7 @@ class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 					68 => 1,
 					78 => 1,
 					83 => 1,
+					98 => 1,
 				];
 
 			default:

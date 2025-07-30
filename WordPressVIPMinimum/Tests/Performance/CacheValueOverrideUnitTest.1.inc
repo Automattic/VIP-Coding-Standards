@@ -89,3 +89,39 @@ function firstClassCallable() {
 	$callable = wp_cache_get(...);
 	$callable = false; // OK.
 }
+
+// Bug fix - the variable re-assignment must be in the same scope.
+function controlStructuresAreNotClosedScopes() {
+	if (false === ($cache = \wp_cache_get( $key, $group ))) {
+		// Create new cache.
+	}
+	$cache = false; // Bad.
+}
+
+
+function closedScopeA() {
+	$myCache = \wp_cache_get();
+}
+
+function closedScopeB($myCache = false) {} // OK.
+
+function closedScopeC() {
+	$yourCache = wp_cache_get();
+
+	$closure = function () {
+		$yourCache = false; // OK.
+	};
+}
+
+$globalScope = wp_cache_get();
+function closedScopeD() {
+	$globalScope = false; // OK.
+}
+
+$globalScope = wp_cache_get();
+function closedScopeE($globalScope = false;) {} // OK.
+
+$globalScope = wp_cache_get();
+class FooBar {
+	function method($globalScope = false) {} // OK.
+}
