@@ -32,12 +32,14 @@ class TaxonomyMetaInOptionsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return [
-			3 => 1,
-			4 => 1,
-			5 => 1,
-			6 => 1,
-			7 => 1,
-			8 => 1,
+			50 => 1,
+			51 => 1,
+			52 => 1,
+			53 => 1,
+			54 => 1,
+			55 => 1,
+			63 => 1,
+			66 => 1,
 		];
 	}
 }

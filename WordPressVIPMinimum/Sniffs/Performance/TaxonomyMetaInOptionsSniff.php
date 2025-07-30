@@ -10,15 +10,18 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
-use WordPressVIPMinimum\Sniffs\Sniff;
+use PHPCSUtils\Utils\PassedParameters;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * Restricts the implementation of taxonomy term meta via options.
  */
-class TaxonomyMetaInOptionsSniff extends Sniff {
+class TaxonomyMetaInOptionsSniff extends AbstractFunctionParameterSniff {
 
 	/**
 	 * List of options_ functions
+	 *
+	 * @deprecated 3.1.0 This property should never have been public.
 	 *
 	 * @var array<string>
 	 */
@@ -45,34 +48,47 @@ class TaxonomyMetaInOptionsSniff extends Sniff {
 	];
 
 	/**
-	 * Returns an array of tokens this test wants to listen for.
+	 * The group name for this group of functions.
 	 *
-	 * @return array<int|string>
+	 * @var string
 	 */
-	public function register() {
-		return [ T_STRING ];
-	}
+	protected $group_name = 'option_functions';
 
 	/**
-	 * Process this test when one of its tokens is encountered
+	 * Functions this sniff is looking for.
 	 *
-	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
+	 * @var array<string, true> Keys are the target functions, value irrelevant.
+	 */
+	protected $target_functions = [
+		'get_option'    => true,
+		'add_option'    => true,
+		'update_option' => true,
+		'delete_option' => true,
+	];
+
+
+	/**
+	 * Process the parameters of a matched function.
+	 *
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
+	 * @param array  $parameters      Array with information about the parameters.
 	 *
 	 * @return void
 	 */
-	public function process_token( $stackPtr ) {
-
-		if ( in_array( $this->tokens[ $stackPtr ]['content'], $this->option_functions, true ) === false ) {
+	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
+		$target_param = PassedParameters::getParameterFromStack( $parameters, 1, 'option' );
+		if ( $target_param === false ) {
+			// Missing (required) target parameter. Probably live coding, nothing to examine (yet). Bow out.
 			return;
 		}
 
-		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
+		$param_start = $target_param['start'];
+		$param_end   = ( $target_param['end'] + 1 ); // Add one to include the last token in the parameter in findNext searches.
 
-		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
-			return;
-		}
-
-		$param_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $openBracket + 1, null, true );
+		$param_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_start, $param_end, true );
 
 		if ( $this->tokens[ $param_ptr ]['code'] === T_DOUBLE_QUOTED_STRING ) {
 			foreach ( $this->taxonomy_term_patterns as $taxonomy_term_pattern ) {
@@ -101,7 +117,9 @@ class TaxonomyMetaInOptionsSniff extends Sniff {
 			}
 
 			$object_operator = $this->phpcsFile->findNext( Tokens::$emptyTokens, $variable_name + 1, null, true );
-			if ( $this->tokens[ $object_operator ]['code'] !== T_OBJECT_OPERATOR ) {
+			if ( $this->tokens[ $object_operator ]['code'] !== T_OBJECT_OPERATOR
+				&& $this->tokens[ $object_operator ]['code'] !== T_NULLSAFE_OBJECT_OPERATOR
+			) {
 				return;
 			}
 
