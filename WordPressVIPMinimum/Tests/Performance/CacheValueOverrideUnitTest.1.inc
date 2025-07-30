@@ -125,3 +125,32 @@ $globalScope = wp_cache_get();
 class FooBar {
 	function method($globalScope = false) {} // OK.
 }
+
+
+
+
+// SHOULD THIS BE HANDLED TOO ?
+function arrayAssignment() {
+	$arrayOfCaches['key'] = WP_Cache_Get( ...$params );
+	$arrayOfCaches['key'] = false; // Bad.
+
+	$arrayOfCaches['my_key'] = WP_Cache_Get( ...$params );
+	$arrayOfCaches['different_key'] = false; // OK.
+}
+
+// TO BE DETERMINED
+function listAssignment() {
+	[$listA] = WP_Cache_Get( ...$params );
+	$listA = false; // Bad ??
+}
+
+// TO BE DETERMINED
+function alternativeAssignmentOperator() {
+	$counter += WP_Cache_Get( ...$params );
+	$counter = false; // Bad ??
+
+	$textString .= WP_Cache_Get( ...$params );
+	$textString = false; // Bad ??
+}
+
+
