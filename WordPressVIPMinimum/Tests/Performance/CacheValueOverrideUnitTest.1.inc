@@ -82,3 +82,10 @@ function fqnFunctionCallBad() {
 	$shouldBeCaught = \wp_cache_get();
 	$shouldBeCaught = false; // Bad.
 }
+
+// Ignore PHP 8.1 first class callable.
+// Ignore as the assignment is not for the return value of the function, but for the callable.
+function firstClassCallable() {
+	$callable = wp_cache_get(...);
+	$callable = false; // OK.
+}

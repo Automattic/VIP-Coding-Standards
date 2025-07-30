@@ -41,6 +41,27 @@ class CacheValueOverrideSniff extends AbstractFunctionRestrictionsSniff {
 	 * @return void
 	 */
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
+		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		if ( $openBracket === false || isset( $this->tokens[ $openBracket ]['parenthesis_closer'] ) === false ) {
+			// Import use statement for function or parse error/live coding. Ignore.
+			return;
+		}
+
+		$closeBracket  = $this->tokens[ $openBracket ]['parenthesis_closer'];
+		$firstNonEmpty = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $openBracket + 1 ), null, true );
+		$nextNonEmpty  = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $firstNonEmpty + 1 ), null, true );
+		if ( $nextNonEmpty === false ) {
+			// Parse error/live coding. Ignore.
+			return;
+		}
+
+		if ( $this->tokens[ $firstNonEmpty ]['code'] === T_ELLIPSIS
+			&& $nextNonEmpty === $closeBracket
+		) {
+			// First class callable. Ignore.
+			return;
+		}
+
 		$variablePos = $this->isVariableAssignment( $stackPtr );
 		if ( $variablePos === false ) {
 			// Not a variable assignment.
@@ -49,12 +70,6 @@ class CacheValueOverrideSniff extends AbstractFunctionRestrictionsSniff {
 
 		$variableToken = $this->tokens[ $variablePos ];
 		$variableName  = $variableToken['content'];
-
-		// Find the next non-empty token.
-		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
-
-		// Find the closing bracket.
-		$closeBracket = $this->tokens[ $openBracket ]['parenthesis_closer'];
 
 		$nextVariableOccurrence = $this->phpcsFile->findNext( T_VARIABLE, $closeBracket + 1, null, false, $variableName );
 
