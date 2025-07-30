@@ -19,12 +19,21 @@ class CacheValueOverrideUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Returns the lines where errors should occur.
 	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
 	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList() {
-		return [
-			5 => 1,
-		];
+	public function getErrorList( $testFile = '' ) {
+
+		switch ( $testFile ) {
+			case 'CacheValueOverrideUnitTest.1.inc':
+				return [
+					5 => 1,
+				];
+
+			default:
+				return [];
+		}
 	}
 
 	/**
