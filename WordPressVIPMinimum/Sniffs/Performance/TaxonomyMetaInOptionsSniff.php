@@ -117,7 +117,9 @@ class TaxonomyMetaInOptionsSniff extends AbstractFunctionParameterSniff {
 			}
 
 			$object_operator = $this->phpcsFile->findNext( Tokens::$emptyTokens, $variable_name + 1, null, true );
-			if ( $this->tokens[ $object_operator ]['code'] !== T_OBJECT_OPERATOR ) {
+			if ( $this->tokens[ $object_operator ]['code'] !== T_OBJECT_OPERATOR
+				&& $this->tokens[ $object_operator ]['code'] !== T_NULLSAFE_OBJECT_OPERATOR
+			) {
 				return;
 			}
 

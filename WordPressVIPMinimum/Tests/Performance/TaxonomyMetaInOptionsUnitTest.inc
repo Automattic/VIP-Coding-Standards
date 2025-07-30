@@ -61,3 +61,6 @@ add_option(value: "$tag_id", option: 'option_name'); // OK.
 update_option(autoload: true, optin: "$tag_id", value: 10,); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
 
 add_option(value: $value, option: "$tag_id" ); // Bad.
+
+// Safeguard handling of PHP 8.0+ nullsafe object operator.
+get_option( 'taxonomy_rating_' . $obj?->term_id ); // NOK.
