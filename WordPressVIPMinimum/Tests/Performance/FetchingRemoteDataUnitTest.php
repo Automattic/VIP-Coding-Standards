@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Tests\Performance;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the ExitAfterRedirect sniff.
+ * Unit test class for the FetchingRemoteData sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Performance\FetchingRemoteDataSniff
  */

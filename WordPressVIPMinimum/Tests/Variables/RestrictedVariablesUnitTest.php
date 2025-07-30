@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Tests\Variables;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the VIP_RestrictedVariables sniff.
+ * Unit test class for the RestrictedVariables sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Variables\RestrictedVariablesSniff
  */

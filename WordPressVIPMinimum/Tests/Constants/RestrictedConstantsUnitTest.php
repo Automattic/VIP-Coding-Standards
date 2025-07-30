@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Tests\Constants;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the ConstantRestrictions sniff.
+ * Unit test class for the RestrictedConstants sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Constants\RestrictedConstantsSniff
  */

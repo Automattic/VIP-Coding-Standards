@@ -10,7 +10,7 @@ namespace WordPressVIPMinimum\Tests\JS;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the HTML String concatenation in JS sniff.
+ * Unit test class for the JS/Window sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\JS\WindowSniff
  */
