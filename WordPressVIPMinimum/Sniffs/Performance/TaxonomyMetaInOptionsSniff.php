@@ -10,15 +10,17 @@
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
-use WordPressVIPMinimum\Sniffs\Sniff;
+use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
 /**
  * Restricts the implementation of taxonomy term meta via options.
  */
-class TaxonomyMetaInOptionsSniff extends Sniff {
+class TaxonomyMetaInOptionsSniff extends AbstractFunctionParameterSniff {
 
 	/**
 	 * List of options_ functions
+	 *
+	 * @deprecated 3.1.0 This property should never have been public.
 	 *
 	 * @var array<string>
 	 */
@@ -45,27 +47,37 @@ class TaxonomyMetaInOptionsSniff extends Sniff {
 	];
 
 	/**
-	 * Returns an array of tokens this test wants to listen for.
+	 * The group name for this group of functions.
 	 *
-	 * @return array<int|string>
+	 * @var string
 	 */
-	public function register() {
-		return [ T_STRING ];
-	}
+	protected $group_name = 'option_functions';
 
 	/**
-	 * Process this test when one of its tokens is encountered
+	 * Functions this sniff is looking for.
 	 *
-	 * @param int $stackPtr The position of the current token in the stack passed in $tokens.
+	 * @var array<string, true> Keys are the target functions, value irrelevant.
+	 */
+	protected $target_functions = [
+		'get_option'    => true,
+		'add_option'    => true,
+		'update_option' => true,
+		'delete_option' => true,
+	];
+
+
+	/**
+	 * Process the parameters of a matched function.
+	 *
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
+	 * @param array  $parameters      Array with information about the parameters.
 	 *
 	 * @return void
 	 */
-	public function process_token( $stackPtr ) {
-
-		if ( in_array( $this->tokens[ $stackPtr ]['content'], $this->option_functions, true ) === false ) {
-			return;
-		}
-
+	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		$openBracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, $stackPtr + 1, null, true );
 
 		if ( $this->tokens[ $openBracket ]['code'] !== T_OPEN_PARENTHESIS ) {
