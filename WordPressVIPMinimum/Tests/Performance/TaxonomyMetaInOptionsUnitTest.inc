@@ -64,3 +64,18 @@ add_option(value: $value, option: "$tag_id" ); // Bad.
 
 // Safeguard handling of PHP 8.0+ nullsafe object operator.
 get_option( 'taxonomy_rating_' . $obj?->term_id ); // NOK.
+
+
+// TO BE DETERMINE HOW THIS SHOULD REALLY BE HANDLED....
+// Double quoted strings and single quotes strings are currently treated differently.
+// In a double quoted string, the "taxonomy_term_patterns" are not limited to variable access,
+// while in a single quoted string with concatenation, they are.
+get_option( "term_id_$other", ); // NOK (currently).
+get_option( 'term_id_' . $other, ); // OK (currently).
+
+// Along the same lines, a double quoted string allows for the "taxonomy_term_patterns" without any other info
+// or followed by other info, while this is not flagged in general or in combination with a single quoted string.
+get_option( "$tag_id", ); // NOK (currently).
+get_option( "{$tag_id}_something", ); // NOK (currently).
+get_option( $tag_id, ); // OK (currently).
+get_option( {$tag_id} . '_something', ); // OK (currently).
