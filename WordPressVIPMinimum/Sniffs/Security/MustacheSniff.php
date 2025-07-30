@@ -13,16 +13,9 @@ use PHP_CodeSniffer\Util\Tokens;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
- * Looks for instances of unescaped output for Mustache templating engine and Handlebars.js.
+ * Looks for instances of unescaped output for Mustache templating engine and Handlebars.js within PHP code.
  */
 class MustacheSniff extends Sniff {
-
-	/**
-	 * A list of tokenizers this sniff supports.
-	 *
-	 * @var string[]
-	 */
-	public $supportedTokenizers = [ 'JS', 'PHP' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -30,10 +23,7 @@ class MustacheSniff extends Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		$targets             = Tokens::$textStringTokens;
-		$targets[ T_STRING ] = T_STRING;
-
-		return $targets;
+		return Tokens::$textStringTokens;
 	}
 
 	/**

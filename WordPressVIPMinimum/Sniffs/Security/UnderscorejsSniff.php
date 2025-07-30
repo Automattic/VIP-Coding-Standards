@@ -10,12 +10,11 @@
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
-use PHPCSUtils\Utils\FilePath;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
- * Looks for instances of unescaped output for Underscore.js templating engine.
+ * Looks for instances of unescaped output for Underscore.js templating engine within PHP code.
  */
 class UnderscorejsSniff extends Sniff {
 
@@ -43,23 +42,12 @@ class UnderscorejsSniff extends Sniff {
 	const INTERPOLATE_KEYWORD_REGEX = '`(?:templateSettings\.interpolate|\.interpolate\s*=\s*/|interpolate\s*:\s*/)`';
 
 	/**
-	 * A list of tokenizers this sniff supports.
-	 *
-	 * @var string[]
-	 */
-	public $supportedTokenizers = [ 'JS', 'PHP' ];
-
-	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array<int|string>
 	 */
 	public function register() {
-		$targets   = Tokens::$textStringTokens;
-		$targets[] = T_PROPERTY;
-		$targets[] = T_STRING;
-
-		return $targets;
+		return Tokens::$textStringTokens;
 	}
 
 	/**
@@ -70,57 +58,6 @@ class UnderscorejsSniff extends Sniff {
 	 * @return void
 	 */
 	public function process_token( $stackPtr ) {
-		/*
-		 * Ignore Gruntfile.js files as they are configuration, not code.
-		 */
-		$file_name = FilePath::getName( $this->phpcsFile );
-		$file_name = strtolower( basename( $file_name ) );
-
-		if ( $file_name === 'gruntfile.js' ) {
-			return;
-		}
-
-		/*
-		 * Check for delimiter change in JS files.
-		 */
-		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING
-			|| $this->tokens[ $stackPtr ]['code'] === T_PROPERTY
-		) {
-			if ( $this->phpcsFile->tokenizerType !== 'JS' ) {
-				// These tokens are only relevant for JS files.
-				return;
-			}
-
-			if ( $this->tokens[ $stackPtr ]['content'] !== 'interpolate' ) {
-				return;
-			}
-
-			// Check the context to prevent false positives.
-			if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
-				$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
-				if ( $prev === false || $this->tokens[ $prev ]['code'] !== T_OBJECT_OPERATOR ) {
-					return;
-				}
-
-				$prevPrev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
-				$next     = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
-				if ( ( $prevPrev === false
-					|| $this->tokens[ $prevPrev ]['code'] !== T_STRING
-					|| $this->tokens[ $prevPrev ]['content'] !== 'templateSettings' )
-					&& ( $next === false
-					|| $this->tokens[ $next ]['code'] !== T_EQUAL )
-				) {
-					return;
-				}
-			}
-
-			// Underscore.js delimiter change.
-			$message = 'Found Underscore.js delimiter change notation.';
-			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );
-
-			return;
-		}
-
 		$content = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 
 		$match_count = preg_match_all( self::UNESCAPED_INTERPOLATE_REGEX, $content, $matches );
@@ -151,9 +88,7 @@ class UnderscorejsSniff extends Sniff {
 			}
 		}
 
-		if ( $this->phpcsFile->tokenizerType !== 'JS'
-			&& preg_match( self::INTERPOLATE_KEYWORD_REGEX, $content ) > 0
-		) {
+		if ( preg_match( self::INTERPOLATE_KEYWORD_REGEX, $content ) > 0 ) {
 			// Underscore.js delimiter change.
 			$message = 'Found Underscore.js delimiter change notation.';
 			$this->phpcsFile->addWarning( $message, $stackPtr, 'InterpolateFound' );

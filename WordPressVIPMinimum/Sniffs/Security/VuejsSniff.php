@@ -11,16 +11,9 @@ namespace WordPressVIPMinimum\Sniffs\Security;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
- * Looks for instances of unescaped output for Twig templating engine.
+ * Looks for instances of unescaped output for Twig templating engine within PHP code.
  */
 class VuejsSniff extends Sniff {
-
-	/**
-	 * A list of tokenizers this sniff supports.
-	 *
-	 * @var string[]
-	 */
-	public $supportedTokenizers = [ 'JS', 'PHP' ];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
