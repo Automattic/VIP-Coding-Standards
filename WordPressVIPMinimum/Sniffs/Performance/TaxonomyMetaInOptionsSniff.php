@@ -19,20 +19,6 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 class TaxonomyMetaInOptionsSniff extends AbstractFunctionParameterSniff {
 
 	/**
-	 * List of options_ functions
-	 *
-	 * @deprecated 3.1.0 This property should never have been public.
-	 *
-	 * @var array<string>
-	 */
-	public $option_functions = [
-		'get_option',
-		'add_option',
-		'update_option',
-		'delete_option',
-	];
-
-	/**
 	 * List of possible variable names holding term ID.
 	 *
 	 * @var array<string>
