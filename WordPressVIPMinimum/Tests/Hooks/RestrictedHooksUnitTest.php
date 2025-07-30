@@ -8,6 +8,7 @@
 namespace WordPressVIPMinimum\Tests\Hooks;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
  * Unit test class for the Filters/RestrictedHooks sniff.
  *
