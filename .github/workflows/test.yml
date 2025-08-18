@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
