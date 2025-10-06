@@ -46,7 +46,7 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 			'PostNotIn' => [
 				'name'    => 'PostNotIn',
 				'type'    => 'warning',
-				'message' => 'Using exclusionary parameters, like %s, in calls to get_posts() should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.',
+				'message' => 'Using exclusionary parameters, like %s, in calls to get_posts() should be done with caution, see https://docs.wpvip.com/databases/optimize-queries/using-post__not_in/ for more information.',
 				'keys'    => [
 					'post__not_in',
 					'exclude',
