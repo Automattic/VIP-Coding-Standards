@@ -577,3 +577,13 @@ $_SERVER["REMOTE_ADDR"]; // Error.
 
 // WordPress.CodeAnalysis.AssignmentInTernaryCondition
 $var = ($a = 123) ? $a : 0; // Warning.
+
+// WordPress.WP.CronInterval
+function my_add_weekly( $schedules ) {
+	$schedules['every_30_seconds'] = array(
+		'interval' => 30,
+		'display' => __( 'Once every 30 seconds' )
+	);
+	return $schedules;
+}
+add_filter( 'cron_schedules', 'my_add_weekly'); // Warning.

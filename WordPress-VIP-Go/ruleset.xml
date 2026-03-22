@@ -235,6 +235,12 @@
 	<rule ref="WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn">
 		<severity>3</severity>
 	</rule>
+	<rule ref="WordPress.WP.CronInterval">
+		<!-- cron runs async on VIP's batch containers, so high frequency schedules will not negatively impact performance. Cron runner polling interval is 60s, so make that the min -->
+		<properties>
+			<property name="min_interval" value="60"/>
+		</properties>
+	</rule>
 
 	<!-- Silence is golden, these don't affect us on VIP Go -->
 	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable">
@@ -257,4 +263,5 @@
 	<rule ref="WordPress.Security.EscapeOutput.ExceptionNotEscaped">
 		<severity>0</severity>
 	</rule>
+
 </ruleset>
