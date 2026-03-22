@@ -28,7 +28,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', 'latest', '8.5']
+        php: ['7.4', 'latest', '8.5']
 
     name: "Lint: PHP ${{ matrix.php }}"
     continue-on-error: ${{ matrix.php == '8.5' }}
@@ -64,20 +64,13 @@ jobs:
       # - php: The PHP versions to test against.
       # - dependencies: The PHPCS dependencies versions to test against.
       #   IMPORTANT: test runs shouldn't fail because of PHPCS being incompatible with a PHP version.
-      #   - PHPCS will run without errors on PHP 5.4 - 7.4 on any supported version.
-      #   - PHP 8.0 needs PHPCS 3.5.7+ to run without errors, and we require a higher minimum version.
-      #   - PHP 8.1 needs PHPCS 3.6.1+ to run without errors, but works best with 3.7.1+, and we require at least this minimum version.
       #   - PHP 8.2, 8.3 and 8.4 need PHPCS 3.8.0+ to run without errors (though the errors don't affect the tests).
       matrix:
-        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
         dependencies: ['lowest', 'stable']
 
         include:
           # Test against dev versions of all dependencies with select PHP versions for early detection of issues.
-          - php: '5.4'
-            dependencies: 'dev'
-          - php: '7.0'
-            dependencies: 'dev'
           - php: '7.4'
             dependencies: 'dev'
           - php: '8.4'
@@ -117,7 +110,7 @@ jobs:
         if: ${{ matrix.dependencies == 'dev' }}
         run: >
           composer require --no-update --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"dev-master"
+          squizlabs/php_codesniffer:"3.x-dev"
           phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
           sirbrillig/phpcs-variable-analysis:"2.x"

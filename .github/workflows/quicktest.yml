@@ -26,9 +26,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - php: '5.4'
+          - php: '7.4'
             dependencies: 'stable'
-          - php: '5.4'
+          - php: '7.4'
             dependencies: 'lowest'
 
           - php: 'latest'

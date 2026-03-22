@@ -42,8 +42,8 @@ jobs:
         run: composer validate --no-check-all --strict
 
       - name: 'Composer: adjust dependencies'
-        # Using PHPCS `master` as an early detection system for bugs upstream.
-        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
+        # Using PHPCS `3.x` as an early detection system for bugs upstream.
+        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"3.x-dev" --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
@@ -74,17 +74,8 @@ jobs:
           pattern: ".phpcs.xml.dist"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
-      # Notes:
-      # - PHPUnit 9.5 (which will be installed in this job) doesn't ship XSD files further back than 8.5.
-      # - PHPUnit 9.3 introduced some new configuration options and deprecated the old versions of those.
-      #   For cross-version compatibility with older PHPUnit versions, those new config options cannot be used yet,
-      #   which is why the PHPUnit 9 validation is done against the PHPUnit 9.2 schema.
-      - name: "Validate PHPUnit config for use with PHPUnit 8"
-        uses: phpcsstandards/xmllint-validate@v1
-        with:
-          pattern: "phpunit.xml.dist"
-          xsd-file: "vendor/phpunit/phpunit/schema/8.5.xsd"
-
+      # Note: PHPUnit 9.3 introduced some new configuration options and deprecated the old versions of those.
+      # For cross-version compatibility, the validation is done against the PHPUnit 9.2 schema.
       - name: "Validate PHPUnit config for use with PHPUnit 9"
         uses: phpcsstandards/xmllint-validate@v1
         with:
