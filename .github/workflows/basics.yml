@@ -42,8 +42,8 @@ jobs:
         run: composer validate --no-check-all --strict
 
       - name: 'Composer: adjust dependencies'
-        # Using PHPCS `master` as an early detection system for bugs upstream.
-        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
+        # Using PHPCS `3.x` as an early detection system for bugs upstream.
+        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"3.x-dev" --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer

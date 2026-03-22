@@ -117,7 +117,7 @@ jobs:
         if: ${{ matrix.dependencies == 'dev' }}
         run: >
           composer require --no-update --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"dev-master"
+          squizlabs/php_codesniffer:"3.x-dev"
           phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
           sirbrillig/phpcs-variable-analysis:"2.x"
