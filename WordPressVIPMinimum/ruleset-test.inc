@@ -463,6 +463,9 @@ $args = array( // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.Un
 	'nopaging'       => true, // Error.
 );
 _query_posts( 'nopaging=true' ); // Error.
+$args = array( // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	'posts_per_page' => -1, // Error.
+);
 
 // WordPressVIPMinimum.Performance.OrderByRand
 $args = array( // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable

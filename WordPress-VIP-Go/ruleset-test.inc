@@ -466,6 +466,9 @@ $args = array(
 	'nopaging'       => true, // Error.
 );
 _query_posts( 'nopaging=true' ); // Error.
+$args = array(
+	'posts_per_page' => -1, // Error.
+);
 
 // WordPressVIPMinimum.Performance.OrderByRand
 $args = array(
