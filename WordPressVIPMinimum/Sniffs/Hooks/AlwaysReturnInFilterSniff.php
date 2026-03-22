@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\Hooks;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Arrays;
 use PHPCSUtils\Utils\FunctionDeclarations;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -80,6 +81,9 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		if ( $this->tokens[ $callbackPtr ]['code'] === T_CLOSURE ) {
 			$this->processFunctionBody( $callbackPtr );
+		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_FN ) {
+			// Arrow functions always return a value implicitly. No check needed.
+			return;
 		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_ARRAY
 			|| $this->tokens[ $callbackPtr ]['code'] === T_OPEN_SHORT_ARRAY
 		) {
@@ -133,7 +137,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processString( $stackPtr, $start = 0, $end = null ) {
 
-		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
+		$callbackFunctionName = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
 			T_STRING,
@@ -165,10 +169,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end ) !== false ) {
-			$functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end );
-			$functionNamePtr  = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
-			if ( $this->tokens[ $functionNamePtr ]['code'] === T_STRING && $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Valid usage.
+		while ( ( $functionStackPtr = $this->phpcsFile->findNext( T_FUNCTION, $offset, $end ) ) !== false ) {
+			$declaredName = FunctionDeclarations::getName( $this->phpcsFile, $functionStackPtr );
+			if ( $declaredName === $functionName ) {
 				$this->processFunctionBody( $functionStackPtr );
 				return;
 			}
@@ -294,7 +298,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	private function isReturningVoid( $stackPtr ) {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
-			[ Tokens::$emptyTokens ],
+			Tokens::$emptyTokens,
 			$stackPtr + 1,
 			null,
 			true

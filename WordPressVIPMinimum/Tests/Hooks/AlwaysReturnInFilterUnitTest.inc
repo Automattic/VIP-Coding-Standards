@@ -188,6 +188,15 @@ class tokenizer_bug_test {
 	public function tokenizer_bug( $param ): namespace\Foo {} // Error.
 }
 
+// Arrow function callbacks always return implicitly. Ok.
+add_filter( 'good_arrow_function', fn( $x ) => $x . ' suffix' );
+
+add_filter( 'good_arrow_function_null', fn( $x ) => null ); // Ok, still returns a value (null).
+
+add_filter( 'bad_void_return_with_space', function() { // Error.
+	return ;
+} );
+
 // Intentional parse error. This has to be the last test in the file!
 class parse_error_test {
 	public function __construct() {
