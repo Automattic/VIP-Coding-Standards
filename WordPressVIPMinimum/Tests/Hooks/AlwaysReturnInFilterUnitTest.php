@@ -32,6 +32,7 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 			163 => 1,
 			188 => 1,
 			196 => 1,
+			241 => 1,
 		];
 	}
 
@@ -43,6 +44,10 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [
 			180 => 1,
+			203 => 1,
+			213 => 1,
+			226 => 1,
+			235 => 1,
 		];
 	}
 }

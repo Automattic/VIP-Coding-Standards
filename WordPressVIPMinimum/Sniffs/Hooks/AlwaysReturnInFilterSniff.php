@@ -246,9 +246,15 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		}
 
 		if ( $outsideConditionalReturn === 0 ) {
-			$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
-			$data    = [ $filterName ];
-			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
+			if ( $this->hasTerminatingStatement( $functionBodyScopeStart, $functionBodyScopeEnd ) ) {
+				$message = 'The callback for the `%s` filter uses a terminating statement (`exit`, `die`, or `throw`) instead of returning a value. Filter callbacks should always return a value.';
+				$data    = [ $filterName ];
+				$this->phpcsFile->addWarning( $message, $functionBodyScopeStart, 'TerminatingInsteadOfReturn', $data );
+			} else {
+				$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
+				$data    = [ $filterName ];
+				$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
+			}
 		}
 	}
 
@@ -286,6 +292,25 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check whether the function body contains an exit, die, or throw statement.
+	 *
+	 * @param int $scopeStart The scope opener of the function body.
+	 * @param int $scopeEnd   The scope closer of the function body.
+	 *
+	 * @return bool
+	 */
+	private function hasTerminatingStatement( $scopeStart, $scopeEnd ) {
+
+		$terminatingPtr = $this->phpcsFile->findNext(
+			[ T_EXIT, T_THROW ],
+			$scopeStart + 1,
+			$scopeEnd
+		);
+
+		return $terminatingPtr !== false;
 	}
 
 	/**
