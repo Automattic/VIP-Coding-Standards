@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # 2.37.1
         with:
           php-version: 'latest'
           coverage: none
@@ -48,14 +48,14 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27" # v4
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       # Validate the XML file.
       - name: Validate rulesets against schema
-        uses: phpcsstandards/xmllint-validate@v1
+        uses: phpcsstandards/xmllint-validate@0fd9c4a9046055f621fca4bbdccb8eab1fd59fdc # v1.0.1
         with:
           pattern: "./*/ruleset.xml"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
@@ -69,7 +69,7 @@ jobs:
 
       # Validate dev tool related XML files.
       - name: Validate Project PHPCS ruleset against schema
-        uses: phpcsstandards/xmllint-validate@v1
+        uses: phpcsstandards/xmllint-validate@0fd9c4a9046055f621fca4bbdccb8eab1fd59fdc # v1.0.1
         with:
           pattern: ".phpcs.xml.dist"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
@@ -77,7 +77,7 @@ jobs:
       # Note: PHPUnit 9.3 introduced some new configuration options and deprecated the old versions of those.
       # For cross-version compatibility, the validation is done against the PHPUnit 9.2 schema.
       - name: "Validate PHPUnit config for use with PHPUnit 9"
-        uses: phpcsstandards/xmllint-validate@v1
+        uses: phpcsstandards/xmllint-validate@0fd9c4a9046055f621fca4bbdccb8eab1fd59fdc # v1.0.1
         with:
           pattern: "phpunit.xml.dist"
           xsd-file: "vendor/phpunit/phpunit/schema/9.2.xsd"
@@ -107,7 +107,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # 2.37.1
         with:
           php-version: 'latest'
           coverage: none
@@ -117,7 +117,7 @@ jobs:
       # Dependencies need to be installed to make sure the PHPCS and PHPUnit classes are recognized.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27" # v4
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")

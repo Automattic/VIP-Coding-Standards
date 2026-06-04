@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # 2.37.1
         with:
           php-version: ${{ matrix.php }}
           # With stable PHPCS dependencies, allow for PHP deprecation notices.
@@ -58,7 +58,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27" # v4
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
