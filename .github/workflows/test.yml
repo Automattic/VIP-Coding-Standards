@@ -38,14 +38,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # 2.37.1
         with:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: cs2pr
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27" # v4
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -100,7 +100,7 @@ jobs:
           fi
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # 2.37.1
         with:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
@@ -123,7 +123,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27" # v4
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
