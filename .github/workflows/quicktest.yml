@@ -58,7 +58,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27" # v4
+        uses: "ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6" # v4
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
