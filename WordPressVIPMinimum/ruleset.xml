@@ -60,6 +60,7 @@
 		</properties>
 	</rule>
 
+	<rule ref="Generic.Files.ByteOrderMark"/>
 	<rule ref="Generic.VersionControl.GitMergeConflict"/>
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
