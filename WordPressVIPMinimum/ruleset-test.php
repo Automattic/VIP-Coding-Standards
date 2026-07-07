@@ -327,7 +327,11 @@ require __DIR__ . '/../tests/RulesetTest.php';
 // Run the tests!
 $test     = new RulesetTest( 'WordPressVIPMinimum', $expected );
 $bom_test = new RulesetTest( 'WordPressVIPMinimum', $bom_expected, 'ruleset-test-bom.inc' );
-if ( $test->passes() && $bom_test->passes() ) {
+
+// Evaluate both tests before the check so each reports its own discrepancies rather than being short-circuited away.
+$test_passes     = $test->passes();
+$bom_test_passes = $bom_test->passes();
+if ( $test_passes && $bom_test_passes ) {
 	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL );
 	exit( 0 );
 }
