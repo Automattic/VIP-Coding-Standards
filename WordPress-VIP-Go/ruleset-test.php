@@ -324,11 +324,25 @@ $expected = [
 	],
 ];
 
+// Expected values for the dedicated byte order mark (BOM) fixture.
+$bom_expected = [
+	'errors'   => [
+		1 => 1,
+	],
+	'warnings' => [],
+	'messages' => [
+		1 => [
+			'File contains UTF-8 byte order mark, which may corrupt your application',
+		],
+	],
+];
+
 require __DIR__ . '/../tests/RulesetTest.php';
 
 // Run the tests!
-$test = new RulesetTest( 'WordPress-VIP-Go', $expected );
-if ( $test->passes() ) {
+$test     = new RulesetTest( 'WordPress-VIP-Go', $expected );
+$bom_test = new RulesetTest( 'WordPress-VIP-Go', $bom_expected, 'ruleset-test-bom.inc' );
+if ( $test->passes() && $bom_test->passes() ) {
 	printf( 'All WordPress-VIP-Go tests passed!' . PHP_EOL );
 	exit( 0 );
 }
