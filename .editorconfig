@@ -12,3 +12,9 @@
 
 	[*.md]
 	trim_trailing_whitespace = false
+
+	# Preserve the UTF-8 byte order mark in the BOM ruleset test fixtures, so that
+	# editors honouring EditorConfig do not silently strip it (which would
+	# invalidate the Generic.Files.ByteOrderMark ruleset test).
+	[*-bom.inc]
+	charset = utf-8-bom
