@@ -44,7 +44,7 @@
 	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
 
 	<!-- Check code for cross-version PHP compatibility. -->
-	<config name="testVersion" value="5.4-"/>
+	<config name="testVersion" value="7.4-"/>
 	<rule ref="PHPCompatibility">
 		<!-- Exclude PHP constants back-filled by PHPCS. -->
 		<exclude name="PHPCompatibility.Constants.NewConstants.t_finallyFound"/>
