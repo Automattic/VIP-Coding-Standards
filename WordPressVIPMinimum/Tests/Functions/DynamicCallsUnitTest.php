@@ -19,14 +19,26 @@ class DynamicCallsUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Returns the lines where errors should occur.
 	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
 	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList() {
-		return [
-			9  => 1,
-			15 => 1,
-			35 => 1,
-		];
+	public function getErrorList( $testFile = '' ) {
+
+		switch ( $testFile ) {
+			case 'DynamicCallsUnitTest.1.inc':
+				return [
+					9  => 1,
+					15 => 1,
+					35 => 1,
+					40 => 1,
+					45 => 1,
+					47 => 1,
+				];
+
+			default:
+				return [];
+		}
 	}
 
 	/**

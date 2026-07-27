@@ -23,8 +23,13 @@ class ConstantStringUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			7 => 1,
-			8 => 1,
+			7  => 1,
+			8  => 1,
+			49 => 1,
+			50 => 1,
+			54 => 1,
+			55 => 1,
+			61 => 1,
 		];
 	}
 

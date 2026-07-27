@@ -4,6 +4,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
@@ -28,7 +29,7 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	/**
 	 * Groups of variables to restrict.
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [
@@ -45,7 +46,7 @@ class WPQueryParamsSniff extends AbstractArrayAssignmentRestrictionsSniff {
 			'PostNotIn' => [
 				'name'    => 'PostNotIn',
 				'type'    => 'warning',
-				'message' => 'Using exclusionary parameters, like %s, in calls to get_posts() should be done with caution, see https://wpvip.com/documentation/performance-improvements-by-removing-usage-of-post__not_in/ for more information.',
+				'message' => 'Using exclusionary parameters, like %s, in calls to get_posts() should be done with caution, see https://docs.wpvip.com/databases/optimize-queries/using-post__not_in/ for more information.',
 				'keys'    => [
 					'post__not_in',
 					'exclude',

@@ -4,13 +4,16 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  * @license https://opensource.org/licenses/MIT MIT
  */
 
 namespace WordPressVIPMinimum\Sniffs\UserExperience;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FilePath;
 use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\PassedParameters;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -18,15 +21,13 @@ use WordPressCS\WordPress\AbstractFunctionParameterSniff;
  * Discourages removal of the admin bar.
  *
  * @link https://docs.wpvip.com/technical-references/code-review/vip-warnings/#h-removing-the-admin-bar
- *
- * @since 0.5.0
  */
 class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 
 	/**
 	 * A list of tokenizers this sniff supports.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $supportedTokenizers = [
 		'PHP',
@@ -48,17 +49,18 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string, bool> Key is the function name, value irrelevant.
 	 */
 	protected $target_functions = [
 		'show_admin_bar' => true,
 		'add_filter'     => true,
+		'add_action'     => true, // Alias of add_filter().
 	];
 
 	/**
 	 * CSS properties this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string, array<string, string|float>>
 	 */
 	protected $target_css_properties = [
 		'visibility' => [
@@ -78,7 +80,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * CSS selectors this sniff is looking for.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	protected $target_css_selectors = [
 		'.show-admin-bar',
@@ -86,11 +88,11 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	];
 
 	/**
-	 * String tokens within PHP files we want to deal with.
+	 * Text string tokens within PHP files we want to deal with.
 	 *
 	 * Set from the register() method.
 	 *
-	 * @var array
+	 * @var array<int|string>
 	 */
 	private $string_tokens = [];
 
@@ -118,10 +120,10 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
-		// Set up all string targets.
+		// Set up all text string targets.
 		$this->string_tokens = Tokens::$textStringTokens;
 
 		$targets = $this->string_tokens;
@@ -157,8 +159,8 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		$file_name      = $this->phpcsFile->getFilename();
-		$file_extension = substr( strrchr( $file_name, '.' ), 1 );
+		$file_name      = FilePath::getName( $this->phpcsFile );
+		$file_extension = pathinfo( $file_name, \PATHINFO_EXTENSION );
 
 		if ( $file_extension === 'css' ) {
 			if ( $this->tokens[ $stackPtr ]['code'] === \T_STYLE ) {
@@ -201,21 +203,42 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 		$error = false;
 		switch ( $matched_content ) {
 			case 'show_admin_bar':
-				$error = true;
-				if ( $this->remove_only === true && $parameters[1]['raw'] === 'true' ) {
-					$error = false;
-				}
-				break;
-
-			case 'add_filter':
-				$filter_name = TextStrings::stripQuotes( $parameters[1]['raw'] );
-				if ( $filter_name !== 'show_admin_bar' ) {
+				$show_param = PassedParameters::getParameterFromStack( $parameters, 1, 'show' );
+				if ( $show_param === false ) {
 					break;
 				}
 
 				$error = true;
-				if ( $this->remove_only === true && isset( $parameters[2]['raw'] ) && TextStrings::stripQuotes( $parameters[2]['raw'] ) === '__return_true' ) {
+				if ( $this->remove_only === true && $show_param['clean'] === 'true' ) {
 					$error = false;
+				}
+				break;
+
+			case 'add_action':
+			case 'add_filter':
+				$hook_name_param = PassedParameters::getParameterFromStack( $parameters, 1, 'hook_name' );
+				if ( $hook_name_param === false ) {
+					break;
+				}
+
+				$filter_name = TextStrings::stripQuotes( $hook_name_param['clean'] );
+				if ( $filter_name !== 'show_admin_bar' ) {
+					break;
+				}
+
+				$callback_param = PassedParameters::getParameterFromStack( $parameters, 2, 'callback' );
+				$error          = true;
+				if ( $this->remove_only === true && $callback_param !== false ) {
+					$clean_param = strtolower( TextStrings::stripQuotes( $callback_param['clean'] ) );
+
+					$expected           = Tokens::$emptyTokens + Tokens::$stringTokens;
+					$has_non_textstring = $this->phpcsFile->findNext( $expected, $callback_param['start'], ( $callback_param['end'] + 1 ), true );
+					if ( ( $has_non_textstring === false && $clean_param === '__return_true' )
+						|| ( $has_non_textstring !== false
+						&& preg_match( '`^\\\\?__return_true\s*\(\s*\.\.\.\s*\)$`', $clean_param ) === 1 )
+					) {
+						$error = false;
+					}
 				}
 				break;
 		}

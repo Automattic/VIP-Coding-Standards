@@ -7,11 +7,10 @@
 
 namespace WordPressVIPMinimum\Tests\Hooks;
 
-use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the Hooks/AlwaysReturn sniff.
+ * Unit test class for the AlwaysReturnInFilter sniff.
  *
  * @covers \WordPressVIPMinimum\Sniffs\Hooks\AlwaysReturnInFilterSniff
  */
@@ -31,7 +30,9 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 			105 => 1,
 			129 => 1,
 			163 => 1,
-			188 => version_compare( Config::VERSION, '3.5.7', '>=' ) ? 1 : 0,
+			188 => 1,
+			196 => 1,
+			241 => 1,
 		];
 	}
 
@@ -43,6 +44,10 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList() {
 		return [
 			180 => 1,
+			203 => 1,
+			213 => 1,
+			226 => 1,
+			235 => 1,
 		];
 	}
 }

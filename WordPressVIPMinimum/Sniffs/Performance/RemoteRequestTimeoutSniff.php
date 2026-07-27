@@ -3,6 +3,8 @@
  * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
@@ -17,7 +19,7 @@ class RemoteRequestTimeoutSniff extends AbstractArrayAssignmentRestrictionsSniff
 	/**
 	 * Groups of variables to restrict.
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [

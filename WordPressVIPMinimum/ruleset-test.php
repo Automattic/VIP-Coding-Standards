@@ -81,7 +81,6 @@ $expected = [
 		299 => 1,
 		303 => 1,
 		304 => 1,
-		308 => 1,
 		312 => 1,
 		313 => 1,
 		314 => 1,
@@ -156,15 +155,13 @@ $expected = [
 		451 => 1,
 		463 => 1,
 		465 => 1,
-		469 => 1,
-		471 => 1,
-		477 => 1,
-		483 => 1,
-		491 => 1,
-		505 => 1,
-		509 => 1,
-		510 => 1,
-		511 => 1,
+		467 => 1,
+		472 => 1,
+		474 => 1,
+		480 => 1,
+		486 => 1,
+		494 => 1,
+		508 => 1,
 		512 => 1,
 		513 => 1,
 		514 => 1,
@@ -173,29 +170,32 @@ $expected = [
 		517 => 1,
 		518 => 1,
 		519 => 1,
-		523 => 1,
-		525 => 1,
-		550 => 1,
-		551 => 1,
+		520 => 1,
+		521 => 1,
+		522 => 1,
+		526 => 1,
+		528 => 1,
+		553 => 1,
 		554 => 1,
-		569 => 1,
-		570 => 1,
+		557 => 1,
+		572 => 1,
 		573 => 1,
-		574 => 1,
-		575 => 1,
+		576 => 1,
+		577 => 1,
 		578 => 1,
 		581 => 1,
-		582 => 1,
-		583 => 1,
-		588 => 1,
-		590 => 1,
-		594 => 1,
-		595 => 1,
-		596 => 1,
+		584 => 1,
+		585 => 1,
+		586 => 1,
+		591 => 1,
+		593 => 1,
 		597 => 1,
-		612 => 1,
-		614 => 1,
-		621 => 1,
+		598 => 1,
+		599 => 1,
+		600 => 1,
+		615 => 1,
+		617 => 1,
+		624 => 1,
 	],
 	'warnings' => [
 		32  => 1,
@@ -274,21 +274,21 @@ $expected = [
 		457 => 1,
 		458 => 1,
 		459 => 1,
-		499 => 1,
-		500 => 1,
-		504 => 1,
-		528 => 1,
-		529 => 1,
-		530 => 1,
+		502 => 1,
+		503 => 1,
+		507 => 1,
 		531 => 1,
 		532 => 1,
+		533 => 1,
+		534 => 1,
 		535 => 1,
 		538 => 1,
-		545 => 1,
-		559 => 1,
-		565 => 1,
-		589 => 1,
-		618 => 1,
+		541 => 1,
+		548 => 1,
+		562 => 1,
+		568 => 1,
+		592 => 1,
+		621 => 1,
 	],
 	'messages' => [
 		130 => [
@@ -309,11 +309,29 @@ $expected = [
 	],
 ];
 
+// Expected values for the dedicated byte order mark (BOM) fixture.
+$bom_expected = [
+	'errors'   => [
+		1 => 1,
+	],
+	'warnings' => [],
+	'messages' => [
+		1 => [
+			'File contains UTF-8 byte order mark, which may corrupt your application',
+		],
+	],
+];
+
 require __DIR__ . '/../tests/RulesetTest.php';
 
 // Run the tests!
-$test = new RulesetTest( 'WordPressVIPMinimum', $expected );
-if ( $test->passes() ) {
+$test     = new RulesetTest( 'WordPressVIPMinimum', $expected );
+$bom_test = new RulesetTest( 'WordPressVIPMinimum', $bom_expected, 'ruleset-test-bom.inc' );
+
+// Evaluate both tests before the check so each reports its own discrepancies rather than being short-circuited away.
+$test_passes     = $test->passes();
+$bom_test_passes = $bom_test->passes();
+if ( $test_passes && $bom_test_passes ) {
 	printf( 'All WordPressVIPMinimum tests passed!' . PHP_EOL );
 	exit( 0 );
 }

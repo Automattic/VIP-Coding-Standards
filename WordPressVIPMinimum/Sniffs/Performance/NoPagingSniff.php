@@ -4,34 +4,42 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  * @license https://opensource.org/licenses/MIT MIT
  */
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
 
 /**
- * Flag returning high or infinite posts_per_page.
+ * Flag disabling pagination via `nopaging` or `posts_per_page`/`numberposts` set to `-1`.
  *
  * @link https://docs.wpvip.com/technical-references/code-review/#no-limit-queries
- *
- * @since 0.5.0
  */
 class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Groups of variables to restrict.
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [
 			'nopaging' => [
 				'type'    => 'error',
-				'message' => 'Disabling pagination is prohibited in VIP context, do not set `%s` to `%s` ever.',
+				'message' => 'Disabling pagination is prohibited in VIP context, do not set `%s` to `%s`.',
 				'keys'    => [
 					'nopaging',
+				],
+			],
+			'posts_per_page' => [
+				'type'    => 'error',
+				'message' => 'Setting `%s` to `%s` disables pagination and is prohibited in VIP context.',
+				'keys'    => [
+					'posts_per_page',
+					'numberposts',
 				],
 			],
 		];
@@ -50,6 +58,12 @@ class NoPagingSniff extends AbstractArrayAssignmentRestrictionsSniff {
 	public function callback( $key, $val, $line, $group ) {
 		$key = strtolower( $key );
 
-		return ( $key === 'nopaging' && ( $val === 'true' || $val === '1' ) );
+		if ( $key === 'nopaging' ) {
+			return ( $val === 'true' || $val === '1' );
+		}
+
+		// posts_per_page / numberposts: flag -1 (no limit).
+		$val = TextStrings::stripQuotes( $val );
+		return ( $val === '-1' );
 	}
 }

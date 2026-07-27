@@ -1,12 +1,15 @@
 <?php
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
+ * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\JS;
 
+use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Util\Tokens;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
@@ -15,7 +18,7 @@ use WordPressVIPMinimum\Sniffs\Sniff;
  *
  * Flags functions which are executing HTML passed to it.
  */
-class HTMLExecutingFunctionsSniff extends Sniff {
+class HTMLExecutingFunctionsSniff extends Sniff implements DeprecatedSniff {
 
 	/**
 	 * List of HTML executing functions.
@@ -24,7 +27,7 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 	 * Value indicates whether the function's arg is the content to be inserted, or the target where the inserted
 	 * content is to be inserted before/after/replaced. For the latter, the content is in the preceding method's arg.
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	public $HTMLExecutingFunctions = [
 		'after'        => 'content', // jQuery.
@@ -52,7 +55,7 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [
@@ -127,5 +130,32 @@ class HTMLExecutingFunctionsSniff extends Sniff {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'VIP-Coding-Standard v3.1.0';
+	}
+
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'VIP-Coding-Standard v4.0.0';
+	}
+
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning JavaScript files will be removed from PHP_CodeSniffer, so this sniff is no longer viable.';
 	}
 }

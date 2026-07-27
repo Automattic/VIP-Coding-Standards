@@ -4,6 +4,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  * @license https://opensource.org/licenses/MIT MIT
  */
 
@@ -13,8 +14,6 @@ use WordPressVIPMinimum\Sniffs\AbstractVariableRestrictionsSniff;
 
 /**
  * Restricts usage of some variables in VIP context.
- *
- * @since 0.5.0
  */
 class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 
@@ -31,7 +30,7 @@ class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 	 *  )
 	 * )
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [

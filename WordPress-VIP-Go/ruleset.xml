@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress-VIP-Go" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress-VIP-Go" xsi:noNamespaceSchemaLocation="https://schema.phpcodesniffer.com/phpcs.xsd">
 	<description>WordPress VIP Go Coding Standards</description>
 
 	<!-- The rules below are the changes from between the original sniff or parent ruleset, and what should be applied for this Standard. -->
 	<!-- Include the base VIP Minimum ruleset -->
-	<rule ref="WordPressVIPMinimum"/>
+	<rule ref="WordPressVIPMinimum">
+		<exclude name="WordPressVIPMinimum.JS"/>
+		<exclude name="WordPressVIPMinimum.Functions.DynamicCalls"/>
+	</rule>
 
 	<!-- Things that may be incompatible with the VIP Go infrastructure and needs a dev to review -->
 	<rule ref="WordPressVIPMinimum.Functions.RestrictedFunctions.file_ops_file_put_contents">
@@ -251,5 +254,7 @@
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_fclose">
 		<severity>0</severity>
 	</rule>
-
+	<rule ref="WordPress.Security.EscapeOutput.ExceptionNotEscaped">
+		<severity>0</severity>
+	</rule>
 </ruleset>

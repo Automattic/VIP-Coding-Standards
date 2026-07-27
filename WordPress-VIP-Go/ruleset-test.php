@@ -36,7 +36,6 @@ $expected = [
 		337 => 1,
 		341 => 1,
 		342 => 1,
-		346 => 1,
 		350 => 1,
 		351 => 1,
 		352 => 1,
@@ -88,15 +87,13 @@ $expected = [
 		462 => 1,
 		466 => 1,
 		468 => 1,
-		472 => 1,
-		474 => 1,
-		480 => 1,
-		486 => 1,
-		494 => 1,
-		507 => 1,
-		511 => 1,
-		512 => 1,
-		513 => 1,
+		470 => 1,
+		475 => 1,
+		477 => 1,
+		483 => 1,
+		489 => 1,
+		497 => 1,
+		510 => 1,
 		514 => 1,
 		515 => 1,
 		516 => 1,
@@ -105,16 +102,19 @@ $expected = [
 		519 => 1,
 		520 => 1,
 		521 => 1,
-		525 => 1,
-		527 => 1,
-		545 => 1,
-		560 => 1,
-		564 => 1,
-		565 => 1,
-		566 => 1,
+		522 => 1,
+		523 => 1,
+		524 => 1,
+		528 => 1,
+		530 => 1,
+		548 => 1,
+		563 => 1,
 		567 => 1,
-		572 => 1,
-		574 => 1,
+		568 => 1,
+		569 => 1,
+		570 => 1,
+		575 => 1,
+		577 => 1,
 	],
 	'warnings' => [
 		7   => 1,
@@ -224,14 +224,14 @@ $expected = [
 		454 => 1,
 		455 => 1,
 		456 => 1,
-		502 => 1,
-		503 => 1,
-		530 => 1,
+		505 => 1,
+		506 => 1,
 		533 => 1,
-		540 => 1,
-		550 => 1,
-		556 => 1,
-		579 => 1,
+		536 => 1,
+		543 => 1,
+		553 => 1,
+		559 => 1,
+		582 => 1,
 	],
 	'messages' => [
 		7   => [
@@ -324,11 +324,29 @@ $expected = [
 	],
 ];
 
+// Expected values for the dedicated byte order mark (BOM) fixture.
+$bom_expected = [
+	'errors'   => [
+		1 => 1,
+	],
+	'warnings' => [],
+	'messages' => [
+		1 => [
+			'File contains UTF-8 byte order mark, which may corrupt your application',
+		],
+	],
+];
+
 require __DIR__ . '/../tests/RulesetTest.php';
 
 // Run the tests!
-$test = new RulesetTest( 'WordPress-VIP-Go', $expected );
-if ( $test->passes() ) {
+$test     = new RulesetTest( 'WordPress-VIP-Go', $expected );
+$bom_test = new RulesetTest( 'WordPress-VIP-Go', $bom_expected, 'ruleset-test-bom.inc' );
+
+// Evaluate both tests before the check so each reports its own discrepancies rather than being short-circuited away.
+$test_passes     = $test->passes();
+$bom_test_passes = $bom_test->passes();
+if ( $test_passes && $bom_test_passes ) {
 	printf( 'All WordPress-VIP-Go tests passed!' . PHP_EOL );
 	exit( 0 );
 }

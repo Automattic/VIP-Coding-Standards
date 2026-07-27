@@ -28,24 +28,24 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', 'latest', '8.4']
+        php: ['7.4', 'latest', '8.5']
 
     name: "Lint: PHP ${{ matrix.php }}"
-    continue-on-error: ${{ matrix.php == '8.4' }}
+    continue-on-error: ${{ matrix.php == '8.5' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: cs2pr
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -64,36 +64,29 @@ jobs:
       # - php: The PHP versions to test against.
       # - dependencies: The PHPCS dependencies versions to test against.
       #   IMPORTANT: test runs shouldn't fail because of PHPCS being incompatible with a PHP version.
-      #   - PHPCS will run without errors on PHP 5.4 - 7.4 on any supported version.
-      #   - PHP 8.0 needs PHPCS 3.5.7+ to run without errors, and we require a higher minimum version.
-      #   - PHP 8.1 needs PHPCS 3.6.1+ to run without errors, but works best with 3.7.1+, and we require at least this minimum version.
-      #   - PHP 8.2 and 8.3 need PHPCS 3.8.0+ to run without errors (though the errors don't affect the tests).
+      #   - PHP 8.2, 8.3 and 8.4 need PHPCS 3.8.0+ to run without errors (though the errors don't affect the tests).
       matrix:
-        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
         dependencies: ['lowest', 'stable']
 
         include:
           # Test against dev versions of all dependencies with select PHP versions for early detection of issues.
-          - php: '5.4'
-            dependencies: 'dev'
-          - php: '7.0'
-            dependencies: 'dev'
           - php: '7.4'
             dependencies: 'dev'
-          - php: '8.3'
+          - php: '8.4'
             dependencies: 'dev'
 
           # Test against upcoming PHP version.
-          - php: '8.4'
+          - php: '8.5'
             dependencies: 'dev'
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
-    continue-on-error: ${{ matrix.php == '8.4' }}
+    continue-on-error: ${{ matrix.php == '8.5' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
 
       # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
@@ -101,13 +94,13 @@ jobs:
         id: set_ini
         run: |
           if [[ "${{ matrix.dependencies }}" != "dev" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> "$GITHUB_OUTPUT"
           else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> "$GITHUB_OUTPUT"
           fi
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
@@ -117,16 +110,20 @@ jobs:
         if: ${{ matrix.dependencies == 'dev' }}
         run: >
           composer require --no-update --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"dev-master"
+          squizlabs/php_codesniffer:"3.x-dev"
           phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
           sirbrillig/phpcs-variable-analysis:"2.x"
           wp-coding-standards/wpcs:"dev-develop"
 
+      - name: Enable creation of `composer.lock` file
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: composer config --unset lock
+
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")

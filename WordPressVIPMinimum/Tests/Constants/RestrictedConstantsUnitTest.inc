@@ -21,3 +21,5 @@ if ( defined( 'JETPACK_DEV_DEBUG' ) ) { // Okay. Can touch.
 if ( constant( 'WP_CRON_CONTROL_SECRET' ) ) { // Okay. Can touch.
 
 }
+
+define( '"A8C_PROXIED_REQUEST"', false ); // Okay, well not really as the name is not a valid PHP constant name, but that's not our concern.

@@ -1,8 +1,10 @@
 <?php
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingFileSniff.
+ * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Files;
@@ -20,7 +22,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * List of function used for getting paths.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $getPathFunctions = [
 		'dirname',
@@ -55,7 +57,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * List of restricted constants.
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	public $restrictedConstants = [
 		'TEMPLATEPATH'   => 'get_template_directory',
@@ -65,7 +67,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * List of allowed constants.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $allowedConstants = [
 		'ABSPATH',
@@ -77,7 +79,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 * List of keywords allowed for use in custom constants.
 	 * Note: Customizing this property will overwrite current default values.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $allowedKeywords = [
 		'PATH',
@@ -87,7 +89,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Functions used for modify slashes.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	public $slashingFunctions = [
 		'trailingslashit',
@@ -107,7 +109,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return Tokens::$includeTokens;

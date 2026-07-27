@@ -4,6 +4,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  * @license https://opensource.org/licenses/MIT MIT
  */
 
@@ -58,7 +59,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		// Retrieve the groups only once and don't set up a listener if there are no groups.
@@ -91,7 +92,7 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	 *  )
 	 * )
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	abstract public function getGroups();
 
@@ -121,8 +122,6 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	 * @param int $stackPtr The position of the current token in the stack.
 	 * @return int|void Integer stack pointer to skip forward or void to continue
 	 *                  normal file processing.
-	 *
-	 * @throws \PHP_CodeSniffer\Exceptions\RuntimeException Exception.
 	 */
 	public function process_token( $stackPtr ) {
 

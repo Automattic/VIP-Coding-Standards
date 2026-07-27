@@ -185,8 +185,62 @@ class tokenizer_bug_test {
 		add_filter( 'tokenizer_bug', [ $this, 'tokenizer_bug' ] );
 	}
 
-	public function tokenizer_bug( $param ): namespace\Foo {} // Ok (tokenizer bug PHPCS < 3.5.7) / Error in PHPCS >= 3.5.7.
+	public function tokenizer_bug( $param ): namespace\Foo {} // Error.
 }
+
+// Arrow function callbacks always return implicitly. Ok.
+add_filter( 'good_arrow_function', fn( $x ) => $x . ' suffix' );
+
+add_filter( 'good_arrow_function_null', fn( $x ) => null ); // Ok, still returns a value (null).
+
+add_filter( 'bad_void_return_with_space', function() { // Error.
+	return ;
+} );
+
+// === exit/die/throw in filter callbacks (issue #719) ===
+
+// Exit used as unconditional termination path — warning, not error.
+function exit_in_filter( $redirect_url ) { // Warning.
+	if ( some_condition() ) {
+		return $redirect_url;
+	}
+	wp_redirect( $redirect_url );
+	exit;
+}
+add_filter( 'redirect_canonical', 'exit_in_filter' );
+
+// Die used as unconditional termination path — warning, not error.
+add_filter( 'die_in_filter', function( $url ) { // Warning.
+	if ( some_condition() ) {
+		return $url;
+	}
+	die( 'Terminated' );
+} );
+
+// Throw used as unconditional termination path — warning, not error.
+class throw_in_filter_class {
+	public function __construct() {
+		add_filter( 'throw_in_filter', [ $this, 'validate' ] );
+	}
+
+	public function validate( $value ) { // Warning.
+		if ( is_valid( $value ) ) {
+			return $value;
+		}
+		throw new \RuntimeException( 'Invalid value' );
+	}
+}
+
+// Exit with no return at all — warning, not error.
+add_filter( 'exit_no_return', function( $input ) { // Warning.
+	do_something( $input );
+	exit;
+} );
+
+// No return and no exit/die/throw — remains an error.
+add_filter( 'still_missing_return', function( $input ) { // Error.
+	do_something( $input );
+} );
 
 // Intentional parse error. This has to be the last test in the file!
 class parse_error_test {

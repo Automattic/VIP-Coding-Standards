@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="VIP Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="VIP Coding Standards" xsi:noNamespaceSchemaLocation="https://schema.phpcodesniffer.com/phpcs.xsd">
 	<description>The custom ruleset for the VIP Coding Standards itself.</description>
 
 	<file>.</file>
@@ -21,6 +21,7 @@
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 		<exclude name="WordPress.PHP.YodaConditions"/>
+		<exclude name="Generic.Functions.CallTimePassByReference"/>
 	</rule>
 
 	<rule ref="WordPress-Docs"/>
@@ -43,21 +44,32 @@
 	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
 
 	<!-- Check code for cross-version PHP compatibility. -->
-	<config name="testVersion" value="5.4-"/>
+	<config name="testVersion" value="7.4-"/>
 	<rule ref="PHPCompatibility">
 		<!-- Exclude PHP constants back-filled by PHPCS. -->
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_finallyFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_yieldFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_ellipsisFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_powFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_pow_equalFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_spaceshipFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_coalesceFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_coalesce_equalFound"/>
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_yield_fromFound"/>
-
-		<!-- Unclear how, but appears to be back-filled anyhow, could be that PHP did so before the token was in use. -->
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_traitFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_finallyFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_yieldFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_ellipsisFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_powFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_pow_equalFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_spaceshipFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_coalesceFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_coalesce_equalFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_yield_fromFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_bad_characterFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_fnFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_attributeFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_matchFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_nullsafe_object_operatorFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_name_fully_qualifiedFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_name_qualifiedFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_name_relativeFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_readonlyFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_enumFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_public_setFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_protected_setFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_private_setFound"/>
+		<exclude name="PHPCompatibility.Constants.RemovedConstants.t_bad_characterFound"/>
 	</rule>
 
 </ruleset>

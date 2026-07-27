@@ -3,11 +3,15 @@
  * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Performance;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Numbers;
+use PHPCSUtils\Utils\PassedParameters;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
 
@@ -30,10 +34,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * Functions this sniff is looking for.
 	 *
-	 * @var array The only requirement for this array is that the top level
-	 *            array keys are the names of the functions you're looking for.
-	 *            Other than that, the array can have arbitrary content
-	 *            depending on your needs.
+	 * @var array<string, bool> Key is the function name, value irrelevant.
 	 */
 	protected $target_functions = [
 		'wp_cache_set'     => true,
@@ -44,7 +45,7 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	/**
 	 * List of WP time constants, see https://codex.wordpress.org/Easier_Expression_of_Time_Constants.
 	 *
-	 * @var array
+	 * @var array<string, int>
 	 */
 	protected $wp_time_constants = [
 		'MINUTE_IN_SECONDS' => 60,
@@ -68,21 +69,21 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		if ( isset( $parameters[4] ) === false ) {
+		$expire_param = PassedParameters::getParameterFromStack( $parameters, 4, 'expire' );
+		if ( $expire_param === false ) {
 			// If no cache expiry time, bail (i.e. we don't want to flag for something like feeds where it is cached indefinitely until a hook runs).
 			return;
 		}
 
-		$param          = $parameters[4];
 		$tokensAsString = '';
 		$reportPtr      = null;
 		$openParens     = 0;
 
 		$message    = 'Cache expiry time could not be determined. Please inspect that the fourth parameter passed to %s() evaluates to 300 seconds or more. Found: "%s"';
 		$error_code = 'CacheTimeUndetermined';
-		$data       = [ $matched_content, $parameters[4]['raw'] ];
+		$data       = [ $matched_content, $expire_param['clean'] ];
 
-		for ( $i = $param['start']; $i <= $param['end']; $i++ ) {
+		for ( $i = $expire_param['start']; $i <= $expire_param['end']; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) === true ) {
 				$tokensAsString .= ' ';
 				continue;
@@ -105,8 +106,10 @@ class LowExpiryCacheTimeSniff extends AbstractFunctionParameterSniff {
 			if ( $this->tokens[ $i ]['code'] === T_LNUMBER
 				|| $this->tokens[ $i ]['code'] === T_DNUMBER
 			) {
-				// Integer or float.
-				$tokensAsString .= $this->tokens[ $i ]['content'];
+				// Make sure that PHP 7.4 numeric literals and PHP 8.1 explicit octals don't cause problems.
+				$number_info     = Numbers::getCompleteNumber( $this->phpcsFile, $i );
+				$tokensAsString .= $number_info['decimal'];
+				$i               = $number_info['last_token'];
 				continue;
 			}
 

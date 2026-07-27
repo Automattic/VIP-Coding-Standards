@@ -4,6 +4,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Security;
@@ -28,7 +29,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * List of escaping functions which are being tested.
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	protected $escaping_functions = [
 		'esc_url'    => 'url',
@@ -45,7 +46,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * List of tokens we can skip.
 	 *
-	 * @var array
+	 * @var array<int|string, int|string>
 	 */
 	private $echo_or_concat_tokens =
 	[
@@ -63,7 +64,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *                   for public methods which extending sniffs may be
 	 *                   relying on.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	private $url_attrs = [
 		'href',
@@ -79,7 +80,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	 *                   for public methods which extending sniffs may be
 	 *                   relying on.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	private $attr_endings = [
 		'=',
@@ -107,7 +108,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		$this->echo_or_concat_tokens += Tokens::$emptyTokens;
@@ -186,7 +187,7 @@ class ProperEscapingFunctionSniff extends Sniff {
 
 		$html = $this->phpcsFile->findPrevious( $ignore, $stackPtr - 1, null, true );
 
-		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways..
+		// Use $textStringTokens b/c heredoc and nowdoc tokens will never be encountered in this context anyways.
 		if ( $html === false || isset( Tokens::$textStringTokens[ $this->tokens[ $html ]['code'] ] ) === false ) {
 			return;
 		}

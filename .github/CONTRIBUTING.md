@@ -61,7 +61,7 @@ This package contains Composer scripts to quickly run the developer checks which
 
 After `composer install`, you can do:
 
-- `composer lint`: Lint PHP and XML files in against parse errors.
+- `composer lint`: Lint PHP files against parse errors.
 - `composer cs`: Check the code style and code quality of the codebase via PHPCS.
 - `composer test`: Run the unit tests for the VIPCS sniffs.
 - `composer test-coverage`: Run the unit tests for the VIPCS sniffs with coverage enabled.
@@ -91,6 +91,7 @@ When you introduce new `public` sniff properties, or your sniff extends a class 
 ### Pre-requisites
 * VIP Coding Standards
 * WordPress-Coding-Standards
+* VariableAnalysis
 * PHPCSUtils 1.x
 * PHP_CodeSniffer 3.x
 * PHPUnit 4.x - 9.x
@@ -144,15 +145,18 @@ The easiest way to do this is to add a `phpunit.xml` file to the root of your VI
 
 Expected output:
 ```
-PHPUnit 9.6.15 by Sebastian Bergmann and contributors.
+Note: Tests are running in "CS" mode
 
-........................................                          40 / 40 (100%)
+PHPUnit 9.6.23 by Sebastian Bergmann and contributors.
 
-45 sniff test files generated 175 unique error codes; 0 were fixable (0%)
+Runtime:       PHP 8.4.10
+Configuration: phpunit.xml.dist
 
-Time: 150 ms, Memory: 20.00 MB
+.......................................                           39 / 39 (100%)
 
-OK (40 tests, 0 assertions)
+52 sniff test files generated 172 unique error codes; 0 were fixable (0%)
+
+Time: 00:00.862, Memory: 58.00 MB
 ```
 
 ### Unit Testing conventions

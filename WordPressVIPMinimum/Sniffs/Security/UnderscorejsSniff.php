@@ -4,11 +4,13 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Security;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FilePath;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
@@ -50,7 +52,7 @@ class UnderscorejsSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		$targets   = Tokens::$textStringTokens;
@@ -71,7 +73,7 @@ class UnderscorejsSniff extends Sniff {
 		/*
 		 * Ignore Gruntfile.js files as they are configuration, not code.
 		 */
-		$file_name = TextStrings::stripQuotes( $this->phpcsFile->getFileName() );
+		$file_name = FilePath::getName( $this->phpcsFile );
 		$file_name = strtolower( basename( $file_name ) );
 
 		if ( $file_name === 'gruntfile.js' ) {

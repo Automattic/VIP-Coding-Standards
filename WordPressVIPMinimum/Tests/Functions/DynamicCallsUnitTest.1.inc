@@ -3,7 +3,7 @@
 function my_test() {
 	echo esc_html( "foo" );
 }
-
+$irrelevant = 10;
 
 $my_notokay_func = 'extract';
 $my_notokay_func(); // Bad.
@@ -34,5 +34,15 @@ $ensure_no_notices_are_thrown_on_parse_error = /*comment*/ ;
 $test_double_quoted_string = "assert";
 $test_double_quoted_string(); // Bad.
 
-// Intentional parse error. This has to be the last test in the file.
-$my_notokay_func
+function hasStaticVars() {
+	static $staticvar_foo = 'irrelevant', $staticvar_bar = 'func_num_args', $staticvar_baz = 'nothing';
+	$staticvar_foo(); // OK.
+	$staticvar_bar(); // Bad.
+	$staticvar_baz(); // OK.
+}
+
+function functionParams( $param_foo = 'func_get_arg', $param_bar = 'nothing', $param_baz = 'func_num_args') {
+	$param_foo(); // Bad.
+	$param_bar(); // OK.
+	$param_baz(); // Bad.
+}

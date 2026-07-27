@@ -28,7 +28,7 @@ class RulesetTest {
 	 *
 	 * This is the giant array in the ruleset-test.php files.
 	 *
-	 * @var array
+	 * @var array<string, array<int, int|array<string>>>
 	 */
 	public $expected = [];
 
@@ -75,6 +75,13 @@ class RulesetTest {
 	private $phpcs_bin = 'phpcs';
 
 	/**
+	 * Name of the fixture file (relative to the ruleset directory) to check.
+	 *
+	 * @var string
+	 */
+	private $fixture = 'ruleset-test.inc';
+
+	/**
 	 * String returned by PHP_CodeSniffer report for an Error.
 	 */
 	const ERROR_TYPE = 'ERROR';
@@ -82,12 +89,14 @@ class RulesetTest {
 	/**
 	 * Init the object by processing the test file.
 	 *
-	 * @param string $ruleset  Name of the ruleset e.g. WordPressVIPMinimum or WordPress-VIP-Go.
-	 * @param array  $expected The array of expected errors, warnings and messages.
+	 * @param string                                       $ruleset  Name of the ruleset e.g. WordPressVIPMinimum or WordPress-VIP-Go.
+	 * @param array<string, array<int, int|array<string>>> $expected The array of expected errors, warnings and messages.
+	 * @param string                                       $fixture  Name of the fixture file within the ruleset directory to check. Defaults to `ruleset-test.inc`.
 	 */
-	public function __construct( $ruleset, $expected = [] ) {
+	public function __construct( $ruleset, $expected = [], $fixture = 'ruleset-test.inc' ) {
 		$this->ruleset  = $ruleset;
 		$this->expected = $expected;
+		$this->fixture  = $fixture;
 
 		// Travis and Windows support.
 		$phpcs_bin = getenv( 'PHPCS_BIN' );
@@ -99,7 +108,7 @@ class RulesetTest {
 		}
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf( 'Testing the ' . $this->ruleset . ' ruleset.' . PHP_EOL );
+		printf( 'Testing the ' . $this->ruleset . ' ruleset against ' . $this->fixture . '.' . PHP_EOL );
 
 		$output = $this->collect_phpcs_result();
 
@@ -143,19 +152,29 @@ class RulesetTest {
 	 */
 	private function collect_phpcs_result() {
 		$php = '';
-		if ( \PHP_BINARY && in_array( \PHP_SAPI, [ 'cgi-fcgi', 'cli', 'cli-server', 'phpdbg' ], true ) ) {
+		if ( defined( 'PHP_BINARY' ) && in_array( \PHP_SAPI, [ 'cgi-fcgi', 'cli', 'cli-server', 'phpdbg' ], true ) ) {
 			$php = \PHP_BINARY . ' ';
 		}
 
-		$shell = sprintf(
-			'%1$s%2$s --severity=1 --standard=%3$s --report=json ./%3$s/ruleset-test.inc',
+		$report_file = dirname( __DIR__ ) . '/ruleset-tests-report.json';
+		$shell       = sprintf(
+			'%1$s%2$s --severity=1 --standard=%3$s --report-json=%4$s ./%3$s/%5$s',
 			$php, // Current PHP executable if available.
 			$this->phpcs_bin,
-			$this->ruleset
+			$this->ruleset,
+			$report_file,
+			$this->fixture
 		);
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec -- This is test code, not production.
-		$output = shell_exec( $shell );
+		shell_exec( $shell );
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- This code is not run in the context of WP.
+		$output = file_get_contents( $report_file );
+
+		// Delete the report as we no longer need it.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.unlink_unlink
+		@unlink( $report_file );
 
 		return json_decode( $output );
 	}

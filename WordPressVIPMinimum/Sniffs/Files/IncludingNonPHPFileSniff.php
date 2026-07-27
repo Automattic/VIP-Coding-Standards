@@ -1,8 +1,10 @@
 <?php
 /**
- * WordPressVIPMinimum_Sniffs_Files_IncludingNonPHPFileSniff.
+ * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Files;
@@ -23,7 +25,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 	 *
 	 * Files with these extensions are allowed to be `include`d.
 	 *
-	 * @var array Key is the extension, value is irrelevant.
+	 * @var array<string, bool> Key is the extension, value is irrelevant.
 	 */
 	private $php_extensions = [
 		'php'  => true,
@@ -34,7 +36,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 	/**
 	 * File extensions used for SVG and CSS files.
 	 *
-	 * @var array Key is the extension, value is irrelevant.
+	 * @var array<string, bool> Key is the extension, value is irrelevant.
 	 */
 	private $svg_css_extensions = [
 		'css' => true,
@@ -44,7 +46,7 @@ class IncludingNonPHPFileSniff extends Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return Tokens::$includeTokens;

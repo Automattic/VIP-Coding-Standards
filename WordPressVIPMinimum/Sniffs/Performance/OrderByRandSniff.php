@@ -4,6 +4,7 @@
  *
  * @package VIPCS\WordPressVIPMinimum
  * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  * @license https://opensource.org/licenses/MIT MIT
  */
 
@@ -16,15 +17,13 @@ use WordPressCS\WordPress\AbstractArrayAssignmentRestrictionsSniff;
  * Flag using orderby => rand.
  *
  * @link https://docs.wpvip.com/technical-references/code-review/vip-errors/#h-order-by-rand
- *
- * @since 0.5.0
  */
 class OrderByRandSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 	/**
 	 * Groups of variables to restrict.
 	 *
-	 * @return array
+	 * @return array<string, array<string, string|array<string>>>
 	 */
 	public function getGroups() {
 		return [

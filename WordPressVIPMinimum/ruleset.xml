@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPressVIPMinimum" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPressVIPMinimum" xsi:noNamespaceSchemaLocation="https://schema.phpcodesniffer.com/phpcs.xsd">
 	<description>WordPress VIP Minimum Coding Standards</description>
 
 	<!--
@@ -9,17 +9,27 @@
 		 descriptive error message during the loading of the ruleset instead of
 		 a fatal "class not found" error once the sniffs start running.
 	-->
-	<rule ref="PHPCSUtils"/>
+	<rule ref="PHPCSUtils">
+		<!--
+		Exclude all JS specific sniffs. These are deprecated and should no longer be used.
+
+		Note: While this exclusion has nothing to do with PHPCSUtils, exclusions must be placed within a "rule"
+		and as all sniffs from WordPressVIPMinimum are automatically included, we don't have a WordPressVIPMinimum
+		rule in which to place the exclusion, so this will have to do for now.
+		-->
+		<exclude name="WordPressVIPMinimum.JS"/>
+
+		<!--
+		Exclude other deprecated sniffs.
+		-->
+		<exclude name="WordPressVIPMinimum.Functions.DynamicCalls"/>
+	</rule>
 
 	<rule ref="Generic.PHP.Syntax"/>
 	<rule ref="Generic.PHP.NoSilencedErrors">
 		<properties>
 			<property name="error" value="true"/>
 		</properties>
-	</rule>
-
-	<rule ref="WordPressVIPMinimum.Security.Twig">
-		<include-pattern>*.twig</include-pattern>
 	</rule>
 
 	<rule ref="WordPress.Security.EscapeOutput"/>
@@ -50,6 +60,7 @@
 		</properties>
 	</rule>
 
+	<rule ref="Generic.Files.ByteOrderMark"/>
 	<rule ref="Generic.VersionControl.GitMergeConflict"/>
 	<rule ref="Generic.NamingConventions.ConstructorName"/>
 	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
@@ -58,10 +69,10 @@
 	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
-		<include-pattern>*.php</include-pattern>
-		<include-pattern>*.inc</include-pattern>
-		<exclude-pattern>*.js</exclude-pattern>
-		<exclude-pattern>*.css</exclude-pattern>
+		<include-pattern>*\.php</include-pattern>
+		<include-pattern>*\.inc</include-pattern>
+		<exclude-pattern>*\.js</exclude-pattern>
+		<exclude-pattern>*\.css</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.PHP.CommentedOutCode"/>
 

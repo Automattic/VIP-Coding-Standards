@@ -3,6 +3,8 @@
  * WordPressVIPMinimum Coding Standard.
  *
  * @package VIPCS\WordPressVIPMinimum
+ * @link https://github.com/Automattic/VIP-Coding-Standards
+ * @license https://opensource.org/license/gpl-2-0 GPL-2.0
  */
 
 namespace WordPressVIPMinimum\Sniffs\Hooks;
@@ -10,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\Hooks;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Arrays;
 use PHPCSUtils\Utils\FunctionDeclarations;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -27,7 +30,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	/**
 	 * Returns the token types that this sniff is interested in.
 	 *
-	 * @return array(int)
+	 * @return array<int|string>
 	 */
 	public function register() {
 		return [ T_STRING ];
@@ -76,8 +79,11 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			return;
 		}
 
-		if ( $this->tokens[ $callbackPtr ]['code'] === 'PHPCS_T_CLOSURE' ) {
+		if ( $this->tokens[ $callbackPtr ]['code'] === T_CLOSURE ) {
 			$this->processFunctionBody( $callbackPtr );
+		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_FN ) {
+			// Arrow functions always return a value implicitly. No check needed.
+			return;
 		} elseif ( $this->tokens[ $callbackPtr ]['code'] === T_ARRAY
 			|| $this->tokens[ $callbackPtr ]['code'] === T_OPEN_SHORT_ARRAY
 		) {
@@ -131,7 +137,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function processString( $stackPtr, $start = 0, $end = null ) {
 
-		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
+		$callbackFunctionName = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 
 		$callbackFunctionPtr = $this->phpcsFile->findNext(
 			T_STRING,
@@ -163,10 +169,10 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
 		$offset = $start;
-		while ( $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end ) !== false ) {
-			$functionStackPtr = $this->phpcsFile->findNext( [ T_FUNCTION ], $offset, $end );
-			$functionNamePtr  = $this->phpcsFile->findNext( Tokens::$emptyTokens, $functionStackPtr + 1, null, true, null, true );
-			if ( $this->tokens[ $functionNamePtr ]['code'] === T_STRING && $this->tokens[ $functionNamePtr ]['content'] === $functionName ) {
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Valid usage.
+		while ( ( $functionStackPtr = $this->phpcsFile->findNext( T_FUNCTION, $offset, $end ) ) !== false ) {
+			$declaredName = FunctionDeclarations::getName( $this->phpcsFile, $functionStackPtr );
+			if ( $declaredName === $functionName ) {
 				$this->processFunctionBody( $functionStackPtr );
 				return;
 			}
@@ -240,9 +246,15 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		}
 
 		if ( $outsideConditionalReturn === 0 ) {
-			$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
-			$data    = [ $filterName ];
-			$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
+			if ( $this->hasTerminatingStatement( $functionBodyScopeStart, $functionBodyScopeEnd ) ) {
+				$message = 'The callback for the `%s` filter uses a terminating statement (`exit`, `die`, or `throw`) instead of returning a value. Filter callbacks should always return a value.';
+				$data    = [ $filterName ];
+				$this->phpcsFile->addWarning( $message, $functionBodyScopeStart, 'TerminatingInsteadOfReturn', $data );
+			} else {
+				$message = 'Please, make sure that a callback to `%s` filter is always returning some value.';
+				$data    = [ $filterName ];
+				$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'MissingReturnStatement', $data );
+			}
 		}
 	}
 
@@ -262,7 +274,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		}
 
 		// Similar case may be a conditional closure.
-		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === 'PHPCS_T_CLOSURE' ) {
+		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === T_CLOSURE ) {
 			return false;
 		}
 
@@ -283,6 +295,25 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	}
 
 	/**
+	 * Check whether the function body contains an exit, die, or throw statement.
+	 *
+	 * @param int $scopeStart The scope opener of the function body.
+	 * @param int $scopeEnd   The scope closer of the function body.
+	 *
+	 * @return bool
+	 */
+	private function hasTerminatingStatement( $scopeStart, $scopeEnd ) {
+
+		$terminatingPtr = $this->phpcsFile->findNext(
+			[ T_EXIT, T_THROW ],
+			$scopeStart + 1,
+			$scopeEnd
+		);
+
+		return $terminatingPtr !== false;
+	}
+
+	/**
 	 * Is the token returning void
 	 *
 	 * @param int $stackPtr The position in the stack where the token was found.
@@ -292,7 +323,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	private function isReturningVoid( $stackPtr ) {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
-			[ Tokens::$emptyTokens ],
+			Tokens::$emptyTokens,
 			$stackPtr + 1,
 			null,
 			true

@@ -10,12 +10,12 @@ wp_cache_set( $testing, $data, 'test_group', 5*MINUTE_IN_SECONDS );
 wp_cache_set( 123, $data, 'test_group',  5 * MINUTE_IN_SECONDS );
 wp_cache_set( 1234, $data, '', 425 );
 wp_cache_set( $testing, $data, null, 350 );
-wp_cache_set( $testing, $data );
+\wp_cache_set( $testing, $data );
 wp_cache_set( 'test', $data, $group );
 
 wp_cache_add( 'test', $data, $group, 300 );
 wp_cache_add( $testing, $data, 'test_group', 6*MINUTE_IN_SECONDS );
-wp_cache_add( 1234, $data, '', 425 );
+WP_CACHE_ADD( 1234, $data, '', 425 );
 wp_cache_add( $testing, $data, null, 350 );
 
 wp_cache_replace( 'test', $data, $group, 300 );
@@ -30,13 +30,13 @@ wp_cache_set( 123, $data, null, 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 wp_cache_set( $testing, $data, '', 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 
 wp_cache_add( 'test', $data, $group, 100 ); // Lower than 300.
-wp_cache_add( 'test', $data, $group,  2*MINUTE_IN_SECONDS  ); // Lower than 300.
+\wp_cache_add( 'test', $data, $group,  2*MINUTE_IN_SECONDS  ); // Lower than 300.
 wp_cache_add( 123, $data, null, 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 wp_cache_add( $testing, $data, '', 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 
 wp_cache_replace( 'test', $data, $group, 100 ); // Lower than 300.
 wp_cache_replace( 'test', $data, $group,  2*MINUTE_IN_SECONDS  ); // Lower than 300.
-wp_cache_replace( 123, $data, null, 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
+WP_CACHE_REPLACE( 123, $data, null, 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 wp_cache_replace( $testing, $data, '', 1.5 * MINUTE_IN_SECONDS ); // Lower than 300.
 
 // Test error being reported on the line containing the parameter.
@@ -49,7 +49,7 @@ wp_cache_replace(
 
 // Test calculations with floats.
 wp_cache_replace( $testing, $data, '', 7.5 * MINUTE_IN_SECONDS ); // OK.
-wp_cache_replace( $testing, $data, '', 500 * 0.1 ); // Bad.
+wp_cache_replace( $testing, $data, '', 500 * 0.1, ); // Bad.
 
 // Test comment handling.
 wp_cache_add( 'test', $data, $group, /* Deliberately left empty */ ); // OK.
@@ -71,11 +71,11 @@ wp_cache_add(
 ); // OK.
 
 // Test variable/constant with or without calculation being passed.
-wp_cache_set( $key, $data, '', $time ); // Manual inspection warning.
+WP_Cache_Set( $key, $data, '', $time ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', PREFIX_FIVE_MINUTES ); // Manual inspection warning.
-wp_cache_set( $key, $data, '', 20 * $time ); // Manual inspection warning.
-wp_cache_set( $key, $data, '', $base + $extra ); // Manual inspection warning.
-wp_cache_set( $key, $data, '', 300 + $extra ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', 20 * $time /*comment*/ ); // Manual inspection warning.
+wp_cache_set( $key, $data, '', $base + $extra, ); // Manual inspection warning.
+\wp_cache_set( $key, $data, '', 300 + $extra ); // Manual inspection warning.
 wp_cache_set( $key, $data, '', PREFIX_CUSTOM_TIME * 5); // Manual inspection warning.
 
 // Test calculations with additional aritmetic operators.
@@ -84,9 +84,9 @@ wp_cache_add( 'test', $data, $group, WEEK_IN_SECONDS / 3 + HOUR_IN_SECONDS  ); /
 
 // Test calculations grouped with parentheses.
 wp_cache_set( $key, $data, '', (24 * 60 * 60) ); // OK.
-wp_cache_set( $key, $data, '', (-(2 * 60) + 600) ); // OK.
+wp_cache_set( $key, $data, '', (-(2 * 60) + 600), ); // OK.
 wp_cache_set( $key, $data, '', (2 * 60) ); // Bad.
-wp_cache_set( $key, $data, '', (-(2 * 60) + 600 ); // OK - includes parse error, close parenthesis missing.
+
 
 // Test handling of numbers passed as strings.
 wp_cache_set( 'test', $data, $group, '300' ); // OK - type cast to integer within the function.
@@ -110,10 +110,10 @@ wp_cache_set( 'test', $data, $group, \MONTH_IN_SECONDS ); // OK.
 
 // Test passing something which may look like one of the time constants, but isn't.
 wp_cache_set( 'test', $data, $group, month_in_seconds ); // Bad - constants are case-sensitive.
-wp_cache_set( 'test', $data, $group, HOUR_IN_SECONDS::methodName() ); // Bad - not a constant.
+wp_cache_set( 'test', $data, $group, /*comment*/ HOUR_IN_SECONDS::methodName() ); // Bad - not a constant.
 wp_cache_set( 'test', $data, $group, $obj->MONTH_IN_SECONDS ); // Bad - not a constant.
 wp_cache_set( 'test', $data, $group, $obj::MONTH_IN_SECONDS ); // Bad - not the WP constant.
-wp_cache_set( 'test', $data, $group, PluginNamespace\SubLevel\DAY_IN_SECONDS ); // Bad - not the WP constant.
+WP_Cache_Set( 'test', $data, $group, PluginNamespace\SubLevel\DAY_IN_SECONDS, ); // Bad - not the WP constant.
 
 // Test passing negative number as cache time.
 wp_cache_set( 'test', $data, $group, -300 ); // Bad.
@@ -121,3 +121,41 @@ wp_cache_add( $testing, $data, 'test_group', -6 * MINUTE_IN_SECONDS ); // Bad.
 
 // Test more complex logic in the parameter.
 wp_cache_add( $key, $data, '', ($toggle ? 200 : 400) ); // Manual inspection warning.
+
+// Test handling of non-numeric data in text string.
+wp_cache_set( 'test', $data, $group, '' ); // Manual inspection warning.
+wp_cache_set( 'test', $data, $group, '300 Mulberry Street' ); // Manual inspection warning.
+
+// Test handling of edge case/parse error.
+wp_cache_set( 'test', $data, $group,\); // OK, ignore.
+
+// Test handling of some modern PHP syntaxes.
+wp_cache_add('test', $data, $group, ...$params); // PHP 5.6 argument unpacking. Manual inspection warning.
+wp_cache_add( $key, $data, '', $toggle ?? 400) ); // PHP 7.0 null coalesce. Manual inspection warning.
+add_action('my_action', wp_cache_set(...)); // PHP 8.1 first class callable. OK, ignore.
+
+// Looks like a function call, but is a PHP 8.0+ class instantiation via an attribute.
+#[WP_Cache_Replace('text', 'data', 'group', 50)]
+function foo() {}
+
+// Alternative numeric base.
+wp_cache_set( $key, $data, '', 0620 ); // Octal number. OK (=400).
+wp_cache_set( $key, $data, '', 0x190 ); // Hexidecimal number. OK (=400).
+wp_cache_set( $key, $data, '', 0b110010000 ); // PHP 5.4 binary number. OK (=400).
+wp_cache_set( $key, $data, '', 1_000 ); // PHP 7.4 numeric literal with underscore. OK.
+wp_cache_set( $key, $data, '', 0o620 ); // PHP 8.1 octal literal. OK (=400).
+
+wp_cache_set( $key, $data, '', 0226 ); // Octal number. Bad (=150).
+wp_cache_set( $key, $data, '', 0x96 ); // Hexidecimal number. Bad (=150).
+wp_cache_set( $key, $data, '', 0b10010110 ); // PHP 5.4 binary number. Bad (=150).
+wp_cache_set( $key, $data, '', 1_50 ); // PHP 7.4 numeric literal with underscore. Bad.
+wp_cache_set( $key, $data, '', 0o226 ); // PHP 8.1 octal literal. Bad (=150).
+
+// Safeguard handling of function calls using PHP 8.0+ named parameters.
+wp_cache_add(data: $data, group: $group); // OK, well, not really, missing required $key param, but that's not the concern of this sniff.
+wp_cache_replace(data: $data, expire: 400, group: $group); // OK.
+wp_cache_add($key, group: $group, data: $data, expires: 100,); // OK, well, not really, typo in param name, but that's not the concern of the sniff.
+wp_cache_replace($key, expire: 400, group: $group, data: 100,); // OK.
+
+wp_cache_replace($key, $data, expire: 100 ); // Bad.
+wp_cache_replace(expire: 100, data: $data, key: $group); // Bad.
