@@ -4,9 +4,9 @@ $query = "SELECT * FROM $wpdb->users"; // Error.
 
 $wp_db->update( $wpdb->users, array( 'displayname' => 'Kanobe!' ), array( 'ID' => 1 ) ); // Error.
 
-
-
-
+$db_name = $wpdb->dbname; // Error.
+$query   = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$wpdb->dbname'"; // Error.
+$db_name = $other_db->dbname; // Ok, not $wpdb.
 
 $query = "SELECT * FROM $wpdb->posts"; // Ok.
 
