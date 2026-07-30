@@ -98,3 +98,13 @@ filter_input_array(
 		],
 	]
 );
+
+/*
+ * Bug #753: the list of restricted filters can be reduced via the `exclude_filters` property.
+ */
+$excludable = filter_input( INPUT_POST, 'a', FILTER_UNSAFE_RAW ); // Warning RestrictedFilter.
+
+// phpcs:set WordPressVIPMinimum.Security.PHPFilterFunctions exclude_filters[] FILTER_UNSAFE_RAW
+$excluded         = filter_input( INPUT_POST, 'b', FILTER_UNSAFE_RAW ); // OK - excluded via the property.
+$still_restricted = filter_var( $value, FILTER_DEFAULT ); // Warning RestrictedFilter - other defaults still apply.
+// phpcs:set WordPressVIPMinimum.Security.PHPFilterFunctions exclude_filters[]

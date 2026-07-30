@@ -12,6 +12,7 @@ namespace WordPressVIPMinimum\Sniffs\Security;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionParameterSniff;
+use WordPressCS\WordPress\Helpers\RulesetPropertyHelper;
 
 /**
  * This sniff ensures that proper sanitization is occurring when PHP's filter_* functions are used.
@@ -66,6 +67,28 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 	];
 
 	/**
+	 * Filter names to exclude from the list of restricted filters.
+	 *
+	 * This allows a developer who knowingly uses a non-sanitizing filter (for
+	 * example, when they sanitize the value themselves afterwards) to prevent
+	 * the sniff from flagging it, without having to redeclare the full list.
+	 *
+	 * Set this from a custom ruleset, for example to allow `FILTER_UNSAFE_RAW`:
+	 * <code>
+	 * <rule ref="WordPressVIPMinimum.Security.PHPFilterFunctions">
+	 *     <properties>
+	 *         <property name="exclude_filters" type="array">
+	 *             <element value="FILTER_UNSAFE_RAW"/>
+	 *         </property>
+	 *     </properties>
+	 * </rule>
+	 * </code>
+	 *
+	 * @var array<string>
+	 */
+	public $exclude_filters = [];
+
+	/**
 	 * Process the parameters of a matched function.
 	 *
 	 * @param int    $stackPtr        The position of the current token in the stack.
@@ -118,7 +141,13 @@ class PHPFilterFunctionsSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		if ( isset( $this->restricted_filters[ $target_param['clean'] ] ) ) {
+		// Recalculated on each call so an inline change to the `exclude_filters` property is respected.
+		$restricted_filters = array_diff_key(
+			$this->restricted_filters,
+			RulesetPropertyHelper::merge_custom_array( $this->exclude_filters )
+		);
+
+		if ( isset( $restricted_filters[ $target_param['clean'] ] ) ) {
 			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $target_param['start'], ( $target_param['end'] + 1 ), true );
 
 			$message = 'Please use an appropriate filter to sanitize, as "%s" does no filtering, see: http://php.net/manual/en/filter.filters.sanitize.php.';
