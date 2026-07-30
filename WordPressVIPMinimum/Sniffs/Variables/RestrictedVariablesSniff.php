@@ -41,6 +41,13 @@ class RestrictedVariablesSniff extends AbstractVariableRestrictionsSniff {
 					'$wpdb->users',
 				],
 			],
+			'db_name' => [
+				'type'        => 'error',
+				'message'     => 'The `$wpdb->dbname` property is set to null on the VIP Platform and does not hold the actual database name.',
+				'object_vars' => [
+					'$wpdb->dbname',
+				],
+			],
 			'session' => [
 				'type'      => 'error',
 				'message'   => 'Usage of $_SESSION variable is prohibited.',

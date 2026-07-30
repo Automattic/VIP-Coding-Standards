@@ -11,6 +11,8 @@ namespace WordPressVIPMinimum\Sniffs\Constants;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\TextStrings;
+use WordPressCS\WordPress\Helpers\ConstantsHelper;
+use WordPressCS\WordPress\Helpers\ContextHelper;
 use WordPressVIPMinimum\Sniffs\Sniff;
 
 /**
@@ -35,6 +37,24 @@ class RestrictedConstantsSniff extends Sniff {
 	public $restrictedConstantDeclaration = [
 		'JETPACK_DEV_DEBUG',
 		'WP_CRON_CONTROL_SECRET',
+	];
+
+	/**
+	 * List of constants which do not hold a reliable value on the VIP Platform.
+	 *
+	 * @var array<string, string> Key is the constant name, value is the error message to use.
+	 */
+	private $unreliableConstants = [
+		'DB_NAME' => 'The `%s` constant is set to null on the VIP Platform and does not hold the actual database name.',
+	];
+
+	/**
+	 * Functions which resolve a constant based on a constant name passed as a text string.
+	 *
+	 * @var array<string, bool> Key is the function name in lowercase, value is irrelevant.
+	 */
+	private $constantNameFunctions = [
+		'constant' => true,
 	];
 
 	/**
@@ -91,6 +111,11 @@ class RestrictedConstantsSniff extends Sniff {
 			$constantName = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 		}
 
+		if ( isset( $this->unreliableConstants[ $constantName ] ) === true ) {
+			$this->process_unreliable_constant( $stackPtr, $constantName );
+			return;
+		}
+
 		if ( isset( $this->restrictedConstants[ $constantName ] ) === false
 			&& isset( $this->restrictedRedeclaration[ $constantName ] ) === false
 		) {
@@ -137,5 +162,33 @@ class RestrictedConstantsSniff extends Sniff {
 				$this->phpcsFile->addWarning( $message, $previous, 'UsingRestrictedConstant', $data );
 			}
 		}
+	}
+
+	/**
+	 * Process a token containing the name of a constant which does not hold a reliable value
+	 * on the VIP Platform.
+	 *
+	 * @param int    $stackPtr     The position of the current token in the stack passed in $tokens.
+	 * @param string $constantName The name of the constant.
+	 *
+	 * @return void
+	 */
+	private function process_unreliable_constant( $stackPtr, $constantName ) {
+		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
+			if ( ConstantsHelper::is_use_of_global_constant( $this->phpcsFile, $stackPtr ) === false ) {
+				// Class constant, property, function name or something else which just shares the name.
+				return;
+			}
+		} elseif ( ContextHelper::is_in_function_call( $this->phpcsFile, $stackPtr, $this->constantNameFunctions ) === false ) {
+			// A text string only refers to the constant when passed to constant().
+			return;
+		}
+
+		$this->phpcsFile->addError(
+			$this->unreliableConstants[ $constantName ],
+			$stackPtr,
+			'UnreliableConstant',
+			[ $constantName ]
+		);
 	}
 }
