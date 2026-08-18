@@ -66,7 +66,18 @@ class FetchingRemoteDataSniff extends AbstractFunctionParameterSniff {
 		$search_start = $param_start;
 		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Valid usage.
 		while ( ( $has_text_string = $this->phpcsFile->findNext( Tokens::$stringTokens, $search_start, $search_end ) ) !== false ) {
-			if ( strpos( $this->tokens[ $has_text_string ]['content'], '://' ) !== false ) {
+			$string_content = $this->tokens[ $has_text_string ]['content'];
+			if ( strpos( $string_content, '://' ) !== false ) {
+				/*
+				 * The `php://` stream wrappers (php://input, php://stdin, php://memory,
+				 * php://temp, etc.) are local, in-process streams rather than remote
+				 * requests, so should not be flagged. The scheme is case-insensitive.
+				 */
+				if ( preg_match( '`^["\']?php://`i', $string_content ) === 1 ) {
+					$search_start = ( $has_text_string + 1 );
+					continue;
+				}
+
 				$isRemoteFile = true;
 				break;
 			}

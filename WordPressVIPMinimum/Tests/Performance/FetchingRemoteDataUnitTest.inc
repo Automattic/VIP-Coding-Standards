@@ -86,3 +86,13 @@ $result = file_get_contents(( is_ssl() ? 'http' : 'https' ) . '://example.com');
 
 // Bug: don't presume if the parameter contains a text string token, that will be the only token.
 \file_get_contents( $url . '/filename.css' ); // Warning FileGetContentsUnknown.
+
+// Bug #506: the `php://` stream wrappers are local, in-process streams, not remote requests, so should not be flagged.
+$webhook_body     = file_get_contents( 'php://input' ); // OK.
+$std_input        = \file_get_contents( 'php://stdin' ); // OK.
+$in_memory        = file_get_contents( "php://memory" ); // OK.
+$temp_stream      = file_get_contents( 'php://temp/maxmemory:1048576' ); // OK.
+$case_insensitive = file_get_contents( 'PHP://input' ); // OK. The scheme is case-insensitive.
+
+// Bug #506: a `php://` substring which is not the URL scheme must still be flagged as remote.
+$masked_remote = file_get_contents( 'https://example.com/?redirect=php://input' ); // Warning FileGetContentsRemoteFile.
