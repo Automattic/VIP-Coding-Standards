@@ -103,7 +103,7 @@ class DynamicCallsSniff extends Sniff implements DeprecatedSniff {
 	 *
 	 * @return void
 	 */
-	private function collect_variables( $stackPtr ) {
+	private function collect_variables( $stackPtr ): void {
 
 		$current_var_name = $this->tokens[ $stackPtr ]['content'];
 
@@ -169,7 +169,7 @@ class DynamicCallsSniff extends Sniff implements DeprecatedSniff {
 	 *
 	 * @return void
 	 */
-	private function find_dynamic_calls( $stackPtr ) {
+	private function find_dynamic_calls( $stackPtr ): void {
 		// No variables detected; no basis for doing anything.
 		if ( empty( $this->variables_arr ) ) {
 			return;

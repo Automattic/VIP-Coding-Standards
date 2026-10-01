@@ -82,7 +82,7 @@ class StaticStrreplaceSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @return bool
 	 */
-	private function is_parameter_static_text( $param_info ) {
+	private function is_parameter_static_text( $param_info ): bool {
 		// List of tokens which can be skipped over without further examination.
 		$static_tokens  = [
 			T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,

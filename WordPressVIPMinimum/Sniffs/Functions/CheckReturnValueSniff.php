@@ -86,7 +86,7 @@ class CheckReturnValueSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isFunctionCall( $stackPtr ) {
+	private function isFunctionCall( $stackPtr ): bool {
 
 		if ( $this->tokens[ $stackPtr ]['code'] !== T_STRING ) {
 			return false;
@@ -312,7 +312,7 @@ class CheckReturnValueSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function addNonCheckedVariableError( $stackPtr, $variableName, $callee ) {
+	private function addNonCheckedVariableError( $stackPtr, $variableName, $callee ): void {
 		$message = 'Type of `%s` must be checked before calling `%s()` using that variable.';
 		$data    = [ $variableName, $callee ];
 		$this->phpcsFile->addError( $message, $stackPtr, 'NonCheckedVariable', $data );

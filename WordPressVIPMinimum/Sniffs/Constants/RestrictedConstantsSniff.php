@@ -173,7 +173,7 @@ class RestrictedConstantsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function process_unreliable_constant( $stackPtr, $constantName ) {
+	private function process_unreliable_constant( $stackPtr, $constantName ): void {
 		if ( $this->tokens[ $stackPtr ]['code'] === T_STRING ) {
 			if ( ConstantsHelper::is_use_of_global_constant( $this->phpcsFile, $stackPtr ) === false ) {
 				// Class constant, property, function name or something else which just shares the name.

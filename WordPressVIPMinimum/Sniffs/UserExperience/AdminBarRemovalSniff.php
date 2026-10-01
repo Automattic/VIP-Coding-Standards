@@ -398,7 +398,7 @@ class AdminBarRemovalSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @return void
 	 */
-	private function addHidingDetectedError( $stackPtr ) {
+	private function addHidingDetectedError( $stackPtr ): void {
 		$message = 'Hiding of the admin bar is not allowed.';
 		$this->phpcsFile->addError( $message, $stackPtr, 'HidingDetected' );
 	}

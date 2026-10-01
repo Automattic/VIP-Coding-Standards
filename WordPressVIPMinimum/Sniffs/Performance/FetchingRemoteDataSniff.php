@@ -128,7 +128,7 @@ class FetchingRemoteDataSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @return void
 	 */
-	private function add_contents_unknown_warning( $stackPtr, $data ) {
+	private function add_contents_unknown_warning( $stackPtr, $data ): void {
 		$message = '`%s()` is highly discouraged for remote requests, please use `wpcom_vip_file_get_contents()` or `vip_safe_wp_remote_get()` instead. If it\'s for a local file please use WP_Filesystem instead.';
 		$this->phpcsFile->addWarning( $message, $stackPtr, 'FileGetContentsUnknown', $data );
 	}

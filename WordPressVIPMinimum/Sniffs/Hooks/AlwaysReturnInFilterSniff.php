@@ -100,7 +100,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processArray( $stackPtr ) {
+	private function processArray( $stackPtr ): void {
 
 		$open_close = Arrays::getOpenClose( $this->phpcsFile, $stackPtr );
 		if ( $open_close === false ) {
@@ -135,7 +135,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processString( $stackPtr, $start = 0, $end = null ) {
+	private function processString( $stackPtr, $start = 0, $end = null ): void {
 
 		$callbackFunctionName = TextStrings::stripQuotes( $this->tokens[ $stackPtr ]['content'] );
 
@@ -164,7 +164,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processFunction( $stackPtr, $start = 0, $end = null ) {
+	private function processFunction( $stackPtr, $start = 0, $end = null ): void {
 
 		$functionName = $this->tokens[ $stackPtr ]['content'];
 
@@ -187,7 +187,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processFunctionBody( $stackPtr ) {
+	private function processFunctionBody( $stackPtr ): void {
 
 		$filterName = $this->tokens[ $this->filterNamePtr ]['content'];
 
@@ -265,7 +265,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isInsideIfConditonal( $stackPtr ) {
+	private function isInsideIfConditonal( $stackPtr ): bool {
 
 		// This check helps us in situations a class or a function is wrapped
 		// inside a conditional as a whole. Eg.: inside `class_exists`.
@@ -302,7 +302,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function hasTerminatingStatement( $scopeStart, $scopeEnd ) {
+	private function hasTerminatingStatement( $scopeStart, $scopeEnd ): bool {
 
 		$terminatingPtr = $this->phpcsFile->findNext(
 			[ T_EXIT, T_THROW ],
@@ -320,7 +320,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 *
 	 * @return bool
 	 **/
-	private function isReturningVoid( $stackPtr ) {
+	private function isReturningVoid( $stackPtr ): bool {
 
 		$nextToReturnTokenPtr = $this->phpcsFile->findNext(
 			Tokens::$emptyTokens,
