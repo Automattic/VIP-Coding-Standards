@@ -260,7 +260,7 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			],
 			'get_posts' => [
 				'type'      => 'warning',
-				'message'   => '%s() is uncached unless the "suppress_filters" parameter is set to false. If the suppress_filter parameter is set to false this can be safely ignored. More Info: https://docs.wpvip.com/technical-references/caching/uncached-functions/.',
+				'message'   => '%s() is uncached unless the "suppress_filters" parameter is set to false. If the parameter is set to false in a way this sniff cannot detect, such as via a variable, this can be safely ignored. More Info: https://docs.wpvip.com/technical-references/caching/uncached-functions/.',
 				'functions' => [
 					'get_posts',
 					'wp_get_recent_posts',
