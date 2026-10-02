@@ -124,7 +124,6 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 			138 => 1,
 			139 => 1,
 			208 => 1,
-			260 => 1,
 			261 => 1,
 			262 => 1,
 			263 => 1,
@@ -132,6 +131,10 @@ class RestrictedFunctionsUnitTest extends AbstractSniffUnitTest {
 			265 => 1,
 			266 => 1,
 			267 => 1,
+			268 => 1,
+			269 => 1,
+			270 => 1,
+			271 => 1,
 		];
 	}
 }

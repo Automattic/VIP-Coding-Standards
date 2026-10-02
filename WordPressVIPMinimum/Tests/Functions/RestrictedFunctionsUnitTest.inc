@@ -252,6 +252,7 @@ get_posts( [ 'suppress_filters' => false ] ); // Ok.
 get_posts( array( 'post_type' => 'post', 'suppress_filters' => FALSE ) ); // Ok.
 wp_get_recent_posts( [ 'suppress_filters' => false ], OBJECT ); // Ok.
 get_posts( args: [ "suppress_filters" => false ] ); // Ok.
+get_posts( [ 'suppress_filters' => 0 ] ); // Ok.
 $post_ids = get_posts( [
 	'post_type'        => [ 'post' ],
 	'meta_key'         => 'foobar', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
@@ -264,4 +265,7 @@ get_posts( [ 'suppress_filters' => $suppress ] ); // Warning.
 get_posts( [ 'suppress_filters' => false, 'suppress_filters' => true ] ); // Warning - the last duplicate key wins.
 get_posts( [ 'suppress_filters' => false, ...$args ] ); // Warning - the unpacked array can override the key.
 get_posts( [ 'meta_query' => [ 'suppress_filters' => false ] ] ); // Warning - nested key.
+get_posts( [ 'suppress_filters' => 1 ] ); // Warning.
+get_posts( [ 'suppress_filters' => false || $suppress ] ); // Warning - not a lone false.
+get_posts( [ 'suppress_filters' => false ] ?: $args ); // Warning - the array is not the whole argument.
 get_children( args: [ "suppress_filters" => false ] ); // Warning - also performs a no-LIMIT query.

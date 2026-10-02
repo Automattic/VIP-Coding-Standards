@@ -369,7 +369,15 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 		}
 
 		$array_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $args_param['start'], $args_param['end'] + 1, true );
-		if ( $array_ptr === false || Arrays::getOpenClose( $this->phpcsFile, $array_ptr ) === false ) {
+		if ( $array_ptr === false ) {
+			return false;
+		}
+
+		// The array has to be the whole argument.
+		$open_close = Arrays::getOpenClose( $this->phpcsFile, $array_ptr );
+		if ( $open_close === false
+			|| $open_close['closer'] !== $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $args_param['end'], $args_param['start'], true )
+		) {
 			return false;
 		}
 
@@ -377,7 +385,8 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 		foreach ( PassedParameters::getParameters( $this->phpcsFile, $array_ptr ) as $item ) {
 			$arrow = Arrays::getDoubleArrowPtr( $this->phpcsFile, $item['start'], $item['end'] );
 			if ( $arrow === false ) {
-				if ( strpos( GetTokensAsString::noEmpties( $this->phpcsFile, $item['start'], $item['end'] ), '...' ) === 0 ) {
+				$first = $this->phpcsFile->findNext( Tokens::$emptyTokens, $item['start'], $item['end'] + 1, true );
+				if ( $first !== false && $this->tokens[ $first ]['code'] === T_ELLIPSIS ) {
 					// An unpacked array can override an earlier key.
 					$is_false = false;
 				}
@@ -386,7 +395,12 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 
 			$key = TextStrings::stripQuotes( GetTokensAsString::noEmpties( $this->phpcsFile, $item['start'], $arrow - 1 ) );
 			if ( $key === 'suppress_filters' ) {
-				$is_false = strtolower( GetTokensAsString::noEmpties( $this->phpcsFile, $arrow + 1, $item['end'] ) ) === 'false';
+				// WP_Query only checks the value is falsy, so a lone `false` or `0` both count.
+				$value    = $this->phpcsFile->findNext( Tokens::$emptyTokens, $arrow + 1, $item['end'] + 1, true );
+				$is_false = $value !== false
+					&& $this->phpcsFile->findNext( Tokens::$emptyTokens, $value + 1, $item['end'] + 1, true ) === false
+					&& ( $this->tokens[ $value ]['code'] === T_FALSE
+						|| ( $this->tokens[ $value ]['code'] === T_LNUMBER && $this->tokens[ $value ]['content'] === '0' ) );
 			}
 		}
 
