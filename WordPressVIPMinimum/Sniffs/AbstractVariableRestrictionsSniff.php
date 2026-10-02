@@ -218,9 +218,9 @@ abstract class AbstractVariableRestrictionsSniff extends Sniff {
 	 * Transform a wildcard pattern to a usable regex pattern.
 	 *
 	 * @param string $pattern Pattern.
-	 * @return string
+	 * @return string|null
 	 */
-	private function test_patterns( $pattern ) {
+	private function test_patterns( $pattern ): ?string {
 		$pattern = preg_quote( $pattern, '#' );
 		$pattern = preg_replace(
 			[ '#\\\\\*#', '[\'"]' ],
