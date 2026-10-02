@@ -146,3 +146,30 @@ class short_array_hook_in {
 		}
 	}
 }
+
+// The early return does not have to be the first statement in the if. See #902.
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() ) {
+		do_log( 'x' );
+		return;
+	}
+	$query->set( 'cat', '-5' ); // Ok.
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() ) {
+		if ( is_admin() ) {
+			return;
+		}
+	}
+	$query->set( 'cat', '-5' ); // Warning - the return is conditional.
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() ) {
+		$callback = function() {
+			return;
+		};
+	}
+	$query->set( 'cat', '-5' ); // Warning - the return belongs to the nested closure.
+} );

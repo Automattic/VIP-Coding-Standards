@@ -356,16 +356,18 @@ class PreGetPostsSniff extends Sniff {
 			return false;
 		}
 
-		$next = $this->phpcsFile->findNext(
-			[ T_RETURN ],
-			$this->tokens[ $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['scope_opener'],
-			$this->tokens[ $this->tokens[ $nestedParenthesisEnd ]['parenthesis_owner'] ]['scope_closer'],
-			false,
-			'return',
-			true
-		);
+		// Look for a return which belongs to the control structure itself, not to anything nested inside it.
+		$scopeCloser = $this->tokens[ $owner ]['scope_closer'];
+		$return      = $this->phpcsFile->findNext( T_RETURN, $this->tokens[ $owner ]['scope_opener'] + 1, $scopeCloser );
+		while ( $return !== false ) {
+			if ( array_key_last( $this->tokens[ $return ]['conditions'] ) === $owner ) {
+				return true;
+			}
 
-		return $next !== false;
+			$return = $this->phpcsFile->findNext( T_RETURN, $return + 1, $scopeCloser );
+		}
+
+		return false;
 	}
 
 	/**
