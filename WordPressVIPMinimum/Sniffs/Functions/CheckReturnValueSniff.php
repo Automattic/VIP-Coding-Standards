@@ -106,7 +106,7 @@ class CheckReturnValueSniff extends Sniff {
 		$previous = $this->phpcsFile->findPrevious( $search, $stackPtr - 1, null, true );
 
 		// It's a function definition, not a function call, so return false.
-		return ! ( $this->tokens[ $previous ]['code'] === T_FUNCTION );
+		return $this->tokens[ $previous ]['code'] !== T_FUNCTION;
 	}
 
 	/**

@@ -365,11 +365,7 @@ class PreGetPostsSniff extends Sniff {
 			true
 		);
 
-		if ( $next ) {
-			return true;
-		}
-
-		return false;
+		return $next !== false;
 	}
 
 	/**
