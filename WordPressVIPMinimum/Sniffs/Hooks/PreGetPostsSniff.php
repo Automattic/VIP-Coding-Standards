@@ -360,7 +360,8 @@ class PreGetPostsSniff extends Sniff {
 		$scopeCloser = $this->tokens[ $owner ]['scope_closer'];
 		$return      = $this->phpcsFile->findNext( T_RETURN, $this->tokens[ $owner ]['scope_opener'] + 1, $scopeCloser );
 		while ( $return !== false ) {
-			if ( array_key_last( $this->tokens[ $return ]['conditions'] ) === $owner ) {
+			$conditionStackPtrs = array_keys( $this->tokens[ $return ]['conditions'] );
+			if ( array_pop( $conditionStackPtrs ) === $owner ) {
 				return true;
 			}
 
