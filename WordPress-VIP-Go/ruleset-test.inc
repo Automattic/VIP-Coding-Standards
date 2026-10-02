@@ -137,6 +137,7 @@ get_next_post_link(); // Warning.
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children
 get_child(); // Ok.
 get_children(); // Warning + Message.
+get_children( [ 'suppress_filters' => false ] ); // Warning + Message.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_posts
 get_posts(); // Warning.

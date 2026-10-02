@@ -334,7 +334,8 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	 * Process a matched token.
 	 *
 	 * This differs to the parent class method that it overrides, by not flagging calls to
-	 * the `get_posts` group of functions which set `suppress_filters` to `false`.
+	 * `get_posts()` and `wp_get_recent_posts()` which set `suppress_filters` to `false`.
+	 * `get_children()` is still flagged, as it also performs a no-LIMIT query by default.
 	 *
 	 * @param int    $stackPtr        The position of the current token in the stack.
 	 * @param string $group_name      The name of the group which was matched.
@@ -344,7 +345,10 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	 * @return void
 	 */
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
-		if ( $group_name === 'get_posts' && $this->sets_suppress_filters_to_false( $stackPtr ) ) {
+		if ( $group_name === 'get_posts'
+			&& $matched_content !== 'get_children'
+			&& $this->sets_suppress_filters_to_false( $stackPtr )
+		) {
 			return;
 		}
 
