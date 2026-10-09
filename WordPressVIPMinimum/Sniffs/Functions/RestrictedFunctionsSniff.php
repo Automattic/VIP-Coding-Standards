@@ -10,6 +10,10 @@
 namespace WordPressVIPMinimum\Sniffs\Functions;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Arrays;
+use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\PassedParameters;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
@@ -254,10 +258,9 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 					'setcookie',
 				],
 			],
-			// @todo Introduce a sniff specific to get_posts() that checks for suppress_filters=>false being supplied.
 			'get_posts' => [
 				'type'      => 'warning',
-				'message'   => '%s() is uncached unless the "suppress_filters" parameter is set to false. If the suppress_filter parameter is set to false this can be safely ignored. More Info: https://docs.wpvip.com/technical-references/caching/uncached-functions/.',
+				'message'   => '%s() is uncached unless the "suppress_filters" parameter is set to false. If the parameter is set to false in a way this sniff cannot detect, such as via a variable, this can be safely ignored. More Info: https://docs.wpvip.com/technical-references/caching/uncached-functions/.',
 				'functions' => [
 					'get_posts',
 					'wp_get_recent_posts',
@@ -325,5 +328,82 @@ class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 
 		return $this->tokens[ $prevPrev ]['code'] === T_VARIABLE
 			&& isset( $this->groups[ $this->tokens[ $stackPtr ]['content'] ]['object_var'][ $this->tokens[ $prevPrev ]['content'] ] );
+	}
+
+	/**
+	 * Process a matched token.
+	 *
+	 * This differs to the parent class method that it overrides, by not flagging calls to
+	 * `get_posts()` and `wp_get_recent_posts()` which set `suppress_filters` to `false`.
+	 * `get_children()` is still flagged, as it also performs a no-LIMIT query by default.
+	 *
+	 * @param int    $stackPtr        The position of the current token in the stack.
+	 * @param string $group_name      The name of the group which was matched.
+	 * @param string $matched_content The token content (function name) which was matched
+	 *                                in lowercase.
+	 *
+	 * @return void
+	 */
+	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
+		if ( $group_name === 'get_posts'
+			&& $matched_content !== 'get_children'
+			&& $this->sets_suppress_filters_to_false( $stackPtr )
+		) {
+			return;
+		}
+
+		parent::process_matched_token( $stackPtr, $group_name, $matched_content );
+	}
+
+	/**
+	 * Check whether a function call passes an array of arguments which sets `suppress_filters` to `false`.
+	 *
+	 * @param int $stackPtr The position of the function call name in the stack.
+	 *
+	 * @return bool
+	 */
+	private function sets_suppress_filters_to_false( $stackPtr ) {
+		$args_param = PassedParameters::getParameter( $this->phpcsFile, $stackPtr, 1, 'args' );
+		if ( $args_param === false ) {
+			return false;
+		}
+
+		$array_ptr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $args_param['start'], $args_param['end'] + 1, true );
+		if ( $array_ptr === false ) {
+			return false;
+		}
+
+		// The array has to be the whole argument.
+		$open_close = Arrays::getOpenClose( $this->phpcsFile, $array_ptr );
+		if ( $open_close === false
+			|| $open_close['closer'] !== $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $args_param['end'], $args_param['start'], true )
+		) {
+			return false;
+		}
+
+		$is_false = false;
+		foreach ( PassedParameters::getParameters( $this->phpcsFile, $array_ptr ) as $item ) {
+			$arrow = Arrays::getDoubleArrowPtr( $this->phpcsFile, $item['start'], $item['end'] );
+			if ( $arrow === false ) {
+				$first = $this->phpcsFile->findNext( Tokens::$emptyTokens, $item['start'], $item['end'] + 1, true );
+				if ( $first !== false && $this->tokens[ $first ]['code'] === T_ELLIPSIS ) {
+					// An unpacked array can override an earlier key.
+					$is_false = false;
+				}
+				continue;
+			}
+
+			$key = TextStrings::stripQuotes( GetTokensAsString::noEmpties( $this->phpcsFile, $item['start'], $arrow - 1 ) );
+			if ( $key === 'suppress_filters' ) {
+				// WP_Query only checks the value is falsy, so a lone `false` or `0` both count.
+				$value    = $this->phpcsFile->findNext( Tokens::$emptyTokens, $arrow + 1, $item['end'] + 1, true );
+				$is_false = $value !== false
+					&& $this->phpcsFile->findNext( Tokens::$emptyTokens, $value + 1, $item['end'] + 1, true ) === false
+					&& ( $this->tokens[ $value ]['code'] === T_FALSE
+						|| ( $this->tokens[ $value ]['code'] === T_LNUMBER && $this->tokens[ $value ]['content'] === '0' ) );
+			}
+		}
+
+		return $is_false;
 	}
 }

@@ -257,6 +257,7 @@ mt_rand(); // Warning.
 
 // WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children
 get_children(); // Error + Message.
+get_children( [ 'suppress_filters' => false ] ); // Error + Message.
 
 // VariableAnalysis.CodeAnalysis.VariableAnalysis
 function foo() {
