@@ -173,3 +173,11 @@ add_action( 'pre_get_posts', function( $query ) {
 	}
 	$query->set( 'cat', '-5' ); // Warning - the return belongs to the nested closure.
 } );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() ) :
+		do_log( 'x' );
+		return;
+	endif;
+	$query->set( 'cat', '-5' ); // Ok - alternative syntax.
+} );
