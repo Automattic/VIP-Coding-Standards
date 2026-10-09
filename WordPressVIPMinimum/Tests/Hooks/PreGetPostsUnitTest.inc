@@ -181,3 +181,32 @@ add_action( 'pre_get_posts', function( $query ) {
 	endif;
 	$query->set( 'cat', '-5' ); // Ok - alternative syntax.
 } );
+
+// An elseif checks the main query as well as an if does.
+add_action( 'pre_get_posts', function( $query ) {
+	if ( is_admin() ) {
+		return;
+	} elseif ( ! $query->is_main_query() ) {
+		return;
+	}
+	$query->set( 'cat', '-5' ); // Ok.
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( is_admin() ) {
+		return;
+	} else if ( ! $query->is_main_query() ) {
+		return;
+	}
+	$query->set( 'cat', '-5' ); // Ok.
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( $query->is_main_query() && $query->is_home() ) {
+		$query->set( 'cat', '-5' ); // Ok.
+	} elseif ( $query->is_main_query() && $query->is_search() ) {
+		$query->set( 'cat', '-6' ); // Ok.
+	} elseif ( is_admin() ) {
+		$query->set( 'cat', '-7' ); // Warning - this elseif does not check the main query.
+	}
+} );
