@@ -11,6 +11,7 @@ namespace WordPressVIPMinimum\Sniffs\Hooks;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Arrays;
+use PHPCSUtils\Utils\Conditions;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressVIPMinimum\Sniffs\Sniff;
@@ -230,13 +231,16 @@ class AlwaysReturnInFilterSniff extends Sniff {
 		$outsideConditionalReturn = 0;
 
 		while ( $returnTokenPtr ) {
-			if ( $this->isInsideIfConditonal( $returnTokenPtr ) === false ) {
-				++$outsideConditionalReturn;
-			}
-			if ( $this->isReturningVoid( $returnTokenPtr ) ) {
-				$message = 'Please, make sure that a callback to `%s` filter is returning void intentionally.';
-				$data    = [ $filterName ];
-				$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'VoidReturn', $data );
+			// A return in a nested closure or function does not return from the callback.
+			if ( Conditions::getLastCondition( $this->phpcsFile, $returnTokenPtr, [ T_FUNCTION, T_CLOSURE ] ) === $stackPtr ) {
+				if ( $this->isInsideIfConditonal( $returnTokenPtr, $stackPtr ) === false ) {
+					++$outsideConditionalReturn;
+				}
+				if ( $this->isReturningVoid( $returnTokenPtr ) ) {
+					$message = 'Please, make sure that a callback to `%s` filter is returning void intentionally.';
+					$data    = [ $filterName ];
+					$this->phpcsFile->addError( $message, $functionBodyScopeStart, 'VoidReturn', $data );
+				}
 			}
 			$returnTokenPtr = $this->phpcsFile->findNext(
 				[ T_RETURN ],
@@ -259,24 +263,24 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	}
 
 	/**
-	 * Is the current token inside a conditional?
+	 * Is the current token inside a conditional within the function?
 	 *
-	 * @param int $stackPtr The position in the stack where the token was found.
+	 * @param int $stackPtr    The position in the stack where the token was found.
+	 * @param int $functionPtr The position of the function the token belongs to.
 	 *
 	 * @return bool
 	 */
-	private function isInsideIfConditonal( $stackPtr ): bool {
+	private function isInsideIfConditonal( $stackPtr, $functionPtr ): bool {
 
-		// This check helps us in situations a class or a function is wrapped
-		// inside a conditional as a whole. Eg.: inside `class_exists`.
-		// Similar case may be a conditional closure.
-		$conditions = $this->tokens[ $stackPtr ]['conditions'];
-		$innermost  = end( $conditions );
-		if ( $innermost === T_FUNCTION || $innermost === T_CLOSURE ) {
-			return false;
+		// Only look inside the function, so a class or a function wrapped inside
+		// a conditional as a whole does not count. Eg.: inside `function_exists`.
+		foreach ( $this->tokens[ $stackPtr ]['conditions'] as $conditionPtr => $conditionCode ) {
+			if ( $conditionPtr > $functionPtr && $conditionCode === T_IF ) {
+				return true;
+			}
 		}
 
-		return in_array( T_IF, $conditions, true );
+		return false;
 	}
 
 	/**
