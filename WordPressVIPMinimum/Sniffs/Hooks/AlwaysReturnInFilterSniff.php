@@ -269,29 +269,14 @@ class AlwaysReturnInFilterSniff extends Sniff {
 
 		// This check helps us in situations a class or a function is wrapped
 		// inside a conditional as a whole. Eg.: inside `class_exists`.
-		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === T_FUNCTION ) {
-			return false;
-		}
-
 		// Similar case may be a conditional closure.
-		if ( end( $this->tokens[ $stackPtr ]['conditions'] ) === T_CLOSURE ) {
+		$conditions = $this->tokens[ $stackPtr ]['conditions'];
+		$innermost  = end( $conditions );
+		if ( $innermost === T_FUNCTION || $innermost === T_CLOSURE ) {
 			return false;
 		}
 
-		// Loop over the array of conditions and look for an IF.
-		reset( $this->tokens[ $stackPtr ]['conditions'] );
-
-		if ( array_key_exists( 'conditions', $this->tokens[ $stackPtr ] ) === true
-			&& is_array( $this->tokens[ $stackPtr ]['conditions'] ) === true
-			&& empty( $this->tokens[ $stackPtr ]['conditions'] ) === false
-		) {
-			foreach ( $this->tokens[ $stackPtr ]['conditions'] as $tokenPtr => $tokenCode ) {
-				if ( $this->tokens[ $stackPtr ]['conditions'][ $tokenPtr ] === T_IF ) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return in_array( T_IF, $conditions, true );
 	}
 
 	/**
