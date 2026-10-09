@@ -114,7 +114,7 @@ class RestrictedHooksSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @return string Normalized hook name or an empty string if the hook name could not be determined.
 	 */
-	private function normalize_hook_name_from_parameter( $parameter ) {
+	private function normalize_hook_name_from_parameter( $parameter ): string {
 		$allowed_tokens  = Tokens::$emptyTokens;
 		$allowed_tokens += [
 			T_STRING_CONCAT            => T_STRING_CONCAT,

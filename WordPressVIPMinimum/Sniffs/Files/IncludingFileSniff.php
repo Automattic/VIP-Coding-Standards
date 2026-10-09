@@ -216,7 +216,7 @@ class IncludingFileSniff extends AbstractFunctionRestrictionsSniff {
 	 *
 	 * @return bool True if the string partially matches a keyword in $allowedCustomKeywords, false otherwise.
 	 */
-	private function has_custom_path( $content ) {
+	private function has_custom_path( $content ): bool {
 		foreach ( $this->allowedKeywords as $keyword ) {
 			if ( strpos( $content, $keyword ) !== false ) {
 				return true;

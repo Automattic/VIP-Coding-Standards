@@ -392,7 +392,7 @@ class DeclarationCompatibilitySniff implements Sniff {
 	 *
 	 * @return void
 	 */
-	private function addError( File $phpcsFile, $stackPtr, $currScope, $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature ) {
+	private function addError( File $phpcsFile, $stackPtr, $currScope, $parentClassName, $methodName, $currentMethodSignature, $parentMethodSignature ): void {
 		$tokens           = $phpcsFile->getTokens();
 		$currentClassName = '[AnonymousClass]';
 		if ( $tokens[ $currScope ]['code'] !== T_ANON_CLASS ) {
@@ -417,7 +417,7 @@ class DeclarationCompatibilitySniff implements Sniff {
 	 *
 	 * @return array<string>
 	 */
-	private function generateParamList( $methodSignature ) {
+	private function generateParamList( $methodSignature ): array {
 		$paramList = [];
 		foreach ( $methodSignature as $param => $options ) {
 			$paramName = '$';

@@ -96,7 +96,7 @@ class StripTagsSniff extends AbstractFunctionParameterSniff {
 	 *
 	 * @return void
 	 */
-	private function add_warning( $stackPtr, $error_code = 'Used' ) {
+	private function add_warning( $stackPtr, $error_code = 'Used' ): void {
 		$message = '`strip_tags()` does not strip CSS and JS in between the script and style tags. Use `wp_strip_all_tags()` to strip all tags.';
 		$this->phpcsFile->addWarning( $message, $stackPtr, $error_code );
 	}

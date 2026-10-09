@@ -96,7 +96,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processArray( $stackPtr ) {
+	private function processArray( $stackPtr ): void {
 
 		$open_close = Arrays::getOpenClose( $this->phpcsFile, $stackPtr );
 		if ( $open_close === false ) {
@@ -120,7 +120,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processString( $stackPtr ) {
+	private function processString( $stackPtr ): void {
 
 		$callbackFunctionName = substr( $this->tokens[ $stackPtr ]['content'], 1, -1 );
 
@@ -147,7 +147,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processFunction( $stackPtr ) {
+	private function processFunction( $stackPtr ): void {
 
 		$wpQueryObjectNamePtr = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
@@ -182,7 +182,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processClosure( $stackPtr ) {
+	private function processClosure( $stackPtr ): void {
 
 		$wpQueryObjectNamePtr = $this->phpcsFile->findNext(
 			[ T_VARIABLE ],
@@ -209,7 +209,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function processFunctionBody( $stackPtr, $variableName ) {
+	private function processFunctionBody( $stackPtr, $variableName ): void {
 
 		$functionBodyScopeStart = $this->tokens[ $stackPtr ]['scope_opener'];
 		$functionBodyScopeEnd   = $this->tokens[ $stackPtr ]['scope_closer'];
@@ -250,7 +250,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return void
 	 */
-	private function addPreGetPostsWarning( $stackPtr ) {
+	private function addPreGetPostsWarning( $stackPtr ): void {
 		$message = 'Main WP_Query is being modified without `$query->is_main_query()` check. Needs manual inspection.';
 		$this->phpcsFile->addWarning( $message, $stackPtr, 'PreGetPosts' );
 	}
@@ -262,7 +262,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isParentConditionalCheckingMainQuery( $stackPtr ) {
+	private function isParentConditionalCheckingMainQuery( $stackPtr ): bool {
 
 		if ( array_key_exists( 'conditions', $this->tokens[ $stackPtr ] ) === false
 			|| is_array( $this->tokens[ $stackPtr ]['conditions'] ) === false
@@ -312,7 +312,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isEarlyMainQueryCheck( $stackPtr ) {
+	private function isEarlyMainQueryCheck( $stackPtr ): bool {
 
 		if ( ! $this->isWPQueryMethodCall( $stackPtr, 'is_main_query' ) ) {
 			return false;
@@ -365,11 +365,7 @@ class PreGetPostsSniff extends Sniff {
 			true
 		);
 
-		if ( $next ) {
-			return true;
-		}
-
-		return false;
+		return $next !== false;
 	}
 
 	/**
@@ -380,7 +376,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isWPQueryMethodCall( $stackPtr, $method = null ) {
+	private function isWPQueryMethodCall( $stackPtr, $method = null ): bool {
 		$next = $this->phpcsFile->findNext(
 			Tokens::$emptyTokens,
 			$stackPtr + 1,
@@ -417,7 +413,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isPartOfIfConditional( $stackPtr ) {
+	private function isPartOfIfConditional( $stackPtr ): bool {
 
 		if ( array_key_exists( 'nested_parenthesis', $this->tokens[ $stackPtr ] ) === true
 			&& is_array( $this->tokens[ $stackPtr ]['nested_parenthesis'] ) === true
@@ -448,7 +444,7 @@ class PreGetPostsSniff extends Sniff {
 	 *
 	 * @return bool
 	 */
-	private function isInsideIfConditonal( $stackPtr ) {
+	private function isInsideIfConditonal( $stackPtr ): bool {
 
 		if ( array_key_exists( 'conditions', $this->tokens[ $stackPtr ] ) === true
 			&& is_array( $this->tokens[ $stackPtr ]['conditions'] ) === true

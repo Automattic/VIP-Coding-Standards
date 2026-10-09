@@ -71,7 +71,7 @@ class StringConcatSniff extends Sniff implements DeprecatedSniff {
 	 *
 	 * @return void
 	 */
-	private function addFoundError( $stackPtr, array $data ) {
+	private function addFoundError( $stackPtr, array $data ): void {
 		$message = 'HTML string concatenation detected, this is a security risk, use DOM node construction or a templating language instead: %s.';
 		$this->phpcsFile->addError( $message, $stackPtr, 'Found', $data );
 	}
