@@ -39,3 +39,10 @@ foo( $_SESSION['bar'] ); // Error.
 if ( isset( $_SESSION ) ) { // OK.
 	$cache = false;
 }
+
+foo( $_SERVER["REMOTE_ADDR"] ); // Warning.
+
+// Warning.
+$phrase = <<<EOD
+Your user-agent is {$_SERVER["HTTP_USER_AGENT"]}
+EOD;

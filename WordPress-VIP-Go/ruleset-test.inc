@@ -568,7 +568,7 @@ foo( $_SESSION['bar'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedIn
 $test = $_SERVER['PHP_AUTH_PW']; // Error.
 bar( $_SERVER['HTTP_X_IP_TRAIL'] ); // Error.
 $_SERVER['HTTP_X_FORWARDED_FOR']; // Error.
-$_SERVER["REMOTE_ADDR"]; // Error.
+$_SERVER["REMOTE_ADDR"]; // Error + Warning (RestrictedVariables).
 // phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 // Generic.VersionControl.GitMergeConflict
