@@ -273,31 +273,125 @@ class PreGetPostsSniff extends Sniff {
 		$conditionStackPtrs    = array_keys( $this->tokens[ $stackPtr ]['conditions'] );
 		$lastConditionStackPtr = array_pop( $conditionStackPtrs );
 
-		while ( in_array( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ], [ T_IF, T_ELSEIF ], true ) ) {
+		while ( in_array( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ], [ T_IF, T_ELSEIF, T_ELSE ], true ) ) {
 
-			$next = $this->phpcsFile->findNext(
-				[ T_VARIABLE ],
-				$lastConditionStackPtr + 1,
-				null,
-				false,
-				$this->tokens[ $stackPtr ]['content'],
-				true
-			);
-			while ( $next ) {
-				if ( $this->isWPQueryMethodCall( $next, 'is_main_query' ) === true ) {
+			if ( $this->tokens[ $lastConditionStackPtr ]['code'] !== T_ELSE
+				&& $this->isConditionCheckingMainQuery( $lastConditionStackPtr, $this->tokens[ $stackPtr ]['content'] )
+			) {
+				return true;
+			}
+
+			// A later branch of an if chain is only reached for the main query when an earlier condition caught every other query.
+			for ( $branchPtr = $this->getPreviousBranch( $lastConditionStackPtr ); $branchPtr !== false; $branchPtr = $this->getPreviousBranch( $branchPtr ) ) {
+				if ( $this->isConditionExcludingMainQuery( $branchPtr, $this->tokens[ $stackPtr ]['content'] ) ) {
 					return true;
 				}
-				$next = $this->phpcsFile->findNext(
-					[ T_VARIABLE ],
-					$next + 1,
-					null,
-					false,
-					$this->tokens[ $stackPtr ]['content'],
-					true
-				);
 			}
 
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Does the condition of an if or elseif check is_main_query?
+	 *
+	 * @param int    $branchPtr    The position of the if or elseif.
+	 * @param string $variableName Variable name.
+	 *
+	 * @return bool
+	 */
+	private function isConditionCheckingMainQuery( $branchPtr, $variableName ): bool {
+
+		$next = $this->phpcsFile->findNext(
+			[ T_VARIABLE ],
+			$branchPtr + 1,
+			null,
+			false,
+			$variableName,
+			true
+		);
+		while ( $next ) {
+			if ( $this->isWPQueryMethodCall( $next, 'is_main_query' ) === true ) {
+				return true;
+			}
+			$next = $this->phpcsFile->findNext(
+				[ T_VARIABLE ],
+				$next + 1,
+				null,
+				false,
+				$variableName,
+				true
+			);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the previous branch of an if chain.
+	 *
+	 * @param int $branchPtr The position of the if, elseif or else.
+	 *
+	 * @return int|false The position of the previous if or elseif, or false when the branch starts the chain.
+	 */
+	private function getPreviousBranch( $branchPtr ) {
+
+		if ( $this->tokens[ $branchPtr ]['code'] === T_IF ) {
+			// An `else if` is an else without braces, followed by an if.
+			$branchPtr = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $branchPtr - 1, null, true );
+			if ( $branchPtr === false || $this->tokens[ $branchPtr ]['code'] !== T_ELSE ) {
+				return false;
+			}
+		}
+
+		$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, $branchPtr - 1, null, true );
+		if ( $prev !== false && $this->tokens[ $prev ]['code'] === T_CLOSE_CURLY_BRACKET ) {
+			return $this->tokens[ $prev ]['scope_condition'] ?? false;
+		}
+
+		// With the alternative syntax, the previous branch closes on this one.
+		for ( $prev = $branchPtr - 1; $prev >= 0; $prev-- ) {
+			if ( isset( $this->tokens[ $prev ]['scope_closer'] ) && $this->tokens[ $prev ]['scope_closer'] === $branchPtr ) {
+				return $this->tokens[ $prev ]['scope_condition'];
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Does the condition of an if or elseif catch every query which is not the main query?
+	 *
+	 * That is a negated is_main_query check, which may be combined with `||` but not with `&&`.
+	 *
+	 * @param int    $branchPtr    The position of the if or elseif.
+	 * @param string $variableName Variable name.
+	 *
+	 * @return bool
+	 */
+	private function isConditionExcludingMainQuery( $branchPtr, $variableName ): bool {
+
+		if ( isset( $this->tokens[ $branchPtr ]['parenthesis_opener'], $this->tokens[ $branchPtr ]['parenthesis_closer'] ) === false ) {
+			return false;
+		}
+
+		$opener = $this->tokens[ $branchPtr ]['parenthesis_opener'];
+		$closer = $this->tokens[ $branchPtr ]['parenthesis_closer'];
+		if ( $this->phpcsFile->findNext( [ T_BOOLEAN_AND, T_LOGICAL_AND, T_LOGICAL_XOR ], $opener + 1, $closer ) !== false ) {
+			return false;
+		}
+
+		$next = $this->phpcsFile->findNext( T_VARIABLE, $opener + 1, $closer, false, $variableName );
+		while ( $next !== false ) {
+			if ( $this->isWPQueryMethodCall( $next, 'is_main_query' ) === true ) {
+				$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens + [ T_OPEN_PARENTHESIS => T_OPEN_PARENTHESIS ], $next - 1, null, true );
+				if ( $prev !== false && $this->tokens[ $prev ]['code'] === T_BOOLEAN_NOT ) {
+					return true;
+				}
+			}
+			$next = $this->phpcsFile->findNext( T_VARIABLE, $next + 1, $closer, false, $variableName );
 		}
 
 		return false;
@@ -454,7 +548,7 @@ class PreGetPostsSniff extends Sniff {
 		) {
 			$conditionStackPtrs    = array_keys( $this->tokens[ $stackPtr ]['conditions'] );
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
-			return in_array( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ], [ T_IF, T_ELSEIF ], true );
+			return in_array( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ], [ T_IF, T_ELSEIF, T_ELSE ], true );
 		}
 		return false;
 	}

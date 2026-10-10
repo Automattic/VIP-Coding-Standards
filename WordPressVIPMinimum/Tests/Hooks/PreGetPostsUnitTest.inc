@@ -219,3 +219,56 @@ add_action( 'pre_get_posts', function( $query ) {
 		$post_type = $query->get( 'post_type' ); // Ok.
 	}
 } );
+
+// A later branch is only reached for the main query when an earlier condition caught every other query.
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() ) {
+		do_log( 'x' );
+	} else {
+		$query->set( 'cat', '-5' ); // Ok.
+	}
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() || is_admin() ) {
+		do_log( 'x' );
+	} elseif ( $query->is_search() ) {
+		$query->set( 'cat', '-5' ); // Ok.
+	} else if ( $query->is_home() ) {
+		$query->set( 'cat', '-6' ); // Ok.
+	} else {
+		$query->set( 'cat', '-7' ); // Ok.
+	}
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() ) :
+		do_log( 'x' );
+	else :
+		$query->set( 'cat', '-5' ); // Ok.
+	endif;
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( $query->is_main_query() ) {
+		do_log( 'x' );
+	} else {
+		$query->set( 'cat', '-5' ); // Warning - only other queries reach the else.
+	}
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! $query->is_main_query() && is_admin() ) {
+		do_log( 'x' );
+	} else {
+		$query->set( 'cat', '-5' ); // Warning - other queries outside the admin reach the else.
+	}
+} );
+
+add_action( 'pre_get_posts', function( $query ) {
+	if ( is_admin() ) {
+		do_log( 'x' );
+	} else {
+		$query->set( 'cat', '-5' ); // Warning - no main query check.
+	}
+} );
