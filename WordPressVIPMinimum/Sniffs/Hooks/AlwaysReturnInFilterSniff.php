@@ -10,6 +10,7 @@
 namespace WordPressVIPMinimum\Sniffs\Hooks;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Arrays;
 use PHPCSUtils\Utils\Conditions;
 use PHPCSUtils\Utils\FunctionDeclarations;
@@ -228,14 +229,9 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			$functionBodyScopeEnd
 		);
 
-		$outsideConditionalReturn = 0;
-
 		while ( $returnTokenPtr ) {
 			// A return in a nested closure or function does not return from the callback.
 			if ( Conditions::getLastCondition( $this->phpcsFile, $returnTokenPtr, [ T_FUNCTION, T_CLOSURE ] ) === $stackPtr ) {
-				if ( $this->isInsideIfConditonal( $returnTokenPtr, $stackPtr ) === false ) {
-					++$outsideConditionalReturn;
-				}
 				if ( $this->isReturningVoid( $returnTokenPtr ) ) {
 					$message = 'Please, make sure that a callback to `%s` filter is returning void intentionally.';
 					$data    = [ $filterName ];
@@ -249,7 +245,7 @@ class AlwaysReturnInFilterSniff extends Sniff {
 			);
 		}
 
-		if ( $outsideConditionalReturn === 0 ) {
+		if ( $this->alwaysReturns( $functionBodyScopeStart, $functionBodyScopeEnd ) === false ) {
 			if ( $this->hasTerminatingStatement( $functionBodyScopeStart, $functionBodyScopeEnd ) ) {
 				$message = 'The callback for the `%s` filter uses a terminating statement (`exit`, `die`, or `throw`) instead of returning a value. Filter callbacks should always return a value.';
 				$data    = [ $filterName ];
@@ -263,24 +259,121 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	}
 
 	/**
-	 * Is the current token inside a conditional within the function?
+	 * Does every path through the code between the scope opener and closer reach a return?
 	 *
-	 * @param int $stackPtr    The position in the stack where the token was found.
-	 * @param int $functionPtr The position of the function the token belongs to.
+	 * Only if, elseif and else are followed as separate paths. A return inside any other
+	 * control structure, such as a loop, switch or try, counts as reaching a return.
+	 *
+	 * @param int $scopeOpener The scope opener.
+	 * @param int $scopeCloser The scope closer.
 	 *
 	 * @return bool
 	 */
-	private function isInsideIfConditonal( $stackPtr, $functionPtr ): bool {
+	private function alwaysReturns( $scopeOpener, $scopeCloser ): bool {
 
-		// Only look inside the function, so a class or a function wrapped inside
-		// a conditional as a whole does not count. Eg.: inside `function_exists`.
-		foreach ( $this->tokens[ $stackPtr ]['conditions'] as $conditionPtr => $conditionCode ) {
-			if ( $conditionPtr > $functionPtr && $conditionCode === T_IF ) {
+		for ( $i = $scopeOpener + 1; $i < $scopeCloser; $i++ ) {
+			if ( $this->tokens[ $i ]['code'] === T_RETURN ) {
 				return true;
 			}
+
+			if ( isset( $this->tokens[ $i ]['scope_condition'], $this->tokens[ $i ]['scope_opener'], $this->tokens[ $i ]['scope_closer'] ) === false
+				|| $this->tokens[ $i ]['scope_condition'] !== $i
+			) {
+				continue;
+			}
+
+			if ( $this->isNestedScope( $i ) ) {
+				// A return in a nested function or class does not return from the callback.
+				$i = $this->tokens[ $i ]['scope_closer'];
+				continue;
+			}
+
+			if ( $this->tokens[ $i ]['code'] === T_IF ) {
+				// An if chain only returns on every path when it has an else and every branch returns.
+				$branches   = $this->getIfChainBranches( $i );
+				$lastBranch = end( $branches );
+				$returns    = $this->tokens[ $lastBranch ]['code'] === T_ELSE;
+				foreach ( $branches as $branch ) {
+					$returns = $returns && $this->alwaysReturns( $this->tokens[ $branch ]['scope_opener'], $this->tokens[ $branch ]['scope_closer'] );
+				}
+
+				if ( $returns ) {
+					return true;
+				}
+
+				$i = $this->tokens[ $lastBranch ]['scope_closer'];
+				continue;
+			}
+
+			if ( $this->alwaysReturns( $this->tokens[ $i ]['scope_opener'], $this->tokens[ $i ]['scope_closer'] ) ) {
+				return true;
+			}
+
+			$i = $this->tokens[ $i ]['scope_closer'];
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get the if, elseif and else branches of an if chain.
+	 *
+	 * A branch without braces ends the chain, as it has no scope to follow.
+	 *
+	 * @param int $ifPtr The position of the if.
+	 *
+	 * @return array<int> The positions of the branches, in order.
+	 */
+	private function getIfChainBranches( $ifPtr ): array {
+
+		$branches = [];
+		$branch   = $ifPtr;
+		while ( isset( $this->tokens[ $branch ]['scope_opener'], $this->tokens[ $branch ]['scope_closer'] ) ) {
+			$branches[] = $branch;
+			if ( $this->tokens[ $branch ]['code'] === T_ELSE ) {
+				break;
+			}
+
+			// With the alternative syntax, a branch closes on the next elseif or else.
+			$next = $this->tokens[ $branch ]['scope_closer'];
+			if ( $this->tokens[ $next ]['code'] !== T_ELSEIF && $this->tokens[ $next ]['code'] !== T_ELSE ) {
+				$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, $next + 1, null, true );
+			}
+
+			if ( $next !== false
+				&& $this->tokens[ $next ]['code'] === T_ELSE
+				&& isset( $this->tokens[ $next ]['scope_opener'] ) === false
+			) {
+				// An `else if` is an else without braces, followed by an if.
+				$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, $next + 1, null, true );
+				if ( $next === false || $this->tokens[ $next ]['code'] !== T_IF ) {
+					break;
+				}
+			} elseif ( $next === false
+				|| ( $this->tokens[ $next ]['code'] !== T_ELSEIF && $this->tokens[ $next ]['code'] !== T_ELSE )
+			) {
+				break;
+			}
+
+			$branch = $next;
+		}
+
+		return $branches;
+	}
+
+	/**
+	 * Is the token a nested function or class, whose code does not belong to the callback?
+	 *
+	 * @param int $stackPtr The position in the stack where the token was found.
+	 *
+	 * @return bool
+	 */
+	private function isNestedScope( $stackPtr ): bool {
+
+		$code = $this->tokens[ $stackPtr ]['code'];
+
+		return isset( $this->tokens[ $stackPtr ]['scope_closer'] )
+			&& ( isset( Collections::functionDeclarationTokens()[ $code ] ) || isset( Tokens::$ooScopeTokens[ $code ] ) );
 	}
 
 	/**
@@ -293,13 +386,19 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function hasTerminatingStatement( $scopeStart, $scopeEnd ): bool {
 
-		$terminatingPtr = $this->phpcsFile->findNext(
-			[ T_EXIT, T_THROW ],
-			$scopeStart + 1,
-			$scopeEnd
-		);
+		for ( $i = $scopeStart + 1; $i < $scopeEnd; $i++ ) {
+			if ( $this->isNestedScope( $i ) ) {
+				// An exit or throw in a nested function or class does not end the callback.
+				$i = $this->tokens[ $i ]['scope_closer'];
+				continue;
+			}
 
-		return $terminatingPtr !== false;
+			if ( $this->tokens[ $i ]['code'] === T_EXIT || $this->tokens[ $i ]['code'] === T_THROW ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
