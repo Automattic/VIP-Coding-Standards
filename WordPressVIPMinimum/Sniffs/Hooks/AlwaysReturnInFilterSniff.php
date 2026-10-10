@@ -386,13 +386,19 @@ class AlwaysReturnInFilterSniff extends Sniff {
 	 */
 	private function hasTerminatingStatement( $scopeStart, $scopeEnd ): bool {
 
-		$terminatingPtr = $this->phpcsFile->findNext(
-			[ T_EXIT, T_THROW ],
-			$scopeStart + 1,
-			$scopeEnd
-		);
+		for ( $i = $scopeStart + 1; $i < $scopeEnd; $i++ ) {
+			if ( $this->isNestedScope( $i ) ) {
+				// An exit or throw in a nested function or class does not end the callback.
+				$i = $this->tokens[ $i ]['scope_closer'];
+				continue;
+			}
 
-		return $terminatingPtr !== false;
+			if ( $this->tokens[ $i ]['code'] === T_EXIT || $this->tokens[ $i ]['code'] === T_THROW ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

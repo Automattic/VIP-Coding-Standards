@@ -38,6 +38,8 @@ class AlwaysReturnInFilterUnitTest extends AbstractSniffUnitTest {
 			280 => 1,
 			288 => 1,
 			326 => 1,
+			347 => 1,
+			356 => 1,
 		];
 	}
 

@@ -343,6 +343,23 @@ add_filter( 'nested_chain_in_else', function( $input ) { // Ok.
 	}
 } );
 
+// An exit or throw in a nested closure does not end the callback.
+add_filter( 'nested_closure_throw', function( $input ) { // Error.
+	if ( is_admin() ) {
+		return $input;
+	}
+	add_action( 'shutdown', function() {
+		throw new \RuntimeException( 'Failed' );
+	} );
+} );
+
+add_filter( 'nested_arrow_function_throw', function( $input ) { // Error.
+	if ( is_admin() ) {
+		return $input;
+	}
+	$fail = fn() => throw new \RuntimeException( 'Failed' );
+} );
+
 // Intentional parse error. This has to be the last test in the file!
 class parse_error_test {
 	public function __construct() {
