@@ -276,6 +276,73 @@ add_filter( 'nested_class_return', function( $input ) { // Error.
 	};
 } );
 
+// A return in an else or elseif is only reached on some paths.
+add_filter( 'else_only_return', function( $input ) { // Error.
+	if ( is_admin() ) {
+		$input = 'admin';
+	} else {
+		return $input;
+	}
+} );
+
+add_filter( 'elseif_without_else', function( $input ) { // Error.
+	if ( is_admin() ) {
+		return 'admin';
+	} elseif ( is_feed() ) {
+		return 'feed';
+	}
+} );
+
+add_filter( 'every_branch_returns', function( $input ) { // Ok.
+	if ( is_admin() ) {
+		return 'admin';
+	} elseif ( is_feed() ) {
+		return 'feed';
+	} else {
+		return $input;
+	}
+} );
+
+add_filter( 'every_branch_returns_else_if', function( $input ) { // Ok.
+	if ( is_admin() ) {
+		return 'admin';
+	} else if ( is_feed() ) {
+		return 'feed';
+	} else {
+		return $input;
+	}
+} );
+
+add_filter( 'every_branch_returns_alternative_syntax', function( $input ) { // Ok.
+	if ( is_admin() ) :
+		return 'admin';
+	elseif ( is_feed() ) :
+		return 'feed';
+	else :
+		return $input;
+	endif;
+} );
+
+add_filter( 'alternative_syntax_missing_else', function( $input ) { // Error.
+	if ( is_admin() ) :
+		return 'admin';
+	elseif ( is_feed() ) :
+		return 'feed';
+	endif;
+} );
+
+add_filter( 'nested_chain_in_else', function( $input ) { // Ok.
+	if ( is_admin() ) {
+		return 'admin';
+	} else {
+		if ( is_feed() ) {
+			return 'feed';
+		} else {
+			return $input;
+		}
+	}
+} );
+
 // Intentional parse error. This has to be the last test in the file!
 class parse_error_test {
 	public function __construct() {
