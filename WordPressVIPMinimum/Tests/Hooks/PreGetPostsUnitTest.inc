@@ -210,3 +210,12 @@ add_action( 'pre_get_posts', function( $query ) {
 		$query->set( 'cat', '-7' ); // Warning - this elseif does not check the main query.
 	}
 } );
+
+// Reading the query is not modifying it.
+add_action( 'pre_get_posts', function( $query ) {
+	if ( is_admin() ) {
+		$post_type = $query->get( 'post_type' ); // Ok.
+	} elseif ( is_feed() ) {
+		$post_type = $query->get( 'post_type' ); // Ok.
+	}
+} );

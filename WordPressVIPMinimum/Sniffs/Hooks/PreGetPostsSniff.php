@@ -226,11 +226,10 @@ class PreGetPostsSniff extends Sniff {
 				if ( $this->isEarlyMainQueryCheck( $wpQueryVarUsed ) ) {
 					return;
 				}
-			} elseif ( $this->isInsideIfConditonal( $wpQueryVarUsed ) ) {
-				if ( ! $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) ) {
-					$this->addPreGetPostsWarning( $wpQueryVarUsed );
-				}
-			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' ) ) {
+			} elseif ( $this->isWPQueryMethodCall( $wpQueryVarUsed, 'set' )
+				&& ( $this->isInsideIfConditonal( $wpQueryVarUsed ) === false
+					|| $this->isParentConditionalCheckingMainQuery( $wpQueryVarUsed ) === false )
+			) {
 				$this->addPreGetPostsWarning( $wpQueryVarUsed );
 			}
 			$wpQueryVarUsed = $this->phpcsFile->findNext(
