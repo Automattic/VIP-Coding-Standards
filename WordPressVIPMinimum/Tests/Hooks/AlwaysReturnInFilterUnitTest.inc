@@ -242,6 +242,40 @@ add_filter( 'still_missing_return', function( $input ) { // Error.
 	do_something( $input );
 } );
 
+// A conditional wrapping the callback as a whole does not make its returns conditional.
+if ( ! function_exists( 'wrapped_try_catch' ) ) {
+	function wrapped_try_catch( $input ) { // Ok.
+		try {
+			return do_something( $input );
+		} catch ( Exception $e ) {
+			return $input;
+		}
+	}
+}
+add_filter( 'wrapped_try_catch', 'wrapped_try_catch' );
+
+// A return in a nested closure does not return from the callback.
+add_filter( 'nested_closure_return', function( $input ) { // Error.
+	$input = array_map( function( $item ) {
+		return $item;
+	}, $input );
+} );
+
+add_filter( 'nested_closure_void_return', function( $input ) { // Ok.
+	add_action( 'init', function() {
+		return;
+	} );
+	return $input;
+} );
+
+add_filter( 'nested_class_return', function( $input ) { // Error.
+	$object = new class() {
+		public function get() {
+			return 'value';
+		}
+	};
+} );
+
 // Intentional parse error. This has to be the last test in the file!
 class parse_error_test {
 	public function __construct() {
