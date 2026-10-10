@@ -274,7 +274,7 @@ class PreGetPostsSniff extends Sniff {
 		$conditionStackPtrs    = array_keys( $this->tokens[ $stackPtr ]['conditions'] );
 		$lastConditionStackPtr = array_pop( $conditionStackPtrs );
 
-		while ( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ] === T_IF ) {
+		while ( in_array( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ], [ T_IF, T_ELSEIF ], true ) ) {
 
 			$next = $this->phpcsFile->findNext(
 				[ T_VARIABLE ],
@@ -423,7 +423,7 @@ class PreGetPostsSniff extends Sniff {
 			&& empty( $this->tokens[ $stackPtr ]['nested_parenthesis'] ) === false
 		) {
 			$previousLocalIf = $this->phpcsFile->findPrevious(
-				[ T_IF ],
+				[ T_IF, T_ELSEIF ],
 				$stackPtr - 1,
 				null,
 				false,
@@ -455,7 +455,7 @@ class PreGetPostsSniff extends Sniff {
 		) {
 			$conditionStackPtrs    = array_keys( $this->tokens[ $stackPtr ]['conditions'] );
 			$lastConditionStackPtr = array_pop( $conditionStackPtrs );
-			return $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ] === T_IF;
+			return in_array( $this->tokens[ $stackPtr ]['conditions'][ $lastConditionStackPtr ], [ T_IF, T_ELSEIF ], true );
 		}
 		return false;
 	}
